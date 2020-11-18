@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Editor">
+</Property><Property Name="ソリューション ファイル" Value="D:\エディタSMS-50用\Editor\Editor.sln">
+</Property><Property Name="Date" Value="2011年12月12日">
+</Property><Property Name="Time" Value="16:00">
+</Property></Properties><Event ErrorLevel="0" Project="Editor" Source="Editor\Editor.vbproj" Description="プロジェクトは正常に変換されました。">
+</Event><Event ErrorLevel="3" Project="Editor" Source="Editor\Editor.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Editor.sln" Description="ソリューションは正常に変換されました">
+</Event><Event ErrorLevel="3" Project="" Source="Editor.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Editor" Source="Editor\Editor.vbproj" Description="スキャンが完了しました: プロジェクト ファイルにアップグレードは必要ありません。">
+</Event><Event ErrorLevel="0" Project="Editor" Source="Editor\Editor.vbproj" Description="Microsoft.VisualBasic.PowerPacks.Vs への参照が Microsoft.VisualBasic.PowerPacks.Vs 10.0 に更新されました。">
+</Event></UpgradeLog>

@@ -1,0 +1,1620 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DDF5DED1-7681-4381-A771-975985C9E1E4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Editor.My.MyApplication</StartupObject>
+    <RootNamespace>Editor</RootNamespace>
+    <AssemblyName>Editor</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationIcon>Utilities.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Editor.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Editor.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>Editor.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>Editor.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0" />
+    <Reference Include="NonHCopyNet, Version=2.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\NonHCopyNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="clsDataGridViewPlus.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="clsDeepCopy.vb" />
+    <Compile Include="clsExcel.vb" />
+    <Compile Include="clsStructure.vb" />
+    <Compile Include="frmChExtLANDetail.Designer.vb">
+      <DependentUpon>frmChExtLANDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChExtLANDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChkFileCompSelect.Designer.vb">
+      <DependentUpon>frmChkFileCompSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChkFileCompSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChkFileCompSelectBig.Designer.vb">
+      <DependentUpon>frmChkFileCompSelectBig.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChkFileCompSelectBig.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChkFileCompSelectDetail.Designer.vb">
+      <DependentUpon>frmChkFileCompSelectDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChkFileCompSelectDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListPID.designer.vb">
+      <DependentUpon>frmChListPID.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListPID.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListWarning.Designer.vb">
+      <DependentUpon>frmChListWarning.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListWarning.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChSioDetail_GAI_JRCS.designer.vb">
+      <DependentUpon>frmChSioDetail_GAI_JRCS.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChSioDetail_GAI_JRCS.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChSioDetail_GAI_MOD.Designer.vb">
+      <DependentUpon>frmChSioDetail_GAI_MOD.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChSioDetail_GAI_MOD.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChSioDetail_GAI_VDR.Designer.vb">
+      <DependentUpon>frmChSioDetail_GAI_VDR.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChSioDetail_GAI_VDR.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChSioList_GAI.Designer.vb">
+      <DependentUpon>frmChSioList_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChSioList_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChTerminalPreview.Designer.vb">
+      <DependentUpon>frmChTerminalPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChTerminalPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtAlarmSet_GAI.Designer.vb">
+      <DependentUpon>frmExtAlarmSet_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtAlarmSet_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtMenu_GAI.Designer.vb">
+      <DependentUpon>frmExtMenu_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtMenu_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlLcdGazo.Designer.vb">
+      <DependentUpon>frmExtPnlLcdGazo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlLcdGazo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlLED_GAI.Designer.vb">
+      <DependentUpon>frmExtPnlLED_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlLED_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlList_GAI.Designer.vb">
+      <DependentUpon>frmExtPnlList_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlList_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLoadCurve.Designer.vb">
+      <DependentUpon>frmLoadCurve.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmLoadCurve.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsLogOption.Designer.vb">
+      <DependentUpon>frmOpsLogOption.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsLogOption.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmClear.Designer.vb">
+      <DependentUpon>frmClear.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmClear.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBitSetByte.Designer.vb">
+      <DependentUpon>frmBitSetByte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmBitSetByte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChCompositeDetail.Designer.vb">
+      <DependentUpon>frmChCompositeDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChCompositeDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChCompositeList.Designer.vb">
+      <DependentUpon>frmChCompositeList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChCompositeList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChControlUseNotuseDetail.Designer.vb">
+      <DependentUpon>frmChControlUseNotuseDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChControlUseNotuseDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChControlUseNotuseList.Designer.vb">
+      <DependentUpon>frmChControlUseNotuseList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChControlUseNotuseList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChDataForwardTableList.Designer.vb">
+      <DependentUpon>frmChDataForwardTableList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChDataForwardTableList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChDataSaveTableList.Designer.vb">
+      <DependentUpon>frmChDataSaveTableList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChDataSaveTableList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChExhGusGroup.Designer.vb">
+      <DependentUpon>frmChExhGusGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChExhGusGroup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChGroupReposeDetail.Designer.vb">
+      <DependentUpon>frmChGroupReposeDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChGroupReposeDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChGroupReposeList.Designer.vb">
+      <DependentUpon>frmChGroupReposeList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChGroupReposeList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChkChIdTable.Designer.vb">
+      <DependentUpon>frmChkChIdTable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChkChIdTable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChkFileCompare.Designer.vb">
+      <DependentUpon>frmChkFileCompare.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChkFileCompare.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChkOutputSetting.Designer.vb">
+      <DependentUpon>frmChkOutputSetting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChkOutputSetting.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListAnalog.Designer.vb">
+      <DependentUpon>frmChListAnalog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListAnalog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListChannelList.Designer.vb">
+      <DependentUpon>frmChListChannelList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListChannelList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListComposite.Designer.vb">
+      <DependentUpon>frmChListComposite.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListComposite.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListDigital.Designer.vb">
+      <DependentUpon>frmChListDigital.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListDigital.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListMotor.Designer.vb">
+      <DependentUpon>frmChListMotor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListMotor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListPrintSetting.Designer.vb">
+      <DependentUpon>frmChListPrintSetting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListPrintSetting.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListPulse.Designer.vb">
+      <DependentUpon>frmChListPulse.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListPulse.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListRemoteIO.Designer.vb">
+      <DependentUpon>frmChListRemoteIO.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListRemoteIO.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListSelectType.Designer.vb">
+      <DependentUpon>frmChListSelectType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListSelectType.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListSystem.designer.vb">
+      <DependentUpon>frmChListSystem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListSystem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListValve.Designer.vb">
+      <DependentUpon>frmChListValve.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListValve.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListViewColorPallet.Designer.vb">
+      <DependentUpon>frmChListViewColorPallet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListViewColorPallet.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListViewGroup.Designer.vb">
+      <DependentUpon>frmChListViewGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListViewGroup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChListViewGroupDispIndex.designer.vb">
+      <DependentUpon>frmChListViewGroupDispIndex.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChListViewGroupDispIndex.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChOutputAoDetail.Designer.vb">
+      <DependentUpon>frmChOutputAoDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChOutputAoDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChOutputAoList.Designer.vb">
+      <DependentUpon>frmChOutputAoList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChOutputAoList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChOutputDoDetail.Designer.vb">
+      <DependentUpon>frmChOutputDoDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChOutputDoDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChOutputDoList.Designer.vb">
+      <DependentUpon>frmChOutputDoList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChOutputDoList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChOutputSelect.Designer.vb">
+      <DependentUpon>frmChOutputSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChOutputSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChRunHour.Designer.vb">
+      <DependentUpon>frmChRunHour.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChRunHour.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChSioBinary.Designer.vb">
+      <DependentUpon>frmChSioBinary.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChSioBinary.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChSioDetail.Designer.vb">
+      <DependentUpon>frmChSioDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChSioDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChSioList.Designer.vb">
+      <DependentUpon>frmChSioList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChSioList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChTerminalDetail.Designer.vb">
+      <DependentUpon>frmChTerminalDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChTerminalDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChTerminalList.Designer.vb">
+      <DependentUpon>frmChTerminalList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChTerminalList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChTerminalSlotType.Designer.vb">
+      <DependentUpon>frmChTerminalSlotType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChTerminalSlotType.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCmpCompier.Designer.vb">
+      <DependentUpon>frmCmpCompier.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCmpCompier.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtEccDeadmanAlarm.Designer.vb">
+      <DependentUpon>frmExtEccDeadmanAlarm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtEccDeadmanAlarm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtEccDuty.Designer.vb">
+      <DependentUpon>frmExtEccDuty.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtEccDuty.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtEccEngineerCall.Designer.vb">
+      <DependentUpon>frmExtEccEngineerCall.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtEccEngineerCall.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtEccPatrolManCall.Designer.vb">
+      <DependentUpon>frmExtEccPatrolManCall.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtEccPatrolManCall.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtMenu.Designer.vb">
+      <DependentUpon>frmExtMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlAlarmGroup.Designer.vb">
+      <DependentUpon>frmExtPnlAlarmGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlAlarmGroup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlBuzzerDelayTimer.Designer.vb">
+      <DependentUpon>frmExtPnlBuzzerDelayTimer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlBuzzerDelayTimer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlLcdDutyDisplay.Designer.vb">
+      <DependentUpon>frmExtPnlLcdDutyDisplay.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlLcdDutyDisplay.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlLcdGroupDisplay.Designer.vb">
+      <DependentUpon>frmExtPnlLcdGroupDisplay.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlLcdGroupDisplay.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlLED.Designer.vb">
+      <DependentUpon>frmExtPnlLED.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlLED.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlList.Designer.vb">
+      <DependentUpon>frmExtPnlList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtPnlSystem.Designer.vb">
+      <DependentUpon>frmExtPnlSystem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtPnlSystem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExtTimer.Designer.vb">
+      <DependentUpon>frmExtTimer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmExtTimer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFileConvert.Designer.vb">
+      <DependentUpon>frmFileConvert.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFileConvert.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFileAccess.Designer.vb">
+      <DependentUpon>frmFileAccess.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFileAccess.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFileSelect.Designer.vb">
+      <DependentUpon>frmFileSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFileSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFileVersion.Designer.vb">
+      <DependentUpon>frmFileVersion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFileVersion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMenuMain.Designer.vb">
+      <DependentUpon>frmMenuMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMenuMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsGraphAnalogMaterList.Designer.vb">
+      <DependentUpon>frmOpsGraphAnalogMaterList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsGraphAnalogMaterList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsGraphAnalogMeterDetail.Designer.vb">
+      <DependentUpon>frmOpsGraphAnalogMeterDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsGraphAnalogMeterDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsGraphBarGraph.Designer.vb">
+      <DependentUpon>frmOpsGraphBarGraph.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsGraphBarGraph.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsGraphExtGus.Designer.vb">
+      <DependentUpon>frmOpsGraphExtGus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsGraphExtGus.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsGraphFreeAlignment.Designer.vb">
+      <DependentUpon>frmOpsGraphFreeAlignment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsGraphFreeAlignment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsGraphFreeDetail.Designer.vb">
+      <DependentUpon>frmOpsGraphFreeDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsGraphFreeDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsGraphList.Designer.vb">
+      <DependentUpon>frmOpsGraphList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsGraphList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsGwsCh.Designer.vb">
+      <DependentUpon>frmOpsGwsCh.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsGwsCh.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsLogFormatDetail.Designer.vb">
+      <DependentUpon>frmOpsLogFormatDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsLogFormatDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsLogFormatList.Designer.vb">
+      <DependentUpon>frmOpsLogFormatList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsLogFormatList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsPulldownGroup.Designer.vb">
+      <DependentUpon>frmOpsPulldownGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsPulldownGroup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsPulldownMenu.Designer.vb">
+      <DependentUpon>frmOpsPulldownMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsPulldownMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsPulldownMenu_GAI.Designer.vb">
+      <DependentUpon>frmOpsPulldownMenu_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsPulldownMenu_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsPulldownSub.Designer.vb">
+      <DependentUpon>frmOpsPulldownSub.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsPulldownSub.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsPulldownSub_GAI_Print.Designer.vb">
+      <DependentUpon>frmOpsPulldownSub_GAI_Print.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsPulldownSub_GAI_Print.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsScreenTitle.Designer.vb">
+      <DependentUpon>frmOpsScreenTitle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsScreenTitle.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsSelectionMenuDetail.Designer.vb">
+      <DependentUpon>frmOpsSelectionMenuDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsSelectionMenuDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpsSelectionMenuList.Designer.vb">
+      <DependentUpon>frmOpsSelectionMenuList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpsSelectionMenuList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtChannel.Designer.vb">
+      <DependentUpon>frmPrtChannel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtChannel.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtChannelPreview.Designer.vb">
+      <DependentUpon>frmPrtChannelPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtChannelPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtGraph.Designer.vb">
+      <DependentUpon>frmPrtGraph.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtGraph.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtGraphPreview.Designer.vb">
+      <DependentUpon>frmPrtGraphPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtGraphPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtLocalUnit.Designer.vb">
+      <DependentUpon>frmPrtLocalUnit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtLocalUnit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtLocalUnitPreview.Designer.vb">
+      <DependentUpon>frmPrtLocalUnitPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtLocalUnitPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtOverView.Designer.vb">
+      <DependentUpon>frmPrtOverView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtOverView.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtOverViewPreview.Designer.vb">
+      <DependentUpon>frmPrtOverViewPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtOverViewPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtTerminal.Designer.vb">
+      <DependentUpon>frmPrtTerminal.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtTerminal.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrtTerminalPreview.Designer.vb">
+      <DependentUpon>frmPrtTerminalPreview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrtTerminalPreview.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqLinearTable.Designer.vb">
+      <DependentUpon>frmSeqLinearTable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqLinearTable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqLinearTable_GAI.designer.vb">
+      <DependentUpon>frmSeqLinearTable_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqLinearTable_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqOperationFixed.Designer.vb">
+      <DependentUpon>frmSeqOperationFixed.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqOperationFixed.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqOperationFixed_GAI.designer.vb">
+      <DependentUpon>frmSeqOperationFixed_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqOperationFixed_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqSetInputData.Designer.vb">
+      <DependentUpon>frmSeqSetInputData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqSetInputData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqSetInputData_GAI.designer.vb">
+      <DependentUpon>frmSeqSetInputData_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqSetInputData_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceDetail.Designer.vb">
+      <DependentUpon>frmSeqSetSequenceDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceDetail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceDetail_GAI.designer.vb">
+      <DependentUpon>frmSeqSetSequenceDetail_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceDetail_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceList.Designer.vb">
+      <DependentUpon>frmSeqSetSequenceList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceList_GAI.designer.vb">
+      <DependentUpon>frmSeqSetSequenceList_GAI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceList_GAI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceLogic.Designer.vb">
+      <DependentUpon>frmSeqSetSequenceLogic.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeqSetSequenceLogic.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplash.Designer.vb">
+      <DependentUpon>frmSplash.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSplash.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSysFcu.Designer.vb">
+      <DependentUpon>frmSysFcu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSysFcu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSysGws.Designer.vb">
+      <DependentUpon>frmSysGws.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSysGws.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSysOps.Designer.vb">
+      <DependentUpon>frmSysOps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSysOps.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSysPrinter.Designer.vb">
+      <DependentUpon>frmSysPrinter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSysPrinter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSysSystem.Designer.vb">
+      <DependentUpon>frmSysSystem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSysSystem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmToolChkChList.designer.vb">
+      <DependentUpon>frmToolChkChList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmToolChkChList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmToolChkChListLog.Designer.vb">
+      <DependentUpon>frmToolChkChListLog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmToolChkChListLog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmToolDispGrp.Designer.vb">
+      <DependentUpon>frmToolDispGrp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmToolDispGrp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmToolDispOutOrAnd.Designer.vb">
+      <DependentUpon>frmToolDispOutOrAnd.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmToolDispOutOrAnd.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmToolExcelCnv.Designer.vb">
+      <DependentUpon>frmToolExcelCnv.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmToolExcelCnv.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmToolGetCHnoToFUadr.designer.vb">
+      <DependentUpon>frmToolGetCHnoToFUadr.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmToolGetCHnoToFUadr.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmToolMenu.Designer.vb">
+      <DependentUpon>frmToolMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmToolMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmToolPIDtrend.designer.vb">
+      <DependentUpon>frmToolPIDtrend.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmToolPIDtrend.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="modCommon.vb" />
+    <Compile Include="modCommonConst.vb" />
+    <Compile Include="modFileIO.vb" />
+    <Compile Include="modPrint.vb" />
+    <Compile Include="modSetCombo.vb" />
+    <Compile Include="modStructureConst.vb" />
+    <Compile Include="modStructureInit.vb" />
+    <Compile Include="modcommon2.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="frmChkChUseTable.Designer.vb">
+      <DependentUpon>frmChkChUseTable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChkChUseTable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCompareFileSelect.Designer.vb">
+      <DependentUpon>frmCompareFileSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCompareFileSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCompareFileAccess.Designer.vb">
+      <DependentUpon>frmCompareFileAccess.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCompareFileAccess.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChSioBinaryExt.Designer.vb">
+      <DependentUpon>frmChSioBinaryExt.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChSioBinaryExt.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChExtLanList.Designer.vb">
+      <DependentUpon>frmChExtLanList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmChExtLanList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="frmChExtLANDetail.resx">
+      <DependentUpon>frmChExtLANDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChkFileCompSelect.resx">
+      <DependentUpon>frmChkFileCompSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChkFileCompSelectBig.resx">
+      <DependentUpon>frmChkFileCompSelectBig.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChkFileCompSelectDetail.resx">
+      <DependentUpon>frmChkFileCompSelectDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListPID.resx">
+      <DependentUpon>frmChListPID.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListWarning.resx">
+      <DependentUpon>frmChListWarning.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChSioDetail_GAI_JRCS.resx">
+      <DependentUpon>frmChSioDetail_GAI_JRCS.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChSioDetail_GAI_MOD.resx">
+      <DependentUpon>frmChSioDetail_GAI_MOD.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChSioDetail_GAI_VDR.resx">
+      <DependentUpon>frmChSioDetail_GAI_VDR.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChSioList_GAI.resx">
+      <DependentUpon>frmChSioList_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChTerminalPreview.resx">
+      <DependentUpon>frmChTerminalPreview.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtAlarmSet_GAI.resx">
+      <DependentUpon>frmExtAlarmSet_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtMenu_GAI.resx">
+      <DependentUpon>frmExtMenu_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlLcdGazo.resx">
+      <DependentUpon>frmExtPnlLcdGazo.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlLED_GAI.resx">
+      <DependentUpon>frmExtPnlLED_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlList_GAI.resx">
+      <DependentUpon>frmExtPnlList_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLoadCurve.resx">
+      <DependentUpon>frmLoadCurve.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsLogOption.resx">
+      <DependentUpon>frmOpsLogOption.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmClear.resx">
+      <DependentUpon>frmClear.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBitSetByte.resx">
+      <DependentUpon>frmBitSetByte.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChCompositeDetail.resx">
+      <DependentUpon>frmChCompositeDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChCompositeList.resx">
+      <DependentUpon>frmChCompositeList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChControlUseNotuseDetail.resx">
+      <DependentUpon>frmChControlUseNotuseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChControlUseNotuseList.resx">
+      <DependentUpon>frmChControlUseNotuseList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChDataForwardTableList.resx">
+      <DependentUpon>frmChDataForwardTableList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChDataSaveTableList.resx">
+      <DependentUpon>frmChDataSaveTableList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChExhGusGroup.resx">
+      <DependentUpon>frmChExhGusGroup.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChGroupReposeDetail.resx">
+      <DependentUpon>frmChGroupReposeDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChGroupReposeList.resx">
+      <DependentUpon>frmChGroupReposeList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChkChIdTable.resx">
+      <DependentUpon>frmChkChIdTable.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChkFileCompare.resx">
+      <DependentUpon>frmChkFileCompare.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChkOutputSetting.resx">
+      <DependentUpon>frmChkOutputSetting.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListAnalog.resx">
+      <DependentUpon>frmChListAnalog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListChannelList.resx">
+      <DependentUpon>frmChListChannelList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListComposite.resx">
+      <DependentUpon>frmChListComposite.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListDigital.resx">
+      <DependentUpon>frmChListDigital.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListMotor.resx">
+      <DependentUpon>frmChListMotor.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListPrintSetting.resx">
+      <DependentUpon>frmChListPrintSetting.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListPulse.resx">
+      <DependentUpon>frmChListPulse.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListRemoteIO.resx">
+      <DependentUpon>frmChListRemoteIO.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListSelectType.resx">
+      <DependentUpon>frmChListSelectType.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListSystem.resx">
+      <DependentUpon>frmChListSystem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListValve.resx">
+      <DependentUpon>frmChListValve.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListViewColorPallet.resx">
+      <DependentUpon>frmChListViewColorPallet.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListViewGroup.resx">
+      <DependentUpon>frmChListViewGroup.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChListViewGroupDispIndex.resx">
+      <DependentUpon>frmChListViewGroupDispIndex.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChOutputAoDetail.resx">
+      <DependentUpon>frmChOutputAoDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChOutputAoList.resx">
+      <DependentUpon>frmChOutputAoList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChOutputDoDetail.resx">
+      <DependentUpon>frmChOutputDoDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChOutputDoList.resx">
+      <DependentUpon>frmChOutputDoList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChOutputSelect.resx">
+      <DependentUpon>frmChOutputSelect.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChRunHour.resx">
+      <DependentUpon>frmChRunHour.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChSioBinary.resx">
+      <DependentUpon>frmChSioBinary.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChSioDetail.resx">
+      <DependentUpon>frmChSioDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChSioList.resx">
+      <DependentUpon>frmChSioList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChTerminalDetail.resx">
+      <DependentUpon>frmChTerminalDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChTerminalList.resx">
+      <DependentUpon>frmChTerminalList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChTerminalSlotType.resx">
+      <DependentUpon>frmChTerminalSlotType.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCmpCompier.resx">
+      <DependentUpon>frmCmpCompier.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtEccDeadmanAlarm.resx">
+      <DependentUpon>frmExtEccDeadmanAlarm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtEccDuty.resx">
+      <DependentUpon>frmExtEccDuty.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtEccEngineerCall.resx">
+      <DependentUpon>frmExtEccEngineerCall.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtEccPatrolManCall.resx">
+      <DependentUpon>frmExtEccPatrolManCall.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtMenu.resx">
+      <DependentUpon>frmExtMenu.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlAlarmGroup.resx">
+      <DependentUpon>frmExtPnlAlarmGroup.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlBuzzerDelayTimer.resx">
+      <DependentUpon>frmExtPnlBuzzerDelayTimer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlLcdDutyDisplay.resx">
+      <DependentUpon>frmExtPnlLcdDutyDisplay.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlLcdGroupDisplay.resx">
+      <DependentUpon>frmExtPnlLcdGroupDisplay.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlLED.resx">
+      <DependentUpon>frmExtPnlLED.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlList.resx">
+      <DependentUpon>frmExtPnlList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtPnlSystem.resx">
+      <DependentUpon>frmExtPnlSystem.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExtTimer.resx">
+      <DependentUpon>frmExtTimer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFileConvert.resx">
+      <DependentUpon>frmFileConvert.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFileAccess.resx">
+      <DependentUpon>frmFileAccess.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFileSelect.resx">
+      <DependentUpon>frmFileSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFileVersion.resx">
+      <DependentUpon>frmFileVersion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMenuMain.resx">
+      <DependentUpon>frmMenuMain.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsGraphAnalogMaterList.resx">
+      <DependentUpon>frmOpsGraphAnalogMaterList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsGraphAnalogMeterDetail.resx">
+      <DependentUpon>frmOpsGraphAnalogMeterDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsGraphBarGraph.resx">
+      <DependentUpon>frmOpsGraphBarGraph.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsGraphExtGus.resx">
+      <DependentUpon>frmOpsGraphExtGus.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsGraphFreeAlignment.resx">
+      <DependentUpon>frmOpsGraphFreeAlignment.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsGraphFreeDetail.resx">
+      <DependentUpon>frmOpsGraphFreeDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsGraphList.resx">
+      <DependentUpon>frmOpsGraphList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsGwsCh.resx">
+      <DependentUpon>frmOpsGwsCh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsLogFormatDetail.resx">
+      <DependentUpon>frmOpsLogFormatDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsLogFormatList.resx">
+      <DependentUpon>frmOpsLogFormatList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsPulldownGroup.resx">
+      <DependentUpon>frmOpsPulldownGroup.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsPulldownMenu.resx">
+      <DependentUpon>frmOpsPulldownMenu.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsPulldownMenu_GAI.resx">
+      <DependentUpon>frmOpsPulldownMenu_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsPulldownSub.resx">
+      <DependentUpon>frmOpsPulldownSub.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsPulldownSub_GAI_Print.resx">
+      <DependentUpon>frmOpsPulldownSub_GAI_Print.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsScreenTitle.resx">
+      <DependentUpon>frmOpsScreenTitle.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsSelectionMenuDetail.resx">
+      <DependentUpon>frmOpsSelectionMenuDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpsSelectionMenuList.resx">
+      <DependentUpon>frmOpsSelectionMenuList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtChannel.resx">
+      <DependentUpon>frmPrtChannel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtChannelPreview.resx">
+      <DependentUpon>frmPrtChannelPreview.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtGraph.resx">
+      <DependentUpon>frmPrtGraph.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtGraphPreview.resx">
+      <DependentUpon>frmPrtGraphPreview.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtLocalUnit.resx">
+      <DependentUpon>frmPrtLocalUnit.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtLocalUnitPreview.resx">
+      <DependentUpon>frmPrtLocalUnitPreview.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtOverView.resx">
+      <DependentUpon>frmPrtOverView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtOverViewPreview.resx">
+      <DependentUpon>frmPrtOverViewPreview.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtTerminal.resx">
+      <DependentUpon>frmPrtTerminal.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrtTerminalPreview.resx">
+      <DependentUpon>frmPrtTerminalPreview.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqLinearTable.resx">
+      <DependentUpon>frmSeqLinearTable.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqLinearTable_GAI.resx">
+      <DependentUpon>frmSeqLinearTable_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqOperationFixed.resx">
+      <DependentUpon>frmSeqOperationFixed.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqOperationFixed_GAI.resx">
+      <DependentUpon>frmSeqOperationFixed_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqSetInputData.resx">
+      <DependentUpon>frmSeqSetInputData.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqSetInputData_GAI.resx">
+      <DependentUpon>frmSeqSetInputData_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqSetSequenceDetail.resx">
+      <DependentUpon>frmSeqSetSequenceDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqSetSequenceDetail_GAI.resx">
+      <DependentUpon>frmSeqSetSequenceDetail_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqSetSequenceList.resx">
+      <DependentUpon>frmSeqSetSequenceList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqSetSequenceList_GAI.resx">
+      <DependentUpon>frmSeqSetSequenceList_GAI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeqSetSequenceLogic.resx">
+      <DependentUpon>frmSeqSetSequenceLogic.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplash.resx">
+      <DependentUpon>frmSplash.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSysFcu.resx">
+      <DependentUpon>frmSysFcu.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSysGws.resx">
+      <DependentUpon>frmSysGws.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSysOps.resx">
+      <DependentUpon>frmSysOps.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSysPrinter.resx">
+      <DependentUpon>frmSysPrinter.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSysSystem.resx">
+      <DependentUpon>frmSysSystem.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmToolChkChList.resx">
+      <DependentUpon>frmToolChkChList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmToolChkChListLog.resx">
+      <DependentUpon>frmToolChkChListLog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmToolDispGrp.resx">
+      <DependentUpon>frmToolDispGrp.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmToolDispOutOrAnd.resx">
+      <DependentUpon>frmToolDispOutOrAnd.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmToolExcelCnv.resx">
+      <DependentUpon>frmToolExcelCnv.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmToolGetCHnoToFUadr.resx">
+      <DependentUpon>frmToolGetCHnoToFUadr.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmToolMenu.resx">
+      <DependentUpon>frmToolMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmToolPIDtrend.resx">
+      <DependentUpon>frmToolPIDtrend.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChkChUseTable.resx">
+      <DependentUpon>frmChkChUseTable.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCompareFileSelect.resx">
+      <DependentUpon>frmCompareFileSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCompareFileAccess.resx">
+      <DependentUpon>frmCompareFileAccess.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChSioBinaryExt.resx">
+      <DependentUpon>frmChSioBinaryExt.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChExtLanList.resx">
+      <DependentUpon>frmChExtLanList.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="bin\Debug\DefaultData\log\logging1_Set.cnf" />
+    <None Include="bin\Debug\DefaultData\log\logging1_Unset.cnf" />
+    <None Include="bin\Debug\DefaultData\log\logging2_Set.cnf" />
+    <None Include="bin\Debug\DefaultData\log\logging2_Unset.cnf" />
+    <None Include="bin\Debug\DefaultData\set\fu\convert.tbl" />
+    <None Include="bin\Debug\DefaultData\set\sys\network.cfg" />
+    <None Include="bin\Debug\iniFile\ComboChControlUseNotuseDetail.ini" />
+    <None Include="bin\Debug\iniFile\ComboChDataForwardTableList.ini" />
+    <None Include="bin\Debug\iniFile\ComboChDataSaveTableList.ini" />
+    <None Include="bin\Debug\iniFile\ComboChExhGusGroup.ini" />
+    <None Include="bin\Debug\iniFile\ComboChGroupReposeList.ini" />
+    <None Include="bin\Debug\iniFile\ComboChList.ini" />
+    <None Include="bin\Debug\iniFile\ComboChOutputDo.ini" />
+    <None Include="bin\Debug\iniFile\ComboChRunHour.ini" />
+    <None Include="bin\Debug\iniFile\ComboChSioDetail.ini" />
+    <None Include="bin\Debug\iniFile\ComboChTerminalFunction.ini" />
+    <None Include="bin\Debug\iniFile\ComboChTerminalList.ini" />
+    <None Include="bin\Debug\iniFile\ComboExtPnlLcdGroup.ini" />
+    <None Include="bin\Debug\iniFile\ComboExtPnlLed.ini" />
+    <None Include="bin\Debug\iniFile\ComboExtPnlList.ini" />
+    <None Include="bin\Debug\iniFile\ComboExtPnlSystem.ini" />
+    <None Include="bin\Debug\iniFile\ComboExtTimer.ini" />
+    <None Include="bin\Debug\iniFile\ComboOpsGraphAnalogMeter.ini" />
+    <None Include="bin\Debug\iniFile\ComboOpsGraphAnalogMeterDetail.ini" />
+    <None Include="bin\Debug\iniFile\ComboOpsGraphList.ini" />
+    <None Include="bin\Debug\iniFile\ComboOpsLogFormat.ini" />
+    <None Include="bin\Debug\iniFile\ComboOpsPulldownMenu.ini" />
+    <None Include="bin\Debug\iniFile\ComboSeqLinearTable.ini" />
+    <None Include="bin\Debug\iniFile\ComboSeqOperationFixed.ini" />
+    <None Include="bin\Debug\iniFile\ComboSeqSetSequenceDetail.ini" />
+    <None Include="bin\Debug\iniFile\ComboSysFcu.ini" />
+    <None Include="bin\Debug\iniFile\ComboSysOps.ini" />
+    <None Include="bin\Debug\iniFile\ComboSysPrinter.ini" />
+    <None Include="bin\Debug\iniFile\ComboSysSystem.ini" />
+    <None Include="bin\Debug\iniFile\ListChSystemChannel.ini" />
+    <None Include="bin\Debug\iniFile\ListOpsScreenTitle.ini" />
+    <None Include="bin\Debug\iniFile\ListOpsSelectionMenu.ini" />
+    <None Include="bin\Debug\iniFile\ListSeqLogic.ini" />
+    <None Include="My Project\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows インストーラー 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExtG.png" />
+    <None Include="Resources\L01.png" />
+    <None Include="Resources\L02.png" />
+    <None Include="Resources\L03.png" />
+    <None Include="Resources\L04.png" />
+    <None Include="Resources\L05.png" />
+    <None Include="Resources\L06.png" />
+    <None Include="Resources\L07.png" />
+    <None Include="Resources\L08.png" />
+    <None Include="Resources\L09.png" />
+    <None Include="Resources\L10.png" />
+    <None Include="Resources\L11.png" />
+    <None Include="Resources\L12.png" />
+    <None Include="Resources\L13.png" />
+    <None Include="Resources\L14.png" />
+    <None Include="Resources\L15.png" />
+    <None Include="Resources\L16.png" />
+    <None Include="Resources\L17.png" />
+    <None Include="Resources\L18.png" />
+    <None Include="Resources\L19.png" />
+    <None Include="Resources\L20.png" />
+    <None Include="Resources\L21.png" />
+    <None Include="Resources\L22.png" />
+    <None Include="Resources\L23.png" />
+    <None Include="Resources\L24.png" />
+    <None Include="Resources\L25.png" />
+    <None Include="Resources\L26.png" />
+    <None Include="Resources\L27.png" />
+    <None Include="Resources\L28.png" />
+    <None Include="Resources\L29.png" />
+    <None Include="Resources\L30.png" />
+    <None Include="Resources\L31.png" />
+    <None Include="Resources\L32.png" />
+    <None Include="Resources\L33.png" />
+    <None Include="Resources\L34.png" />
+    <None Include="Resources\L35.png" />
+    <None Include="Resources\L36.png" />
+    <None Include="Resources\L37.png" />
+    <None Include="Resources\L38.png" />
+    <None Include="Resources\L39.png" />
+    <None Include="Resources\L40.png" />
+    <Content Include="Utilities.ico" />
+    <Content Include="変更履歴.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\GraphBmp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Scripting">
+      <Guid>{420B2830-E718-11CF-893D-00A0C9054228}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

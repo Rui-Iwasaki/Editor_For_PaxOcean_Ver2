@@ -1,0 +1,568 @@
+;===========================================================================
+;   コンボボックス設定（シーケンス設定詳細画面）	
+;
+;   [SeqLogicxx]について
+:
+;	[SeqLogicxx]には[SeqLogic]で項目が選択された時に表示する
+;	パラメーター名称を設定します。
+;
+;	[SeqLogicxx]には最大５つパラメーター名称を設定可能です。
+;	パラメーターがない場合は全て「Itemxx=0,」を設定します。
+;	
+;	データ種類の指定（ , で区切られた項目の１番目）
+;		1:チャンネルNo.
+;		2:ビット
+;		3:リニアテーブルNo.
+;		4:式テーブルNo.
+;		5:定数テーブルNo.
+;
+;	入力制限の指定（ , で区切られた項目の３番目以降）
+;		1:入力範囲
+;		2:入力固定値
+;
+;		例１）sampling count に 1～300 の入力制限をかける場合
+;		      Item01=0,sampling count,1,1,300
+;
+;		例２）pulse set に 10、100、1000 のみ入力可能とする場合
+;		      Item01=0,pulse set,2,10,100,1000
+;		      ※固定値の設定は最大４項目まで
+;
+;===========================================================================
+
+[SeqLogic]
+Item01=1,digital AND
+Item02=2,digital OR
+Item03=3,digital D Latch
+Item04=4,digital AND-OR
+Item05=5,digital OR-AND
+Item06=6,digital AND-AND-OR
+Item07=7,analog through
+Item08=8,analog gate(ON/OFF)
+Item09=9,analog gate(an output data change at the Gate OFF)
+Item10=10,analog multiplexer
+Item11=11,average logic
+Item12=12,time subtraction(1input)
+Item13=13,time subtraction(2input)
+Item14=14,conditional addition
+Item15=15,linear table logic
+Item16=16,calculate logic
+Item17=17,data comparison
+Item18=18,event timer
+Item19=19,logic pulse count
+Item20=20,Pulse count
+Item21=21,calculate Running hour
+Item22=22,Clear Running hour
+Item23=23,Save Date
+Item24=24,Save Time
+Item25=25,Pulse double lap
+Item26=26,Soft Switch
+Item27=27,Position Control
+Item28=28,Integer Calculate Logic
+Item29=29,Valve(AI-DO)
+Item30=30,Valve(AI-AO)
+Item31=31,Valve(DI-DO)
+Item32=32,Motor(Input-Output)
+Item33=33,variable alarm set
+Item34=34,valve output
+Item35=35,methanol control
+Item36=36,countdown
+Item37=37,MeOH Drain Chamber Level
+Item38=38,Variation linear table logic
+Item39=39,(NACKS NE231)Heel Control Seq
+Item40=40,B.S FROM BAM
+Item41=41,UTC UPDATE
+Item42=42,GEN POWER CNT UP
+Item43=43,MOTOR ALARM RESET
+Item44=44,PULSE SUBTRACTION
+Item45=45,PID CONTROLER
+Item46=46,ON TIME OUT
+Item47=47,EGBV CONTROL OUT
+Item48=48,N2086 MODE SET
+Item49=49,IDUTSU1181 M/E PUMP CONTROL
+Item50=50,IDUTSU1181 AUTO BALLANCE
+Item51=51,TANK LEVEL MAGNIFICATION
+Item52=52,USUKI1779 BRIDGE CH OUTPUT
+Item53=53,KHI1742 FO/DO CHANGE OVER SEQ
+Item54=54,FLICKER CHOUT
+Item55=55,KHI1740 PROP MOTOR START SEQ
+Item56=56,KHI1740 PROP MOTOR STOP SEQ
+Item57=57,PULSE COUNT UP BY TRIGGER
+Item58=58,PULSE DIFF ADDITION
+Item59=59,CHOUT WHEN FS ON
+Item60=60,ON/OFF DELAY
+Item61=61,ANALOG RANGE OUT
+Item62=62,ONE SHOT ANALOG OUT
+Item63=63,PULSE_ADD_WITH_CONDITION
+Item64=64,HIGH SELECTER
+Item65=65,VARIABLE RANGE LIMITER
+Item66=66,PID PARA SET FOR SIMU
+Item67=67,PID MV OVERWITE
+
+[SeqLogic01]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic02]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic03]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic04]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic05]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic06]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic07]
+Item01=0,option function,1,0,4
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic08]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic09]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic10]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic11]
+Item01=0,sampling count,1,1,300
+Item02=0,sampling cycle,1,1,6000
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic12]
+Item01=0,sampling count,1,1,300
+Item02=0,sampling cycle,1,1,6000
+Item03=0,Data Pos A,1,0,299
+Item04=0,Data Pos B,1,0,299
+Item05=0,
+
+[SeqLogic13]
+Item01=0,sampling count,1,1,300
+Item02=0,sampling cycle,1,1,6000
+Item03=0,Data Pos A,1,0,299
+Item04=0,Data Pos B,1,0,299
+Item05=0,
+
+[SeqLogic14]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic15]
+Item01=3,linear table No,1,0,255
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic16]
+Item01=4,exception table No,1,1,64
+Item02=5,fixed number table No,1,1,64
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic17]
+Item01=0,Hysteresis,1,0,65535
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic18]
+Item01=0,timer value,1,1,36000
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic19]
+Item01=1,pulse CH NO,1,1,65535
+Item02=0,sampling cycle,1,1,36000
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic20]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic21]
+Item01=2,addition subtraction,1,0,255
+Item02=0,output unit,2,0,1
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic22]
+Item01=1,clear CH NO,1,1,65535
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic23]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic24]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic25]
+Item01=0,pulse set,2,10,100,1000
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic26]
+Item01=0,P_2,1,0,100
+Item02=0,sampling time,1,1,600
+Item03=0,logic end,1,0,1
+Item04=0,
+Item05=0,
+
+[SeqLogic27]
+Item01=0,SP_1,0,200
+Item02=0,SP_2,0,200
+Item03=0,HM_P2,0,65535
+Item04=0,LM_P2,0,65535
+Item05=0,
+
+[SeqLogic28]
+Item01=4,exception table No,1,1,64
+Item02=5,fixed number table No,1,1,64
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic29]
+Item01=1,CH NO,1,1,65535
+Item02=0,AUTO/MANUAL,2,0,1
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic30]
+Item01=1,CH NO,1,1,65535
+Item02=0,AUTO,2,0,1
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic31]
+Item01=1,CH NO,1,1,65535
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic32]
+Item01=1,CH NO,1,1,65535
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic33]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic34]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic35]
+Item01=4,exception table No,1,1,64
+Item02=5,fixed number table No,1,1,64
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic36]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic37]
+Item01=4,exception table No,1,1,64
+Item02=5,fixed number table No,1,1,64
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic38]
+Item01=0,option function,1,0,64
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic39]
+Item01=4,exception table No,1,1,64
+Item02=4,exception table No,1,1,64
+Item03=4,exception table No,1,1,64
+Item04=4,exception table No,1,1,64
+Item05=0,
+
+[SeqLogic40]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic41]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic42]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic43]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic44]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic45]
+Item01=1,CH NO,1,1,65535
+Item02=0,HIGH/LOW SELECT,1,0,2
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic46]
+Item01=0,OUTPUT TIME,1,0,23
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic47]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic48]
+Item01=1,CH NO,1,1,65535
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic49]
+Item01=4,exception table No,1,1,64
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic50]
+Item01=4,No.1 TANK TABLE NO,1,1,64
+Item02=4,No.2 TANK TABLE NO,1,1,64
+Item03=4,No.3 TANK TABLE NO,1,1,64
+Item04=4,No.4 TANK TABLE NO,1,1,64
+Item05=0,
+
+[SeqLogic51]
+Item01=3,linear table,1,1,255
+Item02=0,formula type,2,0,1
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic52]
+Item01=0,Option,1,0,65535
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic53]
+Item01=4,exception table No,1,1,64
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic54]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic55]
+Item01=4,exception table No,1,1,64
+Item02=4,exception table No,1,1,64
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic56]
+Item01=4,exception table No,1,1,64
+Item02=4,exception table No,1,1,64
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic57]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic58]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic59]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic60]
+Item01=0,ON/OFF DELAY(ON:0 OFF:1),1,0,1
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic61]
+Item01=0,CONTROL,1,0,4
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic62]
+Item01=0,OUTPUT(DEC:0 INC:1),1,0,1
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic63]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic64]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic65]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic66]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,
+
+[SeqLogic67]
+Item01=0,
+Item02=0,
+Item03=0,
+Item04=0,
+Item05=0,

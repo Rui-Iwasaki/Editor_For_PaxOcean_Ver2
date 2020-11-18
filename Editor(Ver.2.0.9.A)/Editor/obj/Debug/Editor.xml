@@ -1,0 +1,899 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Editor
+</name>
+</assembly>
+<members>
+<member name="F:Editor.modStructureConst.gTypSetHeader.strVersion">
+	<summary>
+バージョン
+半角8文字
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetHeader.strDate">
+	<summary>
+年月日
+半角8文字
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetHeader.strTime">
+	<summary>
+時分
+半角4文字
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSystem.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSystem.udtSysSystem">
+	<summary>
+システム設定レコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSystem.udtSysFcu">
+	<summary>
+FCU設定レコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSystem.udtSysOps">
+	<summary>
+OPS設定レコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSystem.udtSysGws">
+	<summary>
+GWS設定レコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSystem.udtSysPrinter">
+	<summary>
+プリンタ設定レコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.strShipName">
+	<summary>
+日本語対応
+半角32文字
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtClock">
+	<summary>
+システムクロック
+0:外部
+1:内部
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtDate">
+	<summary>
+日付フォーマット 
+01H:dd/mm/yy
+02H:mm/dd/yy
+03H:yy/mm/dd
+11H:ff/mm/'yy
+12H:mm/dd/'yy
+13H:'yy/mm/dd
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtLanguage">
+	<summary>
+日本語対応
+0:英文
+1:和文
+2:全和文 
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtCombineUse">
+	<summary>
+コンバイン有無
+0:なし
+1:Machinery/Cargo
+2:Machinery/HULL
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtCombineSeparate">
+	<summary>
+コンバインセパレート
+Bit0:fs/bsセパレート
+Bit1～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtSpare2">
+	<summary>
+予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtGWS1">
+	<summary>
+GWS1設定
+Bit0:GWS有無
+Bit1:Ethernet Line A Only
+Bit2:Ethernet Line A and B
+Bit3～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtGWS2">
+	<summary>
+GWS2設定
+Bit0:GWS2有無
+Bit1:Ethernet Line A Only
+Bit2:Ethernet Line A and B
+Bit3～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtManual">
+	<summary>
+取扱説明書(言語) 日本語対応 2015.02.05
+0:英文
+1:和文
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtgl_spec">
+	<summary>
+GL船級仕様
+ 0:通常
+ 1:GL
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shthoan_gno">
+	<summary>
+保安庁　初期表示画面
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysSystem.shtSpare">
+	<summary>
+予備
+</summary>
+</member><member name="M:Editor.modStructureConst.gTypSetSysSystem.InitArray">
+	<summary>
+配列数初期化
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysFcu.shtFcuCnt">
+	<summary>
+FCU台数　ver.1.4.0 2011.12.13 K.Tanigawa
+1～2（台）
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysFcu.shtFcuNo">
+	<summary>
+FCU番号　台数→番号に変更　ver.1.4.0 2011.09.29
+1～2（台）
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysFcu.shtCrrectTime">
+	<summary>
+収集周期
+1～255（秒）
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysFcu.shtFcuExtendBord">
+	<summary>
+FCU拡張ボード
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysFcu.shtFcuExtendBord2">
+	<summary>
+FCU拡張ボード２（現状使用していない）
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysFcu.shtShareChUse">
+	<summary>
+共有CH有無
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysFcu.shtSpare">
+	<summary>
+予備
+ Ver1.9.3 2016.01.21 要素数　21 → 20
+ Ver2.0.3.6 要素数 20→19
+ Ver2.0.7.V 要素数 19→18
+</summary>
+</member><member name="M:Editor.modStructureConst.gTypSetSysFcu.InitArray">
+	<summary>
+配列数初期化
+ Ver1.9.3 2016.01.21 要素数　21 → 20
+ Ver2.0.3.6 要素数 20→19
+ Ver2.0.7.V 要素数 19→18
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtControl">
+	<summary>
+各機器遠隔操作許可
+0:禁止
+1:許可
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtProhibition">
+	<summary>
+EXTグループ,グループリポーズ変更禁止
+0:全て許可
+1:禁止（EXT.GR）
+2:禁止（G.REP）
+3:禁止（EXT.GR + G.REP）
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtChannelEdit">
+	<summary>
+チャンネルデータ変更禁止
+0:変更禁止
+1:変更許可
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtAlarm">
+	<summary>
+アラーム表示方法
+1:Active Only
+2:System Or
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtDuty">
+	<summary>
+Duty設定 可/不可フラグ
+0:不可
+1:可
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtContOnlyFlag">
+	<summary>
+コントロール1台のみのインターロック
+0:インターロック無し
+1:インターロック有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtAlarm_Order">
+	<summary>
+Auto Alarm 表示順序　2015/5/27 T.Ueki
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtTagMode">
+	<summary>
+ ﾀｸﾞ番号 表示ﾓｰﾄﾞ　2015.10.22 Ver1.7.5
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtLRMode">
+	<summary>
+ﾛｲﾄﾞ対応 表示ﾓｰﾄﾞ　2015.11.12 Ver1.7.8
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.shtSpare">
+	<summary>
+予備
+ 2015.10.22 Ver1.7.5  ﾀｸﾞ表示ﾓｰﾄﾞ追加のため要素数変更　　20 → 19
+ 2015.11.12 Ver1.7.4  ﾀｸﾞ表示ﾓｰﾄﾞ追加のため要素数変更　　20 → 18
+ 2016.01.21 Ver1.9.3  ため要素数変更　　18 → 15
+ 2017.10.20 Ver2.0.7.0 基板ﾊﾞｰｼﾞｮﾝﾌﾗｸﾞ追加のため要素数変更  15→14
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOps.udtOpsDetail">
+	<summary>
+OPS個別設定
+全１０台分設定
+</summary>
+</member><member name="M:Editor.modStructureConst.gTypSetSysOps.InitArray">
+	<summary>
+配列数初期化
+ Ver1.8.9 2015.12.12 要素数変更　　20 → 18
+ Ver1.9.3 2016.01.21 要素数変更　　18 → 15]
+ Ver2.0.7.1 2017.10.26 要素数変更　　15 → 14]
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtExist">
+	<summary>
+OPS接続有無
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtAlarmDisp">
+	<summary>
+アラーム表示モード
+0:INHIBIT
+1:AUTO
+2:WINDOW
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtEnable">
+	<summary>
+OPS設定変更
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtControl">
+	<summary>
+遠隔操作
+Bit0:Func
+Bit1:Initial
+Bit2～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtControlFlag">
+	<summary>
+コントロール制限
+Bit0:１チェック
+Bit1:２チェック
+Bit2:４チェック
+Bit3:８チェック
+Bit4～Bit7:予備
+例：[1:ECC][2:EMC][4:WCC]
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtOperaionPanel">
+	<summary>
+オペレーションパネル
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtAdjustLight">
+	<summary>
+調光機能
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtHatteland">
+	<summary>
+HATTELAND製液晶接続
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtPrintPart">
+	<summary>
+印字パート
+Bit0:Machinery
+Bit1:Cargo
+Bit2～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtOpsType">
+	<summary>
+OPS表示モード（コンバイン時のみ）
+Bit0:Machinery
+Bit1:Cargo
+Bit2～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtBootMode">
+	<summary>
+起動モード（OPSType連動）
+Bit0:Machinery
+Bit1:Cargo
+Bit2～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtRepSum">
+	<summary>
+リポーズサマリ
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtEtherA">
+	<summary>
+通信Aラインのみ使用
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtResolution">
+	<summary>
+OPS解像度
+1:1024x768
+2:1280x768
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysOpsDetail.shtSpare">
+	<summary>
+予備
+ Ver1.9.3 2016.01.21 要素数　12 → 11
+</summary>
+</member><member name="M:Editor.modStructureConst.gTypSetSysOpsDetail.InitArray">
+	<summary>
+配列数初期化
+ Ver1.9.3 2016.01.21 要素数　12 → 11
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysGws.udtGwsDetail">
+	<summary>
+GWS個別設定
+全２台分設定
+</summary>
+</member><member name="M:Editor.modStructureConst.gTypSetSysGws.InitArray">
+	<summary>
+配列数初期化
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysGwsDetail.shtGwsType">
+	<summary>
+OPS接続有無
+0:無し
+1:共有ファイル、2:Ext.VDU通信
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysGwsDetail.bytIP1">
+	<summary>
+IPアドレス
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysGwsDetail.shtSpare">
+	<summary>
+予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysGwsDetail.udtGwsFileInfo">
+	<summary>
+GWS共有ファイル設定
+4ファイル分
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysGwsDetail.shtSpare2">
+	<summary>
+予備
+</summary>
+</member><member name="M:Editor.modStructureConst.gTypSetSysGwsDetail.InitArray">
+	<summary>
+配列数初期化
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.shtAutoCnt">
+	<summary>
+用紙サイズA3（ログプリンタ）
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.shtPrintType">
+	<summary>
+英数・日本語設定（アラームプリンタ）
+1:SingleSize
+2:DoubleSize
+3:Double(Reduction)
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.shtEventPrint">
+	<summary>
+イベントプリント（アラームプリンタ）
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.shtNoonUnder">
+	<summary>
+ヌーンログ下線
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.shtDemandPage">
+	<summary>
+デマンドログ改ページ
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.shtMachineryCargoPrint">
+	<summary>
+Machinery/Cargo印字
+0:無し
+1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.shtAutoCntCargo">
+	<summary>
+自動印字する場合のデータ個数(Cargo用)
+範囲：1-100
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.shtSpare">
+	<summary>
+予備B
+ Ver1.9.3 2016.01.21 要素数 21 → 20
+ Ver2.0.8.H 2019.02.05 要素数 20 → 19
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinter.udtPrinterDetail">
+	<summary>
+プリンタ個別設定
+全６台分設定（予備１台）
+</summary>
+</member><member name="M:Editor.modStructureConst.gTypSetSysPrinter.InitArray">
+	<summary>
+配列数初期化
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinterDetail.bytPrinter">
+	<summary>
+プリンタ有無
+【ログプリンタ】0:無し、1:ドットプリンタ[NADA]、2:ドットプリンタ[NEC]、3:ネットワークプリンタ
+【アラームプリンタ】0:無し、1:有り
+【HCプリンタ】0:無し、1:有り
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinterDetail.shtPrintUse">
+	<summary>
+印字有無 
+Bit0:印字有無
+Bit1:バックアップ印字有無
+Bit2～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinterDetail.shtPart">
+	<summary>
+印字パート
+Bit0:Machinery
+Bit1:Cargo
+Bit2～Bit7:予備
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinterDetail.strDriver">
+	<summary>
+ドライバ
+半角16文字
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinterDetail.strDevice">
+	<summary>
+デバイス
+半角32文字
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetSysPrinterDetail.bytIP1">
+	<summary>
+IPアドレス
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetOpsScreenTitle.udtHeader">
+ヘッダーレコード
+
+</member><member name="M:Editor.modStructureConst.gTypSetOpsScreenTitle.InitArray">
+配列数初期化
+
+</member><member name="F:Editor.modStructureConst.gTypSetOpsSelectionMenu.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetOpsSelectionMenuEdit.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetOpsFreeGraph.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetOpsLogFormat.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetFu.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetFu.udtFu">
+	<summary>
+FU設定データ
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChDisp.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChDisp.udtChDisp">
+	<summary>
+表示名設定データ
+</summary>
+</member><member name="T:Editor.modStructureConst.gTypSetChDispRec">
+表示名設定データ
+
+</member><member name="F:Editor.modStructureConst.gTypSetExtAlarm.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetExtAlarm.udtExtAlarmCommon">
+	<summary>
+延長警報盤共通設定
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetExtAlarm.udtExtAlarm">
+	<summary>
+ 各延長警報盤設定
+ </summary>
+	<remarks>各延長警報盤設定</remarks>
+</member><member name="M:Editor.modStructureConst.gTypSetExtAlarm.InitArray">
+配列数初期化
+
+</member><member name="F:Editor.modStructureConst.gTypSetChInfo.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChInfo.udtChannel">
+	<summary>
+チャンネル個別データ
+全3000個分設定
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChRec.udtChCommon">
+	<summary>
+CH共通項目
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChRec.udtChTypeData">
+	<summary>
+CH個別項目
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChOutput.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetChAndOr.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetChGroupSet.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetChGroupRepose.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChGroupRepose.udtRepose">
+	<summary>
+ リポーズ入力設定
+ </summary>
+	<remarks>各リポーズ入力設定</remarks>
+ 47→71に拡張2018.12.13
+
+</member><member name="M:Editor.modStructureConst.gTypSetChGroupRepose.InitArray">
+配列数初期化
+
+</member><member name="F:Editor.modStructureConst.gTypSetChGroupRepose48.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChGroupRepose48.udtRepose">
+	<summary>
+ リポーズ入力設定
+ </summary>
+	<remarks>各リポーズ入力設定</remarks>
+</member><member name="M:Editor.modStructureConst.gTypSetChGroupRepose48.InitArray">
+配列数初期化
+
+</member><member name="F:Editor.modStructureConst.gTypSetChExhGus.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChExhGus.udtExhGusRec">
+	<summary>
+ 排ガス演算用設定
+ </summary>
+	<remarks>排ガス演算用設定</remarks>
+</member><member name="M:Editor.modStructureConst.gTypSetChExhGus.InitArray">
+配列数初期化
+
+</member><member name="F:Editor.modStructureConst.gTypSetChCtrlUse.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetChCtrlUse.udtCtrlUseNotuseRec">
+	<summary>
+ コントロール使用可／不可設定
+ Ver1.9.6 2016.02.16  32 → 128 拡張
+ Ver2.0.0.7 128 → 256 拡張
+ </summary>
+	<remarks>コントロール使用可／不可設定</remarks>
+</member><member name="M:Editor.modStructureConst.gTypSetChCtrlUse.InitArray">
+配列数初期化
+ Ver1.9.6 2016.02.16  32 → 128 拡張
+ Ver2.0.0.7 128 → 256 拡張
+
+</member><member name="F:Editor.modStructureConst.gTypSetExtTimerSet.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetExtTimerSet.udtTimerInfo">
+	<summary>
+ タイマ設定
+ </summary>
+	<remarks>タイマ設定</remarks>
+</member><member name="M:Editor.modStructureConst.gTypSetExtTimerSet.InitArray">
+配列数初期化
+
+</member><member name="F:Editor.modStructureConst.gTypSetExtTimerName.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetExtTimerName.udtTimerRec">
+	<summary>
+ タイマ表示名称設定
+ </summary>
+	<remarks>タイマ表示名称設定</remarks>
+</member><member name="M:Editor.modStructureConst.gTypSetExtTimerName.InitArray">
+配列数初期化
+
+</member><member name="F:Editor.modStructureConst.gTypSetChComposite.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetChConv.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetOtherLogTime.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypLogOption.udtHeader">
+	<summary>
+ヘッダーレコード
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypLogOption.udtLogOption">
+	<summary>
+ﾛｸﾞ設定個別ﾃﾞｰﾀ
+全1500個分設定
+</summary>
+</member><member name="F:Editor.modStructureConst.gTypSetOpsFreeDisplay.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetOpsTrendGraph.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.modStructureConst.gTypSetEditorUpdateInfo.udtHeader">
+ヘッダーレコード
+
+</member><member name="F:Editor.clsDataGridViewPlus.ColWidths.Widths">
+	<summary>
+ カラム幅s
+ </summary>
+</member><member name="T:Editor.clsDataGridViewPlus.ColWidths">
+	<summary>
+ DataGridViewのカラム幅をXML形式でシリアライズするためのクラス
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Editor.clsDataGridViewPlus.SaveColWidths">
+	<summary>
+ DataGridViewのカラム幅をファイルへ保存
+ </summary>
+	<remarks>DataGridViewのカラム幅をXML形式でシリアライズ</remarks>
+</member><member name="M:Editor.clsDataGridViewPlus.ReadColWidths">
+	<summary>
+ DataGridViewのカラム幅を前回保存したファイルから読込
+ </summary>
+	<remarks>DataGridViewのカラム幅をXML形式でデシリアライズ</remarks>
+</member><member name="F:Editor.clsDataGridViewPlus.ColumnChars">
+	<summary>
+ カラムへの入力可能文字を指定するための配列
+ </summary>
+	<remarks>ColumnChars(0)="1234567890"</remarks>
+</member><member name="F:Editor.clsDataGridViewPlus._editingColumn">
+	<summary>
+ 編集中のカラム番号
+ </summary>
+	<remarks></remarks>
+</member><member name="F:Editor.clsDataGridViewPlus._editingCtrl">
+	<summary>
+ 編集中のTextBoxEditingControl
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Editor.clsDataGridViewPlus.DataGridViewPlus_EditingControlShowing(System.Object,System.Windows.Forms.DataGridViewEditingControlShowingEventArgs)">
+	<summary>
+ セルが編集中になった時の処理
+ </summary>
+	<param name="sender">イベントの発生元</param>
+	<param name="e">イベントの情報</param>
+	<remarks>編集中のTextBoxEditingControlにKeyPressイベント設定</remarks>
+</member><member name="M:Editor.clsDataGridViewPlus.DataGridViewPlus_CellEndEdit(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+	<summary>
+ セルの編集が終わった時の処理
+ </summary>
+	<param name="sender">イベントの発生元</param>
+	<param name="e">イベントの情報</param>
+	<remarks>編集中のTextBoxEditingControlからKeyPressイベント削除</remarks>
+</member><member name="M:Editor.clsDataGridViewPlus.DataGridViewPlus_CellKeyPress(System.Object,System.Windows.Forms.KeyPressEventArgs)">
+	<summary>
+ 編集中のTextBoxEditingControlのKeyPressの処理
+ </summary>
+	<param name="sender">イベントの発生元</param>
+	<param name="e">イベントの情報</param>
+	<remarks>力可能文字の判定</remarks>
+</member><member name="P:Editor.My.Resources.Resources.ResourceManager">
+	<summary>
+  このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.Culture">
+	<summary>
+  厳密に型指定されたこのリソース クラスを使用して、すべての検索リソースに対し、
+  現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L01">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L02">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L03">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L04">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L05">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L06">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L07">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L08">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L09">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L10">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L11">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L12">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L13">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L14">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L15">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L16">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L17">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L18">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L19">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L20">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L21">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L22">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L23">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L24">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L25">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L26">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L27">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L28">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L29">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L30">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L31">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L32">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L33">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L34">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L35">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L36">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L37">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L38">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L39">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.L40">
+	<summary>
+  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+</summary>
+</member><member name="P:Editor.My.Resources.Resources.Logic1">
+	<summary>
+   に類似しているローカライズされた文字列を検索します。
+</summary>
+</member><member name="T:Editor.My.Resources.Resources">
+	<summary>
+  ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
+</summary>
+</member>
+</members>
+</doc>
