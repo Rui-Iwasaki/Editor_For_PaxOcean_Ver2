@@ -3839,6 +3839,16 @@
                     Color1 = Color.Beige
                 ElseIf e.RowIndex >= 80 And e.RowIndex <= 99 Then
                     Color1 = Color.Honeydew
+                ElseIf e.RowIndex >= 100 And e.RowIndex <= 119 Then
+                    Color1 = gColorGridRowBack
+                ElseIf e.RowIndex >= 120 And e.RowIndex <= 139 Then
+                    Color1 = Color.LavenderBlush
+                ElseIf e.RowIndex >= 140 And e.RowIndex <= 159 Then
+                    Color1 = Color.Lavender
+                ElseIf e.RowIndex >= 160 And e.RowIndex <= 179 Then
+                    Color1 = Color.Beige
+                ElseIf e.RowIndex >= 180 And e.RowIndex <= 199 Then
+                    Color1 = Color.Honeydew
                 End If
             Else
                 Color1 = Color.White
@@ -14931,7 +14941,7 @@
                 .Columns(gCstChListColPosItemName).Frozen = True   '左側5列を固定する
 
                 ''行
-                .RowCount = IIf(.RowCount = 0, 100, 101)
+                .RowCount = IIf(.RowCount = 0, 200, 201)
                 .AllowUserToAddRows = False         ''行の追加(新規行)を不可にする
                 .AllowUserToResizeRows = False      ''行の高さの変更不可
                 .AllowUserToDeleteRows = False      ''行の削除を不可にする
@@ -14961,6 +14971,16 @@
                         ElseIf i >= 60 And i <= 79 Then
                             .Rows(i).Cells(0).Style.BackColor = Color.Beige
                         ElseIf i >= 80 And i <= 99 Then
+                            .Rows(i).Cells(0).Style.BackColor = Color.Honeydew
+                        ElseIf i >= 100 And i <= 119 Then
+                            .Rows(i).Cells(0).Style.BackColor = gColorGridRowBack
+                        ElseIf i >= 120 And i <= 139 Then
+                            .Rows(i).Cells(0).Style.BackColor = Color.LavenderBlush
+                        ElseIf i >= 140 And i <= 159 Then
+                            .Rows(i).Cells(0).Style.BackColor = Color.Lavender
+                        ElseIf i >= 160 And i <= 179 Then
+                            .Rows(i).Cells(0).Style.BackColor = Color.Beige
+                        ElseIf i >= 180 And i <= 199 Then
                             .Rows(i).Cells(0).Style.BackColor = Color.Honeydew
                         End If
 
@@ -15006,7 +15026,12 @@
                 .Rows(39).DividerHeight = 1
                 .Rows(59).DividerHeight = 1
                 .Rows(79).DividerHeight = 1
-
+                .Rows(99).DividerHeight = 1
+                .Rows(119).DividerHeight = 1
+                .Rows(139).DividerHeight = 1
+                .Rows(159).DividerHeight = 1
+                .Rows(179).DividerHeight = 1
+                .Rows(199).DividerHeight = 1
                 ''スクロールバー
                 .ScrollBars = ScrollBars.Both
 

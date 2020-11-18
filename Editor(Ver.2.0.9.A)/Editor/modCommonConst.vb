@@ -346,7 +346,7 @@
     Public Const gCstChannelGroupMax As Integer = 36
 
     ''１グループに登録可能なチャンネル数
-    Public Const gCstOneGroupChannelMax As Integer = 100
+    Public Const gCstOneGroupChannelMax As Integer = 200
 
     ''チャンネルIDの最大数
     Public Const gCstChannelIdMax As Integer = 3000
