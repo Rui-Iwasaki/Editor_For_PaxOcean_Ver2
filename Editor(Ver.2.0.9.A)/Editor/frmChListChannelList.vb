@@ -17601,7 +17601,9 @@
             If Not gCommonCont(gCstChListColPosChType) = "" Then
 
                 ''1SysNo
-                If Not (gCommonCont(gCstChListColPosSysNo) = "0" Or gCommonCont(gCstChListColPosSysNo) = "1" Or gCommonCont(gCstChListColPosSysNo) = "2") Then
+                If Not (gCommonCont(gCstChListColPosSysNo) = "0" Or gCommonCont(gCstChListColPosSysNo) = "1" Or gCommonCont(gCstChListColPosSysNo) = "2" Or gCommonCont(gCstChListColPosSysNo) = "10" Or
+                        gCommonCont(gCstChListColPosSysNo) = "11" Or gCommonCont(gCstChListColPosSysNo) = "12" Or gCommonCont(gCstChListColPosSysNo) = "20" Or gCommonCont(gCstChListColPosSysNo) = "21" Or
+                        gCommonCont(gCstChListColPosSysNo) = "22") Then
                     grdCHList(gCstChListColPosSysNo, gRow).Style.BackColor = Color.Red
                     blnInputErrFlg = True
 
