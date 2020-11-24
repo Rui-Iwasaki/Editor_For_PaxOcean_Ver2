@@ -7,6 +7,8 @@
     Private mudtFileInfoSave As gTypFileInfo
     Private mudtFileInfoTemp As gTypFileInfo
     Private mudt As clsStructure
+    Private mudt2 As clsStructure
+
     Private mblnUseVersionUP As Boolean
 
     '2014/5/14 T.Ueki
@@ -27,12 +29,13 @@
     ' 　　　    : ARG1 - ( O) ファイル情報構造体
     ' 機能説明  : 画面表示を行い戻り値を返す
     '--------------------------------------------------------------------
-    Friend Function gShow(ByVal udtFileMode As gEnmFileMode, _
-                          ByRef udtFileInfo As gTypFileInfo, _
-                          ByRef udt As clsStructure, _
-                          ByVal blnUseVersionUp As Boolean, _
-                          ByVal CompareFlg As Boolean, _
-                          ByVal CFCardReadFlg As Boolean, _
+    Friend Function gShow(ByVal udtFileMode As gEnmFileMode,
+                          ByRef udtFileInfo As gTypFileInfo,
+                          ByRef udt As clsStructure,
+                          ByRef udt2 As clsStructure,
+                          ByVal blnUseVersionUp As Boolean,
+                          ByVal CompareFlg As Boolean,
+                          ByVal CFCardReadFlg As Boolean,
                           ByVal CompSet As Boolean) As Integer
 
         Try
@@ -45,6 +48,7 @@
             mudtFileInfoSave = udtFileInfo
             mudtFileInfoTemp = udtFileInfo
             mudt = udt
+            mudt2 = udt2
             mblnUseVersionUP = blnUseVersionUp
 
 
@@ -452,7 +456,7 @@
 
 
                         ''各設定ファイルから設定値を読み込み構造体に設定
-                        intRtn = frmFileAccess.gShow(mudtFileInfoTemp, gEnmAccessMode.amLoad, chkCompile.Checked, False, chkVersionUP.Checked, mudt, CFReadFlg, CompareSet)
+                        intRtn = frmFileAccess.gShow(mudtFileInfoTemp, gEnmAccessMode.amLoad, chkCompile.Checked, False, chkVersionUP.Checked, mudt, mudt2, CFReadFlg, CompareSet)
 
                         ''読み込み成功の場合は 1 、読み込み失敗の場合は -1 を戻り値に設定する
                         intRtn = IIf(intRtn = 0, 1, -1)

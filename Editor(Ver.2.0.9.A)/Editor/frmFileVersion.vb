@@ -215,7 +215,7 @@
             'mudtFileInfo.strFileVersion = numVersion.Text
 
             ''ファイル保存画面表示
-            If frmFileAccess.gShow(mudtFileInfo, gEnmAccessMode.amSave, False, mblnExit, mudtFileInfo.blnVersionUP, gudt, False, False) <> 0 Then
+            If frmFileAccess.gShow(mudtFileInfo, gEnmAccessMode.amSave, False, mblnExit, mudtFileInfo.blnVersionUP, gudt, gudt2, False, False) <> 0 Then
                 mintRtn = -1
             Else
 

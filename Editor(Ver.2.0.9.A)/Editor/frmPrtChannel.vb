@@ -568,7 +568,7 @@
             gblnUpdateAll = False
 
             '>>>保存したファイルを再読込
-            frmFileAccess.gShow(gudtFileInfo, gEnmAccessMode.amLoad, False, False, False, gudt, False, False)
+            frmFileAccess.gShow(gudtFileInfo, gEnmAccessMode.amLoad, False, False, False, gudt, gudt2, False, False)
 
             '>>>印刷処理用変数の再読み込み(FormLoadの処理を抜粋)
             ''チャンネルグループ情報取得

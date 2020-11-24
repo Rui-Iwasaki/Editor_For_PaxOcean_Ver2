@@ -657,7 +657,7 @@ Public Class frmCmpCompier
             gblnUpdateAll = False
 
             '>>>保存したファイルを再読込
-            frmFileAccess.gShow(gudtFileInfo, gEnmAccessMode.amLoad, False, False, False, gudt, False, False)
+            frmFileAccess.gShow(gudtFileInfo, gEnmAccessMode.amLoad, False, False, False, gudt, gudt2, False, False)
 
             bRet = True
         End If

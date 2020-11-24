@@ -317,6 +317,7 @@ Module modCommon
     'T.Ueki 2016/6/27
     Public FileAccessFlg As Boolean
 
+    Public FCU2LeadFlg As Boolean
 
     'Ver2.0.0.7 比較　さらに大枠項目保存
     Public gCompareChkBIG(4) As Boolean

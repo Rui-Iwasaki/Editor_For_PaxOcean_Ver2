@@ -64,7 +64,7 @@ Public Class frmMenuMain
 
             ''出力構造体初期化
             Call gInitOutputStructure(gudt)
-
+            Call gInitOutputStructure(gudt2)
             Call gSetComboBox(CmbTag, gEnmComboType.ctSysSystemTag)     '' Ver1.11.8.6 2016.11.10 ﾀｸﾞ設定有無をｺﾝﾎﾞﾎﾞｯｸｽに変更
             Call gSetComboBox(CmbAlmLvl, gEnmComboType.ctSysSystemAlmLevel)     '' Ver1.11.8.6 2016.11.10 ｱﾗｰﾑ設定有無をｺﾝﾎﾞﾎﾞｯｸｽに変更
 
@@ -169,7 +169,7 @@ Public Class frmMenuMain
             With gudtFileInfo
 
                 ''ファイルセレクト画面表示
-                If frmFileSelect.gShow(gEnmFileMode.fmNew, gudtFileInfo, gudt, False, False, False, False) = 1 Then
+                If frmFileSelect.gShow(gEnmFileMode.fmNew, gudtFileInfo, gudt, gudt2, False, False, False, False) = 1 Then
 
                     ''ファイルモード設定
                     mudtFileMode = gEnmFileMode.fmNew
@@ -235,7 +235,7 @@ Public Class frmMenuMain
             With gudtFileInfo
 
                 ''ファイルセレクト画面表示
-                If frmFileSelect.gShow(gEnmFileMode.fmEdit, gudtFileInfo, gudt, True, False, False, False) <> 0 Then
+                If frmFileSelect.gShow(gEnmFileMode.fmEdit, gudtFileInfo, gudt, gudt2, True, False, False, False) <> 0 Then
 
                     ''ファイルモード設定
                     mudtFileMode = gEnmFileMode.fmEdit
@@ -372,7 +372,7 @@ Public Class frmMenuMain
             With gudtFileInfo
 
                 ''ファイルセレクト画面表示
-                If frmFileSelect.gShow(gEnmFileMode.fmRename, gudtFileInfo, gudt, False, False, False, False) = 1 Then
+                If frmFileSelect.gShow(gEnmFileMode.fmRename, gudtFileInfo, gudt, gudt2, False, False, False, False) = 1 Then
 
                     ''ファイル情報を表示
                     Call mDispFileInfo(gudtFileInfo)

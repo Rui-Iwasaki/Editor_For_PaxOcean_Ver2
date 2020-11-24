@@ -1302,7 +1302,7 @@
 
     ''FU設定データ（チャンネル情報）FCU2用
     Public Const gCstPathFuChannel2 As String = "set\fu"
-    Public Const gCstFileFuChannel2 As String = "channel_1.inf"
+    Public Const gCstFileFuChannel2 As String = "channel_2.inf"
     Public Const gCstRecsFuChannel2 As Integer = 21
     Public Const gCstSizeFuChannel2 As Integer = 36
     Public Const gCstFnumFuChannel2 As Integer = 1300
@@ -1314,9 +1314,9 @@
     Public Const gCstSizeChDisp As Integer = 43072
     Public Const gCstFnumChDisp As Integer = 1301
 
-    ''チャンネル情報データ（表示名設定データ）
+    ''チャンネル情報データ（表示名設定データ）FCU2用
     Public Const gCstPathChDisp2 As String = "set\fu"
-    Public Const gCstFileChDisp2 As String = "channel_name_1.tbl"
+    Public Const gCstFileChDisp2 As String = "channel_name_2.tbl"
     Public Const gCstRecsChDisp2 As Integer = 21
     Public Const gCstSizeChDisp2 As Integer = 43072
     Public Const gCstFnumChDisp2 As Integer = 1301

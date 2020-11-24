@@ -11,6 +11,7 @@ Module modStructureConst
 
     ''出力構造体クラス
     Public gudt As New clsStructure
+    Public gudt2 As New clsStructure
 
     ' ''システム設定
     'Public gudt.SetSystem As gTypSetSystem
