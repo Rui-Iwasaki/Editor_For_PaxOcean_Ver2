@@ -409,6 +409,9 @@ Module modCommon
     '内部向けか、外部向けかﾌﾗｸﾞ 0=内部,1=外部
     Public gintNaiGai As Integer
 
+    'FCU2向けファイル読み込み用
+    Public read_flg As Boolean
+
 #End Region
 
 #Region "ファイル出力構造体初期化"
@@ -3056,21 +3059,26 @@ Module modCommon
             Dim intCurGroupNo As Integer
             Dim intNextDataSetIndex As Integer
 
+
             ''配列初期化
-            Erase udtChannelGroup.udtGroup
-
-            ''配列再定義
-            ReDim udtChannelGroup.udtGroup(gCstChannelGroupMax - 1)
-            For i As Integer = 0 To UBound(udtChannelGroup.udtGroup)
-
-                ReDim udtChannelGroup.udtGroup(i).udtChannelData(gCstOneGroupChannelMax - 1)
+            If read_flg = False Then
+                Erase udtChannelGroup.udtGroup
 
 
-                For j As Integer = 0 To gCstOneGroupChannelMax - 1
-                    ReDim udtChannelGroup.udtGroup(i).udtChannelData(j).udtChTypeData(gCstByteCntChannelType - 1)
+                ''配列再定義
+                ReDim udtChannelGroup.udtGroup(gCstChannelGroupMax - 1)
+                For i As Integer = 0 To UBound(udtChannelGroup.udtGroup)
+
+                    ReDim udtChannelGroup.udtGroup(i).udtChannelData(gCstOneGroupChannelMax - 1)
+
+
+                    For j As Integer = 0 To gCstOneGroupChannelMax - 1
+                        ReDim udtChannelGroup.udtGroup(i).udtChannelData(j).udtChTypeData(gCstByteCntChannelType - 1)
+                    Next
+
                 Next
-
-            Next
+                read_flg = True
+            End If
 
             For i As Integer = 0 To UBound(udtSetChannel.udtChannel)
 

@@ -2320,10 +2320,11 @@ Module modStructureConst
         '''全3000個分設定
         '''</summary>
         <VBFixedArray(2999)> Dim udtChannel() As gTypSetChRec
-
+        '<VBFixedArray(2999)> Dim udtChannel2() As gTypSetChRec
         ''配列数初期化
         Public Sub InitArray()
             ReDim udtChannel(2999)
+            '   ReDim udtChannel2(2999)
         End Sub
 
     End Structure

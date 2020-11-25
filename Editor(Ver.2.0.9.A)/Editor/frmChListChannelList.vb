@@ -1089,10 +1089,10 @@
 
             ''チャンネルグループ情報取得
             Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
-
+            Call gMakeChannelGroupData(gudt2.SetChInfo, mudtChannelGroup)
             ''チャネルの最大数を確認する
             Call mGetChannelMax(gudt.SetChInfo.udtChannel)
-
+            Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
             ''選択済みグループの情報をGET
             mChDataGroup = mudtChannelGroup.udtGroup(mSelectGroupIndex).udtChannelData
 
@@ -6121,7 +6121,7 @@
             For i As Integer = 0 To UBound(mChDataGroup)    ''グループ内の全ＣＨ分　LOOP
 
                 With mChDataGroup(i)
-                    
+
                     If .udtChCommon.shtChType = gCstCodeChTypeNothing Then
                         ''設定なし
                     Else
@@ -6262,7 +6262,7 @@
                                 Dim intPortNoAnalog As Integer = .udtChCommon.shtPortno ''Port No
                                 Dim intPinAnalog As Integer = .udtChCommon.shtPin       ''Pin
 
-                                If AnalogDatatype = gCstCodeChDataTypeAnalogJacom Or AnalogDatatype = gCstCodeChDataTypeAnalogModbus Or AnalogDatatype = gCstCodeChDataTypeAnalogLatitude Or _
+                                If AnalogDatatype = gCstCodeChDataTypeAnalogJacom Or AnalogDatatype = gCstCodeChDataTypeAnalogModbus Or AnalogDatatype = gCstCodeChDataTypeAnalogLatitude Or
                                    AnalogDatatype = gCstCodeChDataTypeAnalogLongitude Or AnalogDatatype = gCstCodeChDataTypeAnalogJacom55 Then
 
                                     grdCHList(gCstChListColPosFuAddress, intRow).Value = "0"
@@ -6290,10 +6290,10 @@
 
                                 ''外部機器の場合
                                 '' Ver1.11.1 2016.07.12 緯度・経度CH追加
-                                If grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogJacom Or _
-                                   grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogModbus Or _
-                                   grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogLatitude Or _
-                                   grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogLongitude Or _
+                                If grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogJacom Or
+                                   grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogModbus Or
+                                   grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogLatitude Or
+                                   grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogLongitude Or
                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogJacom55 Then
                                     ''Port No -------------------------------------------------
                                     'grdCHList(gCstChListColPosPortNo, intRow).Value = IIf(gGet2Byte(.udtChCommon.shtPin) = gCstCodeChNotSetFuPin, "", .udtChCommon.shtPin)
@@ -6304,7 +6304,7 @@
                                 strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
 
                                 ''Range -------------------------------------------------------
-                                If grdCHList(gCstChListColPosDataType, intRow).Value >= gCstCodeChDataTypeAnalog2Pt And _
+                                If grdCHList(gCstChListColPosDataType, intRow).Value >= gCstCodeChDataTypeAnalog2Pt And
                                    grdCHList(gCstChListColPosDataType, intRow).Value <= gCstCodeChDataTypeAnalog3Jpt Then
 
                                     ''Range Type 種別コード  2015.03.12
@@ -6636,7 +6636,7 @@
                                 End If
 
                                 ''Data Typeにより判断 -----------------------------------------
-                                If grdCHList(gCstChListColPosDataType, intRow).Value >= gCstCodeChDataTypeDigitalJacomNC And _
+                                If grdCHList(gCstChListColPosDataType, intRow).Value >= gCstCodeChDataTypeDigitalJacomNC And
                                     grdCHList(gCstChListColPosDataType, intRow).Value <= gCstCodeChDataTypeDigitalModbusNO Then
                                     ' ''外部機器(Jacom, Modbus)
                                     'grdCHList(gCstChListColPosPortNo, intRow).Value = IIf(gGet2Byte(.udtChCommon.shtPin) = gCstCodeChNotSetFuPin, "", .udtChCommon.shtPin)   ''Port No
@@ -6734,9 +6734,9 @@
                                 'End If
 
                                 'Ver2.0.0.2 モーター種別増加 R Device 追加
-                                If grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeMotorDevice Or _
-                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeMotorDeviceJacom Or _
-                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeMotorDeviceJacom55 Or _
+                                If grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeMotorDevice Or
+                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeMotorDeviceJacom Or
+                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeMotorDeviceJacom55 Or
                                     grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeMotorRDevice Then
                                     ''Inのみ
                                     grdCHList(gCstChListColPosStatusOut, intRow).Value = gCstCodeChManualInputStatus.ToString
@@ -6841,8 +6841,8 @@
                                 End If
 
                                 ''Delay Timer -------------------------------------------------
-                                If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or _
-                                    .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Or _
+                                If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
+                                    .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Or
                                     .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then
 
                                     grdCHList(gCstChListColPosDelayTime, intRow).Value = IIf(gBitCheck(.udtChCommon.shtFlag1, 3), "1", "0")
@@ -6865,7 +6865,7 @@
                                 mFlagEventCancel = False
 
                                 ''Status IN ----------------------------------------------------
-                                If .udtChCommon.shtData >= gCstCodeChDataTypeValveDI_DO And _
+                                If .udtChCommon.shtData >= gCstCodeChDataTypeValveDI_DO And
                                     .udtChCommon.shtData <= gCstCodeChDataTypeValveAI_AO2 Then
 
                                     If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Then
@@ -6883,7 +6883,7 @@
 
                                             grdCHList(gCstChListColPosStatusIn, intRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
 
-                                        ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
+                                        ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
                                                 .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
                                             ''AI Status
                                             grdCHList(gCstChListColPosStatusIn, intRow).Value = ""
@@ -6892,7 +6892,7 @@
                                             grdCHList(gCstChListColPosStaNmL, intRow).Value = gGetString(.ValveAiDoLoStatusInput)
                                             grdCHList(gCstChListColPosStaNmLL, intRow).Value = gGetString(.ValveAiDoLoLoStatusInput)
 
-                                        ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or _
+                                        ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
                                                 .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then
                                             ''AI Status
                                             grdCHList(gCstChListColPosStatusIn, intRow).Value = ""
@@ -6909,7 +6909,7 @@
                                 If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Then
                                     grdCHList(gCstChListColPosBitCount, intRow).Value = .udtChCommon.shtPinNo
 
-                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
+                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
                                         .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
                                     grdCHList(gCstChListColPosBitCount, intRow).Value = .ValveAiDoPinNo
 
@@ -6963,7 +6963,7 @@
 
                                             'grdCHList(gCstChListColPosDoStart, intRow).Value = gConvFuAddress(intFuNo, intPortNo, intPin)
 
-                                        ElseIf grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeValveJacom Or _
+                                        ElseIf grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeValveJacom Or
                                                grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeValveJacom55 Then
                                             ''Port No ----------------------------------------------
                                             'grdCHList(gCstChListColPosPortNo, intRow).Value = .ValveDiDoPin
@@ -7628,7 +7628,7 @@
                                 Call Temporary_setup(6, i, intRow, 1)
 
                                 ''Data Type から、パルスCH or 積算CH の判定をする -------------
-                                If .udtChCommon.shtData < gCstCodeChDataTypePulseRevoTotalHour Or _
+                                If .udtChCommon.shtData < gCstCodeChDataTypePulseRevoTotalHour Or
                                    .udtChCommon.shtData = gCstCodeChDataTypePulseExtDev Then
                                     ''パルスCH
 
@@ -7684,7 +7684,7 @@
                                     ''RangeHi ---------------------------------------------
                                     Select Case .udtChCommon.shtData
 
-                                        Case gCstCodeChDataTypePulseRevoTotalHour, gCstCodeChDataTypePulseRevoDayHour, gCstCodeChDataTypePulseRevoLapHour, _
+                                        Case gCstCodeChDataTypePulseRevoTotalHour, gCstCodeChDataTypePulseRevoDayHour, gCstCodeChDataTypePulseRevoLapHour,
                                             gCstCodeChDataTypePulseRevoExtDev, gCstCodeChDataTypePulseRevoExtDevDayHour, gCstCodeChDataTypePulseRevoExtDevLapHour
 
                                             'Ver2.0.6.5 9が7個
@@ -7692,7 +7692,7 @@
                                             Dim intHourValue As Double = 99999999   '9999999 '99999999
                                             grdCHList(gCstChListColPosRangeHi, intRow).Value = intHourValue
 
-                                        Case gCstCodeChDataTypePulseRevoTotalMin, gCstCodeChDataTypePulseRevoDayMin, gCstCodeChDataTypePulseRevoLapMin, _
+                                        Case gCstCodeChDataTypePulseRevoTotalMin, gCstCodeChDataTypePulseRevoDayMin, gCstCodeChDataTypePulseRevoLapMin,
                                             gCstCodeChDataTypePulseRevoExtDevTotalMin, gCstCodeChDataTypePulseRevoExtDevDayMin, gCstCodeChDataTypePulseRevoExtDevLapMin
 
                                             Dim intMinValue As Double = 99999.59
@@ -7787,7 +7787,7 @@
 
 
                                 'Range -------------------------------------------------------
-                                If grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypePID_3_Pt100_2 Or _
+                                If grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypePID_3_Pt100_2 Or
                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypePID_4_Pt100_3 Then
                                     'Pt100 2線式,Pt100 3線式
 
