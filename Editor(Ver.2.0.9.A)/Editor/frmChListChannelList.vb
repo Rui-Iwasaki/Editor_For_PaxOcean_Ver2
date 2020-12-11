@@ -1090,6 +1090,7 @@
             ''チャンネルグループ情報取得
             Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
             Call gMakeChannelGroupData(gudt2.SetChInfo, mudtChannelGroup)
+            read_flg = False
             ''チャネルの最大数を確認する
             Call mGetChannelMax(gudt.SetChInfo.udtChannel)
             Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
@@ -3764,7 +3765,7 @@
 
             ''チャネルの最大数を確認する
             Call mGetChannelMax(gudt.SetChInfo.udtChannel)
-
+            Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
             mFlagFirst = True
 
             ''グリッドの完全初期化は処理速度を考慮してForm Loadの1回にする
@@ -8409,7 +8410,7 @@
 
                 ''データクリア
                 Call gInitSetChannelDisp(gudt.SetChInfo)
-
+                Call gInitSetChannelDisp(gudt2.SetChInfo)
                 ''グループの構造体をグローバル構造体にマージする
                 Dim wkChDataGroup(gCstOneGroupChannelMax - 1) As gTypSetChRec
 
@@ -8438,7 +8439,8 @@
 
                 ''チャンネルグループ情報取得
                 Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
-
+                Call gMakeChannelGroupData(gudt2.SetChInfo, mudtChannelGroup)
+                read_flg = False ''保存後再読み込みをした場合の為にフラグリセット
                 ''チャネルの最大数を確認する
                 Call mGetChannelMax(gudt.SetChInfo.udtChannel)
 
@@ -14020,6 +14022,29 @@
             For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
                 With gudt.SetChInfo.udtChannel(i).udtChCommon
+
+                    If .shtChType = gCstCodeChTypeAnalog _
+                    Or .shtChType = gCstCodeChTypeDigital Then    ''アナログかデジタル
+
+                        If .shtChno <> hintCH Then          ''自身のチャンネルは除く
+
+                            ''FU Addresuが一致するか？
+                            If .shtFuno = hintFuno And .shtPortno = hintPortno And .shtPin = hintPin Then
+
+                                hChNo = .shtChno
+                                Return 0
+                            End If
+
+                        End If
+
+                    End If
+                End With
+
+            Next
+
+            For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
+
+                With gudt2.SetChInfo.udtChannel(i).udtChCommon
 
                     If .shtChType = gCstCodeChTypeAnalog _
                     Or .shtChType = gCstCodeChTypeDigital Then    ''アナログかデジタル
