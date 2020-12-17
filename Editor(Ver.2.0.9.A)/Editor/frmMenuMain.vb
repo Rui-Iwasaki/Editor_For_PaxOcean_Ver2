@@ -507,7 +507,6 @@ Public Class frmMenuMain
     Private Sub cmdChannel1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel1.Click
 
         Try
-
             Call mSetShowDispButtonEnable(False, True)
             Call frmChListViewGroup.gShow()
             Call mSetShowDispButtonEnable(True, True)
@@ -526,7 +525,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel2.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.TERMINAL_INPUT)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChTerminalList.gShow()
             Call mSetShowDispButtonEnable(True, False)
@@ -568,7 +568,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel4.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.GROUP_REPOSE)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChGroupReposeList.gShow()
             Call mSetShowDispButtonEnable(True, False)
@@ -582,7 +583,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel5.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.RUN_HOUR)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChRunHour.gShow()
             Call mSetShowDispButtonEnable(True, False)
@@ -596,7 +598,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel6.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.CYLINDER_DEV)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChExhGusGroup.gShow()
             Call mSetShowDispButtonEnable(True, False)
@@ -610,7 +613,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel7.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.CONTROL_USE)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChControlUseNotuseList.gShow()
             Call mSetShowDispButtonEnable(True, False)
@@ -624,7 +628,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel8.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.SIO)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             '■外販
             '外販の場合、ｺｰﾙする画面は外販専用とする
@@ -645,7 +650,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel9.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.DATA_FORWARD)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChDataForwardTableList.gShow()
             Call mSetShowDispButtonEnable(True, False)
@@ -659,7 +665,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel10.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.DATA_STRAGE_TABLE)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChDataSaveTableList.gShow()
             Call mSetShowDispButtonEnable(True, False)
@@ -673,7 +680,8 @@ Public Class frmMenuMain
     Private Sub cmdChannel12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel12.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.EXT_LAN)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChExtLanList.gShow()
             Call mSetShowDispButtonEnable(True, False)
@@ -692,7 +700,8 @@ Public Class frmMenuMain
     Private Sub cmdSequence1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSequence1.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.CONTROL_SEQ)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             '■外販
             '外販の場合、外販専用の画面を起動
@@ -844,7 +853,8 @@ Public Class frmMenuMain
     Private Sub cmdPrint1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdPrint1.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.CHANNEL_LIST_PRINT)
+            frmFcuSelect.gShow()
             frmPrtChannel.ShowDialog()
 
             ''本画面にフォーカス
@@ -859,7 +869,8 @@ Public Class frmMenuMain
     Private Sub cmdPrint2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdPrint2.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.TERMINAL_PRINT)
+            frmFcuSelect.gShow()
             frmPrtTerminal.ShowDialog()
 
             ''本画面にフォーカス
@@ -1306,7 +1317,7 @@ Public Class frmMenuMain
 
     End Function
 
-    Private Sub mSetShowDispButtonEnable(ByVal blnEnable As Boolean, _
+    Private Sub mSetShowDispButtonEnable(ByVal blnEnable As Boolean,
                                          ByVal blnChannelList As Boolean)
 
         If blnEnable Then
@@ -1714,10 +1725,10 @@ Public Class frmMenuMain
 #End Region
 #End Region
     Private sflg As Boolean = False
-    <DllImport("user32.dll", CharSet:=CharSet.Auto)> _
+    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
     Private Shared Function ScreenToClient(ByVal hWnd As IntPtr, ByRef pt As Point) As Boolean
     End Function
-    <DllImport("user32.dll")> _
+    <DllImport("user32.dll")>
     Private Shared Function SetForegroundWindow(hWnd As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 

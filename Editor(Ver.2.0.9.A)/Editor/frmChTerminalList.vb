@@ -66,6 +66,12 @@
             ''画面設定
             Call mSetDisplay(gudt.SetFu, gudt.SetChDisp)
 
+            If modFcuSelect.nFcuNo = 1 Then
+                Me.TabPage1.Text = "FCU_1"
+            Else
+                Me.TabPage1.Text = "FCU_2"
+            End If
+
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
         End Try
@@ -290,82 +296,87 @@
 
                     'T.Ueki ローカル数値化のため変更
                     If dgv(intCol - 1, intRow).FormattedValue <> "" Then
-
-                        strFCU = "FCU_1"
+                        If modFcuSelect.nFcuNo = 1 Then
+                            strFCU = "FCU_1"
+                            Me.TabPage1.Text = strFCU
+                        Else
+                            strFCU = "FCU_2"
+                            Me.TabPage1.Text = strFCU
+                        End If
                         strFuNo = dgv.Rows(intRow).HeaderCell.Value
 
-                        If strFuNo.Length = 3 Then
-                            intFuNo = 0     ''FCU
-                            strFuName = "0"
-                        Else
-                            If strFuNo.Substring(2, 1) = " " Then
-                                Select Case strFuNo.Substring(3, 1)
-                                    Case "1" : intFuNo = 1
-                                    Case "2" : intFuNo = 2
-                                    Case "3" : intFuNo = 3
-                                    Case "4" : intFuNo = 4
-                                    Case "5" : intFuNo = 5
-                                    Case "6" : intFuNo = 6
-                                    Case "7" : intFuNo = 7
-                                    Case "8" : intFuNo = 8
-                                    Case "9" : intFuNo = 9
-                                    Case Else
-                                End Select
-                                strFuName = strFuNo.Substring(3, 1)
+                            If strFuNo.Length = 3 Then
+                                intFuNo = 0     ''FCU
+                                strFuName = "0"
                             Else
-                                Select Case strFuNo.Substring(2, 2)
-                                    Case "10" : intFuNo = 10
-                                    Case "11" : intFuNo = 11
-                                    Case "12" : intFuNo = 12
-                                    Case "13" : intFuNo = 13
-                                    Case "14" : intFuNo = 14
-                                    Case "15" : intFuNo = 15
-                                    Case "16" : intFuNo = 16
-                                    Case "17" : intFuNo = 17
-                                    Case "18" : intFuNo = 18
-                                    Case "19" : intFuNo = 19
-                                    Case "20" : intFuNo = 20
-                                    Case Else
-                                End Select
-                                strFuName = strFuNo.Substring(2, 2)
+                                If strFuNo.Substring(2, 1) = " " Then
+                                    Select Case strFuNo.Substring(3, 1)
+                                        Case "1" : intFuNo = 1
+                                        Case "2" : intFuNo = 2
+                                        Case "3" : intFuNo = 3
+                                        Case "4" : intFuNo = 4
+                                        Case "5" : intFuNo = 5
+                                        Case "6" : intFuNo = 6
+                                        Case "7" : intFuNo = 7
+                                        Case "8" : intFuNo = 8
+                                        Case "9" : intFuNo = 9
+                                        Case Else
+                                    End Select
+                                    strFuName = strFuNo.Substring(3, 1)
+                                Else
+                                    Select Case strFuNo.Substring(2, 2)
+                                        Case "10" : intFuNo = 10
+                                        Case "11" : intFuNo = 11
+                                        Case "12" : intFuNo = 12
+                                        Case "13" : intFuNo = 13
+                                        Case "14" : intFuNo = 14
+                                        Case "15" : intFuNo = 15
+                                        Case "16" : intFuNo = 16
+                                        Case "17" : intFuNo = 17
+                                        Case "18" : intFuNo = 18
+                                        Case "19" : intFuNo = 19
+                                        Case "20" : intFuNo = 20
+                                        Case Else
+                                    End Select
+                                    strFuName = strFuNo.Substring(2, 2)
+                                End If
                             End If
-                        End If
 
-                        '' DO基板の端子台設定追加　ver1.4.0 2011.07.29
-                        '' RY基板の端子台設定追加　2013.10.25
-                        'Ver2.0.8.1 M200Aも派生
-                        'If dgv(intCol - 1, intRow).Value > 100 Then               ' TMRY (DO:1)
-                        '    intType = 1 '' DO固定とする
-                        'Else                                                      ' その他
-                        '    intType = dgv(intCol - 1, intRow).Value
-                        'End If
-                        If dgv(intCol - 1, intRow).Value > 100 Then               ' TMRY (DO:1)とM200A派生
-                        	'Ver.2.0.8.P
-                        	'基板種類で分ける
-                            If dgv(intCol - 1, intRow).Value <> 341 Then
-                                intType = Val(RightB(dgv(intCol - 1, intRow).Value.ToString, 1)) '' 末尾一けた目
-                            Else
-                                intType = 341
+                            '' DO基板の端子台設定追加　ver1.4.0 2011.07.29
+                            '' RY基板の端子台設定追加　2013.10.25
+                            'Ver2.0.8.1 M200Aも派生
+                            'If dgv(intCol - 1, intRow).Value > 100 Then               ' TMRY (DO:1)
+                            '    intType = 1 '' DO固定とする
+                            'Else                                                      ' その他
+                            '    intType = dgv(intCol - 1, intRow).Value
+                            'End If
+                            If dgv(intCol - 1, intRow).Value > 100 Then               ' TMRY (DO:1)とM200A派生
+                                'Ver.2.0.8.P
+                                '基板種類で分ける
+                                If dgv(intCol - 1, intRow).Value <> 341 Then
+                                    intType = Val(RightB(dgv(intCol - 1, intRow).Value.ToString, 1)) '' 末尾一けた目
+                                Else
+                                    intType = 341
+                                End If
+                            Else                                                      ' その他
+                                intType = dgv(intCol - 1, intRow).Value
                             End If
-                        Else                                                      ' その他
-                            intType = dgv(intCol - 1, intRow).Value
-                        End If
 
-                        strFcuFuName = dgv(1, intRow).Value
-                        strType = dgv(intCol - 1, intRow).FormattedValue
-                        strPortNo = dgv.Columns(intCol).Name.Substring(6, 1)
-                        intMode = 0
+                            strFcuFuName = dgv(1, intRow).Value
+                            strType = dgv(intCol - 1, intRow).FormattedValue
+                            strPortNo = dgv.Columns(intCol).Name.Substring(6, 1)
+                            intMode = 0
 
-						'Ver.2.0.8.P
-                        shtTerInfo = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(Val(strPortNo) - 1).shtTerinf
+                            'Ver.2.0.8.P
+                            shtTerInfo = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(Val(strPortNo) - 1).shtTerinf
 
                             ''端子画面へ --------------------------------------------------------------------------------------
-                        frmChTerminalDetail.gShow(strFCU, intFuNo, strFuName, strFcuFuName, intType, strType, strPortNo, _
+                            frmChTerminalDetail.gShow(strFCU, intFuNo, strFuName, strFcuFuName, intType, strType, strPortNo,
                                                   intFuNoFirst, intPortNoFirst, intFuNoEnd, intPortNoEnd, intMode, shtTerInfo, Me)
                             ''-------------------------------------------------------------------------------------------------
                         End If
 
-                    If intMode = 0 Then
+                        If intMode = 0 Then
                         ''LOOP End
                         iFlag = 9
 
