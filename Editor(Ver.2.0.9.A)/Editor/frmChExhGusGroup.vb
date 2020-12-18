@@ -75,8 +75,15 @@
             ''グリッド初期設定
             Call mInitialDataGrid()
 
+
             ''構造体のコピー
-            Call mCopyStructure(gudt.SetChExhGus, mudtSetExhGusNew)
+            'FCU1が選択されている場合
+            If modFcuSelect.nFcuNo = 1 Then
+                Call mCopyStructure(gudt.SetChExhGus, mudtSetExhGusNew)
+            Else
+                'FCU2が選択されている場合
+                Call mCopyStructure(gudt2.SetChExhGus, mudtSetExhGusNew)
+            End If
 
             ''画面設定
             Call mSetDisplay(cmbNo.SelectedIndex, mudtSetExhGusNew)
@@ -164,19 +171,29 @@
             Call mSetStructure(cmbNo.SelectedIndex, mudtSetExhGusNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetExhGusNew, gudt.SetChExhGus) Then
+            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetExhGusNew, gudt.SetChExhGus)) Or
+                       Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetExhGusNew, gudt2.SetChExhGus)) Then
 
                 ''変更された場合は設定を更新する
-                Call mCopyStructure(mudtSetExhGusNew, gudt.SetChExhGus)
-
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1選択時
+                    Call mCopyStructure(mudtSetExhGusNew, gudt.SetChExhGus)
+                Else
+                    'FCU2選択時
+                    Call mCopyStructure(mudtSetExhGusNew, gudt2.SetChExhGus)
+                End If
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytExhGus = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytExhGus = 1
-
+                If modFcuSelect.nFcuNo = 1 Then
+                    gudt.SetEditorUpdateInfo.udtSave.bytExhGus = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytExhGus = 1
+                Else
+                    gudt2.SetEditorUpdateInfo.udtSave.bytExhGus = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytExhGus = 1
+                End If
             End If
 
         Catch ex As Exception
@@ -221,11 +238,13 @@
             Call mSetStructure(cmbNo.SelectedIndex, mudtSetExhGusNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetExhGusNew, gudt.SetChExhGus) Then
+            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetExhGusNew, gudt.SetChExhGus)) Or
+               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetExhGusNew, gudt2.SetChExhGus)) Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
+
 
                     Case Windows.Forms.DialogResult.Yes
 
@@ -236,12 +255,23 @@
                         End If
 
                         ''変更されている場合は設定を更新する
-                        Call mCopyStructure(mudtSetExhGusNew, gudt.SetChExhGus)
+                        If modFcuSelect.nFcuNo = 1 Then
+                            Call mCopyStructure(mudtSetExhGusNew, gudt.SetChExhGus)
+                        Else
+                            Call mCopyStructure(mudtSetExhGusNew, gudt2.SetChExhGus)
+                        End If
+
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytExhGus = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytExhGus = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            gudt.SetEditorUpdateInfo.udtSave.bytExhGus = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytExhGus = 1
+                        Else
+                            gudt2.SetEditorUpdateInfo.udtSave.bytExhGus = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytExhGus = 1
+                        End If
+
 
                     Case Windows.Forms.DialogResult.No
 

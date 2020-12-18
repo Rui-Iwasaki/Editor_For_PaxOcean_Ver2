@@ -5561,11 +5561,21 @@ Module modCommon
                                  ByVal intChIndex As Integer)
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                udtFuInfo(intChIndex).strFuName = gGetString(gudt.SetChDisp.udtChDisp(intChIndex).strFuName)
+                udtFuInfo(intChIndex).strNamePlate = gGetString(gudt.SetChDisp.udtChDisp(intChIndex).strNamePlate)
+                udtFuInfo(intChIndex).strFuType = gGetString(gudt.SetChDisp.udtChDisp(intChIndex).strFuType)
+                udtFuInfo(intChIndex).strRemarks = gGetString(gudt.SetChDisp.udtChDisp(intChIndex).strRemarks)
 
-            udtFuInfo(intChIndex).strFuName = gGetString(gudt.SetChDisp.udtChDisp(intChIndex).strFuName)
-            udtFuInfo(intChIndex).strNamePlate = gGetString(gudt.SetChDisp.udtChDisp(intChIndex).strNamePlate)
-            udtFuInfo(intChIndex).strFuType = gGetString(gudt.SetChDisp.udtChDisp(intChIndex).strFuType)
-            udtFuInfo(intChIndex).strRemarks = gGetString(gudt.SetChDisp.udtChDisp(intChIndex).strRemarks)
+            Else
+                'FCU2が選択されている場合
+                udtFuInfo(intChIndex).strFuName = gGetString(gudt2.SetChDisp.udtChDisp(intChIndex).strFuName)
+                udtFuInfo(intChIndex).strNamePlate = gGetString(gudt2.SetChDisp.udtChDisp(intChIndex).strNamePlate)
+                udtFuInfo(intChIndex).strFuType = gGetString(gudt2.SetChDisp.udtChDisp(intChIndex).strFuType)
+                udtFuInfo(intChIndex).strRemarks = gGetString(gudt2.SetChDisp.udtChDisp(intChIndex).strRemarks)
+
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))

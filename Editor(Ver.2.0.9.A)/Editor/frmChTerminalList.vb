@@ -64,11 +64,12 @@
             Next
 
             ''画面設定
-            Call mSetDisplay(gudt.SetFu, gudt.SetChDisp)
 
             If modFcuSelect.nFcuNo = 1 Then
+                Call mSetDisplay(gudt.SetFu, gudt.SetChDisp)
                 Me.TabPage1.Text = "FCU_1"
             Else
+                Call mSetDisplay(gudt2.SetFu, gudt2.SetChDisp)
                 Me.TabPage1.Text = "FCU_2"
             End If
 
@@ -132,26 +133,43 @@
             Call mSetStructure(mudtSetFuNew, mudtSetChDispNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(gudt.SetFu, mudtSetFuNew, gudt.SetChDisp, mudtSetChDispNew) Then
+            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(gudt.SetFu, mudtSetFuNew, gudt.SetChDisp, mudtSetChDispNew)) Or
+                Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(gudt2.SetFu, mudtSetFuNew, gudt2.SetChDisp, mudtSetChDispNew)) Then
 
                 ''変更された場合は設定を更新する
-                Call mCopyStructure1(mudtSetFuNew, gudt.SetFu)
-                Call mCopyStructure2(mudtSetChDispNew, gudt.SetChDisp)
-                'Ver2.0.5.2 OUT_FUｱﾄﾞﾚｽの更新
+                If modFcuSelect.nFcuNo = 1 Then
+                    Call mCopyStructure1(mudtSetFuNew, gudt.SetFu)
+                    Call mCopyStructure2(mudtSetChDispNew, gudt.SetChDisp)
+                    'Ver2.0.5.2 OUT_FUｱﾄﾞﾚｽの更新
+                Else
+                    Call mCopyStructure1(mudtSetFuNew, gudt2.SetFu)
+                    Call mCopyStructure2(mudtSetChDispNew, gudt2.SetChDisp)
+                End If
+
                 Call subSetFUadrOUT()
 
-                ''メッセージ表示
-                Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    ''メッセージ表示
+                    Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    gudt.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                    gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                Else
+                    'FCU2が選択されている場合
+                    gudt2.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                End If
+
             Else
-                'Ver2.0.5.9 OUT FUアドレスの更新は強制
-                Call subSetFUadrOUT()
+                    'Ver2.0.5.9 OUT FUアドレスの更新は強制
+                    Call subSetFUadrOUT()
                 gblnUpdateAll = True
             End If
 
@@ -190,17 +208,35 @@
                         End If
 
                         ''変更されている場合は設定を更新する
-                        Call mCopyStructure1(mudtSetFuNew, gudt.SetFu)
-                        Call mCopyStructure2(mudtSetChDispNew, gudt.SetChDisp)
-                        'Ver2.0.5.2 OUT_FUｱﾄﾞﾚｽの更新
-                        Call subSetFUadrOUT()
+                        If modFcuSelect.nFcuNo = 1 Then
+                            'FCU1が選択されている場合
+                            Call mCopyStructure1(mudtSetFuNew, gudt.SetFu)
+                            Call mCopyStructure2(mudtSetChDispNew, gudt.SetChDisp)
+                            'Ver2.0.5.2 OUT_FUｱﾄﾞﾚｽの更新
+                            Call subSetFUadrOUT()
+                        Else
+                            'FCU2が選択されている場合
+                            Call mCopyStructure1(mudtSetFuNew, gudt2.SetFu)
+                            Call mCopyStructure2(mudtSetChDispNew, gudt2.SetChDisp)
+                            'Ver2.0.5.2 OUT_FUｱﾄﾞﾚｽの更新
+                            Call subSetFUadrOUT()
+                        End If
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
-                        gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            'FCU1が選択されている場合
+                            gudt.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                            gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                        Else
+                            'FCU2が選択されている場合
+                            gudt2.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                        End If
 
                     Case Windows.Forms.DialogResult.No
 

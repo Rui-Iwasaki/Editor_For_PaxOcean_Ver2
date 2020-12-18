@@ -1145,30 +1145,50 @@
             Dim StrComment As String = ""
 
             If udtPrtPageInfo.udtPageType = gEnmPrintTerminalPageType.tptFU Then
-                '★LUの場合は、フレームから全て他のページと異なる
-                'ページフレーム作成
-                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
-                    If g_bytFUSet = 0 Then      '出荷済みｵｰﾀﾞｰ用
-                        Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " フィールドユニット", "FU001", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                If modFcuSelect.nFcuNo = 1 Then
+                    '★LUの場合は、フレームから全て他のページと異なる
+                    'ページフレーム作成
+                    ''FCU1が選択されている場合
+                    If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                        If g_bytFUSet = 0 Then      '出荷済みｵｰﾀﾞｰ用
+                            Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " フィールドユニット", "FU001", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        Else
+                            Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " フィールドユニット", "FU01", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        End If
+
                     Else
-                        Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " フィールドユニット", "FU01", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        If g_bytFUSet = 0 Then      '出荷済みｵｰﾀﾞｰ用
+                            Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " FIELD UNIT", "FU001", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        Else
+                            Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " FIELD UNIT", "FU01", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        End If
                     End If
 
                 Else
-                    If g_bytFUSet = 0 Then      '出荷済みｵｰﾀﾞｰ用
-                        Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " FIELD UNIT", "FU001", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                    ''FCU2が選択されている場合
+                    If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                        If g_bytFUSet = 0 Then      '出荷済みｵｰﾀﾞｰ用
+                            Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " フィールドユニット", "FU001", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        Else
+                            Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " フィールドユニット", "FU01", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        End If
+
                     Else
-                        Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " FIELD UNIT", "FU01", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        If g_bytFUSet = 0 Then      '出荷済みｵｰﾀﾞｰ用
+                            Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " FIELD UNIT", "FU001", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        Else
+                            Call gPrtDrawOutFrameLocalUnit(objGraphics, "", " FIELD UNIT", "FU01", udtPrtPageInfo.intPageNo, mhintPagePrint)  '' DrawingNo変更
+                        End If
                     End If
                 End If
 
                 'グラフ作成
                 Call DrawLinesLU(objGraphics, udtPrtPageInfo)
-            Else
-                '★通常のTerminalInpu
+                Else
+                    '★通常のTerminalInpu
 
-                'ページフレーム作成
-                Call gPrtDrawOutFrameTerminal(objGraphics, _
+                    'ページフレーム作成
+                    Call gPrtDrawOutFrameTerminal(objGraphics, _
                                               udtPrtPageInfo.strFrameInfoLine1, _
                                               udtPrtPageInfo.strFrameInfoLine2, _
                                               udtPrtPageInfo.strDrawinfNoInfo, _
@@ -1180,17 +1200,32 @@
                     'Ver2.0.2.5 和文の場合消す。英文の場合半角スペースへ置き換え
                     'Ver2.0.2.7 ここにも^あり
                     Dim strTemp As String = udtPrtPageInfo.strBoxRemarks
-                    If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then
-                        strTemp = strTemp.Replace("^", "")
-                    Else
-                        strTemp = strTemp.Replace("^", " ")
-                    End If
-                    Call mPrtDrawHdrFrame(objGraphics, udtPrtPageInfo.strBoxFuInfo, udtPrtPageInfo.strBoxSlotInfo, strTemp)
-                End If
 
-                ''ポートタイプによって帳票のフォーマットを変更
-                ''（４種類：1.端子台リスト、2.デジタル、3.アナログ２線式、4.アナログ３線式）
-                Select Case udtPrtPageInfo.udtPageType
+
+                    If modFcuSelect.nFcuNo = 1 Then
+                        'FCU1が選択されている場合
+                        If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then
+                            strTemp = strTemp.Replace("^", "")
+                        Else
+                            strTemp = strTemp.Replace("^", " ")
+                        End If
+                    Else
+                        'FCU2が選択されている場合
+                        If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Then
+                            strTemp = strTemp.Replace("^", "")
+                        Else
+                            strTemp = strTemp.Replace("^", " ")
+                        End If
+                    End If
+
+
+
+                    Call mPrtDrawHdrFrame(objGraphics, udtPrtPageInfo.strBoxFuInfo, udtPrtPageInfo.strBoxSlotInfo, strTemp)
+                    End If
+
+                    ''ポートタイプによって帳票のフォーマットを変更
+                    ''（４種類：1.端子台リスト、2.デジタル、3.アナログ２線式、4.アナログ３線式）
+                    Select Case udtPrtPageInfo.udtPageType
 
                     Case gEnmPrintTerminalPageType.tptFuList ''①[端子台リスト] ===============================================
 
@@ -1214,7 +1249,15 @@
                         '' 和文表示フォント変更   2014.05.19
                         '' 注釈追加　ver1.4.0 2011.08.17
                         Dim ExplanatoryEJ As Byte   ''説明文の和英設定 0:英文 1:和文 ver2.0.8.I 2019.02.21 
-                        ExplanatoryEJ = gudt.SetSystem.udtSysSystem.shtLanguage ''システムの言語を反映
+
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''FCU1が選択されている場合
+                            ExplanatoryEJ = gudt.SetSystem.udtSysSystem.shtLanguage ''システムの言語を反映
+                        Else
+                            ''FCU2が選択されている場合
+                            ExplanatoryEJ = gudt2.SetSystem.udtSysSystem.shtLanguage ''システムの言語を反映
+                        End If
+
                         ''逆転フラグ有り
                         If g_bytExoTxtEtoJ = 1 Then
                             ''英なら和にする,和なら英にする
@@ -1267,19 +1310,39 @@
                             End If
                         End If
 
+
+
                         ''Ver2.0.8.7
-                        If g_bytTerDIMsg = 1 Then
-                            If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様　20200520 hori
-                                StrComment = "(COMM端子同士はプリント基板内で電気的に接続されています。)"
-                                objGraphics.DrawString(StrComment, gFnt8j, gFntColorBlack, mCstDigitalMsg_XJ, mCstDigitalMsg_Y)
-                            ElseIf gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then
-                                StrComment = "(ALL COMMON TERMINAL IS CONNECTED IN PRINTED CIRCUIT BOARD.)"
-                                objGraphics.DrawString(StrComment, gFnt8j, gFntColorBlack, mCstDigitalMsg_XJ, mCstDigitalMsg_Y)
-                            Else
-                                StrComment = "(ALL COMMON TERMINAL IS CONNECTED IN PRINTED CIRCUIT BOARD.)"
-                                objGraphics.DrawString(StrComment, gFnt8, gFntColorBlack, mCstDigitalMsg_X, mCstDigitalMsg_Y)
+                        If modFcuSelect.nFcuNo = 1 Then
+                            'FCU1が選択されている場合
+                            If g_bytTerDIMsg = 1 Then
+                                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様　20200520 hori
+                                    StrComment = "(COMM端子同士はプリント基板内で電気的に接続されています。)"
+                                    objGraphics.DrawString(StrComment, gFnt8j, gFntColorBlack, mCstDigitalMsg_XJ, mCstDigitalMsg_Y)
+                                ElseIf gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then
+                                    StrComment = "(ALL COMMON TERMINAL IS CONNECTED IN PRINTED CIRCUIT BOARD.)"
+                                    objGraphics.DrawString(StrComment, gFnt8j, gFntColorBlack, mCstDigitalMsg_XJ, mCstDigitalMsg_Y)
+                                Else
+                                    StrComment = "(ALL COMMON TERMINAL IS CONNECTED IN PRINTED CIRCUIT BOARD.)"
+                                    objGraphics.DrawString(StrComment, gFnt8, gFntColorBlack, mCstDigitalMsg_X, mCstDigitalMsg_Y)
+                                End If
+                            End If
+                        Else
+                            'FCU2が選択されている場合
+                            If g_bytTerDIMsg = 1 Then
+                                If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様　20200520 hori
+                                    StrComment = "(COMM端子同士はプリント基板内で電気的に接続されています。)"
+                                    objGraphics.DrawString(StrComment, gFnt8j, gFntColorBlack, mCstDigitalMsg_XJ, mCstDigitalMsg_Y)
+                                ElseIf gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Then
+                                    StrComment = "(ALL COMMON TERMINAL IS CONNECTED IN PRINTED CIRCUIT BOARD.)"
+                                    objGraphics.DrawString(StrComment, gFnt8j, gFntColorBlack, mCstDigitalMsg_XJ, mCstDigitalMsg_Y)
+                                Else
+                                    StrComment = "(ALL COMMON TERMINAL IS CONNECTED IN PRINTED CIRCUIT BOARD.)"
+                                    objGraphics.DrawString(StrComment, gFnt8, gFntColorBlack, mCstDigitalMsg_X, mCstDigitalMsg_Y)
+                                End If
                             End If
                         End If
+
 
 
                     Case gEnmPrintTerminalPageType.tptAnalog2   ''③[アナログ２線式] ==========================================
@@ -1384,15 +1447,29 @@
             ' 2015.11.07  Ver1.7.6 印刷日時ではなく、ﾌｧｲﾙﾍｯﾀﾞ内の日時を表示
             'strTime = "'" & Format(Now, "yy/MM/dd HH:mm")   ''表示時刻
             'Ver2.0.6.1 ｺﾝﾊﾞｰﾄしたﾃﾞｰﾀを印刷すると、ﾌｧｲﾙ日時が入っていないのでｴﾗｰが発生する不具合修正
-            If NZfS(gudt.SetChDisp.udtHeader.strDate) = "" Then
-                strTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm")
-            Else
-                strTime = "'" & gudt.SetChDisp.udtHeader.strDate.Substring(2, 2) & "/" & _
-                        gudt.SetChDisp.udtHeader.strDate.Substring(4, 2) & "/" & _
-                        gudt.SetChDisp.udtHeader.strDate.Substring(6, 2) & " " & _
+
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If NZfS(gudt.SetChDisp.udtHeader.strDate) = "" Then
+                    strTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm")
+                Else
+                    strTime = "'" & gudt.SetChDisp.udtHeader.strDate.Substring(2, 2) & "/" &
+                        gudt.SetChDisp.udtHeader.strDate.Substring(4, 2) & "/" &
+                        gudt.SetChDisp.udtHeader.strDate.Substring(6, 2) & " " &
                         gudt.SetChDisp.udtHeader.strTime.Substring(0, 2) & ":" & gudt.SetChDisp.udtHeader.strTime.Substring(2, 2)
+                End If
+            Else
+                'FCU2が選択されている場合
+                If NZfS(gudt2.SetChDisp.udtHeader.strDate) = "" Then
+                    strTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm")
+                Else
+                    strTime = "'" & gudt2.SetChDisp.udtHeader.strDate.Substring(2, 2) & "/" &
+                        gudt2.SetChDisp.udtHeader.strDate.Substring(4, 2) & "/" &
+                        gudt2.SetChDisp.udtHeader.strDate.Substring(6, 2) & " " &
+                        gudt2.SetChDisp.udtHeader.strTime.Substring(0, 2) & ":" & gudt2.SetChDisp.udtHeader.strTime.Substring(2, 2)
+                End If
             End If
-            
+
             '//
 
             '上部区画移動 2015/4/10 T.Ueki
@@ -1422,16 +1499,32 @@
 
 
             ''SLOT, Remarks '上部区画移動 2015/4/10 T.Ueki
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
-                'objGraphics.DrawString(hstrSlotInfo, gFnt8j, gFntColorBlack, sngTB + 5, sngHight + 5)
-                objGraphics.DrawString(hstrSlotInfo, gFnt8j, gFntColorBlack, gCstFrameTerminalWidth + gCstFrameTerminalLeft - mCstFrameBoxWidth + 5, sngHight + 5)
-                'objGraphics.DrawString(hstrRemarks, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft + mCstFrameBoxWidth, sngHight + 5)
-                objGraphics.DrawString(hstrRemarks, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft + mCstFrameBoxWidth, sngHight + 5)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    'objGraphics.DrawString(hstrSlotInfo, gFnt8j, gFntColorBlack, sngTB + 5, sngHight + 5)
+                    objGraphics.DrawString(hstrSlotInfo, gFnt8j, gFntColorBlack, gCstFrameTerminalWidth + gCstFrameTerminalLeft - mCstFrameBoxWidth + 5, sngHight + 5)
+                    'objGraphics.DrawString(hstrRemarks, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft + mCstFrameBoxWidth, sngHight + 5)
+                    objGraphics.DrawString(hstrRemarks, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft + mCstFrameBoxWidth, sngHight + 5)
+                Else
+                    'objGraphics.DrawString(hstrSlotInfo, gFnt8, gFntColorBlack, sngTB + 5, sngHight + 5)
+                    objGraphics.DrawString(hstrSlotInfo, gFnt8, gFntColorBlack, gCstFrameTerminalWidth + gCstFrameTerminalLeft - mCstFrameBoxWidth + 5, sngHight + 5)
+                    objGraphics.DrawString(hstrRemarks, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + mCstFrameBoxWidth, sngHight + 5)
+                End If
             Else
-                'objGraphics.DrawString(hstrSlotInfo, gFnt8, gFntColorBlack, sngTB + 5, sngHight + 5)
-                objGraphics.DrawString(hstrSlotInfo, gFnt8, gFntColorBlack, gCstFrameTerminalWidth + gCstFrameTerminalLeft - mCstFrameBoxWidth + 5, sngHight + 5)
+                'FCU2が選択されている場合
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    'objGraphics.DrawString(hstrSlotInfo, gFnt8j, gFntColorBlack, sngTB + 5, sngHight + 5)
+                    objGraphics.DrawString(hstrSlotInfo, gFnt8j, gFntColorBlack, gCstFrameTerminalWidth + gCstFrameTerminalLeft - mCstFrameBoxWidth + 5, sngHight + 5)
+                    'objGraphics.DrawString(hstrRemarks, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft + mCstFrameBoxWidth, sngHight + 5)
+                    objGraphics.DrawString(hstrRemarks, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft + mCstFrameBoxWidth, sngHight + 5)
+                Else
+                    'objGraphics.DrawString(hstrSlotInfo, gFnt8, gFntColorBlack, sngTB + 5, sngHight + 5)
+                    objGraphics.DrawString(hstrSlotInfo, gFnt8, gFntColorBlack, gCstFrameTerminalWidth + gCstFrameTerminalLeft - mCstFrameBoxWidth + 5, sngHight + 5)
                 objGraphics.DrawString(hstrRemarks, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + mCstFrameBoxWidth, sngHight + 5)
             End If
+            End If
+
 
             ''時刻 左側へ移動 2015/4/10 T.Ueki
             'objGraphics.DrawString(strTime, gFnt8, gFntColorBlack, mCstFrameBoxTime, sngHight + 5)
@@ -1485,25 +1578,49 @@
             ''===================
             '' 文字列印字
             ''===================
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
 
-                objGraphics.DrawString(mCstLabelFulistNoJpn, gFnt8j, gFntColorBlack, sngPosNo - 4, sngY + 9)                ''No
-                objGraphics.DrawString(mCstLabelFulistFuName1Jpn, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 16, sngY + 3)     ''FCU/FU Name
-                objGraphics.DrawString(mCstLabelFulistFuName2Jpn, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 16, sngY + 16)    ''FCU/FU Name
-                objGraphics.DrawString(mCstLabelFulistNamePlateJpn, gFnt8j, gFntColorBlack, mCstPosFuCol2 + 38, sngY + 9)   ''Name Plate
-                objGraphics.DrawString(mCstLabelFulistFuTypeJpn, gFnt8j, gFntColorBlack, mCstPosFuCol3 + 25, sngY + 9)      ''FCU/FU Type
-                objGraphics.DrawString(mCstLabelFulistCodeNo1Jpn, gFnt8j, gFntColorBlack, sngPosCode + 9, sngY + 3)        ''Code
-                objGraphics.DrawString(mCstLabelFulistCodeNo2Jpn, gFnt8j, gFntColorBlack, sngPosCode + 14, sngY + 16)       ''No
-                objGraphics.DrawString(mCstLabelFulistRemarksJpn, gFnt8j, gFntColorBlack, mCstPosFuCol5 + 50, sngY + 9)     ''Remarks
+                    objGraphics.DrawString(mCstLabelFulistNoJpn, gFnt8j, gFntColorBlack, sngPosNo - 4, sngY + 9)                ''No
+                    objGraphics.DrawString(mCstLabelFulistFuName1Jpn, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 16, sngY + 3)     ''FCU/FU Name
+                    objGraphics.DrawString(mCstLabelFulistFuName2Jpn, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 16, sngY + 16)    ''FCU/FU Name
+                    objGraphics.DrawString(mCstLabelFulistNamePlateJpn, gFnt8j, gFntColorBlack, mCstPosFuCol2 + 38, sngY + 9)   ''Name Plate
+                    objGraphics.DrawString(mCstLabelFulistFuTypeJpn, gFnt8j, gFntColorBlack, mCstPosFuCol3 + 25, sngY + 9)      ''FCU/FU Type
+                    objGraphics.DrawString(mCstLabelFulistCodeNo1Jpn, gFnt8j, gFntColorBlack, sngPosCode + 9, sngY + 3)        ''Code
+                    objGraphics.DrawString(mCstLabelFulistCodeNo2Jpn, gFnt8j, gFntColorBlack, sngPosCode + 14, sngY + 16)       ''No
+                    objGraphics.DrawString(mCstLabelFulistRemarksJpn, gFnt8j, gFntColorBlack, mCstPosFuCol5 + 50, sngY + 9)     ''Remarks
 
+                Else
+                    objGraphics.DrawString(mCstLabelFulistNo, gFnt8, gFntColorBlack, sngPosNo, sngY + 8)                    ''No
+                    objGraphics.DrawString(mCstLabelFulistFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 65, sngY + 8)      ''FCU/FU Name
+                    objGraphics.DrawString(mCstLabelFulistNamePlate, gFnt8, gFntColorBlack, mCstPosFuCol2 + 30, sngY + 8)   ''Name Plate
+                    objGraphics.DrawString(mCstLabelFulistFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 23, sngY + 8)      ''FCU/FU Type
+                    objGraphics.DrawString(mCstLabelFulistCodeNo1, gFnt8, gFntColorBlack, sngPosCode + 13, sngY + 3)        ''Code
+                    objGraphics.DrawString(mCstLabelFulistCodeNo2, gFnt8, gFntColorBlack, sngPosCode + 20, sngY + 15)       ''No
+                    objGraphics.DrawString(mCstLabelFulistRemarks, gFnt8, gFntColorBlack, mCstPosFuCol5 + 40, sngY + 8)     ''Remarks
+                End If
             Else
-                objGraphics.DrawString(mCstLabelFulistNo, gFnt8, gFntColorBlack, sngPosNo, sngY + 8)                    ''No
-                objGraphics.DrawString(mCstLabelFulistFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 65, sngY + 8)      ''FCU/FU Name
-                objGraphics.DrawString(mCstLabelFulistNamePlate, gFnt8, gFntColorBlack, mCstPosFuCol2 + 30, sngY + 8)   ''Name Plate
-                objGraphics.DrawString(mCstLabelFulistFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 23, sngY + 8)      ''FCU/FU Type
-                objGraphics.DrawString(mCstLabelFulistCodeNo1, gFnt8, gFntColorBlack, sngPosCode + 13, sngY + 3)        ''Code
-                objGraphics.DrawString(mCstLabelFulistCodeNo2, gFnt8, gFntColorBlack, sngPosCode + 20, sngY + 15)       ''No
-                objGraphics.DrawString(mCstLabelFulistRemarks, gFnt8, gFntColorBlack, mCstPosFuCol5 + 40, sngY + 8)     ''Remarks
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+
+                    objGraphics.DrawString(mCstLabelFulistNoJpn, gFnt8j, gFntColorBlack, sngPosNo - 4, sngY + 9)                ''No
+                    objGraphics.DrawString(mCstLabelFulistFuName1Jpn, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 16, sngY + 3)     ''FCU/FU Name
+                    objGraphics.DrawString(mCstLabelFulistFuName2Jpn, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 16, sngY + 16)    ''FCU/FU Name
+                    objGraphics.DrawString(mCstLabelFulistNamePlateJpn, gFnt8j, gFntColorBlack, mCstPosFuCol2 + 38, sngY + 9)   ''Name Plate
+                    objGraphics.DrawString(mCstLabelFulistFuTypeJpn, gFnt8j, gFntColorBlack, mCstPosFuCol3 + 25, sngY + 9)      ''FCU/FU Type
+                    objGraphics.DrawString(mCstLabelFulistCodeNo1Jpn, gFnt8j, gFntColorBlack, sngPosCode + 9, sngY + 3)        ''Code
+                    objGraphics.DrawString(mCstLabelFulistCodeNo2Jpn, gFnt8j, gFntColorBlack, sngPosCode + 14, sngY + 16)       ''No
+                    objGraphics.DrawString(mCstLabelFulistRemarksJpn, gFnt8j, gFntColorBlack, mCstPosFuCol5 + 50, sngY + 9)     ''Remarks
+
+                Else
+                    objGraphics.DrawString(mCstLabelFulistNo, gFnt8, gFntColorBlack, sngPosNo, sngY + 8)                    ''No
+                    objGraphics.DrawString(mCstLabelFulistFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 65, sngY + 8)      ''FCU/FU Name
+                    objGraphics.DrawString(mCstLabelFulistNamePlate, gFnt8, gFntColorBlack, mCstPosFuCol2 + 30, sngY + 8)   ''Name Plate
+                    objGraphics.DrawString(mCstLabelFulistFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 23, sngY + 8)      ''FCU/FU Type
+                    objGraphics.DrawString(mCstLabelFulistCodeNo1, gFnt8, gFntColorBlack, sngPosCode + 13, sngY + 3)        ''Code
+                    objGraphics.DrawString(mCstLabelFulistCodeNo2, gFnt8, gFntColorBlack, sngPosCode + 20, sngY + 15)       ''No
+                    objGraphics.DrawString(mCstLabelFulistRemarks, gFnt8, gFntColorBlack, mCstPosFuCol5 + 40, sngY + 8)     ''Remarks
+                End If
             End If
 
         Catch ex As Exception
@@ -1562,69 +1679,135 @@
             With hudtPrtPageInfo
 
                 objGraphics.DrawString(.strNo, gFnt8, gFntColorBlack, sngPosNo, sngY + 8)                    ''No
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
 
-                If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
-                    '' 2013.11.15   FUに「FIELD UNIT」名称追加
-                    If no = 0 Then
-                        objGraphics.DrawString(.strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
-                    Else
-                        If .strFuName <> "" Then
-                            '' 2014.10.29   FUの「FIELD UNIT」名称削除
-                            'If mhintFuNameType = 1 Then
-                            '    objGraphics.DrawString("ﾌｨｰﾙﾄﾞﾕﾆｯﾄ " & .strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
-                            'Else
-                            '    objGraphics.DrawString("FIELD UNIT " & .strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
-                            'End If
+                    If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                        '' 2013.11.15   FUに「FIELD UNIT」名称追加
+                        If no = 0 Then
                             objGraphics.DrawString(.strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        Else
+                            If .strFuName <> "" Then
+                                '' 2014.10.29   FUの「FIELD UNIT」名称削除
+                                'If mhintFuNameType = 1 Then
+                                '    objGraphics.DrawString("ﾌｨｰﾙﾄﾞﾕﾆｯﾄ " & .strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                                'Else
+                                '    objGraphics.DrawString("FIELD UNIT " & .strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                                'End If
+                                objGraphics.DrawString(.strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                            End If
                         End If
-                    End If
-                    'objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
-                    objGraphics.DrawString(.strNamePlate, gFnt8j, gFntColorBlack, mCstPosFuCol2 + 9, sngY + 8)    ''Name Plate
-                    objGraphics.DrawString(.strFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 6, sngY + 8)       ''FCU/FU Type
-                    objGraphics.DrawString(.strCodeNo, gFnt8, gFntColorBlack, mCstPosFuCol4 + 6 + 6, sngY + 8)   ''Code No
+                        'objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        objGraphics.DrawString(.strNamePlate, gFnt8j, gFntColorBlack, mCstPosFuCol2 + 9, sngY + 8)    ''Name Plate
+                        objGraphics.DrawString(.strFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 6, sngY + 8)       ''FCU/FU Type
+                        objGraphics.DrawString(.strCodeNo, gFnt8, gFntColorBlack, mCstPosFuCol4 + 6 + 6, sngY + 8)   ''Code No
 
-                    'Ver2.0.2.5 和文の場合消す。英文の場合半角スペースへ置き換え
-                    Dim strTemp As String = .strRemarks
-                    If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then
-                        strTemp = strTemp.Replace("^", "")
-                    Else
-                        strTemp = strTemp.Replace("^", " ")
-                    End If
+                        'Ver2.0.2.5 和文の場合消す。英文の場合半角スペースへ置き換え
+                        Dim strTemp As String = .strRemarks
+                        If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then
+                            strTemp = strTemp.Replace("^", "")
+                        Else
+                            strTemp = strTemp.Replace("^", " ")
+                        End If
 
-                    objGraphics.DrawString(strTemp, gFnt8j, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
-                Else
-                    '' 2013.11.15   FUに「FIELD UNIT」名称追加
-                    If no = 0 Then
-                        objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        objGraphics.DrawString(strTemp, gFnt8j, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
                     Else
-                        If .strFuName <> "" Then
-                            '' 2014.10.29   FUの「FIELD UNIT」名称削除
-                            'If mhintFuNameType = 1 Then
-                            '    objGraphics.DrawString("ﾌｨｰﾙﾄﾞﾕﾆｯﾄ " & .strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
-                            'Else
-                            '    objGraphics.DrawString("FIELD UNIT " & .strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
-                            'End If
+                        '' 2013.11.15   FUに「FIELD UNIT」名称追加
+                        If no = 0 Then
                             objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        Else
+                            If .strFuName <> "" Then
+                                '' 2014.10.29   FUの「FIELD UNIT」名称削除
+                                'If mhintFuNameType = 1 Then
+                                '    objGraphics.DrawString("ﾌｨｰﾙﾄﾞﾕﾆｯﾄ " & .strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                                'Else
+                                '    objGraphics.DrawString("FIELD UNIT " & .strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                                'End If
+                                objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                            End If
                         End If
+                        'objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        objGraphics.DrawString(.strNamePlate, gFnt8, gFntColorBlack, mCstPosFuCol2 + 9, sngY + 8)    ''Name Plate
+                        objGraphics.DrawString(.strFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 6, sngY + 8)       ''FCU/FU Type
+                        objGraphics.DrawString(.strCodeNo, gFnt8, gFntColorBlack, mCstPosFuCol4 + 6 + 6, sngY + 8)   ''Code No
+                        'Ver2.0.1.7 Remarksに「^」が入っていることがあるため、それは削る
+                        'Ver2.0.2.5 和文の場合消す。英文の場合半角スペースへ置き換え
+                        Dim strTemp As String = .strRemarks
+                        If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then
+                            strTemp = strTemp.Replace("^", "")
+                        Else
+                            strTemp = strTemp.Replace("^", " ")
+                        End If
+
+                        'objGraphics.DrawString(.strRemarks, gFnt8, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
+                        objGraphics.DrawString(strTemp, gFnt8, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
                     End If
-                    'objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
-                    objGraphics.DrawString(.strNamePlate, gFnt8, gFntColorBlack, mCstPosFuCol2 + 9, sngY + 8)    ''Name Plate
-                    objGraphics.DrawString(.strFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 6, sngY + 8)       ''FCU/FU Type
-                    objGraphics.DrawString(.strCodeNo, gFnt8, gFntColorBlack, mCstPosFuCol4 + 6 + 6, sngY + 8)   ''Code No
-                    'Ver2.0.1.7 Remarksに「^」が入っていることがあるため、それは削る
-                    'Ver2.0.2.5 和文の場合消す。英文の場合半角スペースへ置き換え
-                    Dim strTemp As String = .strRemarks
-                    If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then
-                        strTemp = strTemp.Replace("^", "")
+
+                Else
+                    'FCU1が選択されている場合
+                    If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                        '' 2013.11.15   FUに「FIELD UNIT」名称追加
+                        If no = 0 Then
+                            objGraphics.DrawString(.strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        Else
+                            If .strFuName <> "" Then
+                                '' 2014.10.29   FUの「FIELD UNIT」名称削除
+                                'If mhintFuNameType = 1 Then
+                                '    objGraphics.DrawString("ﾌｨｰﾙﾄﾞﾕﾆｯﾄ " & .strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                                'Else
+                                '    objGraphics.DrawString("FIELD UNIT " & .strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                                'End If
+                                objGraphics.DrawString(.strFuName, gFnt8j, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                            End If
+                        End If
+                        'objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        objGraphics.DrawString(.strNamePlate, gFnt8j, gFntColorBlack, mCstPosFuCol2 + 9, sngY + 8)    ''Name Plate
+                        objGraphics.DrawString(.strFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 6, sngY + 8)       ''FCU/FU Type
+                        objGraphics.DrawString(.strCodeNo, gFnt8, gFntColorBlack, mCstPosFuCol4 + 6 + 6, sngY + 8)   ''Code No
+
+                        'Ver2.0.2.5 和文の場合消す。英文の場合半角スペースへ置き換え
+                        Dim strTemp As String = .strRemarks
+                        If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Then
+                            strTemp = strTemp.Replace("^", "")
+                        Else
+                            strTemp = strTemp.Replace("^", " ")
+                        End If
+
+                        objGraphics.DrawString(strTemp, gFnt8j, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
                     Else
-                        strTemp = strTemp.Replace("^", " ")
+                        '' 2013.11.15   FUに「FIELD UNIT」名称追加
+                        If no = 0 Then
+                            objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        Else
+                            If .strFuName <> "" Then
+                                '' 2014.10.29   FUの「FIELD UNIT」名称削除
+                                'If mhintFuNameType = 1 Then
+                                '    objGraphics.DrawString("ﾌｨｰﾙﾄﾞﾕﾆｯﾄ " & .strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                                'Else
+                                '    objGraphics.DrawString("FIELD UNIT " & .strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                                'End If
+                                objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                            End If
+                        End If
+                        'objGraphics.DrawString(.strFuName, gFnt8, gFntColorBlack, mCstPosFuCol1 + 9, sngY + 8)       ''FCU/FU Name
+                        objGraphics.DrawString(.strNamePlate, gFnt8, gFntColorBlack, mCstPosFuCol2 + 9, sngY + 8)    ''Name Plate
+                        objGraphics.DrawString(.strFuType, gFnt8, gFntColorBlack, mCstPosFuCol3 + 6, sngY + 8)       ''FCU/FU Type
+                        objGraphics.DrawString(.strCodeNo, gFnt8, gFntColorBlack, mCstPosFuCol4 + 6 + 6, sngY + 8)   ''Code No
+                        'Ver2.0.1.7 Remarksに「^」が入っていることがあるため、それは削る
+                        'Ver2.0.2.5 和文の場合消す。英文の場合半角スペースへ置き換え
+                        Dim strTemp As String = .strRemarks
+                        If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Then
+                            strTemp = strTemp.Replace("^", "")
+                        Else
+                            strTemp = strTemp.Replace("^", " ")
+                        End If
+
+                        'objGraphics.DrawString(.strRemarks, gFnt8, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
+                        objGraphics.DrawString(strTemp, gFnt8, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
                     End If
 
-                    'objGraphics.DrawString(.strRemarks, gFnt8, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
-                    objGraphics.DrawString(strTemp, gFnt8, gFntColorBlack, mCstPosFuCol5 + 10, sngY + 8)     ''Remarks
-                End If
 
-                
+                End If
 
             End With
 
@@ -1687,78 +1870,157 @@
             ' 2015.10.16 ﾀｸﾞ表示
             ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
 
-            ''和文仕様　20200217 hori
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''和文仕様　20200217 hori
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then
 
-                If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                    objGraphics.DrawString(mCstLabelDigitalAdd1Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 6)         ''Add
-                    objGraphics.DrawString(mCstLabelDigitalAdd2Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 18)        ''Add
-                    objGraphics.DrawString(mCstLabelDigitalCh1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalAdd + 5, sngY + 4)           ''Ch No
-                    objGraphics.DrawString(mCstLabelDigitalCh2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalAdd + 2, sngY + 20)         ''Ch No
+                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        objGraphics.DrawString(mCstLabelDigitalAdd1Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 6)         ''Add
+                        objGraphics.DrawString(mCstLabelDigitalAdd2Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 18)        ''Add
+                        objGraphics.DrawString(mCstLabelDigitalCh1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalAdd + 5, sngY + 4)           ''Ch No
+                        objGraphics.DrawString(mCstLabelDigitalCh2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalAdd + 2, sngY + 20)         ''Ch No
+                    Else
+                        objGraphics.DrawString(mCstLabelDigitalAdd1Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 6)     ''Add
+                        objGraphics.DrawString(mCstLabelDigitalAdd2Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 18)    ''Add
+                        objGraphics.DrawString(mCstLabelDigitalCh1Jpn, gFnt7, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 6)          ''Ch No
+                        objGraphics.DrawString(mCstLabelDigitalCh2Jpn, gFnt7j, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 18)        ''Ch No
+                    End If
+
+                    objGraphics.DrawString(mCstLabelDigitalItemJpn, gFnt8j, gFntColorBlack, mCstPosDigitalChNo + 80, sngY + 11)             ''Item Name
+                    objGraphics.DrawString(mCstLabelDigitalInCore1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalItemName + 6, sngY)             ''In Core No1
+                    objGraphics.DrawString(mCstLabelDigitalInCore2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalItemName + 3, sngY + 13)       ''In Core No2
+                    objGraphics.DrawString(mCstLabelDigitalInCore3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalItemName + 3, sngY + 24)       ''In Core No3
+                    objGraphics.DrawString(mCstLabelDigitalInTerm1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo + 6, sngY)             ''In Term No1
+                    objGraphics.DrawString(mCstLabelDigitalInTerm2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalInCoreNo + 3, sngY + 13)       ''In Term No2
+                    objGraphics.DrawString(mCstLabelDigitalInTerm3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalInCoreNo + 3, sngY + 24)       ''In Term No3
+
+                    objGraphics.DrawString(mCstLabelDigitalSignalJpn, gFnt8j, gFntColorBlack, mCstPosDigitalInTermNo + 18, sngY + 11)      ''Signal
+
+                    objGraphics.DrawString(mCstLabelDigitalComTerm1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalStatus + 3, sngY)              ''Com Term No1
+                    objGraphics.DrawString(mCstLabelDigitalComTerm2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalStatus + 3, sngY + 13)        ''Com Term No2
+                    objGraphics.DrawString(mCstLabelDigitalComTerm3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalStatus + 3, sngY + 24)        ''Com Term No3
+                    objGraphics.DrawString(mCstLabelDigitalComCore1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY)           ''Com Core No1
+                    objGraphics.DrawString(mCstLabelDigitalComCore2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY + 13)     ''Com Core No2
+                    objGraphics.DrawString(mCstLabelDigitalComCore3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY + 24)     ''Com Core No3
+
+                    objGraphics.DrawString(mCstLabelDigitalCableJpn, gFnt8j, gFntColorBlack, mCstPosDigitalComCoreNo + 34, sngY + 3)      ''Cable(Wire Mark)
+                    objGraphics.DrawString(mCstLabelDigitalMarkJpn, gFnt8j, gFntColorBlack, mCstPosDigitalComCoreNo + 24, sngMarkPos + 3) ''Mark(In)
+                    objGraphics.DrawString(mCstLabelDigitalClassJpn, gFnt8j, gFntColorBlack, mCstPosDigitalMark + 20, sngMarkPos + 3)     ''Class(Com)
+                    objGraphics.DrawString(mCstLabelDigitalDistJpn, gFnt8j, gFntColorBlack, mCstPosDigitalClass + 11, sngY + 11)          ''Dist
+
                 Else
-                    objGraphics.DrawString(mCstLabelDigitalAdd1Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 6)     ''Add
-                    objGraphics.DrawString(mCstLabelDigitalAdd2Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 18)    ''Add
-                    objGraphics.DrawString(mCstLabelDigitalCh1Jpn, gFnt7, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 6)          ''Ch No
-                    objGraphics.DrawString(mCstLabelDigitalCh2Jpn, gFnt7j, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 18)        ''Ch No
+                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        objGraphics.DrawString(mCstLabelDigitalAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)          ''Add
+                        objGraphics.DrawString(mCstLabelDigitalCh, gFnt8, gFntColorBlack, mCstPosDigitalAdd, sngY + 11)                   ''Ch No
+                    Else
+                        objGraphics.DrawString(mCstLabelDigitalAdd, gFnt7, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)          ''Add
+                        objGraphics.DrawString(mCstLabelDigitalCh, gFnt7, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 11)                   ''Ch No
+                    End If
+                    objGraphics.DrawString(mCstLabelDigitalItem, gFnt8, gFntColorBlack, mCstPosDigitalChNo + 70, sngY + 11)           ''Item Name
+
+                    objGraphics.DrawString(mCstLabelDigitalInCore1, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY)              ''In Core No1
+                    objGraphics.DrawString(mCstLabelDigitalInCore2, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY + 10)         ''In Core No2
+                    objGraphics.DrawString(mCstLabelDigitalInCore3, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY + 20)         ''In Core No3
+                    objGraphics.DrawString(mCstLabelDigitalInTerm1, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY)              ''In Term No1
+                    objGraphics.DrawString(mCstLabelDigitalInTerm2, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY + 10)         ''In Term No2
+                    objGraphics.DrawString(mCstLabelDigitalInTerm3, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY + 20)         ''In Term No3
+
+                    objGraphics.DrawString(mCstLabelDigitalSignal, gFnt8, gFntColorBlack, mCstPosDigitalInTermNo + 8, sngY + 11)      ''Signal
+
+                    objGraphics.DrawString(mCstLabelDigitalComTerm1, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY)               ''Com Term No1
+                    objGraphics.DrawString(mCstLabelDigitalComTerm2, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY + 10)          ''Com Term No2
+                    objGraphics.DrawString(mCstLabelDigitalComTerm3, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY + 20)          ''Com Term No3
+                    objGraphics.DrawString(mCstLabelDigitalComCore1, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY)            ''Com Core No1
+                    objGraphics.DrawString(mCstLabelDigitalComCore2, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY + 10)       ''Com Core No2
+                    objGraphics.DrawString(mCstLabelDigitalComCore3, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY + 20)       ''Com Core No3
+
+                    ''位置調整  2013.11.20
+                    'objGraphics.DrawString(mCstLabelDigitalCable, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 46, sngY + 1)      ''Cable(Wire Mark)
+                    'objGraphics.DrawString(mCstLabelDigitalMark, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 26, sngMarkPos + 1) ''Mark(In)
+                    'objGraphics.DrawString(mCstLabelDigitalClass, gFnt8, gFntColorBlack, mCstPosDigitalMark + 16, sngMarkPos + 1)     ''Class(Com)
+                    'objGraphics.DrawString(mCstLabelDigitalDist, gFnt8, gFntColorBlack, mCstPosDigitalClass + 23, sngY + 11)          ''Dist
+                    objGraphics.DrawString(mCstLabelDigitalCable, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 44, sngY + 1)      ''Cable(Wire Mark)
+                    objGraphics.DrawString(mCstLabelDigitalMark, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 24, sngMarkPos + 1) ''Mark(In)
+                    objGraphics.DrawString(mCstLabelDigitalClass, gFnt8, gFntColorBlack, mCstPosDigitalMark + 14, sngMarkPos + 1)     ''Class(Com)
+                    objGraphics.DrawString(mCstLabelDigitalDist, gFnt8, gFntColorBlack, mCstPosDigitalClass + 21, sngY + 11)          ''Dist
                 End If
-
-                objGraphics.DrawString(mCstLabelDigitalItemJpn, gFnt8j, gFntColorBlack, mCstPosDigitalChNo + 80, sngY + 11)             ''Item Name
-                objGraphics.DrawString(mCstLabelDigitalInCore1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalItemName + 6, sngY)             ''In Core No1
-                objGraphics.DrawString(mCstLabelDigitalInCore2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalItemName + 3, sngY + 13)       ''In Core No2
-                objGraphics.DrawString(mCstLabelDigitalInCore3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalItemName + 3, sngY + 24)       ''In Core No3
-                objGraphics.DrawString(mCstLabelDigitalInTerm1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo + 6, sngY)             ''In Term No1
-                objGraphics.DrawString(mCstLabelDigitalInTerm2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalInCoreNo + 3, sngY + 13)       ''In Term No2
-                objGraphics.DrawString(mCstLabelDigitalInTerm3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalInCoreNo + 3, sngY + 24)       ''In Term No3
-
-                objGraphics.DrawString(mCstLabelDigitalSignalJpn, gFnt8j, gFntColorBlack, mCstPosDigitalInTermNo + 18, sngY + 11)      ''Signal
-
-                objGraphics.DrawString(mCstLabelDigitalComTerm1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalStatus + 3, sngY)              ''Com Term No1
-                objGraphics.DrawString(mCstLabelDigitalComTerm2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalStatus + 3, sngY + 13)        ''Com Term No2
-                objGraphics.DrawString(mCstLabelDigitalComTerm3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalStatus + 3, sngY + 24)        ''Com Term No3
-                objGraphics.DrawString(mCstLabelDigitalComCore1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY)           ''Com Core No1
-                objGraphics.DrawString(mCstLabelDigitalComCore2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY + 13)     ''Com Core No2
-                objGraphics.DrawString(mCstLabelDigitalComCore3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY + 24)     ''Com Core No3
-
-                objGraphics.DrawString(mCstLabelDigitalCableJpn, gFnt8j, gFntColorBlack, mCstPosDigitalComCoreNo + 34, sngY + 3)      ''Cable(Wire Mark)
-                objGraphics.DrawString(mCstLabelDigitalMarkJpn, gFnt8j, gFntColorBlack, mCstPosDigitalComCoreNo + 24, sngMarkPos + 3) ''Mark(In)
-                objGraphics.DrawString(mCstLabelDigitalClassJpn, gFnt8j, gFntColorBlack, mCstPosDigitalMark + 20, sngMarkPos + 3)     ''Class(Com)
-                objGraphics.DrawString(mCstLabelDigitalDistJpn, gFnt8j, gFntColorBlack, mCstPosDigitalClass + 11, sngY + 11)          ''Dist
 
             Else
-                If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                    objGraphics.DrawString(mCstLabelDigitalAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)          ''Add
-                    objGraphics.DrawString(mCstLabelDigitalCh, gFnt8, gFntColorBlack, mCstPosDigitalAdd, sngY + 11)                   ''Ch No
+                'FCU2が選択されている場合
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then
+
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        objGraphics.DrawString(mCstLabelDigitalAdd1Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 6)         ''Add
+                        objGraphics.DrawString(mCstLabelDigitalAdd2Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 18)        ''Add
+                        objGraphics.DrawString(mCstLabelDigitalCh1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalAdd + 5, sngY + 4)           ''Ch No
+                        objGraphics.DrawString(mCstLabelDigitalCh2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalAdd + 2, sngY + 20)         ''Ch No
+                    Else
+                        objGraphics.DrawString(mCstLabelDigitalAdd1Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 6)     ''Add
+                        objGraphics.DrawString(mCstLabelDigitalAdd2Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 18)    ''Add
+                        objGraphics.DrawString(mCstLabelDigitalCh1Jpn, gFnt7, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 6)          ''Ch No
+                        objGraphics.DrawString(mCstLabelDigitalCh2Jpn, gFnt7j, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 18)        ''Ch No
+                    End If
+
+                    objGraphics.DrawString(mCstLabelDigitalItemJpn, gFnt8j, gFntColorBlack, mCstPosDigitalChNo + 80, sngY + 11)             ''Item Name
+                    objGraphics.DrawString(mCstLabelDigitalInCore1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalItemName + 6, sngY)             ''In Core No1
+                    objGraphics.DrawString(mCstLabelDigitalInCore2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalItemName + 3, sngY + 13)       ''In Core No2
+                    objGraphics.DrawString(mCstLabelDigitalInCore3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalItemName + 3, sngY + 24)       ''In Core No3
+                    objGraphics.DrawString(mCstLabelDigitalInTerm1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo + 6, sngY)             ''In Term No1
+                    objGraphics.DrawString(mCstLabelDigitalInTerm2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalInCoreNo + 3, sngY + 13)       ''In Term No2
+                    objGraphics.DrawString(mCstLabelDigitalInTerm3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalInCoreNo + 3, sngY + 24)       ''In Term No3
+
+                    objGraphics.DrawString(mCstLabelDigitalSignalJpn, gFnt8j, gFntColorBlack, mCstPosDigitalInTermNo + 18, sngY + 11)      ''Signal
+
+                    objGraphics.DrawString(mCstLabelDigitalComTerm1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalStatus + 3, sngY)              ''Com Term No1
+                    objGraphics.DrawString(mCstLabelDigitalComTerm2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalStatus + 3, sngY + 13)        ''Com Term No2
+                    objGraphics.DrawString(mCstLabelDigitalComTerm3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalStatus + 3, sngY + 24)        ''Com Term No3
+                    objGraphics.DrawString(mCstLabelDigitalComCore1Jpn, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY)           ''Com Core No1
+                    objGraphics.DrawString(mCstLabelDigitalComCore2Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY + 13)     ''Com Core No2
+                    objGraphics.DrawString(mCstLabelDigitalComCore3Jpn, gFnt8j, gFntColorBlack, mCstPosDigitalComTermNo + 3, sngY + 24)     ''Com Core No3
+
+                    objGraphics.DrawString(mCstLabelDigitalCableJpn, gFnt8j, gFntColorBlack, mCstPosDigitalComCoreNo + 34, sngY + 3)      ''Cable(Wire Mark)
+                    objGraphics.DrawString(mCstLabelDigitalMarkJpn, gFnt8j, gFntColorBlack, mCstPosDigitalComCoreNo + 24, sngMarkPos + 3) ''Mark(In)
+                    objGraphics.DrawString(mCstLabelDigitalClassJpn, gFnt8j, gFntColorBlack, mCstPosDigitalMark + 20, sngMarkPos + 3)     ''Class(Com)
+                    objGraphics.DrawString(mCstLabelDigitalDistJpn, gFnt8j, gFntColorBlack, mCstPosDigitalClass + 11, sngY + 11)          ''Dist
+
                 Else
-                    objGraphics.DrawString(mCstLabelDigitalAdd, gFnt7, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)          ''Add
-                    objGraphics.DrawString(mCstLabelDigitalCh, gFnt7, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 11)                   ''Ch No
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        objGraphics.DrawString(mCstLabelDigitalAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)          ''Add
+                        objGraphics.DrawString(mCstLabelDigitalCh, gFnt8, gFntColorBlack, mCstPosDigitalAdd, sngY + 11)                   ''Ch No
+                    Else
+                        objGraphics.DrawString(mCstLabelDigitalAdd, gFnt7, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)          ''Add
+                        objGraphics.DrawString(mCstLabelDigitalCh, gFnt7, gFntColorBlack, mCstPosDigitalAdd + 10, sngY + 11)                   ''Ch No
+                    End If
+                    objGraphics.DrawString(mCstLabelDigitalItem, gFnt8, gFntColorBlack, mCstPosDigitalChNo + 70, sngY + 11)           ''Item Name
+
+                    objGraphics.DrawString(mCstLabelDigitalInCore1, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY)              ''In Core No1
+                    objGraphics.DrawString(mCstLabelDigitalInCore2, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY + 10)         ''In Core No2
+                    objGraphics.DrawString(mCstLabelDigitalInCore3, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY + 20)         ''In Core No3
+                    objGraphics.DrawString(mCstLabelDigitalInTerm1, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY)              ''In Term No1
+                    objGraphics.DrawString(mCstLabelDigitalInTerm2, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY + 10)         ''In Term No2
+                    objGraphics.DrawString(mCstLabelDigitalInTerm3, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY + 20)         ''In Term No3
+
+                    objGraphics.DrawString(mCstLabelDigitalSignal, gFnt8, gFntColorBlack, mCstPosDigitalInTermNo + 8, sngY + 11)      ''Signal
+
+                    objGraphics.DrawString(mCstLabelDigitalComTerm1, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY)               ''Com Term No1
+                    objGraphics.DrawString(mCstLabelDigitalComTerm2, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY + 10)          ''Com Term No2
+                    objGraphics.DrawString(mCstLabelDigitalComTerm3, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY + 20)          ''Com Term No3
+                    objGraphics.DrawString(mCstLabelDigitalComCore1, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY)            ''Com Core No1
+                    objGraphics.DrawString(mCstLabelDigitalComCore2, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY + 10)       ''Com Core No2
+                    objGraphics.DrawString(mCstLabelDigitalComCore3, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY + 20)       ''Com Core No3
+
+                    ''位置調整  2013.11.20
+                    'objGraphics.DrawString(mCstLabelDigitalCable, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 46, sngY + 1)      ''Cable(Wire Mark)
+                    'objGraphics.DrawString(mCstLabelDigitalMark, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 26, sngMarkPos + 1) ''Mark(In)
+                    'objGraphics.DrawString(mCstLabelDigitalClass, gFnt8, gFntColorBlack, mCstPosDigitalMark + 16, sngMarkPos + 1)     ''Class(Com)
+                    'objGraphics.DrawString(mCstLabelDigitalDist, gFnt8, gFntColorBlack, mCstPosDigitalClass + 23, sngY + 11)          ''Dist
+                    objGraphics.DrawString(mCstLabelDigitalCable, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 44, sngY + 1)      ''Cable(Wire Mark)
+                    objGraphics.DrawString(mCstLabelDigitalMark, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 24, sngMarkPos + 1) ''Mark(In)
+                    objGraphics.DrawString(mCstLabelDigitalClass, gFnt8, gFntColorBlack, mCstPosDigitalMark + 14, sngMarkPos + 1)     ''Class(Com)
+                    objGraphics.DrawString(mCstLabelDigitalDist, gFnt8, gFntColorBlack, mCstPosDigitalClass + 21, sngY + 11)          ''Dist
                 End If
-                objGraphics.DrawString(mCstLabelDigitalItem, gFnt8, gFntColorBlack, mCstPosDigitalChNo + 70, sngY + 11)           ''Item Name
 
-                objGraphics.DrawString(mCstLabelDigitalInCore1, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY)              ''In Core No1
-                objGraphics.DrawString(mCstLabelDigitalInCore2, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY + 10)         ''In Core No2
-                objGraphics.DrawString(mCstLabelDigitalInCore3, gFnt8, gFntColorBlack, mCstPosDigitalItemName, sngY + 20)         ''In Core No3
-                objGraphics.DrawString(mCstLabelDigitalInTerm1, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY)              ''In Term No1
-                objGraphics.DrawString(mCstLabelDigitalInTerm2, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY + 10)         ''In Term No2
-                objGraphics.DrawString(mCstLabelDigitalInTerm3, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo, sngY + 20)         ''In Term No3
-
-                objGraphics.DrawString(mCstLabelDigitalSignal, gFnt8, gFntColorBlack, mCstPosDigitalInTermNo + 8, sngY + 11)      ''Signal
-
-                objGraphics.DrawString(mCstLabelDigitalComTerm1, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY)               ''Com Term No1
-                objGraphics.DrawString(mCstLabelDigitalComTerm2, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY + 10)          ''Com Term No2
-                objGraphics.DrawString(mCstLabelDigitalComTerm3, gFnt8, gFntColorBlack, mCstPosDigitalStatus, sngY + 20)          ''Com Term No3
-                objGraphics.DrawString(mCstLabelDigitalComCore1, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY)            ''Com Core No1
-                objGraphics.DrawString(mCstLabelDigitalComCore2, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY + 10)       ''Com Core No2
-                objGraphics.DrawString(mCstLabelDigitalComCore3, gFnt8, gFntColorBlack, mCstPosDigitalComTermNo, sngY + 20)       ''Com Core No3
-
-                ''位置調整  2013.11.20
-                'objGraphics.DrawString(mCstLabelDigitalCable, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 46, sngY + 1)      ''Cable(Wire Mark)
-                'objGraphics.DrawString(mCstLabelDigitalMark, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 26, sngMarkPos + 1) ''Mark(In)
-                'objGraphics.DrawString(mCstLabelDigitalClass, gFnt8, gFntColorBlack, mCstPosDigitalMark + 16, sngMarkPos + 1)     ''Class(Com)
-                'objGraphics.DrawString(mCstLabelDigitalDist, gFnt8, gFntColorBlack, mCstPosDigitalClass + 23, sngY + 11)          ''Dist
-                objGraphics.DrawString(mCstLabelDigitalCable, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 44, sngY + 1)      ''Cable(Wire Mark)
-                objGraphics.DrawString(mCstLabelDigitalMark, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 24, sngMarkPos + 1) ''Mark(In)
-                objGraphics.DrawString(mCstLabelDigitalClass, gFnt8, gFntColorBlack, mCstPosDigitalMark + 14, sngMarkPos + 1)     ''Class(Com)
-                objGraphics.DrawString(mCstLabelDigitalDist, gFnt8, gFntColorBlack, mCstPosDigitalClass + 21, sngY + 11)          ''Dist
             End If
 
         Catch ex As Exception
@@ -1846,11 +2108,23 @@
             ''描画必須の固定文字列
             ' 2015.10.16 ﾀｸﾞ表示
             ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
-            If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                objGraphics.DrawString(strRowAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 5, sngY + 8)       ''Add
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+
+                If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                    objGraphics.DrawString(strRowAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 5, sngY + 8)       ''Add
+                Else
+                    objGraphics.DrawString(strRowAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 2, sngY + 8)       ''Add   ' 2015.10.16 ﾀｸﾞ表示
+                End If
             Else
-                objGraphics.DrawString(strRowAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 2, sngY + 8)       ''Add   ' 2015.10.16 ﾀｸﾞ表示
+                'FCU2が選択されている場合
+                If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                    objGraphics.DrawString(strRowAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 5, sngY + 8)       ''Add
+                Else
+                    objGraphics.DrawString(strRowAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 2, sngY + 8)       ''Add   ' 2015.10.16 ﾀｸﾞ表示
+                End If
             End If
+
             objGraphics.DrawString(strRowNo, gFnt8, gFntColorBlack, mCstPosDigitalInCoreNo + 7, sngY + 8)       ''In Term No
             objGraphics.DrawString("C" & strRowNo, gFnt8, gFntColorBlack, mCstPosDigitalStatus + 3, sngY + 8)   ''Com Term No
             objGraphics.DrawString(strRowNo, gFnt8, gFntColorBlack, mCstPosDigitalComCoreNo + 7, sngY + 8)      ''Mark No
@@ -1964,66 +2238,193 @@
                 End If
             End If
 
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''ChNo
+                If strCH = "" And strCh2 <> "" Then     ''運転積算用 2015.04.21 1CHなし、2CHのみ設定時
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCh2.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                    Else
+                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCh2.Length * gFntScale6) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
+                    End If
+                    '//
+                Else
+                    If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)     2014.09.18
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 0)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt8, gFntColorBlack, sngPosChNo, sngY + 16)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 0)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt7, gFntColorBlack, sngPosChNo, sngY + 16)
+                        End If
+                        '//
+                    ElseIf hudtPrtPageInfo.strChNo2 <> "" Then  '' CH_NO (同一端子CH表示用)     2013.11.23
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 3)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 14)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 3)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 14)
+                        End If
+                        ' //
+                    Else
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
+                        End If
+                        '//
+                    End If
+                End If
+            Else
+                'FCU2が選択されている場合
+
+                ''ChNo
+                If strCH = "" And strCh2 <> "" Then     ''運転積算用 2015.04.21 1CHなし、2CHのみ設定時
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCh2.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                    Else
+                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCh2.Length * gFntScale6) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
+                    End If
+                    '//
+                Else
+                    If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)     2014.09.18
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 0)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt8, gFntColorBlack, sngPosChNo, sngY + 16)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 0)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt7, gFntColorBlack, sngPosChNo, sngY + 16)
+                        End If
+                        '//
+                    ElseIf hudtPrtPageInfo.strChNo2 <> "" Then  '' CH_NO (同一端子CH表示用)     2013.11.23
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 3)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 14)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 3)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 14)
+                        End If
+                        ' //
+                    Else
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
+                        End If
+                        '//
+                    End If
+                End If
+
+
             ''ChNo
             If strCH = "" And strCh2 <> "" Then     ''運転積算用 2015.04.21 1CHなし、2CHのみ設定時
-                ' 2015.10.16  ﾀｸﾞ表示
-                ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
-                If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                    sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCh2.Length * gFntScale7) / 2))
-                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
-                Else
-                    sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCh2.Length * gFntScale6) / 2))
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCh2.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                    Else
+                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCh2.Length * gFntScale6) / 2))
                     objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
                 End If
                 '//
             Else
                 If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)     2014.09.18
-                    ' 2015.10.16  ﾀｸﾞ表示
-                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
-                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
-                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 0)
-                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
-                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt8, gFntColorBlack, sngPosChNo, sngY + 16)
-                    Else
-                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 0)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt8, gFntColorBlack, sngPosChNo, sngY + 16)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
                         objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 0)
                         objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
                         objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt7, gFntColorBlack, sngPosChNo, sngY + 16)
                     End If
                     '//
                 ElseIf hudtPrtPageInfo.strChNo2 <> "" Then  '' CH_NO (同一端子CH表示用)     2013.11.23
-                    ' 2015.10.16  ﾀｸﾞ表示
-                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
-                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
-                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 3)
-                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 14)
-                    Else
-                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 3)
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 14)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
                         objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 3)
                         objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 14)
                     End If
                     ' //
                 Else
-                    ' 2015.10.16  ﾀｸﾞ表示
-                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
-                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
-                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
-                    Else
-                        sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                        ' 2015.10.16  ﾀｸﾞ表示
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                            objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                        Else
+                            sngPosChNo = mCstPosDigitalAdd + (((mCstPosDigitalChNo - mCstPosDigitalAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
                         objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
                     End If
                     '//
                 End If
             End If
+            End If
 
-            ''ItemName
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
-                objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosDigitalChNo, sngY + 14)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''ItemName
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosDigitalChNo, sngY + 14)
+                Else
+                    objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosDigitalChNo, sngY + 14)
+                End If
             Else
-                objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosDigitalChNo, sngY + 14)
+                'FCU1が選択されている場合
+                ''ItemName
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosDigitalChNo, sngY + 14)
+                Else
+                    objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosDigitalChNo, sngY + 14)
+                End If
             End If
 
             ''CoreNo(IN)
@@ -2032,15 +2433,35 @@
 
             ''Status
             'If (hudtPrtPageInfo.intChType <> gCstCodeChTypePulse) And (strStatus <> "") Then    'パルス、運転積算は除外
-            If strStatus <> "" Then    'パルス、運転積算は除外
-                'Ver2.0.7.L Padding
-                'objGraphics.DrawString("(" & strStatus.PadRight(17) & ")", gFnt8, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
-                If g_bytHOAN = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '保安庁または全和文仕様の場合 20200306 hori
-                    objGraphics.DrawString("(" & PadB(strStatus, "LEFT", 17, " ") & ")", gFnt8j, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
-                Else
-                    objGraphics.DrawString("(" & PadB(strStatus, "LEFT", 17, " ") & ")", gFnt8, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
+
+
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If strStatus <> "" Then    'パルス、運転積算は除外
+                    'Ver2.0.7.L Padding
+                    'objGraphics.DrawString("(" & strStatus.PadRight(17) & ")", gFnt8, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
+                    If g_bytHOAN = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '保安庁または全和文仕様の場合 20200306 hori
+                        objGraphics.DrawString("(" & PadB(strStatus, "LEFT", 17, " ") & ")", gFnt8j, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
+                    Else
+                        objGraphics.DrawString("(" & PadB(strStatus, "LEFT", 17, " ") & ")", gFnt8, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
+                    End If
+                End If
+
+            Else
+                'FCU1が選択されている場合
+                If strStatus <> "" Then    'パルス、運転積算は除外
+                    'Ver2.0.7.L Padding
+                    'objGraphics.DrawString("(" & strStatus.PadRight(17) & ")", gFnt8, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
+                    If g_bytHOAN = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '保安庁または全和文仕様の場合 20200306 hori
+                        objGraphics.DrawString("(" & PadB(strStatus, "LEFT", 17, " ") & ")", gFnt8j, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
+                    Else
+                        objGraphics.DrawString("(" & PadB(strStatus, "LEFT", 17, " ") & ")", gFnt8, gFntColorBlack, mCstPosDigitalChNo + 72, sngY + 3)
+                    End If
                 End If
             End If
+
+
+
 
             '' Ver1.9.3 2016.01.15  OUTPUTｽﾃｰﾀｽ 保留
             ''If hudtPrtPageInfo.bytOutput <> 0 And hudtPrtPageInfo.strOutStatus <> "" Then
@@ -2093,120 +2514,242 @@
 
         '該当CHデータを探す
         Dim bHitFlg As Boolean = False
-        For iData = 0 To UBound(gudt.SetChInfo.udtChannel) Step 1
-            If gudt.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
-                bHitFlg = True
-                Exit For
-            End If
-        Next iData
 
-        'CHNoがみつからないなら何もしないで処理抜け
-        If bHitFlg = False Then
-            Return
-        End If
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            For iData = 0 To UBound(gudt.SetChInfo.udtChannel) Step 1
+                If gudt.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
+                    bHitFlg = True
+                    Exit For
+                End If
+            Next iData
 
-        With gudt.SetChInfo.udtChannel(iData)
-            'アナログCHじゃないなら処理抜け、PIDも処理抜けしない Ver2.0.7.H
-            If .udtChCommon.shtChType <> gCstCodeChTypeAnalog And .udtChCommon.shtChType <> gCstCodeChTypePID Then
+            'CHNoがみつからないなら何もしないで処理抜け
+            If bHitFlg = False Then
                 Return
             End If
 
-            'ステータスマニュアル入力じゃないなら処理抜け
-            If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
-                Return
-            End If
+            With gudt.SetChInfo.udtChannel(iData)
+                'アナログCHじゃないなら処理抜け、PIDも処理抜けしない Ver2.0.7.H
+                If .udtChCommon.shtChType <> gCstCodeChTypeAnalog And .udtChCommon.shtChType <> gCstCodeChTypePID Then
+                    Return
+                End If
 
-            'Ver2.0.7.H PID対応
-            If .udtChCommon.shtChType = gCstCodeChTypePID Then
-                strHH = gGetString(.PidHiHiStatusInput)
-                strH = gGetString(.PidHiStatusInput)
-                strL = gGetString(.PidLoStatusInput)
-                strLL = gGetString(.PidLoLoStatusInput)
-            Else
-                strHH = gGetString(.AnalogHiHiStatusInput)
-                strH = gGetString(.AnalogHiStatusInput)
-                strL = gGetString(.AnalogLoStatusInput)
-                strLL = gGetString(.AnalogLoLoStatusInput)
-            End If
+                'ステータスマニュアル入力じゃないなら処理抜け
+                If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                    Return
+                End If
 
-            If LenB(strHH) = 0 And LenB(strH) = 0 And LenB(strL) = 0 And LenB(strLL) = 0 Then
-                strTemp = ""
-            Else
-                If .udtChCommon.shtData = gCstCodeChDataTypeAnalogExtDev Then
-                    'Ver2.0.7.M (保安庁)
-                    If g_bytHOAN = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
-                        If LenB(strLL) = 0 And LenB(strHH) = 0 Then
-                            If LenB(strH) = 0 Then
-                                strTemp = "正常/" & strL
-                            Else
-                                strTemp = "正常/" & strH
-                            End If
-                        Else
-                            If LenB(strHH) = 0 Then
-                                strTemp = "正常/" & strL & "/" & strLL
-                            Else
-                                strTemp = "正常/" & strH & "/" & strHH
-                            End If
-                        End If
-                    Else
-                        If LenB(strLL) = 0 And LenB(strHH) = 0 Then
-                            If LenB(strH) = 0 Then
-                                strTemp = "NOR/" & strL
-                            Else
-                                strTemp = "NOR/" & strH
-                            End If
-                        Else
-                            If LenB(strHH) = 0 Then
-                                strTemp = "NOR/" & strL & "/" & strLL
-                            Else
-                                strTemp = "NOR/" & strH & "/" & strHH
-                            End If
-                        End If
-                    End If
+                'Ver2.0.7.H PID対応
+                If .udtChCommon.shtChType = gCstCodeChTypePID Then
+                    strHH = gGetString(.PidHiHiStatusInput)
+                    strH = gGetString(.PidHiStatusInput)
+                    strL = gGetString(.PidLoStatusInput)
+                    strLL = gGetString(.PidLoLoStatusInput)
                 Else
-                    If LenB(strLL) <> 0 Then
-                        strTemp += strLL & "/"
+                    strHH = gGetString(.AnalogHiHiStatusInput)
+                    strH = gGetString(.AnalogHiStatusInput)
+                    strL = gGetString(.AnalogLoStatusInput)
+                    strLL = gGetString(.AnalogLoLoStatusInput)
+                End If
+
+                If LenB(strHH) = 0 And LenB(strH) = 0 And LenB(strL) = 0 And LenB(strLL) = 0 Then
+                    strTemp = ""
+                Else
+                    If .udtChCommon.shtData = gCstCodeChDataTypeAnalogExtDev Then
+                        'Ver2.0.7.M (保安庁)
+                        If g_bytHOAN = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
+                            If LenB(strLL) = 0 And LenB(strHH) = 0 Then
+                                If LenB(strH) = 0 Then
+                                    strTemp = "正常/" & strL
+                                Else
+                                    strTemp = "正常/" & strH
+                                End If
+                            Else
+                                If LenB(strHH) = 0 Then
+                                    strTemp = "正常/" & strL & "/" & strLL
+                                Else
+                                    strTemp = "正常/" & strH & "/" & strHH
+                                End If
+                            End If
+                        Else
+                            If LenB(strLL) = 0 And LenB(strHH) = 0 Then
+                                If LenB(strH) = 0 Then
+                                    strTemp = "NOR/" & strL
+                                Else
+                                    strTemp = "NOR/" & strH
+                                End If
+                            Else
+                                If LenB(strHH) = 0 Then
+                                    strTemp = "NOR/" & strL & "/" & strLL
+                                Else
+                                    strTemp = "NOR/" & strH & "/" & strHH
+                                End If
+                            End If
+                        End If
                     Else
-                        strTemp = ""
-                    End If
+                        If LenB(strLL) <> 0 Then
+                            strTemp += strLL & "/"
+                        Else
+                            strTemp = ""
+                        End If
 
-                    If LenB(strL) <> 0 Then
-                        strTemp += strL & "/"
-                    End If
+                        If LenB(strL) <> 0 Then
+                            strTemp += strL & "/"
+                        End If
 
-                    'Ver2.0.7.M (保安庁)
-                    If g_bytHOAN = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
-                        strTemp += "正常/"
-                    Else
-                        strTemp += "NOR/"
-                    End If
+                        'Ver2.0.7.M (保安庁)
+                        If g_bytHOAN = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
+                            strTemp += "正常/"
+                        Else
+                            strTemp += "NOR/"
+                        End If
 
-                    If LenB(strH) <> 0 Then
-                        strTemp += strH & "/"
-                    End If
+                        If LenB(strH) <> 0 Then
+                            strTemp += strH & "/"
+                        End If
 
-                    If LenB(strHH) <> 0 Then
-                        strTemp += strHH
-                    End If
+                        If LenB(strHH) <> 0 Then
+                            strTemp += strHH
+                        End If
 
-                    'Ver2.0.7.M (保安庁)
-                    'If strTemp = "NOR/" Then
-                    If strTemp = "NOR/" Or strTemp = "正常/" Then
-                        strTemp = ""
-                    Else
-                        '' 文字列の最後尾ならば"/"を削除する
-                        iLen = LenB(strTemp)
-                        'Ver2.0.7.L
-                        'If strTemp.Substring(iLen - 1) = "/" Then
-                        If MidB(strTemp, iLen - 1) = "/" Then
-                            'strTemp = strTemp.Remove(iLen - 1)
-                            strTemp = MidB(strTemp, 0, iLen - 1)
+                        'Ver2.0.7.M (保安庁)
+                        'If strTemp = "NOR/" Then
+                        If strTemp = "NOR/" Or strTemp = "正常/" Then
+                            strTemp = ""
+                        Else
+                            '' 文字列の最後尾ならば"/"を削除する
+                            iLen = LenB(strTemp)
+                            'Ver2.0.7.L
+                            'If strTemp.Substring(iLen - 1) = "/" Then
+                            If MidB(strTemp, iLen - 1) = "/" Then
+                                'strTemp = strTemp.Remove(iLen - 1)
+                                strTemp = MidB(strTemp, 0, iLen - 1)
+                            End If
                         End If
                     End If
                 End If
-            End If
-            pstrStatus = strTemp
-        End With
+                pstrStatus = strTemp
+            End With
+
+        Else
+
+            For iData = 0 To UBound(gudt2.SetChInfo.udtChannel) Step 1
+                If gudt2.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
+                    bHitFlg = True
+                    Exit For
+                End If
+            Next iData
+
+            'CHNoがみつからないなら何もしないで処理抜け
+            If bHitFlg = False Then
+            Return
+        End If
+
+            With gudt2.SetChInfo.udtChannel(iData)
+                'アナログCHじゃないなら処理抜け、PIDも処理抜けしない Ver2.0.7.H
+                If .udtChCommon.shtChType <> gCstCodeChTypeAnalog And .udtChCommon.shtChType <> gCstCodeChTypePID Then
+                    Return
+                End If
+
+                'ステータスマニュアル入力じゃないなら処理抜け
+                If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                    Return
+                End If
+
+                'Ver2.0.7.H PID対応
+                If .udtChCommon.shtChType = gCstCodeChTypePID Then
+                    strHH = gGetString(.PidHiHiStatusInput)
+                    strH = gGetString(.PidHiStatusInput)
+                    strL = gGetString(.PidLoStatusInput)
+                    strLL = gGetString(.PidLoLoStatusInput)
+                Else
+                    strHH = gGetString(.AnalogHiHiStatusInput)
+                    strH = gGetString(.AnalogHiStatusInput)
+                    strL = gGetString(.AnalogLoStatusInput)
+                    strLL = gGetString(.AnalogLoLoStatusInput)
+                End If
+
+                If LenB(strHH) = 0 And LenB(strH) = 0 And LenB(strL) = 0 And LenB(strLL) = 0 Then
+                    strTemp = ""
+                Else
+                    If .udtChCommon.shtData = gCstCodeChDataTypeAnalogExtDev Then
+                        'Ver2.0.7.M (保安庁)
+                        If g_bytHOAN = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
+                            If LenB(strLL) = 0 And LenB(strHH) = 0 Then
+                                If LenB(strH) = 0 Then
+                                    strTemp = "正常/" & strL
+                                Else
+                                    strTemp = "正常/" & strH
+                                End If
+                            Else
+                                If LenB(strHH) = 0 Then
+                                    strTemp = "正常/" & strL & "/" & strLL
+                                Else
+                                    strTemp = "正常/" & strH & "/" & strHH
+                                End If
+                            End If
+                        Else
+                            If LenB(strLL) = 0 And LenB(strHH) = 0 Then
+                                If LenB(strH) = 0 Then
+                                    strTemp = "NOR/" & strL
+                                Else
+                                    strTemp = "NOR/" & strH
+                                End If
+                            Else
+                                If LenB(strHH) = 0 Then
+                                    strTemp = "NOR/" & strL & "/" & strLL
+                                Else
+                                    strTemp = "NOR/" & strH & "/" & strHH
+                                End If
+                            End If
+                        End If
+                    Else
+                        If LenB(strLL) <> 0 Then
+                            strTemp += strLL & "/"
+                        Else
+                            strTemp = ""
+                        End If
+
+                        If LenB(strL) <> 0 Then
+                            strTemp += strL & "/"
+                        End If
+
+                        'Ver2.0.7.M (保安庁)
+                        If g_bytHOAN = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
+                            strTemp += "正常/"
+                        Else
+                            strTemp += "NOR/"
+                        End If
+
+                        If LenB(strH) <> 0 Then
+                            strTemp += strH & "/"
+                        End If
+
+                        If LenB(strHH) <> 0 Then
+                            strTemp += strHH
+                        End If
+
+                        'Ver2.0.7.M (保安庁)
+                        'If strTemp = "NOR/" Then
+                        If strTemp = "NOR/" Or strTemp = "正常/" Then
+                            strTemp = ""
+                        Else
+                            '' 文字列の最後尾ならば"/"を削除する
+                            iLen = LenB(strTemp)
+                            'Ver2.0.7.L
+                            'If strTemp.Substring(iLen - 1) = "/" Then
+                            If MidB(strTemp, iLen - 1) = "/" Then
+                                'strTemp = strTemp.Remove(iLen - 1)
+                                strTemp = MidB(strTemp, 0, iLen - 1)
+                            End If
+                        End If
+                    End If
+                End If
+                pstrStatus = strTemp
+            End With
+        End If
+
     End Sub
 #End Region
 
@@ -2216,28 +2759,55 @@
     Private Function fnGetOrAnd(pintFU As Integer, pintPort As Integer, pintPIN As Integer) As String
         Dim strRet As String = ""
 
-        With gudt.SetChOutput
-            For i As Integer = 0 To UBound(.udtCHOutPut) Step 1
-                If .udtCHOutPut(i).bytFuno = pintFU And _
-                    .udtCHOutPut(i).bytPortno = pintPort And _
-                    .udtCHOutPut(i).bytPin = pintPIN Then
-                    '一致したら、該当OrAnd
-                    If .udtCHOutPut(i).bytType <> gCstCodeFuOutputChTypeCh Then
-                        For j As Integer = 0 To UBound(gudt.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr) Step 1
-                            If gudt.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(j).shtChid <> 0 Then
-                                strRet = strRet & gudt.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(j).shtChid & " "
-                            End If
-                        Next j
-                        strRet = strRet.Trim
-                        strRet = strRet.Replace(" ", ",")
-                        strRet = pintPIN.ToString & ":" & strRet
-                        Exit For
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            With gudt.SetChOutput
+                For i As Integer = 0 To UBound(.udtCHOutPut) Step 1
+                    If .udtCHOutPut(i).bytFuno = pintFU And
+                        .udtCHOutPut(i).bytPortno = pintPort And
+                        .udtCHOutPut(i).bytPin = pintPIN Then
+                        '一致したら、該当OrAnd
+                        If .udtCHOutPut(i).bytType <> gCstCodeFuOutputChTypeCh Then
+                            For j As Integer = 0 To UBound(gudt.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr) Step 1
+                                If gudt.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(j).shtChid <> 0 Then
+                                    strRet = strRet & gudt.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(j).shtChid & " "
+                                End If
+                            Next j
+                            strRet = strRet.Trim
+                            strRet = strRet.Replace(" ", ",")
+                            strRet = pintPIN.ToString & ":" & strRet
+                            Exit For
+                        End If
                     End If
-                End If
-            Next i
-        End With
+                Next i
+            End With
 
-        Return strRet
+            Return strRet
+        Else
+            'FCU2が選択されている場合
+            With gudt2.SetChOutput
+                For i As Integer = 0 To UBound(.udtCHOutPut) Step 1
+                    If .udtCHOutPut(i).bytFuno = pintFU And
+                    .udtCHOutPut(i).bytPortno = pintPort And
+                    .udtCHOutPut(i).bytPin = pintPIN Then
+                        '一致したら、該当OrAnd
+                        If .udtCHOutPut(i).bytType <> gCstCodeFuOutputChTypeCh Then
+                            For j As Integer = 0 To UBound(gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr) Step 1
+                                If gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(j).shtChid <> 0 Then
+                                    strRet = strRet & gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(j).shtChid & " "
+                                End If
+                            Next j
+                            strRet = strRet.Trim
+                            strRet = strRet.Replace(" ", ",")
+                            strRet = pintPIN.ToString & ":" & strRet
+                            Exit For
+                        End If
+                    End If
+                Next i
+            End With
+
+            Return strRet
+        End If
     End Function
 #End Region
 
@@ -2263,58 +2833,117 @@
             Dim line_len As Integer
 
             Dim iFind1 As Integer = hstrTargetStrings.IndexOf("^"c)     '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞ検索
-
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then     '' 和文表示の場合  2014.05.19
-                ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
-                ''全角時の分割処理変更    2015.02.03
-                '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞ対応
-                If iFind1 <> -1 Then
-                    ''1行目
-                    strLine = hstrTargetStrings.Substring(0, iFind1)
-                    hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 3)
-
-                    ''2行目
-                    strLine = hstrTargetStrings.Substring(iFind1 + 1)
-                    hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
-                Else
-                    all_len = LenB(hstrTargetStrings)
-                    If all_len > hintLineLength Then
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then     '' 和文表示の場合  2014.05.19
+                    ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
+                    ''全角時の分割処理変更    2015.02.03
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞ対応
+                    If iFind1 <> -1 Then
                         ''1行目
-                        strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
                         hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 3)
 
                         ''2行目
-                        line_len = LenB(strLine.Trim)
-                        strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
                         hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
                     Else
-                        ''1行表示
-                        hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 8)
-                    End If
-                End If
-            Else
-                ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
-                '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
-                If iFind1 <> -1 Then
-                    ''1行目
-                    strLine = hstrTargetStrings.Substring(0, iFind1)
-                    hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 3)
+                        all_len = LenB(hstrTargetStrings)
+                        If all_len > hintLineLength Then
+                            ''1行目
+                            strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 3)
 
-                    ''2行目
-                    strLine = hstrTargetStrings.Substring(iFind1 + 1)
-                    hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
+                            ''2行目
+                            line_len = LenB(strLine.Trim)
+                            strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                            hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
+                        Else
+                            ''1行表示
+                            hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 8)
+                        End If
+                    End If
                 Else
-                    If hstrTargetStrings.Length > hintLineLength Then
+                    ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
                         ''1行目
-                        strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
                         hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 3)
 
                         ''2行目
-                        strLine = hstrTargetStrings.Substring(hintLineLength)
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
                         hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
                     Else
-                        ''1行表示
-                        hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 8)
+                        If hstrTargetStrings.Length > hintLineLength Then
+                            ''1行目
+                            strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 3)
+
+                            ''2行目
+                            strLine = hstrTargetStrings.Substring(hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
+                        Else
+                            ''1行表示
+                            hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 8)
+                        End If
+                    End If
+                End If
+
+            Else
+                'FCU1が選択されている場合
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Then     '' 和文表示の場合  2014.05.19
+                    ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
+                    ''全角時の分割処理変更    2015.02.03
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞ対応
+                    If iFind1 <> -1 Then
+                        ''1行目
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
+                        hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 3)
+
+                        ''2行目
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
+                        hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
+                    Else
+                        all_len = LenB(hstrTargetStrings)
+                        If all_len > hintLineLength Then
+                            ''1行目
+                            strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 3)
+
+                            ''2行目
+                            line_len = LenB(strLine.Trim)
+                            strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                            hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
+                        Else
+                            ''1行表示
+                            hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 8)
+                        End If
+                    End If
+                Else
+                    ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
+                        ''1行目
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
+                        hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 3)
+
+                        ''2行目
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
+                        hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
+                    Else
+                        If hstrTargetStrings.Length > hintLineLength Then
+                            ''1行目
+                            strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 3)
+
+                            ''2行目
+                            strLine = hstrTargetStrings.Substring(hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
+                        Else
+                            ''1行表示
+                            hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 8)
+                        End If
                     End If
                 End If
             End If
@@ -2410,117 +3039,236 @@
             ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
 
             '和文仕様 20200217 hori
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then
-                If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                    objGraphics.DrawString(mCstLabelAnalogAdd1Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 6)     ''Add
-                    objGraphics.DrawString(mCstLabelAnalogAdd2Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 18)    ''Add
-                    objGraphics.DrawString(mCstLabelAnalogCh1Jpn, gFnt8, gFntColorBlack, mCstPosAnalogAdd + 5, sngY + 4)        ''Ch No
-                    objGraphics.DrawString(mCstLabelAnalogCh2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogAdd + 2, sngY + 20)     ''Ch No
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
 
-                Else
-                    objGraphics.DrawString(mCstLabelAnalogAdd1Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 6)     ''Add
-                    objGraphics.DrawString(mCstLabelAnalogAdd2Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 18)    ''Add
-                    objGraphics.DrawString(mCstLabelAnalogCh1Jpn, gFnt7, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 6)           ''Ch No
-                    objGraphics.DrawString(mCstLabelAnalogCh2Jpn, gFnt7j, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 18)          ''Ch No
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then
+                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        objGraphics.DrawString(mCstLabelAnalogAdd1Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 6)     ''Add
+                        objGraphics.DrawString(mCstLabelAnalogAdd2Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 18)    ''Add
+                        objGraphics.DrawString(mCstLabelAnalogCh1Jpn, gFnt8, gFntColorBlack, mCstPosAnalogAdd + 5, sngY + 4)        ''Ch No
+                        objGraphics.DrawString(mCstLabelAnalogCh2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogAdd + 2, sngY + 20)     ''Ch No
 
-                End If
-                objGraphics.DrawString(mCstLabelAnalogItemNameJpn, gFnt8j, gFntColorBlack, mCstPosAnalogChNo + 80, sngY + 12)   ''Item Name
+                    Else
+                        objGraphics.DrawString(mCstLabelAnalogAdd1Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 6)     ''Add
+                        objGraphics.DrawString(mCstLabelAnalogAdd2Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 18)    ''Add
+                        objGraphics.DrawString(mCstLabelAnalogCh1Jpn, gFnt7, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 6)           ''Ch No
+                        objGraphics.DrawString(mCstLabelAnalogCh2Jpn, gFnt7j, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 18)          ''Ch No
 
-                ''AO基板は"SIG"欄無し
-                If hPortType <> gCstCodeFuSlotTypeAO Then
-                    objGraphics.DrawString(mCstLabelAnalogSigJpn, gFnt8, gFntColorBlack, mCstPosAnalogItemName + 3, sngY + 11)     ''Sig
-                End If
+                    End If
+                    objGraphics.DrawString(mCstLabelAnalogItemNameJpn, gFnt8j, gFntColorBlack, mCstPosAnalogChNo + 80, sngY + 12)   ''Item Name
 
-                objGraphics.DrawString(mCstLabelAnalogCoreNo1Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogSig + 2, sngY + 7)           ''Core No1
-                objGraphics.DrawString(mCstLabelAnalogCoreNo2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogSig + 2, sngY + 21)          ''Core No2
-                objGraphics.DrawString(mCstLabelAnalogTermNo1Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogCoreNo + 2, sngY + 7)        ''Term No1
-                objGraphics.DrawString(mCstLabelAnalogTermNo2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogCoreNo + 2, sngY + 21)       ''Term No2
+                    ''AO基板は"SIG"欄無し
+                    If hPortType <> gCstCodeFuSlotTypeAO Then
+                        objGraphics.DrawString(mCstLabelAnalogSigJpn, gFnt8, gFntColorBlack, mCstPosAnalogItemName + 3, sngY + 11)     ''Sig
+                    End If
 
-                objGraphics.DrawString(mCstLabelAnalogStatusJpn, gFnt8j, gFntColorBlack, mCstPosAnalogTermNo + 30, sngY + 11)   ''Status
-                'objGraphics.DrawString(mCstLabelAnalogRange, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 15, sngY + 11)     ''Range
-                objGraphics.DrawString(mCstLabelAnalogDistJpn, gFnt8j, gFntColorBlack, mCstPosAnalogClass + 11, sngY + 11)      ''Dist
+                    objGraphics.DrawString(mCstLabelAnalogCoreNo1Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogSig + 2, sngY + 7)           ''Core No1
+                    objGraphics.DrawString(mCstLabelAnalogCoreNo2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogSig + 2, sngY + 21)          ''Core No2
+                    objGraphics.DrawString(mCstLabelAnalogTermNo1Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogCoreNo + 2, sngY + 7)        ''Term No1
+                    objGraphics.DrawString(mCstLabelAnalogTermNo2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogCoreNo + 2, sngY + 21)       ''Term No2
 
-                ''2線式と3線式でヘッダーラベルの表示切替え
-                Select Case udtPageType
+                    objGraphics.DrawString(mCstLabelAnalogStatusJpn, gFnt8j, gFntColorBlack, mCstPosAnalogTermNo + 30, sngY + 11)   ''Status
+                    'objGraphics.DrawString(mCstLabelAnalogRange, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 15, sngY + 11)     ''Range
+                    objGraphics.DrawString(mCstLabelAnalogDistJpn, gFnt8j, gFntColorBlack, mCstPosAnalogClass + 11, sngY + 11)      ''Dist
 
-                    Case gEnmPrintTerminalPageType.tptAnalog2
-                        If hPortType = gCstCodeFuSlotTypeAO Then    ''AO基板
-                            objGraphics.DrawString(mCstLabelAOLineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 3)     ''CABLE
-                            objGraphics.DrawString(mCstLabelAOLineMarkJpn, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 12, sngHalfPos)    ''OUT(+) (LOW)
-                            objGraphics.DrawString(mCstLabelAOLineClassJpn, gFnt8, gFntColorBlack, mCstPosAnalogMark + 10, sngHalfPos)    ''COM(-) (UPP)
-                        Else
+                    ''2線式と3線式でヘッダーラベルの表示切替え
+                    Select Case udtPageType
+
+                        Case gEnmPrintTerminalPageType.tptAnalog2
+                            If hPortType = gCstCodeFuSlotTypeAO Then    ''AO基板
+                                objGraphics.DrawString(mCstLabelAOLineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 3)     ''CABLE
+                                objGraphics.DrawString(mCstLabelAOLineMarkJpn, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 12, sngHalfPos)    ''OUT(+) (LOW)
+                                objGraphics.DrawString(mCstLabelAOLineClassJpn, gFnt8, gFntColorBlack, mCstPosAnalogMark + 10, sngHalfPos)    ''COM(-) (UPP)
+                            Else
+                                '' 位置調整 2013.11.20
+                                'objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 46, sngY + 1)     ''CABLE (WIRE MARK)
+                                'objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 26, sngHalfPos)    ''MARK (IN)
+                                'objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 16, sngHalfPos)    ''CLASS (COM)
+                                objGraphics.DrawString(mCstLabelAnalog2LineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 34, sngY + 3)     ''CABLE (WIRE MARK)
+                                objGraphics.DrawString(mCstLabelAnalog2LineMarkJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 24, sngHalfPos + 2)    ''MARK (IN)
+                                objGraphics.DrawString(mCstLabelAnalog2LineClassJpn, gFnt8j, gFntColorBlack, mCstPosAnalogMark + 20, sngHalfPos + 2)    ''CLASS (COM)
+                            End If
+
+                        Case gEnmPrintTerminalPageType.tptAnalog3
                             '' 位置調整 2013.11.20
-                            'objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 46, sngY + 1)     ''CABLE (WIRE MARK)
-                            'objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 26, sngHalfPos)    ''MARK (IN)
-                            'objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 16, sngHalfPos)    ''CLASS (COM)
-                            objGraphics.DrawString(mCstLabelAnalog2LineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 34, sngY + 3)     ''CABLE (WIRE MARK)
-                            objGraphics.DrawString(mCstLabelAnalog2LineMarkJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 24, sngHalfPos + 2)    ''MARK (IN)
-                            objGraphics.DrawString(mCstLabelAnalog2LineClassJpn, gFnt8j, gFntColorBlack, mCstPosAnalogMark + 20, sngHalfPos + 2)    ''CLASS (COM)
-                        End If
+                            'objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''Cable
+                            'objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 37, sngHalfPos)    ''Mark
+                            'objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 32, sngHalfPos)    ''Class
+                            objGraphics.DrawString(mCstLabelAnalog3LineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 82, sngY + 3)     ''Cable
+                            objGraphics.DrawString(mCstLabelAnalog3LineMarkJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 40, sngHalfPos + 3)    ''Mark
+                            objGraphics.DrawString(mCstLabelAnalog3LineClassJpn, gFnt8j, gFntColorBlack, mCstPosAnalogMark + 35, sngHalfPos + 3)    ''Class
 
-                    Case gEnmPrintTerminalPageType.tptAnalog3
-                        '' 位置調整 2013.11.20
-                        'objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''Cable
-                        'objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 37, sngHalfPos)    ''Mark
-                        'objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 32, sngHalfPos)    ''Class
-                        objGraphics.DrawString(mCstLabelAnalog3LineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 82, sngY + 3)     ''Cable
-                        objGraphics.DrawString(mCstLabelAnalog3LineMarkJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 40, sngHalfPos + 3)    ''Mark
-                        objGraphics.DrawString(mCstLabelAnalog3LineClassJpn, gFnt8j, gFntColorBlack, mCstPosAnalogMark + 35, sngHalfPos + 3)    ''Class
+                    End Select
+                Else
+                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        objGraphics.DrawString(mCstLabelAnalogAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)     ''Add
+                        objGraphics.DrawString(mCstLabelAnalogCh, gFnt8, gFntColorBlack, mCstPosAnalogAdd, sngY + 11)           ''Ch No
+                    Else
+                        objGraphics.DrawString(mCstLabelAnalogAdd, gFnt7, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)     ''Add
+                        objGraphics.DrawString(mCstLabelAnalogCh, gFnt7, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 11)           ''Ch No
+                    End If
+                    objGraphics.DrawString(mCstLabelAnalogItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo + 70, sngY + 11)   ''Item Name
 
-                End Select
+                    ''AO基板は"SIG"欄無し
+                    If hPortType <> gCstCodeFuSlotTypeAO Then
+                        objGraphics.DrawString(mCstLabelAnalogSig, gFnt8, gFntColorBlack, mCstPosAnalogItemName + 3, sngY + 11)     ''Sig
+                    End If
+
+                    objGraphics.DrawString(mCstLabelAnalogCoreNo1, gFnt8, gFntColorBlack, mCstPosAnalogSig, sngY + 7)           ''Core No1
+                    objGraphics.DrawString(mCstLabelAnalogCoreNo2, gFnt8, gFntColorBlack, mCstPosAnalogSig, sngY + 17)          ''Core No2
+                    objGraphics.DrawString(mCstLabelAnalogTermNo1, gFnt8, gFntColorBlack, mCstPosAnalogCoreNo, sngY + 7)        ''Term No1
+                    objGraphics.DrawString(mCstLabelAnalogTermNo2, gFnt8, gFntColorBlack, mCstPosAnalogCoreNo, sngY + 17)       ''Term No2
+
+                    objGraphics.DrawString(mCstLabelAnalogStatus, gFnt8, gFntColorBlack, mCstPosAnalogTermNo + 24, sngY + 11)   ''Status
+                    'objGraphics.DrawString(mCstLabelAnalogRange, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 15, sngY + 11)     ''Range
+                    objGraphics.DrawString(mCstLabelAnalogDist, gFnt8, gFntColorBlack, mCstPosAnalogClass + 21, sngY + 11)      ''Dist
+
+                    ''2線式と3線式でヘッダーラベルの表示切替え
+                    Select Case udtPageType
+
+                        Case gEnmPrintTerminalPageType.tptAnalog2
+                            If hPortType = gCstCodeFuSlotTypeAO Then    ''AO基板
+                                objGraphics.DrawString(mCstLabelAOLineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''CABLE
+                                objGraphics.DrawString(mCstLabelAOLineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 12, sngHalfPos)    ''OUT(+) (LOW)
+                                objGraphics.DrawString(mCstLabelAOLineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 10, sngHalfPos)    ''COM(-) (UPP)
+                            Else
+                                '' 位置調整 2013.11.20
+                                'objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 46, sngY + 1)     ''CABLE (WIRE MARK)
+                                'objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 26, sngHalfPos)    ''MARK (IN)
+                                'objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 16, sngHalfPos)    ''CLASS (COM)
+                                objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 44, sngY + 1)     ''CABLE (WIRE MARK)
+                                objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 24, sngHalfPos)    ''MARK (IN)
+                                objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 14, sngHalfPos)    ''CLASS (COM)
+                            End If
+
+                        Case gEnmPrintTerminalPageType.tptAnalog3
+                            '' 位置調整 2013.11.20
+                            'objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''Cable
+                            'objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 37, sngHalfPos)    ''Mark
+                            'objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 32, sngHalfPos)    ''Class
+                            objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 82, sngY + 1)     ''Cable
+                            objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 35, sngHalfPos)    ''Mark
+                            objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 30, sngHalfPos)    ''Class
+
+                    End Select
+
+                End If
+
             Else
-                If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                    objGraphics.DrawString(mCstLabelAnalogAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)     ''Add
-                    objGraphics.DrawString(mCstLabelAnalogCh, gFnt8, gFntColorBlack, mCstPosAnalogAdd, sngY + 11)           ''Ch No
-                Else
-                    objGraphics.DrawString(mCstLabelAnalogAdd, gFnt7, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)     ''Add
-                    objGraphics.DrawString(mCstLabelAnalogCh, gFnt7, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 11)           ''Ch No
-                End If
-                objGraphics.DrawString(mCstLabelAnalogItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo + 70, sngY + 11)   ''Item Name
+                'FCU1が選択されている場合
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        objGraphics.DrawString(mCstLabelAnalogAdd1Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 6)     ''Add
+                        objGraphics.DrawString(mCstLabelAnalogAdd2Jpn, gFnt8j, gFntColorBlack, gCstFrameTerminalLeft, sngY + 18)    ''Add
+                        objGraphics.DrawString(mCstLabelAnalogCh1Jpn, gFnt8, gFntColorBlack, mCstPosAnalogAdd + 5, sngY + 4)        ''Ch No
+                        objGraphics.DrawString(mCstLabelAnalogCh2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogAdd + 2, sngY + 20)     ''Ch No
 
-                ''AO基板は"SIG"欄無し
-                If hPortType <> gCstCodeFuSlotTypeAO Then
-                    objGraphics.DrawString(mCstLabelAnalogSig, gFnt8, gFntColorBlack, mCstPosAnalogItemName + 3, sngY + 11)     ''Sig
-                End If
+                    Else
+                        objGraphics.DrawString(mCstLabelAnalogAdd1Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 6)     ''Add
+                        objGraphics.DrawString(mCstLabelAnalogAdd2Jpn, gFnt7j, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 18)    ''Add
+                        objGraphics.DrawString(mCstLabelAnalogCh1Jpn, gFnt7, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 6)           ''Ch No
+                        objGraphics.DrawString(mCstLabelAnalogCh2Jpn, gFnt7j, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 18)          ''Ch No
 
-                objGraphics.DrawString(mCstLabelAnalogCoreNo1, gFnt8, gFntColorBlack, mCstPosAnalogSig, sngY + 7)           ''Core No1
-                objGraphics.DrawString(mCstLabelAnalogCoreNo2, gFnt8, gFntColorBlack, mCstPosAnalogSig, sngY + 17)          ''Core No2
-                objGraphics.DrawString(mCstLabelAnalogTermNo1, gFnt8, gFntColorBlack, mCstPosAnalogCoreNo, sngY + 7)        ''Term No1
-                objGraphics.DrawString(mCstLabelAnalogTermNo2, gFnt8, gFntColorBlack, mCstPosAnalogCoreNo, sngY + 17)       ''Term No2
+                    End If
+                    objGraphics.DrawString(mCstLabelAnalogItemNameJpn, gFnt8j, gFntColorBlack, mCstPosAnalogChNo + 80, sngY + 12)   ''Item Name
 
-                objGraphics.DrawString(mCstLabelAnalogStatus, gFnt8, gFntColorBlack, mCstPosAnalogTermNo + 24, sngY + 11)   ''Status
-                'objGraphics.DrawString(mCstLabelAnalogRange, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 15, sngY + 11)     ''Range
-                objGraphics.DrawString(mCstLabelAnalogDist, gFnt8, gFntColorBlack, mCstPosAnalogClass + 21, sngY + 11)      ''Dist
+                    ''AO基板は"SIG"欄無し
+                    If hPortType <> gCstCodeFuSlotTypeAO Then
+                        objGraphics.DrawString(mCstLabelAnalogSigJpn, gFnt8, gFntColorBlack, mCstPosAnalogItemName + 3, sngY + 11)     ''Sig
+                    End If
 
-                ''2線式と3線式でヘッダーラベルの表示切替え
-                Select Case udtPageType
+                    objGraphics.DrawString(mCstLabelAnalogCoreNo1Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogSig + 2, sngY + 7)           ''Core No1
+                    objGraphics.DrawString(mCstLabelAnalogCoreNo2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogSig + 2, sngY + 21)          ''Core No2
+                    objGraphics.DrawString(mCstLabelAnalogTermNo1Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogCoreNo + 2, sngY + 7)        ''Term No1
+                    objGraphics.DrawString(mCstLabelAnalogTermNo2Jpn, gFnt8j, gFntColorBlack, mCstPosAnalogCoreNo + 2, sngY + 21)       ''Term No2
 
-                    Case gEnmPrintTerminalPageType.tptAnalog2
-                        If hPortType = gCstCodeFuSlotTypeAO Then    ''AO基板
-                            objGraphics.DrawString(mCstLabelAOLineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''CABLE
-                            objGraphics.DrawString(mCstLabelAOLineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 12, sngHalfPos)    ''OUT(+) (LOW)
-                            objGraphics.DrawString(mCstLabelAOLineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 10, sngHalfPos)    ''COM(-) (UPP)
-                        Else
+                    objGraphics.DrawString(mCstLabelAnalogStatusJpn, gFnt8j, gFntColorBlack, mCstPosAnalogTermNo + 30, sngY + 11)   ''Status
+                    'objGraphics.DrawString(mCstLabelAnalogRange, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 15, sngY + 11)     ''Range
+                    objGraphics.DrawString(mCstLabelAnalogDistJpn, gFnt8j, gFntColorBlack, mCstPosAnalogClass + 11, sngY + 11)      ''Dist
+
+                    ''2線式と3線式でヘッダーラベルの表示切替え
+                    Select Case udtPageType
+
+                        Case gEnmPrintTerminalPageType.tptAnalog2
+                            If hPortType = gCstCodeFuSlotTypeAO Then    ''AO基板
+                                objGraphics.DrawString(mCstLabelAOLineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 3)     ''CABLE
+                                objGraphics.DrawString(mCstLabelAOLineMarkJpn, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 12, sngHalfPos)    ''OUT(+) (LOW)
+                                objGraphics.DrawString(mCstLabelAOLineClassJpn, gFnt8, gFntColorBlack, mCstPosAnalogMark + 10, sngHalfPos)    ''COM(-) (UPP)
+                            Else
+                                '' 位置調整 2013.11.20
+                                'objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 46, sngY + 1)     ''CABLE (WIRE MARK)
+                                'objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 26, sngHalfPos)    ''MARK (IN)
+                                'objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 16, sngHalfPos)    ''CLASS (COM)
+                                objGraphics.DrawString(mCstLabelAnalog2LineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 34, sngY + 3)     ''CABLE (WIRE MARK)
+                                objGraphics.DrawString(mCstLabelAnalog2LineMarkJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 24, sngHalfPos + 2)    ''MARK (IN)
+                                objGraphics.DrawString(mCstLabelAnalog2LineClassJpn, gFnt8j, gFntColorBlack, mCstPosAnalogMark + 20, sngHalfPos + 2)    ''CLASS (COM)
+                            End If
+
+                        Case gEnmPrintTerminalPageType.tptAnalog3
                             '' 位置調整 2013.11.20
-                            'objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 46, sngY + 1)     ''CABLE (WIRE MARK)
-                            'objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 26, sngHalfPos)    ''MARK (IN)
-                            'objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 16, sngHalfPos)    ''CLASS (COM)
-                            objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 44, sngY + 1)     ''CABLE (WIRE MARK)
-                            objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 24, sngHalfPos)    ''MARK (IN)
-                            objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 14, sngHalfPos)    ''CLASS (COM)
-                        End If
+                            'objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''Cable
+                            'objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 37, sngHalfPos)    ''Mark
+                            'objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 32, sngHalfPos)    ''Class
+                            objGraphics.DrawString(mCstLabelAnalog3LineCableJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 82, sngY + 3)     ''Cable
+                            objGraphics.DrawString(mCstLabelAnalog3LineMarkJpn, gFnt8j, gFntColorBlack, mCstPosAnalogStaus + 40, sngHalfPos + 3)    ''Mark
+                            objGraphics.DrawString(mCstLabelAnalog3LineClassJpn, gFnt8j, gFntColorBlack, mCstPosAnalogMark + 35, sngHalfPos + 3)    ''Class
 
-                    Case gEnmPrintTerminalPageType.tptAnalog3
-                        '' 位置調整 2013.11.20
-                        'objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''Cable
-                        'objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 37, sngHalfPos)    ''Mark
-                        'objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 32, sngHalfPos)    ''Class
-                        objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 82, sngY + 1)     ''Cable
-                        objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 35, sngHalfPos)    ''Mark
-                        objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 30, sngHalfPos)    ''Class
+                    End Select
+                Else
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        objGraphics.DrawString(mCstLabelAnalogAdd, gFnt8, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)     ''Add
+                        objGraphics.DrawString(mCstLabelAnalogCh, gFnt8, gFntColorBlack, mCstPosAnalogAdd, sngY + 11)           ''Ch No
+                    Else
+                        objGraphics.DrawString(mCstLabelAnalogAdd, gFnt7, gFntColorBlack, gCstFrameTerminalLeft + 1, sngY + 11)     ''Add
+                        objGraphics.DrawString(mCstLabelAnalogCh, gFnt7, gFntColorBlack, mCstPosAnalogAdd + 10, sngY + 11)           ''Ch No
+                    End If
+                    objGraphics.DrawString(mCstLabelAnalogItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo + 70, sngY + 11)   ''Item Name
 
-                End Select
+                    ''AO基板は"SIG"欄無し
+                    If hPortType <> gCstCodeFuSlotTypeAO Then
+                        objGraphics.DrawString(mCstLabelAnalogSig, gFnt8, gFntColorBlack, mCstPosAnalogItemName + 3, sngY + 11)     ''Sig
+                    End If
 
+                    objGraphics.DrawString(mCstLabelAnalogCoreNo1, gFnt8, gFntColorBlack, mCstPosAnalogSig, sngY + 7)           ''Core No1
+                    objGraphics.DrawString(mCstLabelAnalogCoreNo2, gFnt8, gFntColorBlack, mCstPosAnalogSig, sngY + 17)          ''Core No2
+                    objGraphics.DrawString(mCstLabelAnalogTermNo1, gFnt8, gFntColorBlack, mCstPosAnalogCoreNo, sngY + 7)        ''Term No1
+                    objGraphics.DrawString(mCstLabelAnalogTermNo2, gFnt8, gFntColorBlack, mCstPosAnalogCoreNo, sngY + 17)       ''Term No2
+
+                    objGraphics.DrawString(mCstLabelAnalogStatus, gFnt8, gFntColorBlack, mCstPosAnalogTermNo + 24, sngY + 11)   ''Status
+                    'objGraphics.DrawString(mCstLabelAnalogRange, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 15, sngY + 11)     ''Range
+                    objGraphics.DrawString(mCstLabelAnalogDist, gFnt8, gFntColorBlack, mCstPosAnalogClass + 21, sngY + 11)      ''Dist
+
+                    ''2線式と3線式でヘッダーラベルの表示切替え
+                    Select Case udtPageType
+
+                        Case gEnmPrintTerminalPageType.tptAnalog2
+                            If hPortType = gCstCodeFuSlotTypeAO Then    ''AO基板
+                                objGraphics.DrawString(mCstLabelAOLineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''CABLE
+                                objGraphics.DrawString(mCstLabelAOLineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 12, sngHalfPos)    ''OUT(+) (LOW)
+                                objGraphics.DrawString(mCstLabelAOLineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 10, sngHalfPos)    ''COM(-) (UPP)
+                            Else
+                                '' 位置調整 2013.11.20
+                                'objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 46, sngY + 1)     ''CABLE (WIRE MARK)
+                                'objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 26, sngHalfPos)    ''MARK (IN)
+                                'objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 16, sngHalfPos)    ''CLASS (COM)
+                                objGraphics.DrawString(mCstLabelAnalog2LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 44, sngY + 1)     ''CABLE (WIRE MARK)
+                                objGraphics.DrawString(mCstLabelAnalog2LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 24, sngHalfPos)    ''MARK (IN)
+                                objGraphics.DrawString(mCstLabelAnalog2LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 14, sngHalfPos)    ''CLASS (COM)
+                            End If
+
+                        Case gEnmPrintTerminalPageType.tptAnalog3
+                            '' 位置調整 2013.11.20
+                            'objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 84, sngY + 1)     ''Cable
+                            'objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 37, sngHalfPos)    ''Mark
+                            'objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 32, sngHalfPos)    ''Class
+                            objGraphics.DrawString(mCstLabelAnalog3LineCable, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 82, sngY + 1)     ''Cable
+                            objGraphics.DrawString(mCstLabelAnalog3LineMark, gFnt8, gFntColorBlack, mCstPosAnalogStaus + 35, sngHalfPos)    ''Mark
+                            objGraphics.DrawString(mCstLabelAnalog3LineClass, gFnt8, gFntColorBlack, mCstPosAnalogMark + 30, sngHalfPos)    ''Class
+
+                    End Select
+
+                End If
             End If
 
         Catch ex As Exception
@@ -2768,9 +3516,11 @@
                 mCheckDmyRange(strRangeLow, strRangeHigh, strRangeLabel, hudtPrtPageInfo, hblnDispDmyData)
             End If
             ''-----------------------------------------------------------------------------------------------------------
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
 
-            ''ChNo 重複CHの印字追加    2015.02.03
-            If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)
+                ''ChNo 重複CHの印字追加    2015.02.03
+                If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)
                 ' 2015.10.16  ﾀｸﾞ表示
                 ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
                 If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
@@ -2811,12 +3561,70 @@
                 '//
             End If
 
-
-            ''ItemName
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
-                objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosAnalogChNo, sngY + 19)
             Else
-                objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo, sngY + 19)
+                'FCU1が選択されている場合
+                ''ChNo 重複CHの印字追加    2015.02.03
+                If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 8)
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 19)
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt8, gFntColorBlack, sngPosChNo, sngY + 30)
+                    Else
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 8)
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 19)
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt7, gFntColorBlack, sngPosChNo, sngY + 30)
+                End If
+                '//
+            ElseIf hudtPrtPageInfo.strChNo2 <> "" Then  '' CH_NO (同一端子CH表示用)
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 14)
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 25)
+                    Else
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 14)
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 25)
+                End If
+                '//
+            Else
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 19)
+                    Else
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 19)
+                End If
+                '//
+            End If
+            End If
+
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+
+                ''ItemName
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosAnalogChNo, sngY + 19)
+                Else
+                    objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo, sngY + 19)
+                End If
+
+            Else
+                'FCU2が選択されている場合
+                ''ItemName
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosAnalogChNo, sngY + 19)
+                Else
+                    objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo, sngY + 19)
+                End If
+
             End If
 
             ''CoreNo
@@ -3014,8 +3822,11 @@
             End If
             ''-----------------------------------------------------------------------------------------------------------
 
-            ''ChNo  重複CHの印字追加    2015.02.03
-            If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+
+                ''ChNo  重複CHの印字追加    2015.02.03
+                If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)
                 ' 2015.10.16  ﾀｸﾞ表示
                 ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
                 If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
@@ -3058,21 +3869,80 @@
 
             End If
 
-
-                ''Status
-                'objGraphics.DrawString("(" & strStatus.PadRight(17) & ")", gFnt8, gFntColorBlack, mCstPosAnalogChNo + 72, sngY + 3)
-
-                ''Signal
-                objGraphics.DrawString(hudtPrtPageInfo.strSignal, gFnt8, gFntColorBlack, mCstPosAnalogTermNo + 9, sngY + 4)
-
-                ''ItemName
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
-                objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosAnalogChNo, sngY + 24)
             Else
-                objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo, sngY + 24)
+                'FCU2が選択されている場合
+                ''ChNo  重複CHの印字追加    2015.02.03
+                If hudtPrtPageInfo.strChNo3 <> "" Then  '' CH_NO (同一端子CH表示用)
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 13)
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 24)
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt8, gFntColorBlack, sngPosChNo, sngY + 35)
+                    Else
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 13)
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 24)
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo3), gFnt7, gFntColorBlack, sngPosChNo, sngY + 35)
+                End If
+                '//
+            ElseIf hudtPrtPageInfo.strChNo2 <> "" Then  '' CH_NO (同一端子CH表示用)
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 19)
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt8, gFntColorBlack, sngPosChNo, sngY + 30)
+                    Else
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 19)
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo2), gFnt7, gFntColorBlack, sngPosChNo, sngY + 30)
+                End If
+                '//
+            Else
+                    ' 2015.10.16  ﾀｸﾞ表示
+                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                    If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                        ''チャンネル番号
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale7) / 2))
+                        objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt8, gFntColorBlack, sngPosChNo, sngY + 24)
+                    Else
+                        sngPosChNo = mCstPosAnalogAdd + (((mCstPosAnalogChNo - mCstPosAnalogAdd) / 2) - ((strCH.Length * gFntScale6) / 2))
+                    objGraphics.DrawString(gGetString(hudtPrtPageInfo.strChNo), gFnt7, gFntColorBlack, sngPosChNo, sngY + 24)
+                End If
+                '//
+
             End If
 
-                ''Range（※MAX 9byte表示）
+            End If
+
+            ''Status
+            'objGraphics.DrawString("(" & strStatus.PadRight(17) & ")", gFnt8, gFntColorBlack, mCstPosAnalogChNo + 72, sngY + 3)
+
+            ''Signal
+            objGraphics.DrawString(hudtPrtPageInfo.strSignal, gFnt8, gFntColorBlack, mCstPosAnalogTermNo + 9, sngY + 4)
+
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''ItemName
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosAnalogChNo, sngY + 24)
+                Else
+                    objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo, sngY + 24)
+                End If
+
+            Else
+                'FCU1が選択されている場合
+                ''ItemName
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosAnalogChNo, sngY + 24)
+                Else
+                    objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosAnalogChNo, sngY + 24)
+                End If
+            End If
+
+            ''Range（※MAX 9byte表示）
             If strRangeLow <> "" And strRangeHigh <> "" Then
                 'Ver2.0.0.0 レンジのP/S対応 Ver2.0.6.5 レンジの力率対応
                 Dim strPS As String = ""
@@ -3139,28 +4009,58 @@
 
         '該当CHデータを探す
         Dim bHitFlg As Boolean = False
-        For iData = 0 To UBound(gudt.SetChInfo.udtChannel) Step 1
-            If gudt.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
-                bHitFlg = True
-                Exit For
-            End If
-        Next iData
 
-        'CHNoがみつからないなら何もしないで処理抜け
-        If bHitFlg = False Then
+
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            For iData = 0 To UBound(gudt.SetChInfo.udtChannel) Step 1
+                If gudt.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
+                    bHitFlg = True
+                    Exit For
+                End If
+            Next iData
+
+            'CHNoがみつからないなら何もしないで処理抜け
+            If bHitFlg = False Then
+                Return
+            End If
+
+            With gudt.SetChInfo.udtChannel(iData)
+                strTemp = ""
+                If gBitCheck(.udtChCommon.shtFlag1, 8) Then
+                    strTemp = "P/S"
+                ElseIf gBitCheck(.udtChCommon.shtFlag1, 9) Then
+                    'Ver2.0.7.9 A/F対応
+                    strTemp = "A/F"
+                End If
+                pstrPS = strTemp
+            End With
+
+        Else
+            'FCU2が選択されている場合
+            For iData = 0 To UBound(gudt2.SetChInfo.udtChannel) Step 1
+                If gudt2.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
+                    bHitFlg = True
+                    Exit For
+                End If
+            Next iData
+
+            'CHNoがみつからないなら何もしないで処理抜け
+            If bHitFlg = False Then
             Return
         End If
 
-        With gudt.SetChInfo.udtChannel(iData)
-            strTemp = ""
-            If gBitCheck(.udtChCommon.shtFlag1, 8) Then
-                strTemp = "P/S"
-            ElseIf gBitCheck(.udtChCommon.shtFlag1, 9) Then
-                'Ver2.0.7.9 A/F対応
-                strTemp = "A/F"
-            End If
-            pstrPS = strTemp
-        End With
+            With gudt2.SetChInfo.udtChannel(iData)
+                strTemp = ""
+                If gBitCheck(.udtChCommon.shtFlag1, 8) Then
+                    strTemp = "P/S"
+                ElseIf gBitCheck(.udtChCommon.shtFlag1, 9) Then
+                    'Ver2.0.7.9 A/F対応
+                    strTemp = "A/F"
+                End If
+                pstrPS = strTemp
+            End With
+        End If
     End Sub
 #End Region
 
@@ -3173,25 +4073,51 @@
 
         '該当CHデータを探す
         Dim bHitFlg As Boolean = False
-        For iData = 0 To UBound(gudt.SetChInfo.udtChannel) Step 1
-            If gudt.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
-                bHitFlg = True
-                Exit For
-            End If
-        Next iData
 
-        'CHNoがみつからないなら何もしないで処理抜け
-        If bHitFlg = False Then
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+
+            For iData = 0 To UBound(gudt.SetChInfo.udtChannel) Step 1
+                If gudt.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
+                    bHitFlg = True
+                    Exit For
+                End If
+            Next iData
+
+            'CHNoがみつからないなら何もしないで処理抜け
+            If bHitFlg = False Then
+                Return
+            End If
+
+            With gudt.SetChInfo.udtChannel(iData)
+                strTemp = ""
+                If gBitCheck(.udtChCommon.shtFlag1, 5) Then
+                    strTemp = "1.00/"
+                End If
+                pstrPF = strTemp
+            End With
+        Else
+            'FCU2が選択されている場合
+            For iData = 0 To UBound(gudt2.SetChInfo.udtChannel) Step 1
+                If gudt2.SetChInfo.udtChannel(iData).udtChCommon.shtChno = pintCHNo Then
+                    bHitFlg = True
+                    Exit For
+                End If
+            Next iData
+
+            'CHNoがみつからないなら何もしないで処理抜け
+            If bHitFlg = False Then
             Return
         End If
 
-        With gudt.SetChInfo.udtChannel(iData)
-            strTemp = ""
-            If gBitCheck(.udtChCommon.shtFlag1, 5) Then
-                strTemp = "1.00/"
-            End If
-            pstrPF = strTemp
-        End With
+            With gudt2.SetChInfo.udtChannel(iData)
+                strTemp = ""
+                If gBitCheck(.udtChCommon.shtFlag1, 5) Then
+                    strTemp = "1.00/"
+                End If
+                pstrPF = strTemp
+            End With
+        End If
     End Sub
 #End Region
 
@@ -3273,13 +4199,27 @@
                     objGraphics.DrawString("-", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 17, Base_y + 48)
                     objGraphics.DrawString("+", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 65, Base_y + 48)
 
-                    If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
-                        objGraphics.DrawString("4-20mA", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)  '和文仕様 20200217 hori
-                        objGraphics.DrawString("フィールドユニットからDC24V電源を供給する場合", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 150, Base_y + 10)
-                        objGraphics.DrawString("(圧力発信器等)", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                    If modFcuSelect.nFcuNo = 1 Then
+                        'FCU1が選択されている場合
+
+                        If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                            objGraphics.DrawString("4-20mA", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)  '和文仕様 20200217 hori
+                            objGraphics.DrawString("フィールドユニットからDC24V電源を供給する場合", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 150, Base_y + 10)
+                            objGraphics.DrawString("(圧力発信器等)", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        Else
+                            objGraphics.DrawString("4-20mA WITHOUT ELECTRIC POWER", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)
+                            objGraphics.DrawString("(PRESSURE TRANSMITTER etc...)", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        End If
                     Else
-                        objGraphics.DrawString("4-20mA WITHOUT ELECTRIC POWER", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)
-                        objGraphics.DrawString("(PRESSURE TRANSMITTER etc...)", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        'FCU2が選択されている場合
+                        If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                            objGraphics.DrawString("4-20mA", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)  '和文仕様 20200217 hori
+                            objGraphics.DrawString("フィールドユニットからDC24V電源を供給する場合", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 150, Base_y + 10)
+                            objGraphics.DrawString("(圧力発信器等)", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        Else
+                            objGraphics.DrawString("4-20mA WITHOUT ELECTRIC POWER", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)
+                            objGraphics.DrawString("(PRESSURE TRANSMITTER etc...)", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        End If
                     End If
                 Else
                     objGraphics.DrawLine(Pens.Black, mCstPosAnalogCoreNo, Base_y + 18, mCstPosAnalogCoreNo + 90, Base_y + 18)           'SIGNAL(上線)
@@ -3291,13 +4231,27 @@
                     objGraphics.DrawString("+", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 17, Base_y + 34)
                     objGraphics.DrawString("-", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 65, Base_y + 34)
 
-                    If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
-                        objGraphics.DrawString("4-20mA", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10) '和文仕様 20200217 hori
-                        objGraphics.DrawString("フィールドユニットからDC24V電源を供給しない場合", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 150, Base_y + 10) '和文仕様 20200217 hori
-                        objGraphics.DrawString("(アイソレータ等)", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                    If modFcuSelect.nFcuNo = 1 Then
+                        'FCU1が選択されている場合
+
+                        If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                            objGraphics.DrawString("4-20mA", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10) '和文仕様 20200217 hori
+                            objGraphics.DrawString("フィールドユニットからDC24V電源を供給しない場合", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 150, Base_y + 10) '和文仕様 20200217 hori
+                            objGraphics.DrawString("(アイソレータ等)", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        Else
+                            objGraphics.DrawString("4-20mA WITH ELECTRIC POWER", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)
+                            objGraphics.DrawString("(ISOLATOR etc...)", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        End If
                     Else
-                        objGraphics.DrawString("4-20mA WITH ELECTRIC POWER", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)
-                        objGraphics.DrawString("(ISOLATOR etc...)", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        'FCU2が選択されている場合
+                        If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                            objGraphics.DrawString("4-20mA", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10) '和文仕様 20200217 hori
+                            objGraphics.DrawString("フィールドユニットからDC24V電源を供給しない場合", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 150, Base_y + 10) '和文仕様 20200217 hori
+                            objGraphics.DrawString("(アイソレータ等)", gFnt7j, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        Else
+                            objGraphics.DrawString("4-20mA WITH ELECTRIC POWER", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 10)
+                            objGraphics.DrawString("(ISOLATOR etc...)", gFnt8, gFntColorBlack, mCstPosAnalogCoreNo + 100, Base_y + 25)
+                        End If
                     End If
 
                 End If
@@ -3797,15 +4751,32 @@
 
                 .intPageNo = 1
                 .udtPageType = gEnmPrintTerminalPageType.tptFuList
-                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
 
-                    .strFrameInfoLine1 = ""
-                    .strFrameInfoLine2 = "フィールドユニット"
-                Else    '英文
-                    .strFrameInfoLine1 = ""
-                    .strFrameInfoLine2 = "FIELD UNIT"
-                    '' Ver1.8.3 2015.11.26  FUのNoは2桁に変更
+                    If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+
+                        .strFrameInfoLine1 = ""
+                        .strFrameInfoLine2 = "フィールドユニット"
+                    Else    '英文
+                        .strFrameInfoLine1 = ""
+                        .strFrameInfoLine2 = "FIELD UNIT"
+                        '' Ver1.8.3 2015.11.26  FUのNoは2桁に変更
+                    End If
+
+                Else
+                    'FCU2が選択されている場合
+                    If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+
+                        .strFrameInfoLine1 = ""
+                        .strFrameInfoLine2 = "フィールドユニット"
+                    Else    '英文
+                        .strFrameInfoLine1 = ""
+                        .strFrameInfoLine2 = "FIELD UNIT"
+                        '' Ver1.8.3 2015.11.26  FUのNoは2桁に変更
+                    End If
                 End If
+
                 If g_bytFUSet = 0 Then      '' 出荷済みｵｰﾀﾞｰ用
                     .strDrawinfNoInfo = "FU001"     '' DrawingNo変更  2013.10.18
                 Else
@@ -4505,7 +5476,10 @@
             With hudtTerminalPageInfo
                 '' 2013.10.21 型名変更
 
-                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+
+                    If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
 
                     Select Case hudtFuInfo.udtFuPort(hintPortNo).intPortType
                         Case gCstCodeFuSlotTypeDO 'DO(TMDO)/DO(TMRY)
@@ -4600,7 +5574,107 @@
                         Case Else
                     End Select
                 End If
+                Else
+                    'FCU2が選択されている場合
+                    If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
 
+                        Select Case hudtFuInfo.udtFuPort(hintPortNo).intPortType
+                            Case gCstCodeFuSlotTypeDO 'DO(TMDO)/DO(TMRY)
+                                If hudtFuInfo.udtFuPort(hintPortNo).intTerinf = 1 Then          'TMDO
+                                    .strFrameInfoLine1 = "FCU-M003A (FCU-TMDO)"                 '１行目：基板、端子台型式
+                                ElseIf hudtFuInfo.udtFuPort(hintPortNo).intTerinf = 2 Then      'TMRY:101 (DO:1)
+                                    .strFrameInfoLine1 = "FCU-M003A (FCU-TMRY)"                 '１行目：基板、端子台型式 
+                                ElseIf hudtFuInfo.udtFuPort(hintPortNo).intTerinf = 3 Then      'TMRY:111 (DO:1)
+                                    .strFrameInfoLine1 = "FCU-M003A (FCU-TMRY-1)"               '１行目：基板、端子台型式
+                                ElseIf hudtFuInfo.udtFuPort(hintPortNo).intTerinf = 4 Then      'TMRY:121 (DO:1)
+                                    .strFrameInfoLine1 = "FCU-M003A (FCU-TMRY-2)"               '１行目：基板、端子台型式
+                                Else                                                            'その他                        
+                                    .strFrameInfoLine1 = "FCU-M003A (FCU-TMDO)"                 '１行目：基板、端子台型式
+                                End If
+                                .strFrameInfoLine2 = "ON-OFF 出力"            '２行目：スロット種別
+
+                            Case gCstCodeFuSlotTypeDI 'DI
+                                .strFrameInfoLine1 = "FCU-M002A (FCU-TMDI)"     '１行目：基板、端子台型式
+                                .strFrameInfoLine2 = "ON-OFF 入力"             '２行目：スロット種別
+
+                            Case gCstCodeFuSlotTypeAO 'AO
+                                .strFrameInfoLine1 = "FCU-M030A (FCU-TMAO-1)"   '１行目：基板、端子台型式
+                                .strFrameInfoLine2 = "DC4-20mA 出力"          '２行目：スロット種別
+
+                            Case gCstCodeFuSlotTypeAI_2 'AI(2LINE)
+                                .strFrameInfoLine1 = "FCU-M100A (FCU-TM15)"     '１行目：基板、端子台型式
+                                .strFrameInfoLine2 = "PT100Ω"                  '２行目：スロット種別
+
+                            Case gCstCodeFuSlotTypeAI_3 'AI(3LINE)
+                                .strFrameInfoLine1 = "FCU-M110A (FCU-TMTEMP)"   '１行目：基板、端子台型式
+                                .strFrameInfoLine2 = "PT100Ω (3線式)"          '２行目：スロット種別
+
+                            Case gCstCodeFuSlotTypeAI_1_5 'AI(1-5V)
+                                .strFrameInfoLine1 = "FCU-M500A (FCU-TM15)"     '１行目：基板、端子台型式
+                                .strFrameInfoLine2 = "DC1-5V"                   '２行目：スロット種別
+
+                            Case gCstCodeFuSlotTypeAI_4_20 'AI(4-20mA)
+                                .strFrameInfoLine1 = "FCU-M400A (FCU-TM42)"     '１行目：基板、端子台型式
+                                .strFrameInfoLine2 = "DC4-20mA"                 '２行目：スロット種別
+
+                            Case gCstCodeFuSlotTypeAI_K 'AI(K)
+                                .strFrameInfoLine1 = "FCU-M200A (FCU-TMK)"      '１行目：基板、端子台型式
+                                .strFrameInfoLine2 = "K INPUT"                  '２行目：スロット種別
+                            Case Else
+                        End Select
+
+                    Else
+
+                        Select Case hudtFuInfo.udtFuPort(hintPortNo).intPortType
+
+                        Case gCstCodeFuSlotTypeDO 'DO(TMDO)/DO(TMRY)
+                            If hudtFuInfo.udtFuPort(hintPortNo).intTerinf = 1 Then          'TMDO
+                                .strFrameInfoLine1 = "FCU-M003A (FCU-TMDO)"                 '１行目：基板、端子台型式
+                            ElseIf hudtFuInfo.udtFuPort(hintPortNo).intTerinf = 2 Then      'TMRY:101 (DO:1)
+                                .strFrameInfoLine1 = "FCU-M003A (FCU-TMRY)"                 '１行目：基板、端子台型式 
+                            ElseIf hudtFuInfo.udtFuPort(hintPortNo).intTerinf = 3 Then      'TMRY:111 (DO:1)
+                                .strFrameInfoLine1 = "FCU-M003A (FCU-TMRY-1)"               '１行目：基板、端子台型式
+                            ElseIf hudtFuInfo.udtFuPort(hintPortNo).intTerinf = 4 Then      'TMRY:121 (DO:1)
+                                .strFrameInfoLine1 = "FCU-M003A (FCU-TMRY-2)"               '１行目：基板、端子台型式
+                            Else                                                            'その他                        
+                                .strFrameInfoLine1 = "FCU-M003A (FCU-TMDO)"                 '１行目：基板、端子台型式
+                            End If
+                            .strFrameInfoLine2 = "ON-OFF OUTPUT"            '２行目：スロット種別
+
+                        Case gCstCodeFuSlotTypeDI 'DI
+                            .strFrameInfoLine1 = "FCU-M002A (FCU-TMDI)"     '１行目：基板、端子台型式
+                            .strFrameInfoLine2 = "ON-OFF INPUT"             '２行目：スロット種別
+
+                        Case gCstCodeFuSlotTypeAO 'AO
+                            .strFrameInfoLine1 = "FCU-M030A (FCU-TMAO-1)"   '１行目：基板、端子台型式
+                            .strFrameInfoLine2 = "DC4-20mA OUTPUT"          '２行目：スロット種別
+
+                        Case gCstCodeFuSlotTypeAI_2 'AI(2LINE)
+                            .strFrameInfoLine1 = "FCU-M100A (FCU-TM15)"     '１行目：基板、端子台型式
+                            .strFrameInfoLine2 = "PT100Ω"                  '２行目：スロット種別
+
+                        Case gCstCodeFuSlotTypeAI_3 'AI(3LINE)
+                            .strFrameInfoLine1 = "FCU-M110A (FCU-TMTEMP)"   '１行目：基板、端子台型式
+                            .strFrameInfoLine2 = "PT100Ω (3Wire type)"     '２行目：スロット種別
+
+                        Case gCstCodeFuSlotTypeAI_1_5 'AI(1-5V)
+                            .strFrameInfoLine1 = "FCU-M500A (FCU-TM15)"     '１行目：基板、端子台型式
+                            .strFrameInfoLine2 = "DC1-5V"                   '２行目：スロット種別
+
+                        Case gCstCodeFuSlotTypeAI_4_20 'AI(4-20mA)
+                            .strFrameInfoLine1 = "FCU-M400A (FCU-TM42)"     '１行目：基板、端子台型式
+                            .strFrameInfoLine2 = "DC4-20mA"                 '２行目：スロット種別
+
+                        Case gCstCodeFuSlotTypeAI_K 'AI(K)
+                            .strFrameInfoLine1 = "FCU-M200A (FCU-TMK)"      '１行目：基板、端子台型式
+                            .strFrameInfoLine2 = "K INPUT"                  '２行目：スロット種別
+                        Case Else
+                    End Select
+                End If
+
+
+
+                End If
                 'Ver2.0.7.4 基板ﾊﾞｰｼﾞｮﾝ印刷対応
                 If g_bytTerVer = 1 Then
                     .strFrameInfoLine1 = .strFrameInfoLine1.Replace("A ", " ")
@@ -4903,7 +5977,7 @@
                 End If
 
 
-                If gPrtDigData(wkI).FCUNo = hintFuNo And gPrtDigData(wkI).PortNo = hintPortNo And _
+                If gPrtDigData(wkI).FCUNo = hintFuNo And gPrtDigData(wkI).PortNo = hintPortNo And
                     gPrtDigData(wkI).TermNo = hintTermNo Then
 
                     If hintScFlg = 0 And gPrtDigData(wkI).bSCFg = True Then      '' 隠しCH表示なし
@@ -4914,14 +5988,31 @@
                         Continue For
                     End If
 
-                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                        If gPrtDigData(wkI).nCHNo < 1000 Then
-                            strCHNo = gPrtDigData(wkI).nCHNo.ToString("0000")
-                        Else
-                            strCHNo = gPrtDigData(wkI).nCHNo
+
+                    If modFcuSelect.nFcuNo = 1 Then
+                        'FCU1が選択されている場合
+                        If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            If gPrtDigData(wkI).nCHNo < 1000 Then
+                                strCHNo = gPrtDigData(wkI).nCHNo.ToString("0000")
+                            Else
+                                strCHNo = gPrtDigData(wkI).nCHNo
+                            End If
+                        Else        '' ﾀｸﾞ表示
+                            strCHNo = GetTagNoFromCHNo(gPrtDigData(wkI).nCHNo)
                         End If
-                    Else        '' ﾀｸﾞ表示
-                        strCHNo = GetTagNoFromCHNo(gPrtDigData(wkI).nCHNo)
+
+                    Else
+                        'FCU2が選択されている場合
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            If gPrtDigData(wkI).nCHNo < 1000 Then
+                                strCHNo = gPrtDigData(wkI).nCHNo.ToString("0000")
+                            Else
+                                strCHNo = gPrtDigData(wkI).nCHNo
+                            End If
+                        Else        '' ﾀｸﾞ表示
+                            strCHNo = GetTagNoFromCHNo(gPrtDigData(wkI).nCHNo)
+                        End If
+
                     End If
 
                     If nCount = 0 Then
@@ -5039,11 +6130,21 @@
     Private Sub subLUgetPageMax()
         Dim intTemp As Integer = 0
 
-        For i = 0 To UBound(gudt.SetFu.udtFu)
-            If gudt.SetFu.udtFu(i).shtUse = 1 Then
-                intTemp = i
-            End If
-        Next
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            For i = 0 To UBound(gudt.SetFu.udtFu)
+                If gudt.SetFu.udtFu(i).shtUse = 1 Then
+                    intTemp = i
+                End If
+            Next
+        Else
+            'FCU1が選択されている場合
+            For i = 0 To UBound(gudt2.SetFu.udtFu)
+                If gudt2.SetFu.udtFu(i).shtUse = 1 Then
+                    intTemp = i
+                End If
+            Next
+        End If
 
         ''Page総数
         If intTemp = 0 Then
@@ -5184,8 +6285,9 @@
             Dim fnt2j As New Font("ＭＳ 明朝", 8)
             Dim fnt3 As New Font("Courier New", 7)
 
-
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
 
                 e.DrawString("フィールドユニット基板 ＆ 端子台配列", fnt1j, Brushes.Black, frmLeft + frmWidth / 100 * 30, frmUp + 7)
                 e.DrawString("基板型式", fnt1j, Brushes.Black, frmLeft + wNO * 2 + 180, frmUp + hBaseHeader + 3)
@@ -5225,11 +6327,59 @@
                 'SMS-U650-A-
             End If
 
+            Else
+                'FCU2が選択されている場合
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+
+                    e.DrawString("フィールドユニット基板 ＆ 端子台配列", fnt1j, Brushes.Black, frmLeft + frmWidth / 100 * 30, frmUp + 7)
+                    e.DrawString("基板型式", fnt1j, Brushes.Black, frmLeft + wNO * 2 + 180, frmUp + hBaseHeader + 3)
+                    e.DrawString("端子台型式 (TB*A/TB*B)", fnt1j, Brushes.Black, frmLeft + wNO * 2 + 130, frmUp + hBaseHeader + 17)
+                    e.DrawString("番号", fnt1j, Brushes.Black, frmLeft + 10, frmUp + hBaseHeader + 10)
+                    e.DrawString("型式", fnt1j, Brushes.Black, frmLeft + 10, frmUp + hBaseHeader * 3 + 10)
+
+                    For i = 0 To 7
+                        e.DrawString("TB" & Str(i + 1), fnt1, Brushes.Black, frmLeft + wNO * 2 + intTemp * i + 6, frmUp + hBaseHeader * 2 + 6)
+                        e.DrawString("A", fnt1, Brushes.Black, frmLeft + wNO * 2 + intTemp * i + 7, frmUp + hBaseHeader * 3 + 6)
+                        e.DrawString("B", fnt1, Brushes.Black, frmLeft + wNO * 2 + intTemp * i + CInt(intTemp / 2) + 7, frmUp + hBaseHeader * 3 + 6)
+                    Next
+
+                    e.DrawString("CPU", fnt1, Brushes.Black, frmLeft + wNO * 2 + 466, frmUp + hBaseHeader * 2 + 6)
+                    e.DrawString("備考", fnt1j, Brushes.Black, frmLeft + wNO * 2 + 542, frmUp + hBaseHeader * 2 + 6)
+
+                Else    '英文
+                    e.DrawString("FIELD UNIT MODULE & TERMINAL ARRANGEMENT", fnt, Brushes.Black, frmLeft + frmWidth / 100 * 20, frmUp + 5)
+
+                e.DrawString("MODULE TYPE", fnt1, Brushes.Black, frmLeft + wNO * 2 + 150, frmUp + hBaseHeader + 1)
+                e.DrawString("TERMINAL TYPE (TB*A/TB*B)", fnt1, Brushes.Black, frmLeft + wNO * 2 + 120, frmUp + hBaseHeader + 12)
+
+                e.DrawString("NO", fnt1, Brushes.Black, frmLeft + 10, frmUp + hBaseHeader + 10)
+                e.DrawString("TYPE", fnt1, Brushes.Black, frmLeft + 5, frmUp + hBaseHeader * 3 + 10)
+
+                For i = 0 To 7
+                    e.DrawString("TB" & Str(i + 1), fnt1, Brushes.Black, frmLeft + wNO * 2 + intTemp * i + 6, frmUp + hBaseHeader * 2 + 6)
+                    e.DrawString("A", fnt1, Brushes.Black, frmLeft + wNO * 2 + intTemp * i + 7, frmUp + hBaseHeader * 3 + 6)
+                    e.DrawString("B", fnt1, Brushes.Black, frmLeft + wNO * 2 + intTemp * i + CInt(intTemp / 2) + 7, frmUp + hBaseHeader * 3 + 6)
+                Next
+
+                '' CPU追加　ver.1.4.0 2011.08.02
+                e.DrawString("CPU", fnt1, Brushes.Black, frmLeft + wNO * 2 + 466, frmUp + hBaseHeader * 2 + 6)
+
+                e.DrawString("Remarks", fnt1, Brushes.Black, frmLeft + wNO * 2 + 528, frmUp + hBaseHeader * 2 + 6)
+
+                'SMS-U650-A-
+            End If
+
+            End If
+
+
             'SMS-U650-A-
             For i = 0 To 6  '行ループ
                 '' LCU    → FCUに変更　ver.1.4.0 2011.08.02
                 '' LCU-TM → -TM
-                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
                     e.DrawString("FCU-", fnt2, Brushes.Black, frmLeft + wNO + 7, frmUp + hBaseHeader * 4 + hGrp * i + 6)
                     e.DrawString("-TM", fnt2, Brushes.Black, frmLeft + wNO + 4, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)
                     e.DrawString("ケーブル", fnt2j, Brushes.Black, frmLeft + wNO + 2, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 6)
@@ -5241,322 +6391,340 @@
                     e.DrawString("CABLE", fnt2, Brushes.Black, frmLeft + wNO + 5, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 6)
                     e.DrawString("TERM", fnt2, Brushes.Black, frmLeft + wNO + 7, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 6)
                 End If
+                Else
+                    'FCU2が選択されている場合
+                    If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200217 hori
+                        e.DrawString("FCU-", fnt2, Brushes.Black, frmLeft + wNO + 7, frmUp + hBaseHeader * 4 + hGrp * i + 6)
+                        e.DrawString("-TM", fnt2, Brushes.Black, frmLeft + wNO + 4, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)
+                        e.DrawString("ケーブル", fnt2j, Brushes.Black, frmLeft + wNO + 2, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 6)
+                        e.DrawString("端子台", fnt2j, Brushes.Black, frmLeft + wNO + 7, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 6)
+
+                    Else
+                        e.DrawString("FCU-", fnt2, Brushes.Black, frmLeft + wNO + 7, frmUp + hBaseHeader * 4 + hGrp * i + 6)
+                    e.DrawString("-TM", fnt2, Brushes.Black, frmLeft + wNO + 4, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)
+                    e.DrawString("CABLE", fnt2, Brushes.Black, frmLeft + wNO + 5, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 6)
+                    e.DrawString("TERM", fnt2, Brushes.Black, frmLeft + wNO + 7, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 6)
+                End If
+                End If
+
 
                 funo = i + (((udtPrtPageInfo.intPageNo - 1) - 1) * 7)
-                If gudt.SetFu.udtFu(funo).shtUse = 1 Then
-                    '**TYPE ALPH ******************
-                    Select Case funo
-                        Case 0 : strTemp = "FCU"
-                        Case 1 : strTemp = "FU1"
-                        Case 2 : strTemp = "FU2"
-                        Case 3 : strTemp = "FU3"
-                        Case 4 : strTemp = "FU4"
-                        Case 5 : strTemp = "FU5"
-                        Case 6 : strTemp = "FU6"
-                        Case 7 : strTemp = "FU7"
-                        Case 8 : strTemp = "FU8"
-                        Case 9 : strTemp = "FU9"
-                        Case 10 : strTemp = "FU10"
-                        Case 11 : strTemp = "FU11"
-                        Case 12 : strTemp = "FU12"
-                        Case 13 : strTemp = "FU13"
-                        Case 14 : strTemp = "FU14"
-                        Case 15 : strTemp = "FU15"
-                        Case 16 : strTemp = "FU16"
-                        Case 17 : strTemp = "FU17"
-                        Case 18 : strTemp = "FU18"
-                        Case 19 : strTemp = "FU19"
-                        Case 20 : strTemp = "FU20"
-                    End Select
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    If gudt.SetFu.udtFu(funo).shtUse = 1 Then
+                        '**TYPE ALPH ******************
+                        Select Case funo
+                            Case 0 : strTemp = "FCU"
+                            Case 1 : strTemp = "FU1"
+                            Case 2 : strTemp = "FU2"
+                            Case 3 : strTemp = "FU3"
+                            Case 4 : strTemp = "FU4"
+                            Case 5 : strTemp = "FU5"
+                            Case 6 : strTemp = "FU6"
+                            Case 7 : strTemp = "FU7"
+                            Case 8 : strTemp = "FU8"
+                            Case 9 : strTemp = "FU9"
+                            Case 10 : strTemp = "FU10"
+                            Case 11 : strTemp = "FU11"
+                            Case 12 : strTemp = "FU12"
+                            Case 13 : strTemp = "FU13"
+                            Case 14 : strTemp = "FU14"
+                            Case 15 : strTemp = "FU15"
+                            Case 16 : strTemp = "FU16"
+                            Case 17 : strTemp = "FU17"
+                            Case 18 : strTemp = "FU18"
+                            Case 19 : strTemp = "FU19"
+                            Case 20 : strTemp = "FU20"
+                        End Select
 
-                    If funo <= 9 Then
-                        e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 10, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                    Else
-                        e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 5, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                    End If
-
-                    'FU番号保持 T.Ueki 斜線書込み対応
-                    PrintFUNo = strTemp
-
-                    '******************************
-
-                    '**CPU ************************
-                    If gudt.SetFu.udtFu(funo).shtCanBus = 1 Then    ' CANBUS有
-                        strTemp = "M001A-C"
-                    Else
-                        If funo = 0 Then                            ' FCU SUB
-                            strTemp = "M001A-S"
-                        Else                                        ' FU
-                            strTemp = "M001A"
-                        End If
-                    End If
-                    'Ver2.0.7.4 基板ﾊﾞｰｼﾞｮﾝ印刷対応
-                    If g_bytTerVer = 1 Then
-                        strTemp = strTemp.Replace("A", "")
-                    End If
-
-                    e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + wNO * 2 + 450, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                    '******************************
-
-                    '**COM ************************
-                    If funo = 0 Then                            ' FCU SUB
-                        strTemp = ""
-                    Else                                        ' FU
-                        strTemp = "COM"
-                    End If
-                    e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + wNO * 2 + 466, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)
-                    '******************************
-
-                    '**DIP SW *********************
-                    e.DrawString("ON", fnt3, Brushes.Black, frmLeft + wNO * 2 + 440, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 6)
-                    e.DrawString("OFF", fnt3, Brushes.Black, frmLeft + wNO * 2 + 440, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 6)
-
-                    For j = 1 To 5
-                        If funo And (&H1 << (j - 1)) Then
-                            e.DrawString("o", fnt1, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 2)
+                        If funo <= 9 Then
+                            e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 10, frmUp + hBaseHeader * 4 + hGrp * i + 5)
                         Else
-                            e.DrawString("o", fnt1, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 2)
+                            e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 5, frmUp + hBaseHeader * 4 + hGrp * i + 5)
                         End If
-                        e.DrawString(j.ToString, fnt2, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 4 + hGrp * i)
-                    Next
-                    '******************************
 
-                    'T.Ueki Reamrksの2行表示処理変更
-                    '**Remarks*********************
-                    'Ver2.0.0.2 Remarksのﾌｫﾝﾄｻｲｽﾞ
-                    Dim fnt_remark As New Font("Courier New", 10)
-                    Dim fnt_remarkj As New Font("ＭＳ 明朝", 10)
+                        'FU番号保持 T.Ueki 斜線書込み対応
+                        PrintFUNo = strTemp
 
-                    '改行するバイト数
-                    Dim KaigyoByte As Integer = 8
+                        '******************************
 
-                    Dim LenMoji As Integer      '文字の長さ
-                    Dim SearchMoji As String    '検索対象文字(1文字)
-                    Dim LineMoji1 As String     '1行目
-                    Dim LineMoji2 As String     '2行目
-                    Dim LineMoji3 As String     '3行目
-                    Dim LineMoji4 As String     '4行目
-                    Dim LenGyo As Integer = 1   '行
+                        '**CPU ************************
+                        If gudt.SetFu.udtFu(funo).shtCanBus = 1 Then    ' CANBUS有
+                            strTemp = "M001A-C"
+                        Else
+                            If funo = 0 Then                            ' FCU SUB
+                                strTemp = "M001A-S"
+                            Else                                        ' FU
+                                strTemp = "M001A"
+                            End If
+                        End If
+                        'Ver2.0.7.4 基板ﾊﾞｰｼﾞｮﾝ印刷対応
+                        If g_bytTerVer = 1 Then
+                            strTemp = strTemp.Replace("A", "")
+                        End If
 
-                    Dim k As Long
+                        e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + wNO * 2 + 450, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                        '******************************
 
-                    strTemp = gGetString(gudt.SetChDisp.udtChDisp(funo).strRemarks)
-                    'Ver2.0.1.5 「^」をｽﾍﾟｰｽと置き換える
-                    'Ver2.0.1.7 「^」は改行文字とする
-                    'Ver2.0.2.5 和文対応 行数を4行までOKとする
-                    'strTemp = strTemp.Replace("^", " ")
+                        '**COM ************************
+                        If funo = 0 Then                            ' FCU SUB
+                            strTemp = ""
+                        Else                                        ' FU
+                            strTemp = "COM"
+                        End If
+                        e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + wNO * 2 + 466, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)
+                        '******************************
 
-                    '初期化
-                    SearchMoji = ""
-                    LineMoji1 = ""
-                    LineMoji2 = ""
-                    LineMoji3 = ""
-                    LineMoji4 = ""
-                    LenMoji = 0
+                        '**DIP SW *********************
+                        e.DrawString("ON", fnt3, Brushes.Black, frmLeft + wNO * 2 + 440, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 6)
+                        e.DrawString("OFF", fnt3, Brushes.Black, frmLeft + wNO * 2 + 440, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 6)
 
-                    For k = 1 To Len(strTemp)
-                        SearchMoji = Mid(strTemp, k, 1)
+                        For j = 1 To 5
+                            If funo And (&H1 << (j - 1)) Then
+                                e.DrawString("o", fnt1, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 2)
+                            Else
+                                e.DrawString("o", fnt1, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 2)
+                            End If
+                            e.DrawString(j.ToString, fnt2, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 4 + hGrp * i)
+                        Next
+                        '******************************
 
-                        Select Case SearchMoji
-                            Case "^"
-                                LenMoji = KaigyoByte + 1
-                                SearchMoji = ""
-                            Case " " To "z"     '0x20 - 0x7A
-                                LenMoji = LenMoji + 1
+                        'T.Ueki Reamrksの2行表示処理変更
+                        '**Remarks*********************
+                        'Ver2.0.0.2 Remarksのﾌｫﾝﾄｻｲｽﾞ
+                        Dim fnt_remark As New Font("Courier New", 10)
+                        Dim fnt_remarkj As New Font("ＭＳ 明朝", 10)
+
+                        '改行するバイト数
+                        Dim KaigyoByte As Integer = 8
+
+                        Dim LenMoji As Integer      '文字の長さ
+                        Dim SearchMoji As String    '検索対象文字(1文字)
+                        Dim LineMoji1 As String     '1行目
+                        Dim LineMoji2 As String     '2行目
+                        Dim LineMoji3 As String     '3行目
+                        Dim LineMoji4 As String     '4行目
+                        Dim LenGyo As Integer = 1   '行
+
+                        Dim k As Long
+
+                        strTemp = gGetString(gudt.SetChDisp.udtChDisp(funo).strRemarks)
+                        'Ver2.0.1.5 「^」をｽﾍﾟｰｽと置き換える
+                        'Ver2.0.1.7 「^」は改行文字とする
+                        'Ver2.0.2.5 和文対応 行数を4行までOKとする
+                        'strTemp = strTemp.Replace("^", " ")
+
+                        '初期化
+                        SearchMoji = ""
+                        LineMoji1 = ""
+                        LineMoji2 = ""
+                        LineMoji3 = ""
+                        LineMoji4 = ""
+                        LenMoji = 0
+
+                        For k = 1 To Len(strTemp)
+                            SearchMoji = Mid(strTemp, k, 1)
+
+                            Select Case SearchMoji
+                                Case "^"
+                                    LenMoji = KaigyoByte + 1
+                                    SearchMoji = ""
+                                Case " " To "z"     '0x20 - 0x7A
+                                    LenMoji = LenMoji + 1
                                 'Case "A" To "Z"
                                 '    LenMoji = LenMoji + 1
                                 'Case "0" To "9"
                                 '    LenMoji = LenMoji + 1
-                            Case "｡" To "ﾟ"   '0xA1 - 0xDF (｡ - ﾟ)半角ｶﾀｶﾅ  2014.11.17
-                                LenMoji = LenMoji + 1
-                            Case Else
-                                LenMoji = LenMoji + 2
-                        End Select
+                                Case "｡" To "ﾟ"   '0xA1 - 0xDF (｡ - ﾟ)半角ｶﾀｶﾅ  2014.11.17
+                                    LenMoji = LenMoji + 1
+                                Case Else
+                                    LenMoji = LenMoji + 2
+                            End Select
 
-                        '8ﾊﾞｲﾄ以下なら1行目
-                        If LenMoji >= KaigyoByte + 1 Then
-                            'LineMoji2 = LineMoji2 + SearchMoji
-                            LenGyo = LenGyo + 1
-                            LenMoji = 0
+                            '8ﾊﾞｲﾄ以下なら1行目
+                            If LenMoji >= KaigyoByte + 1 Then
+                                'LineMoji2 = LineMoji2 + SearchMoji
+                                LenGyo = LenGyo + 1
+                                LenMoji = 0
+                                Select Case LenGyo
+                                    Case 1
+                                        LineMoji1 = LineMoji1 + SearchMoji
+                                    Case 2
+                                        LineMoji2 = LineMoji2 + SearchMoji
+                                    Case 3
+                                        LineMoji3 = LineMoji3 + SearchMoji
+                                    Case Else
+                                        LineMoji4 = LineMoji4 + SearchMoji
+                                End Select
+                            Else
+                                'LineMoji1 = LineMoji1 + SearchMoji
+                                Select Case LenGyo
+                                    Case 1
+                                        LineMoji1 = LineMoji1 + SearchMoji
+                                    Case 2
+                                        LineMoji2 = LineMoji2 + SearchMoji
+                                    Case 3
+                                        LineMoji3 = LineMoji3 + SearchMoji
+                                    Case Else
+                                        LineMoji4 = LineMoji4 + SearchMoji
+                                End Select
+                            End If
+                        Next k
+
+                        'Ver2.0.0.2 Reamrksのﾌｫﾝﾄは他と変更可能にしておく
+                        'Ver2.0.2.5 RemarksMAX4行対応
+                        If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                            'If LenMoji <= KaigyoByte Then
+                            '    e.DrawString(strTemp, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                            'Else
+                            '    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                            '    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                            'End If
                             Select Case LenGyo
                                 Case 1
-                                    LineMoji1 = LineMoji1 + SearchMoji
+                                    e.DrawString(strTemp, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
                                 Case 2
-                                    LineMoji2 = LineMoji2 + SearchMoji
+                                    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
                                 Case 3
-                                    LineMoji3 = LineMoji3 + SearchMoji
+                                    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                    e.DrawString(LineMoji3, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
                                 Case Else
-                                    LineMoji4 = LineMoji4 + SearchMoji
+                                    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                    e.DrawString(LineMoji3, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
+                                    e.DrawString(LineMoji4, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16 + 16)
                             End Select
                         Else
-                            'LineMoji1 = LineMoji1 + SearchMoji
+                            'If LenMoji <= KaigyoByte Then
+                            '    e.DrawString(strTemp, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                            'Else
+                            '    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                            '    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                            'End If
                             Select Case LenGyo
                                 Case 1
-                                    LineMoji1 = LineMoji1 + SearchMoji
+                                    e.DrawString(strTemp, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
                                 Case 2
-                                    LineMoji2 = LineMoji2 + SearchMoji
+                                    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
                                 Case 3
-                                    LineMoji3 = LineMoji3 + SearchMoji
+                                    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                    e.DrawString(LineMoji3, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
                                 Case Else
-                                    LineMoji4 = LineMoji4 + SearchMoji
+                                    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                    e.DrawString(LineMoji3, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
+                                    e.DrawString(LineMoji4, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16 + 16)
                             End Select
                         End If
-                    Next k
 
-                    'Ver2.0.0.2 Reamrksのﾌｫﾝﾄは他と変更可能にしておく
-                    'Ver2.0.2.5 RemarksMAX4行対応
-                    If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
-                        'If LenMoji <= KaigyoByte Then
-                        '    e.DrawString(strTemp, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+
+                        'strTemp = gGetString(gudt.SetChDisp.udtChDisp(funo).strRemarks)
+                        'If strTemp.Length <= 8 Then
+                        '    e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
                         'Else
-                        '    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                        '    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                        '    e.DrawString(strTemp.Substring(0, 8), fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                        '    e.DrawString(strTemp.Substring(8), fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 12)
                         'End If
-                        Select Case LenGyo
-                            Case 1
-                                e.DrawString(strTemp, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                            Case 2
-                                e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                                e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
-                            Case 3
-                                e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                                e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
-                                e.DrawString(LineMoji3, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
-                            Case Else
-                                e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                                e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
-                                e.DrawString(LineMoji3, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
-                                e.DrawString(LineMoji4, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16 + 16)
-                        End Select
-                    Else
-                        'If LenMoji <= KaigyoByte Then
-                        '    e.DrawString(strTemp, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                        'Else
-                        '    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                        '    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
-                        'End If
-                        Select Case LenGyo
-                            Case 1
-                                e.DrawString(strTemp, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                            Case 2
-                                e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                                e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
-                            Case 3
-                                e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                                e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
-                                e.DrawString(LineMoji3, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
-                            Case Else
-                                e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                                e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
-                                e.DrawString(LineMoji3, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
-                                e.DrawString(LineMoji4, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16 + 16)
-                        End Select
-                    End If
 
+                        '******************************
 
-                    'strTemp = gGetString(gudt.SetChDisp.udtChDisp(funo).strRemarks)
-                    'If strTemp.Length <= 8 Then
-                    '    e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                    'Else
-                    '    e.DrawString(strTemp.Substring(0, 8), fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
-                    '    e.DrawString(strTemp.Substring(8), fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 12)
-                    'End If
-
-                    '******************************
-
-                    '**TYPE NUMBER*****************
-                    ''表示文字数変更　ver.1.4.0 2011.08.02
-                    ''型名変更  2013.10.21
-                    strTemp = Trim(Mid(gudt.SetChDisp.udtChDisp(funo).strFuType, _
-                                       Len("SMS-U5650") + 1, _
+                        '**TYPE NUMBER*****************
+                        ''表示文字数変更　ver.1.4.0 2011.08.02
+                        ''型名変更  2013.10.21
+                        strTemp = Trim(Mid(gudt.SetChDisp.udtChDisp(funo).strFuType,
+                                       Len("SMS-U5650") + 1,
                                        Len(gudt.SetChDisp.udtChDisp(funo).strFuType) - Len("SMS-U5650")))
 
-                    'If Len(strTemp) = 2 Then
-                    '    intTemp2 = 10
-                    'Else
-                    intTemp2 = 5
-                    'End If
+                        'If Len(strTemp) = 2 Then
+                        '    intTemp2 = 10
+                        'Else
+                        intTemp2 = 5
+                        'End If
 
-                    e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + intTemp2, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 5)
-                    '******************************
+                        e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + intTemp2, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 5)
+                        '******************************
 
-                    'SLOTﾀｲﾌﾟ保持 T.Ueki 斜線書込み対応
-                    PrintSlotTypeLen = Len(strTemp)
+                        'SLOTﾀｲﾌﾟ保持 T.Ueki 斜線書込み対応
+                        PrintSlotTypeLen = Len(strTemp)
 
-                    Select Case PrintSlotTypeLen
-                        Case 0
-                            PrintSlotType = ""
-                        Case 2
-                            PrintSlotType = Mid(strTemp, 2, 1)
-                        Case Else
-                            PrintSlotType = Mid(strTemp, 3, 1)
-                    End Select
-
-
-                    '**INPUT TYPE******************
-                    For j = 0 To 7  '列ループ
-
-                        'If mintRecCntSlot(i + ((mintPageCount - 1) * 7), j) > 0 Then
-
-                        strTemp = ""
-                        strTemp2 = ""
+                        Select Case PrintSlotTypeLen
+                            Case 0
+                                PrintSlotType = ""
+                            Case 2
+                                PrintSlotType = Mid(strTemp, 2, 1)
+                            Case Else
+                                PrintSlotType = Mid(strTemp, 3, 1)
+                        End Select
 
 
-                        If j = 0 Then
-                            ''型名変更  2013.10.21
-                            'Ver2.0.4.1 R分岐端子種類追加 -23～-35P
-                            'Ver2.0.7.P 端子種類追加(J)
-                            'Ver2.0.7.Z 端子種類追加(J2)
-                            'Ver2.0.8.7 端子種類追加(J3)
-                            'Ver2.0.8.9 端子種類追加(42) 2018.10.01
-                            If Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12P" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13P" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15P" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18P" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-23" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-32" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-33" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-35" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-33P" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-35P" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J2" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J2" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J2" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J2" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J3" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J3" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J3" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J3" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-42" Or _
-                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-42A" Or _
+                        '**INPUT TYPE******************
+                        For j = 0 To 7  '列ループ
+
+                            'If mintRecCntSlot(i + ((mintPageCount - 1) * 7), j) > 0 Then
+
+                            strTemp = ""
+                            strTemp2 = ""
+
+
+                            If j = 0 Then
+                                ''型名変更  2013.10.21
+                                'Ver2.0.4.1 R分岐端子種類追加 -23～-35P
+                                'Ver2.0.7.P 端子種類追加(J)
+                                'Ver2.0.7.Z 端子種類追加(J2)
+                                'Ver2.0.8.7 端子種類追加(J3)
+                                'Ver2.0.8.9 端子種類追加(42) 2018.10.01
+                                If Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12P" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13P" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15P" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18P" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-23" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-32" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-33" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-35" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-33P" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-35P" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J2" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J2" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J2" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J2" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J3" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J3" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J3" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J3" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-42" Or
+                               Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-42A" Or
                                Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-42B" Then
-                                ''Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15FH" Then
+                                    ''Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15FH" Then
 
-                                strRL = "-R"
+                                    strRL = "-R"
+                                Else
+                                    strRL = "-L"
+                                End If
                             Else
                                 strRL = "-L"
                             End If
-                        Else
-                            strRL = "-L"
-                        End If
 
-                        Select Case gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType
-                            Case 1
-                                strTemp = "M003A"   ''DO
+                            Select Case gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType
+                                Case 1
+                                    strTemp = "M003A"   ''DO
 
-                                If (gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf > 1) Then    'TMRY
-                                    strTemp2 = "RY"
-                                Else
-                                    strTemp2 = "DO"
-                                End If
+                                    If (gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf > 1) Then    'TMRY
+                                        strTemp2 = "RY"
+                                    Else
+                                        strTemp2 = "DO"
+                                    End If
 
                                 'If gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf = 2 Then
                                 '    strTemp2 = "RY"
@@ -5568,280 +6736,280 @@
                                 '    strTemp2 = "DO"
                                 'End If
 
-                            Case 2
-                                strTemp = "M002A"   ''DI
-                                strTemp2 = "DI"
+                                Case 2
+                                    strTemp = "M002A"   ''DI
+                                    strTemp2 = "DI"
 
-                            Case 3
-                                strTemp = "M030A"   ''AO
-                                strTemp2 = "AO"
+                                Case 3
+                                    strTemp = "M030A"   ''AO
+                                    strTemp2 = "AO"
 
-                            Case 4
-                                strTemp = "M100A"   ''AI(2線式)
-                                strTemp2 = "15"
+                                Case 4
+                                    strTemp = "M100A"   ''AI(2線式)
+                                    strTemp2 = "15"
 
-                            Case 5
-                                strTemp = "M110A"   ''AI(3線式)
-                                strTemp2 = "TEMP"   ''型名変更  2013.10.21
+                                Case 5
+                                    strTemp = "M110A"   ''AI(3線式)
+                                    strTemp2 = "TEMP"   ''型名変更  2013.10.21
 
-                            Case 6
-                                strTemp = "M500A"   ''AI(1-5V)
-                                strTemp2 = "15"
+                                Case 6
+                                    strTemp = "M500A"   ''AI(1-5V)
+                                    strTemp2 = "15"
 
-                            Case 7
-                                strTemp = "M400A"   ''AI(4-20mA)
-                                strTemp2 = "42"
+                                Case 7
+                                    strTemp = "M400A"   ''AI(4-20mA)
+                                    strTemp2 = "42"
 
-                            Case 8
-                                strTemp = "M200A"   ''AI(K)
-                                strTemp2 = "K"      ''型名変更  2013.10.21
+                                Case 8
+                                    strTemp = "M200A"   ''AI(K)
+                                    strTemp2 = "K"      ''型名変更  2013.10.21
 
-                                'Ver2.0.8.1 M200Aに派生基板あり 型名が違う
-                                If (gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf >= 1) Then
-                                    strTemp2 = "K-1"
-                                End If
-
-                        End Select
-
-                        'Ver2.0.7.4 基板ﾊﾞｰｼﾞｮﾝ印刷対応
-                        If g_bytTerVer = 1 Then
-                            strTemp = strTemp.Replace("A", "")
-                        End If
-
-                        If strTemp <> "" Then
-
-                            e.DrawString(strTemp, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 6, frmUp + hBaseHeader * 4 + hGrp * i + 5)                     '基板型式
-
-                            If gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 1 Then   ' DO
-
-                                'Ver.2.0.8.P
-                                Dim shtTerinf As Short = gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf
-                                Dim ushtTerinf As UShort = Convert.ToUInt16(shtTerinf.ToString("X4"), 16)
-
-                                '' TMRYの場合は4分割
-                                'If (gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf > 1 And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf < 20) Then 
-                                If (ushtTerinf > 1 And ushtTerinf < 20) Then 'TMRY
-                                    '' 4分割ライン
-                                    intTempH = frmUp + hBaseHeader * 4 + hGrp * i
-                                    e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
-                                    e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hGrp)
-
-                                    '' 2013.10.25
-                                    If 2 <= gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 5 Then
-                                        strRYtype = Mid(strRL, 2, 1) & " "
-                                        'strRYtype = " " & Mid(strRL, 2, 1)
-                                        intRYNo = gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 1
-                                    ElseIf 6 <= gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 9 Then
-                                        strRYtype = Mid(strRL, 2, 1) & "1"
-                                        'strRYtype = "1" & Mid(strRL, 2, 1)
-                                        intRYNo = gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 5
-                                    ElseIf 10 <= gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 13 Then
-                                        strRYtype = "2"
-                                        intRYNo = gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 9
-                                    Else
-                                        strRYtype = ""
+                                    'Ver2.0.8.1 M200Aに派生基板あり 型名が違う
+                                    If (gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf >= 1) Then
+                                        strTemp2 = "K-1"
                                     End If
 
+                            End Select
 
-                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
-                                    e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+                            'Ver2.0.7.4 基板ﾊﾞｰｼﾞｮﾝ印刷対応
+                            If g_bytTerVer = 1 Then
+                                strTemp = strTemp.Replace("A", "")
+                            End If
 
-                                    e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE(A)
+                            If strTemp <> "" Then
 
-                                    'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 2, funo, j) Then
-                                    If intRYNo > 1 Then
-                                        e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(B)-1
-                                        e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(B)-2
-                                        e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(B)
-                                    End If
+                                e.DrawString(strTemp, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 6, frmUp + hBaseHeader * 4 + hGrp * i + 5)                     '基板型式
 
-                                    'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 3, funo, j) Then
-                                    If intRYNo > 2 Then
-                                        e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(C)-1
-                                        e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(C)-2
-                                        e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(C)
-                                    End If
+                                If gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 1 Then   ' DO
 
-                                    'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 4, funo, j) Then
-                                    If intRYNo > 3 Then
-                                        e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(D)-1
-                                        e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(D)-2
-                                        e.DrawString((j + 1).ToString & "D", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(D)
-                                    End If
+                                    'Ver.2.0.8.P
+                                    Dim shtTerinf As Short = gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf
+                                    Dim ushtTerinf As UShort = Convert.ToUInt16(shtTerinf.ToString("X4"), 16)
 
-                                ElseIf (ushtTerinf > 20) Then    'Ver.2.0.8.P DO端子台混在
-
-                                    Dim intTermSet(4) As Integer
-                                    Dim idx As Integer
-
-                                    '端子台種類取得
-                                    '0:設定無し　1:TMDO　2:TMRY　3:TMRY1　4:TMRY2
-                                    For idx = 0 To intTermSet.Length - 1
-                                        intTermSet(idx) = getTermType(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf, idx)
-                                    Next
-
-                                    If intTermSet(0) = 1 And intTermSet(2) = 1 Then 'TMDOが2枚
-                                        strTemp2 = "DO"
-                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
-                                        e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
-
-                                        ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
-                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
-                                        e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
-                                        ''End If
-
-                                    ElseIf intTermSet(0) = 1 And intTermSet(2) <> 1 Then 'TMDOが1枚 + TMRY*が2枚
-
-                                        'C,D端子を分割線
+                                    '' TMRYの場合は4分割
+                                    'If (gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf > 1 And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf < 20) Then 
+                                    If (ushtTerinf > 1 And ushtTerinf < 20) Then 'TMRY
+                                        '' 4分割ライン
                                         intTempH = frmUp + hBaseHeader * 4 + hGrp * i
+                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
                                         e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hGrp)
 
-                                        strTemp2 = "DO"
-                                        'A&B側の線
-                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
-                                        e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
-
-                                        Dim strRYtype2 As String
-                                        If intTermSet(2) = 2 Then
+                                        '' 2013.10.25
+                                        If 2 <= gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 5 Then
                                             strRYtype = Mid(strRL, 2, 1) & " "
-                                        ElseIf intTermSet(2) = 3 Then
+                                            'strRYtype = " " & Mid(strRL, 2, 1)
+                                            intRYNo = gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 1
+                                        ElseIf 6 <= gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 9 Then
                                             strRYtype = Mid(strRL, 2, 1) & "1"
-                                        ElseIf intTermSet(2) = 4 Then
+                                            'strRYtype = "1" & Mid(strRL, 2, 1)
+                                            intRYNo = gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 5
+                                        ElseIf 10 <= gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 13 Then
                                             strRYtype = "2"
+                                            intRYNo = gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 9
                                         Else
                                             strRYtype = ""
                                         End If
 
-                                        If intTermSet(3) = 2 Then
-                                            strRYtype2 = Mid(strRL, 2, 1) & " "
-                                        ElseIf intTermSet(3) = 3 Then
-                                            strRYtype2 = Mid(strRL, 2, 1) & "1"
-                                        ElseIf intTermSet(3) = 4 Then
-                                            strRYtype2 = "2"
-                                        Else
-                                            strRYtype2 = ""
+
+                                        e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
+                                        e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+
+                                        e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE(A)
+
+                                        'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 2, funo, j) Then
+                                        If intRYNo > 1 Then
+                                            e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(B)-1
+                                            e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(B)-2
+                                            e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(B)
                                         End If
 
-                                        strTemp2 = "RY"
-
-                                        If intTermSet(2) <> 0 Then  ''「None」の場合は非表示 20200428 hori
-                                            ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Then
+                                        'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 3, funo, j) Then
+                                        If intRYNo > 2 Then
                                             e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(C)-1
                                             e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(C)-2
                                             e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(C)
-                                            ''End If
                                         End If
 
-                                        If intTermSet(3) <> 0 Then  ''「None」の場合は非表示 20200428 hori
-                                            '' If ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then
+                                        'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 4, funo, j) Then
+                                        If intRYNo > 3 Then
                                             e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(D)-1
-                                            e.DrawString(strRYtype2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(D)-2
+                                            e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(D)-2
                                             e.DrawString((j + 1).ToString & "D", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(D)
-                                            ''End If
                                         End If
 
-                                    ElseIf intTermSet(0) <> 1 And intTermSet(2) = 1 Then 'TMRY*が2枚 + TMDOが1枚
-                                        intTempH = frmUp + hBaseHeader * 4 + hGrp * i
-                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
+                                    ElseIf (ushtTerinf > 20) Then    'Ver.2.0.8.P DO端子台混在
 
-                                        strTemp2 = "DO"
-                                        ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
-                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
-                                        e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
-                                        ''End If
+                                        Dim intTermSet(4) As Integer
+                                        Dim idx As Integer
 
-                                        strTemp2 = "RY"
-                                        Dim strRYtype2 As String
-                                        If intTermSet(0) = 2 Then
-                                            strRYtype = Mid(strRL, 2, 1) & " "
-                                        ElseIf intTermSet(0) = 3 Then
-                                            strRYtype = Mid(strRL, 2, 1) & "1"
-                                        ElseIf intTermSet(0) = 4 Then
-                                            strRYtype = "2"
-                                        Else
-                                            strRYtype = ""
-                                        End If
-
-                                        If intTermSet(1) = 2 Then
-                                            strRYtype2 = Mid(strRL, 2, 1) & " "
-                                        ElseIf intTermSet(1) = 3 Then
-                                            strRYtype2 = Mid(strRL, 2, 1) & "1"
-                                        ElseIf intTermSet(1) = 4 Then
-                                            strRYtype2 = "2"
-                                        Else
-                                            strRYtype2 = ""
-                                        End If
-
-                                        If intTermSet(0) <> 0 Then  ''「None」の場合は非表示 20200428 hori
-                                            If strRYtype <> "" Then
-                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
-                                                e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
-                                                e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE(A)
-                                            End If
-                                        End If
-
-                                        If intTermSet(1) <> 0 Then  ''「None」の場合は非表示 20200428 hori
-                                            If strRYtype <> "" Then
-                                                ''If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
-                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(B)-1
-                                                e.DrawString(strRYtype2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(B)-2
-                                                e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(B)
-                                                ''End If
-                                            End If
-                                        End If
-
-                                    ElseIf intTermSet(0) <> 1 And intTermSet(2) <> 1 Then 'TMRY*で構成
-                                        '4分割ライン
-                                        intTempH = frmUp + hBaseHeader * 4 + hGrp * i
-                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
-                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hGrp)
-
-                                        strTemp2 = "RY"
-
-                                        Dim strRYtypeMulti(4) As String
-                                        Dim m As Integer
-
-                                        For m = 0 To strRYtypeMulti.Length - 1
-                                            If intTermSet(m) = 2 Then
-                                                strRYtypeMulti(m) = Mid(strRL, 2, 1) & " "
-                                            ElseIf intTermSet(m) = 3 Then
-                                                strRYtypeMulti(m) = Mid(strRL, 2, 1) & "1"
-                                            ElseIf intTermSet(m) = 4 Then
-                                                strRYtypeMulti(m) = "2"
-                                            Else
-                                                strRYtypeMulti(m) = ""
-                                            End If
+                                        '端子台種類取得
+                                        '0:設定無し　1:TMDO　2:TMRY　3:TMRY1　4:TMRY2
+                                        For idx = 0 To intTermSet.Length - 1
+                                            intTermSet(idx) = getTermType(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf, idx)
                                         Next
 
-                                        If intTermSet(0) <> 0 Then  ''「None」の場合は非表示 20200428 hori
-                                            e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                 '端子台型式(A)-1
-                                            e.DrawString(strRYtypeMulti(0), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)   '端子台型式(A)-2
-                                            e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)             'CABLE(A)
-                                        End If
+                                        If intTermSet(0) = 1 And intTermSet(2) = 1 Then 'TMDOが2枚
+                                            strTemp2 = "DO"
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
+                                            e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
 
-                                        If intTermSet(1) <> 0 Then  ''「None」の場合は非表示 20200428 hori
-                                            ''If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
-                                            e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(B)-1
-                                            e.DrawString(strRYtypeMulti(1), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(B)-2
-                                            e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(B)
+                                            ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
+                                            e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
                                             ''End If
-                                        End If
 
-                                        If intTermSet(2) <> 0 Then  ''「None」の場合は非表示 20200428 hori
-                                            ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Then
-                                            e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(C)-1
-                                            e.DrawString(strRYtypeMulti(2), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(C)-2
-                                            e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(C)
-                                            ''End If
-                                        End If
+                                        ElseIf intTermSet(0) = 1 And intTermSet(2) <> 1 Then 'TMDOが1枚 + TMRY*が2枚
 
-                                        If intTermSet(3) <> 0 Then  ''「None」の場合は非表示 20200428 hori
-                                            ''If ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then
-                                            e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(D)-1
-                                            e.DrawString(strRYtypeMulti(3), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(D)-2
-                                            e.DrawString((j + 1).ToString & "D", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(D)
+                                            'C,D端子を分割線
+                                            intTempH = frmUp + hBaseHeader * 4 + hGrp * i
+                                            e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hGrp)
+
+                                            strTemp2 = "DO"
+                                            'A&B側の線
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
+                                            e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
+
+                                            Dim strRYtype2 As String
+                                            If intTermSet(2) = 2 Then
+                                                strRYtype = Mid(strRL, 2, 1) & " "
+                                            ElseIf intTermSet(2) = 3 Then
+                                                strRYtype = Mid(strRL, 2, 1) & "1"
+                                            ElseIf intTermSet(2) = 4 Then
+                                                strRYtype = "2"
+                                            Else
+                                                strRYtype = ""
+                                            End If
+
+                                            If intTermSet(3) = 2 Then
+                                                strRYtype2 = Mid(strRL, 2, 1) & " "
+                                            ElseIf intTermSet(3) = 3 Then
+                                                strRYtype2 = Mid(strRL, 2, 1) & "1"
+                                            ElseIf intTermSet(3) = 4 Then
+                                                strRYtype2 = "2"
+                                            Else
+                                                strRYtype2 = ""
+                                            End If
+
+                                            strTemp2 = "RY"
+
+                                            If intTermSet(2) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(C)-1
+                                                e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(C)-2
+                                                e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(C)
+                                                ''End If
+                                            End If
+
+                                            If intTermSet(3) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                '' If ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(D)-1
+                                                e.DrawString(strRYtype2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(D)-2
+                                                e.DrawString((j + 1).ToString & "D", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(D)
+                                                ''End If
+                                            End If
+
+                                        ElseIf intTermSet(0) <> 1 And intTermSet(2) = 1 Then 'TMRY*が2枚 + TMDOが1枚
+                                            intTempH = frmUp + hBaseHeader * 4 + hGrp * i
+                                            e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
+
+                                            strTemp2 = "DO"
+                                            ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
+                                            e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
                                             ''End If
-                                        End If
+
+                                            strTemp2 = "RY"
+                                            Dim strRYtype2 As String
+                                            If intTermSet(0) = 2 Then
+                                                strRYtype = Mid(strRL, 2, 1) & " "
+                                            ElseIf intTermSet(0) = 3 Then
+                                                strRYtype = Mid(strRL, 2, 1) & "1"
+                                            ElseIf intTermSet(0) = 4 Then
+                                                strRYtype = "2"
+                                            Else
+                                                strRYtype = ""
+                                            End If
+
+                                            If intTermSet(1) = 2 Then
+                                                strRYtype2 = Mid(strRL, 2, 1) & " "
+                                            ElseIf intTermSet(1) = 3 Then
+                                                strRYtype2 = Mid(strRL, 2, 1) & "1"
+                                            ElseIf intTermSet(1) = 4 Then
+                                                strRYtype2 = "2"
+                                            Else
+                                                strRYtype2 = ""
+                                            End If
+
+                                            If intTermSet(0) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                If strRYtype <> "" Then
+                                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
+                                                    e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+                                                    e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE(A)
+                                                End If
+                                            End If
+
+                                            If intTermSet(1) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                If strRYtype <> "" Then
+                                                    ''If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
+                                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(B)-1
+                                                    e.DrawString(strRYtype2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(B)-2
+                                                    e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(B)
+                                                    ''End If
+                                                End If
+                                            End If
+
+                                        ElseIf intTermSet(0) <> 1 And intTermSet(2) <> 1 Then 'TMRY*で構成
+                                            '4分割ライン
+                                            intTempH = frmUp + hBaseHeader * 4 + hGrp * i
+                                            e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
+                                            e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hGrp)
+
+                                            strTemp2 = "RY"
+
+                                            Dim strRYtypeMulti(4) As String
+                                            Dim m As Integer
+
+                                            For m = 0 To strRYtypeMulti.Length - 1
+                                                If intTermSet(m) = 2 Then
+                                                    strRYtypeMulti(m) = Mid(strRL, 2, 1) & " "
+                                                ElseIf intTermSet(m) = 3 Then
+                                                    strRYtypeMulti(m) = Mid(strRL, 2, 1) & "1"
+                                                ElseIf intTermSet(m) = 4 Then
+                                                    strRYtypeMulti(m) = "2"
+                                                Else
+                                                    strRYtypeMulti(m) = ""
+                                                End If
+                                            Next
+
+                                            If intTermSet(0) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                 '端子台型式(A)-1
+                                                e.DrawString(strRYtypeMulti(0), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)   '端子台型式(A)-2
+                                                e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)             'CABLE(A)
+                                            End If
+
+                                            If intTermSet(1) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                ''If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(B)-1
+                                                e.DrawString(strRYtypeMulti(1), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(B)-2
+                                                e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(B)
+                                                ''End If
+                                            End If
+
+                                            If intTermSet(2) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(C)-1
+                                                e.DrawString(strRYtypeMulti(2), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(C)-2
+                                                e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(C)
+                                                ''End If
+                                            End If
+
+                                            If intTermSet(3) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                ''If ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(D)-1
+                                                e.DrawString(strRYtypeMulti(3), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(D)-2
+                                                e.DrawString((j + 1).ToString & "D", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(D)
+                                                ''End If
+                                            End If
 
                                         Else
                                             e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
@@ -5852,95 +7020,799 @@
                                                 e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
                                             End If
                                         End If
-                                Else
-                                    e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
-                                    e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
+                                    Else
+                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
+                                        e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
 
-                                    If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
+                                        If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
+                                            e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
+                                        End If
+
+                                    End If
+
+                                ElseIf gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 2 Then   ' DI
+                                    e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(A)
+                                    e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(A)
+
+                                    If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
                                         e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
-                                        e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
+                                        e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60) 'CABLE(B)
+                                    End If
+
+                                ElseIf gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 5 Then   'AI(3線式)    2013.10.21
+                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
+                                    e.DrawString(strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+                                    e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
+
+                                ElseIf gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 3 Or gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 7 Then
+                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i) '端子台型式
+
+                                    'T.Ueki 端子R L表示位置修正
+                                    'e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式
+                                    e.DrawString(strRL & "-1", fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)
+                                    e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
+
+                                Else
+                                    'Ver2.0.8.1
+                                    '長い文字列の場合,LRを改行
+                                    If LenB(strTemp2) >= 3 Then
+                                        e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
+                                        e.DrawString(strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+                                    Else
+                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式
+                                    End If
+                                    e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
+
+                                End If
+
+
+                            Else
+
+                                '2015.4.9 T.Ueki 斜線書込み対応
+                                intTempH = frmUp + hBaseHeader * 4 + hGrp * i   '高さ指定
+
+                                If PrintFUNo = "FCU" Then
+
+                                    '5ｽﾛｯﾄ目から斜線
+                                    If j > 4 Then
+                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j), intTempH, CInt((frmLeft + wNO * 2) + intTemp * (j + 1)), intTempH + hGrp)
+                                    End If
+                                Else
+
+                                    Select Case PrintSlotType
+
+                                        Case "2"
+                                            PrintPLCSW = 1
+                                        Case "3"
+                                            PrintPLCSW = 2
+                                        Case "5"
+                                            PrintPLCSW = 4
+                                        Case "8"
+                                            PrintPLCSW = 7
+                                        Case Else
+                                            '処理無し
+
+                                    End Select
+
+                                    If j > PrintPLCSW Then
+                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j), intTempH, CInt((frmLeft + wNO * 2) + intTemp * (j + 1)), intTempH + hGrp)
+
+
                                     End If
 
                                 End If
 
-                            ElseIf gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 2 Then   ' DI
-                                e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(A)
-                                e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(A)
-
-                                If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
-                                    e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
-                                    e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60) 'CABLE(B)
-                                End If
-
-                            ElseIf gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 5 Then   'AI(3線式)    2013.10.21
-                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
-                                e.DrawString(strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
-                                e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
-
-                            ElseIf gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 3 Or gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 7 Then
-                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i) '端子台型式
-
-                                'T.Ueki 端子R L表示位置修正
-                                'e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式
-                                e.DrawString(strRL & "-1", fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)
-                                e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
-
-                            Else
-                                'Ver2.0.8.1
-                                '長い文字列の場合,LRを改行
-                                If LenB(strTemp2) >= 3 Then
-                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
-                                    e.DrawString(strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
-                                Else
-                                    e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式
-                                End If
-                                e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
-
                             End If
 
+                        Next j
+                        '********************
+                    End If
+                Else
+                    'FCU2が選択されている場合
+                    If gudt2.SetFu.udtFu(funo).shtUse = 1 Then
+                        '**TYPE ALPH ******************
+                        Select Case funo
+                            Case 0 : strTemp = "FCU"
+                            Case 1 : strTemp = "FU1"
+                            Case 2 : strTemp = "FU2"
+                            Case 3 : strTemp = "FU3"
+                            Case 4 : strTemp = "FU4"
+                            Case 5 : strTemp = "FU5"
+                            Case 6 : strTemp = "FU6"
+                            Case 7 : strTemp = "FU7"
+                            Case 8 : strTemp = "FU8"
+                            Case 9 : strTemp = "FU9"
+                            Case 10 : strTemp = "FU10"
+                            Case 11 : strTemp = "FU11"
+                            Case 12 : strTemp = "FU12"
+                            Case 13 : strTemp = "FU13"
+                            Case 14 : strTemp = "FU14"
+                            Case 15 : strTemp = "FU15"
+                            Case 16 : strTemp = "FU16"
+                            Case 17 : strTemp = "FU17"
+                            Case 18 : strTemp = "FU18"
+                            Case 19 : strTemp = "FU19"
+                            Case 20 : strTemp = "FU20"
+                        End Select
 
+                        If funo <= 9 Then
+                            e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 10, frmUp + hBaseHeader * 4 + hGrp * i + 5)
                         Else
-
-                            '2015.4.9 T.Ueki 斜線書込み対応
-                            intTempH = frmUp + hBaseHeader * 4 + hGrp * i   '高さ指定
-
-                            If PrintFUNo = "FCU" Then
-
-                                '5ｽﾛｯﾄ目から斜線
-                                If j > 4 Then
-                                    e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j), intTempH, CInt((frmLeft + wNO * 2) + intTemp * (j + 1)), intTempH + hGrp)
-                                End If
-                            Else
-
-                                Select Case PrintSlotType
-
-                                    Case "2"
-                                        PrintPLCSW = 1
-                                    Case "3"
-                                        PrintPLCSW = 2
-                                    Case "5"
-                                        PrintPLCSW = 4
-                                    Case "8"
-                                        PrintPLCSW = 7
-                                    Case Else
-                                        '処理無し
-
-                                End Select
-
-                                If j > PrintPLCSW Then
-                                    e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j), intTempH, CInt((frmLeft + wNO * 2) + intTemp * (j + 1)), intTempH + hGrp)
-
-
-                                End If
-
-                            End If
-
+                            e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 5, frmUp + hBaseHeader * 4 + hGrp * i + 5)
                         End If
 
-                    Next j
-                    '********************
+                        'FU番号保持 T.Ueki 斜線書込み対応
+                        PrintFUNo = strTemp
+
+                        '******************************
+
+                        '**CPU ************************
+                        If gudt2.SetFu.udtFu(funo).shtCanBus = 1 Then    ' CANBUS有
+                            strTemp = "M001A-C"
+                        Else
+                            If funo = 0 Then                            ' FCU SUB
+                                strTemp = "M001A-S"
+                            Else                                        ' FU
+                                strTemp = "M001A"
+                            End If
+                        End If
+                        'Ver2.0.7.4 基板ﾊﾞｰｼﾞｮﾝ印刷対応
+                        If g_bytTerVer = 1 Then
+                            strTemp = strTemp.Replace("A", "")
+                        End If
+
+                        e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + wNO * 2 + 450, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                        '******************************
+
+                        '**COM ************************
+                        If funo = 0 Then                            ' FCU SUB
+                            strTemp = ""
+                        Else                                        ' FU
+                            strTemp = "COM"
+                        End If
+                        e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + wNO * 2 + 466, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)
+                        '******************************
+
+                        '**DIP SW *********************
+                        e.DrawString("ON", fnt3, Brushes.Black, frmLeft + wNO * 2 + 440, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 6)
+                        e.DrawString("OFF", fnt3, Brushes.Black, frmLeft + wNO * 2 + 440, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 6)
+
+                        For j = 1 To 5
+                            If funo And (&H1 << (j - 1)) Then
+                                e.DrawString("o", fnt1, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 2 + hGrp * i + 2)
+                            Else
+                                e.DrawString("o", fnt1, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 3 + hGrp * i + 2)
+                            End If
+                            e.DrawString(j.ToString, fnt2, Brushes.Black, frmLeft + frmWidth - (wREMA + wCPU) + 7 + 12 * j, frmUp + hBaseHeader * 4 + hBaseGrp * 4 + hGrp * i)
+                        Next
+                        '******************************
+
+                        'T.Ueki Reamrksの2行表示処理変更
+                        '**Remarks*********************
+                        'Ver2.0.0.2 Remarksのﾌｫﾝﾄｻｲｽﾞ
+                        Dim fnt_remark As New Font("Courier New", 10)
+                        Dim fnt_remarkj As New Font("ＭＳ 明朝", 10)
+
+                        '改行するバイト数
+                        Dim KaigyoByte As Integer = 8
+
+                        Dim LenMoji As Integer      '文字の長さ
+                        Dim SearchMoji As String    '検索対象文字(1文字)
+                        Dim LineMoji1 As String     '1行目
+                        Dim LineMoji2 As String     '2行目
+                        Dim LineMoji3 As String     '3行目
+                        Dim LineMoji4 As String     '4行目
+                        Dim LenGyo As Integer = 1   '行
+
+                        Dim k As Long
+
+                        strTemp = gGetString(gudt2.SetChDisp.udtChDisp(funo).strRemarks)
+                        'Ver2.0.1.5 「^」をｽﾍﾟｰｽと置き換える
+                        'Ver2.0.1.7 「^」は改行文字とする
+                        'Ver2.0.2.5 和文対応 行数を4行までOKとする
+                        'strTemp = strTemp.Replace("^", " ")
+
+                        '初期化
+                        SearchMoji = ""
+                        LineMoji1 = ""
+                        LineMoji2 = ""
+                        LineMoji3 = ""
+                        LineMoji4 = ""
+                        LenMoji = 0
+
+                        For k = 1 To Len(strTemp)
+                            SearchMoji = Mid(strTemp, k, 1)
+
+                            Select Case SearchMoji
+                                Case "^"
+                                    LenMoji = KaigyoByte + 1
+                                    SearchMoji = ""
+                                Case " " To "z"     '0x20 - 0x7A
+                                    LenMoji = LenMoji + 1
+                                'Case "A" To "Z"
+                                '    LenMoji = LenMoji + 1
+                                'Case "0" To "9"
+                                '    LenMoji = LenMoji + 1
+                                Case "｡" To "ﾟ"   '0xA1 - 0xDF (｡ - ﾟ)半角ｶﾀｶﾅ  2014.11.17
+                                    LenMoji = LenMoji + 1
+                                Case Else
+                                    LenMoji = LenMoji + 2
+                            End Select
+
+                            '8ﾊﾞｲﾄ以下なら1行目
+                            If LenMoji >= KaigyoByte + 1 Then
+                                'LineMoji2 = LineMoji2 + SearchMoji
+                                LenGyo = LenGyo + 1
+                                LenMoji = 0
+                                Select Case LenGyo
+                                    Case 1
+                                        LineMoji1 = LineMoji1 + SearchMoji
+                                    Case 2
+                                        LineMoji2 = LineMoji2 + SearchMoji
+                                    Case 3
+                                        LineMoji3 = LineMoji3 + SearchMoji
+                                    Case Else
+                                        LineMoji4 = LineMoji4 + SearchMoji
+                                End Select
+                            Else
+                                'LineMoji1 = LineMoji1 + SearchMoji
+                                Select Case LenGyo
+                                    Case 1
+                                        LineMoji1 = LineMoji1 + SearchMoji
+                                    Case 2
+                                        LineMoji2 = LineMoji2 + SearchMoji
+                                    Case 3
+                                        LineMoji3 = LineMoji3 + SearchMoji
+                                    Case Else
+                                        LineMoji4 = LineMoji4 + SearchMoji
+                                End Select
+                            End If
+                        Next k
+
+                        'Ver2.0.0.2 Reamrksのﾌｫﾝﾄは他と変更可能にしておく
+                        'Ver2.0.2.5 RemarksMAX4行対応
+                        If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                            'If LenMoji <= KaigyoByte Then
+                            '    e.DrawString(strTemp, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                            'Else
+                            '    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                            '    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                            'End If
+                            Select Case LenGyo
+                                Case 1
+                                    e.DrawString(strTemp, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                Case 2
+                                    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                Case 3
+                                    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                    e.DrawString(LineMoji3, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
+                                Case Else
+                                    e.DrawString(LineMoji1, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                    e.DrawString(LineMoji3, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
+                                    e.DrawString(LineMoji4, fnt_remarkj, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16 + 16)
+                            End Select
+                        Else
+                            'If LenMoji <= KaigyoByte Then
+                            '    e.DrawString(strTemp, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                            'Else
+                            '    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                            '    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                            'End If
+                            Select Case LenGyo
+                                Case 1
+                                    e.DrawString(strTemp, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                Case 2
+                                    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                Case 3
+                                    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                    e.DrawString(LineMoji3, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
+                                Case Else
+                                    e.DrawString(LineMoji1, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                                    e.DrawString(LineMoji2, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16)
+                                    e.DrawString(LineMoji3, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16)
+                                    e.DrawString(LineMoji4, fnt_remark, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 16 + 16 + 16)
+                            End Select
+                        End If
+
+
+                        'strTemp = gGetString(gudt.SetChDisp.udtChDisp(funo).strRemarks)
+                        'If strTemp.Length <= 8 Then
+                        '    e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                        'Else
+                        '    e.DrawString(strTemp.Substring(0, 8), fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5)
+                        '    e.DrawString(strTemp.Substring(8), fnt1, Brushes.Black, frmLeft + 622, frmUp + hBaseHeader * 4 + hGrp * i + 5 + 12)
+                        'End If
+
+                        '******************************
+
+                        '**TYPE NUMBER*****************
+                        ''表示文字数変更　ver.1.4.0 2011.08.02
+                        ''型名変更  2013.10.21
+                        strTemp = Trim(Mid(gudt2.SetChDisp.udtChDisp(funo).strFuType,
+                                           Len("SMS-U5650") + 1,
+                                           Len(gudt2.SetChDisp.udtChDisp(funo).strFuType) - Len("SMS-U5650")))
+
+                        'If Len(strTemp) = 2 Then
+                        '    intTemp2 = 10
+                        'Else
+                        intTemp2 = 5
+                        'End If
+
+                        e.DrawString(strTemp, fnt1, Brushes.Black, frmLeft + intTemp2, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 5)
+                        '******************************
+
+                        'SLOTﾀｲﾌﾟ保持 T.Ueki 斜線書込み対応
+                        PrintSlotTypeLen = Len(strTemp)
+
+                        Select Case PrintSlotTypeLen
+                            Case 0
+                                PrintSlotType = ""
+                            Case 2
+                                PrintSlotType = Mid(strTemp, 2, 1)
+                            Case Else
+                                PrintSlotType = Mid(strTemp, 3, 1)
+                        End Select
+
+
+                        '**INPUT TYPE******************
+                        For j = 0 To 7  '列ループ
+
+                            'If mintRecCntSlot(i + ((mintPageCount - 1) * 7), j) > 0 Then
+
+                            strTemp = ""
+                            strTemp2 = ""
+
+
+                            If j = 0 Then
+                                ''型名変更  2013.10.21
+                                'Ver2.0.4.1 R分岐端子種類追加 -23～-35P
+                                'Ver2.0.7.P 端子種類追加(J)
+                                'Ver2.0.7.Z 端子種類追加(J2)
+                                'Ver2.0.8.7 端子種類追加(J3)
+                                'Ver2.0.8.9 端子種類追加(42) 2018.10.01
+                                If Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12P" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13P" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15P" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18P" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-23" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-32" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-33" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-35" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-33P" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-35P" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J2" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J2" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J2" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J2" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-12J3" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-13J3" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15J3" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-18J3" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-42" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-42A" Or
+                                   Trim(gudt2.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-42B" Then
+                                    ''Trim(gudt.SetChDisp.udtChDisp(funo).strFuType) = "SMS-U5650-15FH" Then
+
+                                    strRL = "-R"
+                                Else
+                                    strRL = "-L"
+                                End If
+                            Else
+                                strRL = "-L"
+                            End If
+
+                            Select Case gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType
+                                Case 1
+                                    strTemp = "M003A"   ''DO
+
+                                    If (gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf > 1) Then    'TMRY
+                                        strTemp2 = "RY"
+                                    Else
+                                        strTemp2 = "DO"
+                                    End If
+
+                                'If gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf = 2 Then
+                                '    strTemp2 = "RY"
+                                'ElseIf gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf = 3 Then
+                                '    strTemp2 = "RY1"
+                                'ElseIf gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf = 4 Then
+                                '    strTemp2 = "RY2"
+                                'Else
+                                '    strTemp2 = "DO"
+                                'End If
+
+                                Case 2
+                                    strTemp = "M002A"   ''DI
+                                    strTemp2 = "DI"
+
+                                Case 3
+                                    strTemp = "M030A"   ''AO
+                                    strTemp2 = "AO"
+
+                                Case 4
+                                    strTemp = "M100A"   ''AI(2線式)
+                                    strTemp2 = "15"
+
+                                Case 5
+                                    strTemp = "M110A"   ''AI(3線式)
+                                    strTemp2 = "TEMP"   ''型名変更  2013.10.21
+
+                                Case 6
+                                    strTemp = "M500A"   ''AI(1-5V)
+                                    strTemp2 = "15"
+
+                                Case 7
+                                    strTemp = "M400A"   ''AI(4-20mA)
+                                    strTemp2 = "42"
+
+                                Case 8
+                                    strTemp = "M200A"   ''AI(K)
+                                    strTemp2 = "K"      ''型名変更  2013.10.21
+
+                                    'Ver2.0.8.1 M200Aに派生基板あり 型名が違う
+                                    If (gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf >= 1) Then
+                                        strTemp2 = "K-1"
+                                    End If
+
+                            End Select
+
+                            'Ver2.0.7.4 基板ﾊﾞｰｼﾞｮﾝ印刷対応
+                            If g_bytTerVer = 1 Then
+                                strTemp = strTemp.Replace("A", "")
+                            End If
+
+                            If strTemp <> "" Then
+
+                                e.DrawString(strTemp, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 6, frmUp + hBaseHeader * 4 + hGrp * i + 5)                     '基板型式
+
+                                If gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 1 Then   ' DO
+
+                                    'Ver.2.0.8.P
+                                    Dim shtTerinf As Short = gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf
+                                    Dim ushtTerinf As UShort = Convert.ToUInt16(shtTerinf.ToString("X4"), 16)
+
+                                    '' TMRYの場合は4分割
+                                    'If (gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf > 1 And gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf < 20) Then 
+                                    If (ushtTerinf > 1 And ushtTerinf < 20) Then 'TMRY
+                                        '' 4分割ライン
+                                        intTempH = frmUp + hBaseHeader * 4 + hGrp * i
+                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
+                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hGrp)
+
+                                        '' 2013.10.25
+                                        If 2 <= gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 5 Then
+                                            strRYtype = Mid(strRL, 2, 1) & " "
+                                            'strRYtype = " " & Mid(strRL, 2, 1)
+                                            intRYNo = gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 1
+                                        ElseIf 6 <= gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 9 Then
+                                            strRYtype = Mid(strRL, 2, 1) & "1"
+                                            'strRYtype = "1" & Mid(strRL, 2, 1)
+                                            intRYNo = gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 5
+                                        ElseIf 10 <= gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf And gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf <= 13 Then
+                                            strRYtype = "2"
+                                            intRYNo = gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf - 9
+                                        Else
+                                            strRYtype = ""
+                                        End If
+
+
+                                        e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
+                                        e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+
+                                        e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE(A)
+
+                                        'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 2, funo, j) Then
+                                        If intRYNo > 1 Then
+                                            e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(B)-1
+                                            e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(B)-2
+                                            e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(B)
+                                        End If
+
+                                        'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 3, funo, j) Then
+                                        If intRYNo > 2 Then
+                                            e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(C)-1
+                                            e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(C)-2
+                                            e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(C)
+                                        End If
+
+                                        'If ChkTerminalCount(gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType, 4, funo, j) Then
+                                        If intRYNo > 3 Then
+                                            e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(D)-1
+                                            e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(D)-2
+                                            e.DrawString((j + 1).ToString & "D", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(D)
+                                        End If
+
+                                    ElseIf (ushtTerinf > 20) Then    'Ver.2.0.8.P DO端子台混在
+
+                                        Dim intTermSet(4) As Integer
+                                        Dim idx As Integer
+
+                                        '端子台種類取得
+                                        '0:設定無し　1:TMDO　2:TMRY　3:TMRY1　4:TMRY2
+                                        For idx = 0 To intTermSet.Length - 1
+                                            intTermSet(idx) = getTermType(gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtTerinf, idx)
+                                        Next
+
+                                        If intTermSet(0) = 1 And intTermSet(2) = 1 Then 'TMDOが2枚
+                                            strTemp2 = "DO"
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
+                                            e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
+
+                                            ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
+                                            e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
+                                            ''End If
+
+                                        ElseIf intTermSet(0) = 1 And intTermSet(2) <> 1 Then 'TMDOが1枚 + TMRY*が2枚
+
+                                            'C,D端子を分割線
+                                            intTempH = frmUp + hBaseHeader * 4 + hGrp * i
+                                            e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hGrp)
+
+                                            strTemp2 = "DO"
+                                            'A&B側の線
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
+                                            e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
+
+                                            Dim strRYtype2 As String
+                                            If intTermSet(2) = 2 Then
+                                                strRYtype = Mid(strRL, 2, 1) & " "
+                                            ElseIf intTermSet(2) = 3 Then
+                                                strRYtype = Mid(strRL, 2, 1) & "1"
+                                            ElseIf intTermSet(2) = 4 Then
+                                                strRYtype = "2"
+                                            Else
+                                                strRYtype = ""
+                                            End If
+
+                                            If intTermSet(3) = 2 Then
+                                                strRYtype2 = Mid(strRL, 2, 1) & " "
+                                            ElseIf intTermSet(3) = 3 Then
+                                                strRYtype2 = Mid(strRL, 2, 1) & "1"
+                                            ElseIf intTermSet(3) = 4 Then
+                                                strRYtype2 = "2"
+                                            Else
+                                                strRYtype2 = ""
+                                            End If
+
+                                            strTemp2 = "RY"
+
+                                            If intTermSet(2) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(C)-1
+                                                e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(C)-2
+                                                e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(C)
+                                                ''End If
+                                            End If
+
+                                            If intTermSet(3) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                '' If ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(D)-1
+                                                e.DrawString(strRYtype2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(D)-2
+                                                e.DrawString((j + 1).ToString & "D", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(D)
+                                                ''End If
+                                            End If
+
+                                        ElseIf intTermSet(0) <> 1 And intTermSet(2) = 1 Then 'TMRY*が2枚 + TMDOが1枚
+                                            intTempH = frmUp + hBaseHeader * 4 + hGrp * i
+                                            e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
+
+                                            strTemp2 = "DO"
+                                            ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
+                                            e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
+                                            ''End If
+
+                                            strTemp2 = "RY"
+                                            Dim strRYtype2 As String
+                                            If intTermSet(0) = 2 Then
+                                                strRYtype = Mid(strRL, 2, 1) & " "
+                                            ElseIf intTermSet(0) = 3 Then
+                                                strRYtype = Mid(strRL, 2, 1) & "1"
+                                            ElseIf intTermSet(0) = 4 Then
+                                                strRYtype = "2"
+                                            Else
+                                                strRYtype = ""
+                                            End If
+
+                                            If intTermSet(1) = 2 Then
+                                                strRYtype2 = Mid(strRL, 2, 1) & " "
+                                            ElseIf intTermSet(1) = 3 Then
+                                                strRYtype2 = Mid(strRL, 2, 1) & "1"
+                                            ElseIf intTermSet(1) = 4 Then
+                                                strRYtype2 = "2"
+                                            Else
+                                                strRYtype2 = ""
+                                            End If
+
+                                            If intTermSet(0) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                If strRYtype <> "" Then
+                                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
+                                                    e.DrawString(strRYtype, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+                                                    e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE(A)
+                                                End If
+                                            End If
+
+                                            If intTermSet(1) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                If strRYtype <> "" Then
+                                                    ''If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
+                                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)          '端子台型式(B)-1
+                                                    e.DrawString(strRYtype2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)    '端子台型式(B)-2
+                                                    e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)  'CABLE(B)
+                                                    ''End If
+                                                End If
+                                            End If
+
+                                        ElseIf intTermSet(0) <> 1 And intTermSet(2) <> 1 Then 'TMRY*で構成
+                                            '4分割ライン
+                                            intTempH = frmUp + hBaseHeader * 4 + hGrp * i
+                                            e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + intTemp / 4), intTempH + hGrp)
+                                            e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hBaseGrp, CInt((frmLeft + wNO * 2) + intTemp * j + (intTemp / 4 * 3)), intTempH + hGrp)
+
+                                            strTemp2 = "RY"
+
+                                            Dim strRYtypeMulti(4) As String
+                                            Dim m As Integer
+
+                                            For m = 0 To strRYtypeMulti.Length - 1
+                                                If intTermSet(m) = 2 Then
+                                                    strRYtypeMulti(m) = Mid(strRL, 2, 1) & " "
+                                                ElseIf intTermSet(m) = 3 Then
+                                                    strRYtypeMulti(m) = Mid(strRL, 2, 1) & "1"
+                                                ElseIf intTermSet(m) = 4 Then
+                                                    strRYtypeMulti(m) = "2"
+                                                Else
+                                                    strRYtypeMulti(m) = ""
+                                                End If
+                                            Next
+
+                                            If intTermSet(0) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                 '端子台型式(A)-1
+                                                e.DrawString(strRYtypeMulti(0), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)   '端子台型式(A)-2
+                                                e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j, frmUp + hBaseHeader * 4 + hGrp * i + 60)             'CABLE(A)
+                                            End If
+
+                                            If intTermSet(1) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                ''If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(B)-1
+                                                e.DrawString(strRYtypeMulti(1), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(B)-2
+                                                e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 13, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(B)
+                                                ''End If
+                                            End If
+
+                                            If intTermSet(2) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                ''If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(C)-1
+                                                e.DrawString(strRYtypeMulti(2), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(C)-2
+                                                e.DrawString((j + 1).ToString & "C", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 26, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(C)
+                                                ''End If
+                                            End If
+
+                                            If intTermSet(3) <> 0 Then  ''「None」の場合は非表示 20200428 hori
+                                                ''If ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then
+                                                e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)                '端子台型式(D)-1
+                                                e.DrawString(strRYtypeMulti(3), fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)  '端子台型式(D)-2
+                                                e.DrawString((j + 1).ToString & "D", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 40, frmUp + hBaseHeader * 4 + hGrp * i + 60)        'CABLE(D)
+                                                ''End If
+                                            End If
+
+                                        Else
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
+                                            e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
+
+                                            If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
+                                                e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
+                                                e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
+                                            End If
+                                        End If
+                                    Else
+                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6)      '端子台型式(A)
+                                        e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)          'CABLE(A)
+
+                                        If ChkTerminalCount(mudtFuInfo(funo), 3, funo, j) Or ChkTerminalCount(mudtFuInfo(funo), 4, funo, j) Then    '' DOの場合、33-64をチェックするように変更  2015.01.26
+                                            e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
+                                            e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(B)
+                                        End If
+
+                                    End If
+
+                                ElseIf gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 2 Then   ' DI
+                                    e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(A)
+                                    e.DrawString((j + 1).ToString & "A", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 5, frmUp + hBaseHeader * 4 + hGrp * i + 60)     'CABLE(A)
+
+                                    If ChkTerminalCount(mudtFuInfo(funo), 2, funo, j) Then
+                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 28, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式(B)
+                                        e.DrawString((j + 1).ToString & "B", fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 33, frmUp + hBaseHeader * 4 + hGrp * i + 60) 'CABLE(B)
+                                    End If
+
+                                ElseIf gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 5 Then   'AI(3線式)    2013.10.21
+                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
+                                    e.DrawString(strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+                                    e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
+
+                                ElseIf gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 3 Or gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtType = 7 Then
+                                    e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i) '端子台型式
+
+                                    'T.Ueki 端子R L表示位置修正
+                                    'e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式
+                                    e.DrawString(strRL & "-1", fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)
+                                    e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
+
+                                Else
+                                    'Ver2.0.8.1
+                                    '長い文字列の場合,LRを改行
+                                    If LenB(strTemp2) >= 3 Then
+                                        e.DrawString(strTemp2, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i)               '端子台型式(A)-1
+                                        e.DrawString(strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 11)         '端子台型式(A)-2
+                                    Else
+                                        e.DrawString(strTemp2 & strRL, fnt3, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 1, frmUp + hBaseHeader * 4 + hBaseGrp + hGrp * i + 6) '端子台型式
+                                    End If
+                                    e.DrawString((j + 1).ToString, fnt2, Brushes.Black, frmLeft + wNO * 2 + intTemp * j + 9, frmUp + hBaseHeader * 4 + hGrp * i + 60)           'CABLE
+
+                                End If
+
+
+                            Else
+
+                                '2015.4.9 T.Ueki 斜線書込み対応
+                                intTempH = frmUp + hBaseHeader * 4 + hGrp * i   '高さ指定
+
+                                If PrintFUNo = "FCU" Then
+
+                                    '5ｽﾛｯﾄ目から斜線
+                                    If j > 4 Then
+                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j), intTempH, CInt((frmLeft + wNO * 2) + intTemp * (j + 1)), intTempH + hGrp)
+                                    End If
+                                Else
+
+                                    Select Case PrintSlotType
+
+                                        Case "2"
+                                            PrintPLCSW = 1
+                                        Case "3"
+                                            PrintPLCSW = 2
+                                        Case "5"
+                                            PrintPLCSW = 4
+                                        Case "8"
+                                            PrintPLCSW = 7
+                                        Case Else
+                                            '処理無し
+
+                                    End Select
+
+                                    If j > PrintPLCSW Then
+                                        e.DrawLine(p1, CInt((frmLeft + wNO * 2) + intTemp * j), intTempH, CInt((frmLeft + wNO * 2) + intTemp * (j + 1)), intTempH + hGrp)
+
+
+                                    End If
+
+                                End If
+
+                            End If
+
+                        Next j
+                        '********************
+                    End If
+
                 End If
             Next i
+
+
+
 
             p1.Dispose()
             p2.Dispose()

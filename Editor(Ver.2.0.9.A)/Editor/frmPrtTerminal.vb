@@ -1109,12 +1109,22 @@
     'LU総ページ数取得
     Private Function fnLUgetPageMax() As Integer
         Dim intTemp As Integer = 0
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            For i = 0 To UBound(gudt.SetFu.udtFu)
+                If gudt.SetFu.udtFu(i).shtUse = 1 Then
+                    intTemp = i
+                End If
+            Next
+        Else
+            'FCU2が選択されている場合
+            For i = 0 To UBound(gudt2.SetFu.udtFu)
+                If gudt2.SetFu.udtFu(i).shtUse = 1 Then
+                    intTemp = i
+                End If
+            Next
 
-        For i = 0 To UBound(gudt.SetFu.udtFu)
-            If gudt.SetFu.udtFu(i).shtUse = 1 Then
-                intTemp = i
-            End If
-        Next
+        End If
 
         ''Page総数
         If intTemp = 0 Then
