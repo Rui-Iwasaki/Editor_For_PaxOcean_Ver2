@@ -2418,7 +2418,7 @@
                     objGraphics.DrawString(strItemName, gFnt8, gFntColorBlack, mCstPosDigitalChNo, sngY + 14)
                 End If
             Else
-                'FCU1が選択されている場合
+                'FCU2が選択されている場合
                 ''ItemName
                 If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
                     objGraphics.DrawString(strItemName, gFnt8j, gFntColorBlack, mCstPosDigitalChNo, sngY + 14)
@@ -6509,6 +6509,7 @@
                         Dim k As Long
 
                         strTemp = gGetString(gudt.SetChDisp.udtChDisp(funo).strRemarks)
+
                         'Ver2.0.1.5 「^」をｽﾍﾟｰｽと置き換える
                         'Ver2.0.1.7 「^」は改行文字とする
                         'Ver2.0.2.5 和文対応 行数を4行までOKとする
@@ -7415,7 +7416,7 @@
                                 strRL = "-L"
                             End If
 
-                            Select Case gudt.SetFu.udtFu(funo).udtSlotInfo(j).shtType
+                            Select Case gudt2.SetFu.udtFu(funo).udtSlotInfo(j).shtType
                                 Case 1
                                     strTemp = "M003A"   ''DO
 

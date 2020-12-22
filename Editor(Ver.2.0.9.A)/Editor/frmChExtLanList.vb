@@ -74,17 +74,32 @@
                 Call mudtSetChSioExtNew(i).InitArray()
             Next
 
-            ''構造体コピー
-            Call mCopyStructure(gudt.SetChSio, mudtSetChSioNew)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''構造体コピー
+                Call mCopyStructure(gudt.SetChSio, mudtSetChSioNew)
+            Else
+                Call mCopyStructure(gudt2.SetChSio, mudtSetChSioNew)
+            End If
 
-            For i As Integer = 0 To UBound(mudtSetChSioChNew)
-                Call mCopyStructure(gudt.SetChSioCh(i), mudtSetChSioChNew(i))
-            Next
 
-            'Ver2.0.5.8
-            '構造体コピー SIO拡張
-            Call mCopyStructure(gudt.SetChSioExt, mudtSetChSioExtNew)
+            If modFcuSelect.nFcuNo = 1 Then
+                For i As Integer = 0 To UBound(mudtSetChSioChNew)
+                    Call mCopyStructure(gudt.SetChSioCh(i), mudtSetChSioChNew(i))
+                Next
 
+                'Ver2.0.5.8
+                '構造体コピー SIO拡張
+                Call mCopyStructure(gudt.SetChSioExt, mudtSetChSioExtNew)
+            Else
+                For i As Integer = 0 To UBound(mudtSetChSioChNew)
+                    Call mCopyStructure(gudt2.SetChSioCh(i), mudtSetChSioChNew(i))
+                Next
+
+                '構造体コピー SIO拡張
+                Call mCopyStructure(gudt2.SetChSioExt, mudtSetChSioExtNew)
+            End If
+
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
 
             ''画面設定
             Call mSetDisplay(mudtSetChSioNew, True)
@@ -191,36 +206,70 @@
             ''設定値を比較用構造体に格納
             Call mSetStructure(mudtSetChSioNew)
 
-            ''SIO設定が変更されている場合は設定を更新する
-            If Not mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio) Then
-                Call mCopyStructure(mudtSetChSioNew, gudt.SetChSio)
-                blnFlgSio = True
-                gudt.SetEditorUpdateInfo.udtSave.bytChSio = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChSio = 1
+            If modFcuSelect.nFcuNo = 1 Then
+                ''SIO設定が変更されている場合は設定を更新する
+                If Not mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio) Then
+                    Call mCopyStructure(mudtSetChSioNew, gudt.SetChSio)
+                    blnFlgSio = True
+                    gudt.SetEditorUpdateInfo.udtSave.bytChSio = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChSio = 1
+                End If
+
+                ''SIO設定Ch設定が変更されている場合は設定を更新する
+                For i As Integer = 0 To UBound(gudt.SetChSioCh)
+                    If Not mChkStructureEquals(mudtSetChSioChNew(i), gudt.SetChSioCh(i)) Then
+                        Call mCopyStructure(mudtSetChSioChNew(i), gudt.SetChSioCh(i))
+                        blnFlgSioCh = True
+                        gudt.SetEditorUpdateInfo.udtSave.bytChSioCh(i) = 1
+                        gudt.SetEditorUpdateInfo.udtCompile.bytChSioCh(i) = 1
+                    End If
+                Next
+
+                'Ver2.0.5.8
+                'SIO設定拡張設定が変更されている場合は設定を更新する
+                For i As Integer = 0 To UBound(gudt.SetChSioExt)
+                    If Not mChkStructureEquals(mudtSetChSioExtNew(i), gudt.SetChSioExt(i)) Then
+                        blnFlgSioExt = True
+                        gudt.SetEditorUpdateInfo.udtSave.bytChSioExt(i) = 1
+                        gudt.SetEditorUpdateInfo.udtCompile.bytChSioExt(i) = 1
+                    End If
+                Next
+                If blnFlgSioExt = True Then
+                    Call mCopyStructure(mudtSetChSioExtNew, gudt.SetChSioExt)
+                End If
+            Else
+                ''SIO設定が変更されている場合は設定を更新する
+                If Not mChkStructureEquals(mudtSetChSioNew, gudt2.SetChSio) Then
+                    Call mCopyStructure(mudtSetChSioNew, gudt2.SetChSio)
+                    blnFlgSio = True
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChSio = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChSio = 1
+                End If
+
+                ''SIO設定Ch設定が変更されている場合は設定を更新する
+                For i As Integer = 0 To UBound(gudt2.SetChSioCh)
+                    If Not mChkStructureEquals(mudtSetChSioChNew(i), gudt2.SetChSioCh(i)) Then
+                        Call mCopyStructure(mudtSetChSioChNew(i), gudt2.SetChSioCh(i))
+                        blnFlgSioCh = True
+                        gudt2.SetEditorUpdateInfo.udtSave.bytChSioCh(i) = 1
+                        gudt2.SetEditorUpdateInfo.udtCompile.bytChSioCh(i) = 1
+                    End If
+                Next
+
+                'Ver2.0.5.8
+                'SIO設定拡張設定が変更されている場合は設定を更新する
+                For i As Integer = 0 To UBound(gudt2.SetChSioExt)
+                    If Not mChkStructureEquals(mudtSetChSioExtNew(i), gudt2.SetChSioExt(i)) Then
+                        blnFlgSioExt = True
+                        gudt2.SetEditorUpdateInfo.udtSave.bytChSioExt(i) = 1
+                        gudt2.SetEditorUpdateInfo.udtCompile.bytChSioExt(i) = 1
+                    End If
+                Next
+                If blnFlgSioExt = True Then
+                    Call mCopyStructure(mudtSetChSioExtNew, gudt2.SetChSioExt)
+                End If
             End If
 
-            ''SIO設定Ch設定が変更されている場合は設定を更新する
-            For i As Integer = 0 To UBound(gudt.SetChSioCh)
-                If Not mChkStructureEquals(mudtSetChSioChNew(i), gudt.SetChSioCh(i)) Then
-                    Call mCopyStructure(mudtSetChSioChNew(i), gudt.SetChSioCh(i))
-                    blnFlgSioCh = True
-                    gudt.SetEditorUpdateInfo.udtSave.bytChSioCh(i) = 1
-                    gudt.SetEditorUpdateInfo.udtCompile.bytChSioCh(i) = 1
-                End If
-            Next
-
-            'Ver2.0.5.8
-            'SIO設定拡張設定が変更されている場合は設定を更新する
-            For i As Integer = 0 To UBound(gudt.SetChSioExt)
-                If Not mChkStructureEquals(mudtSetChSioExtNew(i), gudt.SetChSioExt(i)) Then
-                    blnFlgSioExt = True
-                    gudt.SetEditorUpdateInfo.udtSave.bytChSioExt(i) = 1
-                    gudt.SetEditorUpdateInfo.udtCompile.bytChSioExt(i) = 1
-                End If
-            Next
-            If blnFlgSioExt = True Then
-                Call mCopyStructure(mudtSetChSioExtNew, gudt.SetChSioExt)
-            End If
 
 
 
@@ -347,26 +396,49 @@
             ''設定値を比較用構造体に格納
             Call mSetStructure(mudtSetChSioNew)
 
-            ''SIO設定が変更されているかチェック
-            If Not mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio) Then
-                blnFlgSio = True
+            If modFcuSelect.nFcuNo = 1 Then
+                ''SIO設定が変更されているかチェック
+                If Not mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio) Then
+                    blnFlgSio = True
+                End If
+
+                ''SIO設定Ch設定が変更されているかチェック
+                For i As Integer = 0 To UBound(gudt.SetChSioCh)
+                    If Not mChkStructureEquals(mudtSetChSioChNew(i), gudt.SetChSioCh(i)) Then
+                        blnFlgSioChAll = True
+                        blnFlgSioCh(i) = True
+                    End If
+                Next
+
+                'Ver2.0.5.8
+                'SIO設定拡張設定が変更されている場合は設定を更新する
+                For i As Integer = 0 To UBound(gudt.SetChSioExt)
+                    If Not mChkStructureEquals(mudtSetChSioExtNew(i), gudt.SetChSioExt(i)) Then
+                        blnFlgSioExt = True
+                    End If
+                Next
+            Else
+                ''SIO設定が変更されているかチェック
+                If Not mChkStructureEquals(mudtSetChSioNew, gudt2.SetChSio) Then
+                    blnFlgSio = True
+                End If
+
+                ''SIO設定Ch設定が変更されているかチェック
+                For i As Integer = 0 To UBound(gudt2.SetChSioCh)
+                    If Not mChkStructureEquals(mudtSetChSioChNew(i), gudt2.SetChSioCh(i)) Then
+                        blnFlgSioChAll = True
+                        blnFlgSioCh(i) = True
+                    End If
+                Next
+
+                'Ver2.0.5.8
+                'SIO設定拡張設定が変更されている場合は設定を更新する
+                For i As Integer = 0 To UBound(gudt2.SetChSioExt)
+                    If Not mChkStructureEquals(mudtSetChSioExtNew(i), gudt2.SetChSioExt(i)) Then
+                        blnFlgSioExt = True
+                    End If
+                Next
             End If
-
-            ''SIO設定Ch設定が変更されているかチェック
-            For i As Integer = 0 To UBound(gudt.SetChSioCh)
-                If Not mChkStructureEquals(mudtSetChSioChNew(i), gudt.SetChSioCh(i)) Then
-                    blnFlgSioChAll = True
-                    blnFlgSioCh(i) = True
-                End If
-            Next
-
-            'Ver2.0.5.8
-            'SIO設定拡張設定が変更されている場合は設定を更新する
-            For i As Integer = 0 To UBound(gudt.SetChSioExt)
-                If Not mChkStructureEquals(mudtSetChSioExtNew(i), gudt.SetChSioExt(i)) Then
-                    blnFlgSioExt = True
-                End If
-            Next
 
 
 
@@ -386,37 +458,73 @@
                             Return
                         End If
 
-                        ''変更されている場合は設定を更新する
-                        Call mCopyStructure(mudtSetChSioNew, gudt.SetChSio)
-                        For i As Integer = 0 To UBound(gudt.SetChSioCh)
-                            Call mCopyStructure(mudtSetChSioChNew(i), gudt.SetChSioCh(i))
-                        Next
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更されている場合は設定を更新する
+                            Call mCopyStructure(mudtSetChSioNew, gudt.SetChSio)
+                            For i As Integer = 0 To UBound(gudt.SetChSioCh)
+                                Call mCopyStructure(mudtSetChSioChNew(i), gudt.SetChSioCh(i))
+                            Next
 
-                        'Ver2.0.5.8
-                        Call mCopyStructure(mudtSetChSioExtNew, gudt.SetChSioExt)
+                            'Ver2.0.5.8
+                            Call mCopyStructure(mudtSetChSioExtNew, gudt.SetChSioExt)
 
 
-                        ''更新フラグ設定
-                        gblnUpdateAll = True
+                            ''更新フラグ設定
+                            gblnUpdateAll = True
 
-                        If blnFlgSio Then
-                            gudt.SetEditorUpdateInfo.udtSave.bytChSio = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytChSio = 1
-                        End If
-
-                        For i As Integer = 0 To UBound(blnFlgSioCh)
-                            If blnFlgSioCh(i) Then
-                                gudt.SetEditorUpdateInfo.udtSave.bytChSioCh(i) = 1
-                                gudt.SetEditorUpdateInfo.udtCompile.bytChSioCh(i) = 1
+                            If blnFlgSio Then
+                                gudt.SetEditorUpdateInfo.udtSave.bytChSio = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytChSio = 1
                             End If
-                        Next
 
-                        'Ver2.0.5.8
-                        If blnFlgSioExt Then
-                            For i As Integer = 0 To UBound(gudt.SetEditorUpdateInfo.udtSave.bytChSioExt)
-                                gudt.SetEditorUpdateInfo.udtSave.bytChSioExt(i) = 1
-                                gudt.SetEditorUpdateInfo.udtCompile.bytChSioExt(i) = 1
-                            Next i
+                            For i As Integer = 0 To UBound(blnFlgSioCh)
+                                If blnFlgSioCh(i) Then
+                                    gudt.SetEditorUpdateInfo.udtSave.bytChSioCh(i) = 1
+                                    gudt.SetEditorUpdateInfo.udtCompile.bytChSioCh(i) = 1
+                                End If
+                            Next
+
+                            'Ver2.0.5.8
+                            If blnFlgSioExt Then
+                                For i As Integer = 0 To UBound(gudt.SetEditorUpdateInfo.udtSave.bytChSioExt)
+                                    gudt.SetEditorUpdateInfo.udtSave.bytChSioExt(i) = 1
+                                    gudt.SetEditorUpdateInfo.udtCompile.bytChSioExt(i) = 1
+                                Next i
+                            End If
+
+                        Else
+                            ''変更されている場合は設定を更新する
+                            Call mCopyStructure(mudtSetChSioNew, gudt2.SetChSio)
+                            For i As Integer = 0 To UBound(gudt2.SetChSioCh)
+                                Call mCopyStructure(mudtSetChSioChNew(i), gudt2.SetChSioCh(i))
+                            Next
+
+                            'Ver2.0.5.8
+                            Call mCopyStructure(mudtSetChSioExtNew, gudt2.SetChSioExt)
+
+
+                            ''更新フラグ設定
+                            gblnUpdateAll = True
+
+                            If blnFlgSio Then
+                                gudt2.SetEditorUpdateInfo.udtSave.bytChSio = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytChSio = 1
+                            End If
+
+                            For i As Integer = 0 To UBound(blnFlgSioCh)
+                                If blnFlgSioCh(i) Then
+                                    gudt2.SetEditorUpdateInfo.udtSave.bytChSioCh(i) = 1
+                                    gudt2.SetEditorUpdateInfo.udtCompile.bytChSioCh(i) = 1
+                                End If
+                            Next
+
+                            'Ver2.0.5.8
+                            If blnFlgSioExt Then
+                                For i As Integer = 0 To UBound(gudt2.SetEditorUpdateInfo.udtSave.bytChSioExt)
+                                    gudt2.SetEditorUpdateInfo.udtSave.bytChSioExt(i) = 1
+                                    gudt2.SetEditorUpdateInfo.udtCompile.bytChSioExt(i) = 1
+                                Next i
+                            End If
                         End If
 
 

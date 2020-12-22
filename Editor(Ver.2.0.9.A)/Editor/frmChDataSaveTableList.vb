@@ -48,8 +48,14 @@
             ''配列再定義
             Call mudtSetChDataSaveTable.InitArray()
 
-            ''画面設定
-            Call mSetDisplay(gudt.SetChDataSave)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''画面設定
+                Call mSetDisplay(gudt.SetChDataSave)
+            Else
+                Call mSetDisplay(gudt2.SetChDataSave)
+            End If
+
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -87,18 +93,28 @@
             Call mSetStructure(mudtSetChDataSaveTable)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetChDataSaveTable, gudt.SetChDataSave) Then
+            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChDataSaveTable, gudt.SetChDataSave)) Or
+               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChDataSaveTable, gudt2.SetChDataSave)) Then
 
-                ''変更された場合は設定を更新する
-                Call mCopyStructure(mudtSetChDataSaveTable, gudt.SetChDataSave)
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructure(mudtSetChDataSaveTable, gudt.SetChDataSave)
+                Else
+                    Call mCopyStructure(mudtSetChDataSaveTable, gudt2.SetChDataSave)
+                End If
 
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytChDataSaveTable = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChDataSaveTable = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    gudt.SetEditorUpdateInfo.udtSave.bytChDataSaveTable = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChDataSaveTable = 1
+                Else
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChDataSaveTable = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChDataSaveTable = 1
+                End If
 
             End If
 
@@ -143,10 +159,11 @@
             Call mSetStructure(mudtSetChDataSaveTable)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetChDataSaveTable, gudt.SetChDataSave) Then
+            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChDataSaveTable, gudt.SetChDataSave)) Or
+               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChDataSaveTable, gudt2.SetChDataSave)) Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
                     Case Windows.Forms.DialogResult.Yes
@@ -157,13 +174,23 @@
                             Return
                         End If
 
-                        ''変更された場合は設定を更新する
-                        Call mCopyStructure(mudtSetChDataSaveTable, gudt.SetChDataSave)
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更された場合は設定を更新する
+                            Call mCopyStructure(mudtSetChDataSaveTable, gudt.SetChDataSave)
+                        Else
+                            Call mCopyStructure(mudtSetChDataSaveTable, gudt2.SetChDataSave)
+                        End If
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytChDataSaveTable = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChDataSaveTable = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            gudt.SetEditorUpdateInfo.udtSave.bytChDataSaveTable = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChDataSaveTable = 1
+                        Else
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChDataSaveTable = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChDataSaveTable = 1
+                        End If
+
 
                     Case Windows.Forms.DialogResult.No
 
@@ -325,7 +352,7 @@
                                 grdData.Rows(e.RowIndex).Cells(1).Value = Int(Val(grdData.Rows(e.RowIndex).Cells(1).Value)).ToString
                             End If
                         End If
-                        End If
+                    End If
 
                 End If
 
@@ -487,7 +514,7 @@
 
                         If gGetString(grdData(0, i).Value) = gGetString(grdData(0, j).Value) Then
 
-                            Call MessageBox.Show("The same name as [Cylinder CH No.] cannot be set of CH No [" & grdData(0, i).Value & "] and CH No [" & grdData(0, j).Value & "].", _
+                            Call MessageBox.Show("The same name as [Cylinder CH No.] cannot be set of CH No [" & grdData(0, i).Value & "] and CH No [" & grdData(0, j).Value & "].",
                                                  "Input error", MessageBoxButtons.OK, MessageBoxIcon.Information)
                             Return False
 
@@ -605,7 +632,7 @@
     ' 　　　　  : ↑ = でやると配列部分が参照渡しになり（？）値更新時に両方更新されてしまう
     ' 　　　　  : 構造体メンバの中に構造体配列がいない場合は、この関数を使わずに = で処理しても良い
     '--------------------------------------------------------------------
-    Private Sub mCopyStructure(ByVal udtSource As gTypSetChDataSave, _
+    Private Sub mCopyStructure(ByVal udtSource As gTypSetChDataSave,
                                ByRef udtTarget As gTypSetChDataSave)
 
         Try
@@ -632,7 +659,7 @@
     ' 　　　　  : 構造体メンバの中に構造体配列がいない場合は、 Equals メソッドで処理しても良いが一応これを使うこと
     ' 　　　　  : String文字列の比較には gCompareString を使用すること（単純な = だとNULL文字の有り無しで結果が変わってしまう）
     '--------------------------------------------------------------------
-    Private Function mChkStructureEquals(ByVal udt1 As gTypSetChDataSave, _
+    Private Function mChkStructureEquals(ByVal udt1 As gTypSetChDataSave,
                                          ByVal udt2 As gTypSetChDataSave) As Boolean
 
         Try

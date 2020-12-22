@@ -2687,6 +2687,64 @@ Public Class frmCmpCompier
                 End If
             End With
 
+            With gudt2.SetChInfo
+
+                ''設定されているチャンネル番号のみチャンネル番号と配列番号を配列化
+                For i As Integer = 0 To UBound(.udtChannel)
+                    If .udtChannel(i).udtChCommon.shtChno <> 0 Then
+                        aryCheck.Add(.udtChannel(i).udtChCommon.shtChno & "," & i)
+                    End If
+                Next
+
+                ''チャンネル番号が存在する場合
+                If Not aryCheck Is Nothing Then
+
+                    ''チャンネル番号順に並べ替え
+                    Call aryCheck.Sort()
+
+                    '' Ver1.12.0.8 2017.02.22 CH数表示追加
+                    strMsg1 = "***** Channel Count = " + aryCheck.Count.ToString
+                    strMsg2 = "***** チャンネル数 = " + aryCheck.Count.ToString
+                    Call mAddMsgText(strMsg1, strMsg2)
+                    ''//
+
+                    ''上から順に１つ下と番号が同じかチェック
+                    For i As Integer = 0 To aryCheck.Count - 1
+
+                        ''最後の１つはチェックしない
+                        If i = aryCheck.Count - 1 Then Exit For
+
+                        ''チャンネル番号とチャンネル配列番号を分割
+                        strwk1 = aryCheck(i).ToString.Split(",")
+                        strwk2 = aryCheck(i + 1).ToString.Split(",")
+
+                        ''チャンネル番号が同じ場合
+                        If strwk1(0) = strwk2(0) Then
+
+                            ''メッセージ作成
+                            strItem1 = IIf(mblnEnglish, "[Info1]Group=" & .udtChannel(strwk1(1)).udtChCommon.shtGroupNo &
+                                                        " , CH Name=" & gGetString(.udtChannel(strwk1(1)).udtChCommon.strChitem),
+                                                        "[情報１]グループ=" & .udtChannel(strwk1(1)).udtChCommon.shtGroupNo &
+                                                        " , チャンネル名称=" & gGetString(.udtChannel(strwk1(1)).udtChCommon.strChitem))
+                            strItem2 = IIf(mblnEnglish, "[Info2]Group=" & .udtChannel(strwk2(1)).udtChCommon.shtGroupNo &
+                                                        " , CH Name=" & gGetString(.udtChannel(strwk2(1)).udtChCommon.strChitem),
+                                                        "[情報２]グループ=" & .udtChannel(strwk2(1)).udtChCommon.shtGroupNo &
+                                                        " , チャンネル名称=" & gGetString(.udtChannel(strwk2(1)).udtChCommon.strChitem))
+
+                            ''メッセージ追加
+                            ReDim Preserve strErrMsg(intErrCnt)
+                            strErrMsg(intErrCnt) = IIf(mblnEnglish, "CH NO [" & strwk1(0) & "] overlaps. " & strItem1 & " " & strItem2,
+                                                                    "チャンネル番号 " & strwk1(0) & "は重複しています。" & strItem1 & " " & strItem2)
+
+                            intErrCnt += 1
+
+                        End If
+
+                    Next
+                End If
+            End With
+
+
             ''結果表示
             If intErrCnt = 0 Then
                 Call mAddMsgText(" -Checking CH NO overlaps ... Success", " -チャンネル番号重複確認 ... OK")
@@ -10305,6 +10363,28 @@ Public Class frmCmpCompier
                     End With
                 Next
 
+                For shtCH As Short = 0 To UBound(gudt2.SetChInfo.udtChannel) 'CH設定の有無を格納
+                    With gudt2.SetChInfo.udtChannel(shtCH).udtChCommon
+                        shtPageIdx = 0
+                        shtPosIdx = .shtDispPos
+                        If .shtGroupNo <> 0 And .shtDispPos <> 0 Then       'CHが存在する　かつ↓
+                            If Not gBitCheck(.shtFlag1, 1) = True Then      '隠しCHでない場合
+                                If shtPosIdx <= 20 Then                         'CH位置が20以下(=1ページ目)の場合、位置をそのまま格納
+                                    shtPageIdx = 0
+                                Else                                            'CH位置が21以上(=2ページ目以降)の場合、ページ内の位置を格納したいので
+                                    While shtPosIdx > 20                        '20以下になるまで
+                                        shtPosIdx -= 20                         '20ずつ引いていき、
+                                        shtPageIdx += 1                         '引いた回数をページ数とする
+                                    End While
+                                End If
+
+                                arrBlank(.shtGroupNo - 1)(shtPageIdx)(shtPosIdx - 1) = True
+
+                            End If
+                        End If
+                    End With
+                Next
+
                 ''行間チェック開始
                 For i = 0 To UBound(arrBlank)                                       'Group
                     Dim shtGroupNo As Integer = modStructureConst.gudt.SetChGroupSetM.udtGroup.udtGroupInfo(i).shtGroupNo
@@ -10314,10 +10394,31 @@ Public Class frmCmpCompier
                             If arrBlank(i)(j)(k) = False Then                       '空白を検出した場合
                                 For l As Short = k + 1 To UBound(arrBlank(i)(j))    '検出した空白より後ろのCHの有無を確認
                                     If arrBlank(i)(j)(l) = True Then                'あった場合、その場所をエラー文として保存
-                                        Call mSetErrString("Channel List　Group No：[" & shtGroupNo & "] has blank space.　" & _
-                                                           "[Info]Position：" & k + (20 * j) + 1, _
-                                                           "計測点リスト　グループ番号：[" & shtGroupNo & "] の行間に空欄があります。　" & _
-                                                           "[情報]位置：" & k + (20 * j) + 1, _
+                                        Call mSetErrString("Channel List　Group No：[" & shtGroupNo & "] has blank space.　" &
+                                                           "[Info]Position：" & k + (20 * j) + 1,
+                                                           "計測点リスト　グループ番号：[" & shtGroupNo & "] の行間に空欄があります。　" &
+                                                           "[情報]位置：" & k + (20 * j) + 1,
+                                       intErrCnt, strErrMsg)
+                                        Exit For
+                                    End If
+                                Next
+                            End If
+                        Next
+                    Next
+                Next
+
+                For i = 0 To UBound(arrBlank)                                       'Group
+                    Dim shtGroupNo As Integer = modStructureConst.gudt2.SetChGroupSetM.udtGroup.udtGroupInfo(i).shtGroupNo
+
+                    For j = 0 To UBound(arrBlank(i))                                'Page
+                        For k As Short = 0 To UBound(arrBlank(i)(j)) - 1            'Position　ページの末尾の空白は検出しない
+                            If arrBlank(i)(j)(k) = False Then                       '空白を検出した場合
+                                For l As Short = k + 1 To UBound(arrBlank(i)(j))    '検出した空白より後ろのCHの有無を確認
+                                    If arrBlank(i)(j)(l) = True Then                'あった場合、その場所をエラー文として保存
+                                        Call mSetErrString("Channel List　Group No：[" & shtGroupNo & "] has blank space.　" &
+                                                           "[Info]Position：" & k + (20 * j) + 1,
+                                                           "計測点リスト　グループ番号：[" & shtGroupNo & "] の行間に空欄があります。　" &
+                                                           "[情報]位置：" & k + (20 * j) + 1,
                                        intErrCnt, strErrMsg)
                                         Exit For
                                     End If
@@ -10364,6 +10465,24 @@ Public Class frmCmpCompier
                         End If
                     End With
                 Next
+
+                For shtCH As Short = 0 To UBound(gudt2.SetChInfo.udtChannel) 'CH設定の有無を格納
+                    With gudt2.SetChInfo.udtChannel(shtCH).udtChCommon
+                        If .shtGroupNo <> 0 And .shtDispPos <> 0 Then       'CHが存在する　かつ↓
+                            If Not gBitCheck(.shtFlag1, 1) = True Then      '隠しCHでない場合
+                                Dim strL2DigCHNo As String = Strings.Right(.shtChno.ToString("D4"), 2)      'CHNoの下2桁
+                                Dim strL2DigPos As String = Strings.Right(.shtDispPos.ToString("D4"), 2)    '表示位置の下2桁
+
+                                If strL2DigCHNo <> strL2DigPos Then 'CHが存在する＆CHNoの下2桁と表示位置が一致していない場合、CHNoを格納
+
+                                    arrWrongPosCH(.shtGroupNo - 1)(.shtDispPos - 1) = .shtChno.ToString("D4")
+
+                                End If
+                            End If
+                        End If
+                    End With
+                Next
+
             End If
 
             For i = 0 To UBound(arrWrongPosCH)                                       'Group
@@ -10371,10 +10490,24 @@ Public Class frmCmpCompier
 
                 For j As Short = 0 To UBound(arrWrongPosCH(i))      'Position
                     If arrWrongPosCH(i)(j) <> 0 Then                'CHNoが格納されていた場合
-                        Call mSetErrString("Channel List　CH No：[" & arrWrongPosCH(i)(j) & "] does not match Display-Position.　" & _
-                                           "[Info]Group No：[" & shtGroupNo & "], Position：[" & j + 1 & "]", _
-                                           "計測点リスト　CH番号：[" & arrWrongPosCH(i)(j) & "] CHNo.と表示位置の番号が一致していません。　" & _
-                                           "[情報]グループ番号：[" & shtGroupNo & "], 位置：[" & j + 1 & "]", _
+                        Call mSetErrString("Channel List　CH No：[" & arrWrongPosCH(i)(j) & "] does not match Display-Position.　" &
+                                           "[Info]Group No：[" & shtGroupNo & "], Position：[" & j + 1 & "]",
+                                           "計測点リスト　CH番号：[" & arrWrongPosCH(i)(j) & "] CHNo.と表示位置の番号が一致していません。　" &
+                                           "[情報]グループ番号：[" & shtGroupNo & "], 位置：[" & j + 1 & "]",
+                       intErrCnt, strErrMsg)
+                    End If
+                Next
+            Next
+
+            For i = 0 To UBound(arrWrongPosCH)                                       'Group
+                Dim shtGroupNo As Integer = modStructureConst.gudt2.SetChGroupSetM.udtGroup.udtGroupInfo(i).shtGroupNo
+
+                For j As Short = 0 To UBound(arrWrongPosCH(i))      'Position
+                    If arrWrongPosCH(i)(j) <> 0 Then                'CHNoが格納されていた場合
+                        Call mSetErrString("Channel List　CH No：[" & arrWrongPosCH(i)(j) & "] does not match Display-Position.　" &
+                                           "[Info]Group No：[" & shtGroupNo & "], Position：[" & j + 1 & "]",
+                                           "計測点リスト　CH番号：[" & arrWrongPosCH(i)(j) & "] CHNo.と表示位置の番号が一致していません。　" &
+                                           "[情報]グループ番号：[" & shtGroupNo & "], 位置：[" & j + 1 & "]",
                        intErrCnt, strErrMsg)
                     End If
                 Next

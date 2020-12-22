@@ -97,6 +97,8 @@
             Call mSetDisplay(mudtVdr(cmbPort.SelectedIndex))
             Call mSetDisplaySioCh(mudtSioCh(cmbPort.SelectedIndex))
 
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
+
             ''初期化終了
             mblnInitFlg = False
 

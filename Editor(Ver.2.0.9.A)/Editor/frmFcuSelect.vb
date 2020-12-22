@@ -20,14 +20,6 @@
 
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        modFcuSelect.EditMenuCodeClear()
-        Me.Close()
-    End Sub
-
-    Private Sub frmFcuSelect_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        modFcuSelect.EditMenuCodeClear()
-    End Sub
 
     Private Sub btnOpen_Click(sender As Object, e As EventArgs) Handles btnOpen.Click
 
@@ -50,7 +42,6 @@
         Else
 
         End If
-
         Me.Close()
 
     End Sub

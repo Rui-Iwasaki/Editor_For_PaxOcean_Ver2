@@ -14251,7 +14251,14 @@
             If iAns <> 1 Then
 
                 ''旧アドレスのスロット種別　GET
-                intType = gudt.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    intType = gudt.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
+                Else
+                    'FCU2が選択されている場合
+                    intType = gudt2.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
+
+                End If
 
                 ''スロット種別により必要端子数が異なる
                 If intType = gCstCodeFuSlotTypeDO Or intType = gCstCodeFuSlotTypeDI Then
@@ -17653,19 +17660,37 @@
                 ''4CH Name --------------------------------------
                 Call SetInputChk_Length(gCommonCont, gCstChListColPosItemName, gRow, "CHName", 30)
                 'Ver2.0.0.2 英文設定なのに ２バイト文字列が使われてたら警告
-                If gudt.SetSystem.udtSysSystem.shtLanguage = 0 Then
-                    Dim str As String = gCommonCont(gCstChListColPosItemName).ToString.Trim
-                    Dim enc As System.Text.Encoding = System.Text.Encoding.GetEncoding(932)
-                    If str.Length <> enc.GetByteCount(str) Then
-                        '全角文字あり 
-                        grdCHList(gCstChListColPosItemName, gRow).Style.BackColor = Color.Yellow
-                        blnInputCautionFlg = True
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
 
-                        'Ver2.0.0.2 CHNoの色変えとエラー理由を変数へ格納
-                        Call subSetChListWarningData(gRow, "W", "CHName", "Used 2Byte Char")
+                    If gudt.SetSystem.udtSysSystem.shtLanguage = 0 Then
+                        Dim str As String = gCommonCont(gCstChListColPosItemName).ToString.Trim
+                        Dim enc As System.Text.Encoding = System.Text.Encoding.GetEncoding(932)
+                        If str.Length <> enc.GetByteCount(str) Then
+                            '全角文字あり 
+                            grdCHList(gCstChListColPosItemName, gRow).Style.BackColor = Color.Yellow
+                            blnInputCautionFlg = True
+
+                            'Ver2.0.0.2 CHNoの色変えとエラー理由を変数へ格納
+                            Call subSetChListWarningData(gRow, "W", "CHName", "Used 2Byte Char")
+                        End If
                     End If
-                End If
+                Else
+                    'FCU2が選択されている場合
+                    If gudt2.SetSystem.udtSysSystem.shtLanguage = 0 Then
+                        Dim str As String = gCommonCont(gCstChListColPosItemName).ToString.Trim
+                        Dim enc As System.Text.Encoding = System.Text.Encoding.GetEncoding(932)
+                        If str.Length <> enc.GetByteCount(str) Then
+                            '全角文字あり 
+                            grdCHList(gCstChListColPosItemName, gRow).Style.BackColor = Color.Yellow
+                            blnInputCautionFlg = True
 
+                            'Ver2.0.0.2 CHNoの色変えとエラー理由を変数へ格納
+                            Call subSetChListWarningData(gRow, "W", "CHName", "Used 2Byte Char")
+                        End If
+                    End If
+
+                End If
 
                 ''5Device Status --------------------------------
                 If Not gCommonCont(gCstChListColPosStatusIn) = Nothing Then

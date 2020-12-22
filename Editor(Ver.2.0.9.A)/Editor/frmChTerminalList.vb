@@ -193,10 +193,10 @@
             Call mSetStructure(mudtSetFuNew, mudtSetChDispNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(gudt.SetFu, mudtSetFuNew, gudt.SetChDisp, mudtSetChDispNew) Then
+            If Not mChkStructureEquals(gudt.SetFu, mudtSetFuNew, gudt.SetChDisp, mudtSetChDispNew) Or Not mChkStructureEquals(gudt2.SetFu, mudtSetFuNew, gudt2.SetChDisp, mudtSetChDispNew) Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
                     Case Windows.Forms.DialogResult.Yes
@@ -403,11 +403,16 @@
                             strPortNo = dgv.Columns(intCol).Name.Substring(6, 1)
                             intMode = 0
 
+                        If modFcuSelect.nFcuNo = 1 Then
+                            'FCU1が選択されている場合
                             'Ver.2.0.8.P
                             shtTerInfo = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(Val(strPortNo) - 1).shtTerinf
-
-                            ''端子画面へ --------------------------------------------------------------------------------------
-                            frmChTerminalDetail.gShow(strFCU, intFuNo, strFuName, strFcuFuName, intType, strType, strPortNo,
+                        Else
+                            'FCU2が選択されている場合
+                            shtTerInfo = gudt2.SetFu.udtFu(intFuNo).udtSlotInfo(Val(strPortNo) - 1).shtTerinf
+                        End If
+                        ''端子画面へ --------------------------------------------------------------------------------------
+                        frmChTerminalDetail.gShow(strFCU, intFuNo, strFuName, strFcuFuName, intType, strType, strPortNo,
                                                   intFuNoFirst, intPortNoFirst, intFuNoEnd, intPortNoEnd, intMode, shtTerInfo, Me)
                             ''-------------------------------------------------------------------------------------------------
                         End If
@@ -856,11 +861,24 @@
                                 udtSetFu.udtFu(i).udtSlotInfo(j).shtTerinf = 13
                             ElseIf .Cells(6 + j * 2).FormattedValue Like "*(Select)" Then ' Ver.2.0.8.P 端子台アレンジ
                                 DoSlotType(i, j) = 1
-                                If gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf = 0 Then
-                                    'M03A(Select)を選択するも、端子台の詳細設定が入っていない場合、
-                                    'TMDO2枚設定を仮で入れる
-                                    udtSetFu.udtFu(i).udtSlotInfo(j).shtTerinf = 2020
+
+                                If modFcuSelect.nFcuNo = 1 Then
+                                    'FCU1が選択されている場合
+                                    If gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf = 0 Then
+                                        'M03A(Select)を選択するも、端子台の詳細設定が入っていない場合、
+                                        'TMDO2枚設定を仮で入れる
+                                        udtSetFu.udtFu(i).udtSlotInfo(j).shtTerinf = 2020
+                                    End If
+                                Else
+                                    'FCU2が選択されている場合
+                                    If gudt2.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf = 0 Then
+                                        'M03A(Select)を選択するも、端子台の詳細設定が入っていない場合、
+                                        'TMDO2枚設定を仮で入れる
+                                        udtSetFu.udtFu(i).udtSlotInfo(j).shtTerinf = 2020
+                                    End If
+
                                 End If
+
                             Else                                                        ' その他
                                 udtSetFu.udtFu(i).udtSlotInfo(j).shtTerinf = 0
                             End If
@@ -899,13 +917,28 @@
             Dim ushtTerinf As UShort
             For i = 0 To 20
                 For j = 0 To 8 - 1
-                    If DoSlotType(i, j) = 1 Then
-                        shtTerinf = gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf
-                        ushtTerinf = Convert.ToUInt16(shtTerinf.ToString("X4"), 16)
-                        If ushtTerinf > 20 Then
-                            udtSetFu.udtFu(i).udtSlotInfo(j).shtTerinf = gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf
+
+                    If modFcuSelect.nFcuNo = 1 Then
+                        'FCU1が選択されている場合
+                        If DoSlotType(i, j) = 1 Then
+                            shtTerinf = gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf
+                            ushtTerinf = Convert.ToUInt16(shtTerinf.ToString("X4"), 16)
+                            If ushtTerinf > 20 Then
+                                udtSetFu.udtFu(i).udtSlotInfo(j).shtTerinf = gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf
+                            End If
                         End If
+                    Else
+                        'FCU2が選択されている場合
+                        If DoSlotType(i, j) = 1 Then
+                            shtTerinf = gudt2.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf
+                            ushtTerinf = Convert.ToUInt16(shtTerinf.ToString("X4"), 16)
+                            If ushtTerinf > 20 Then
+                                udtSetFu.udtFu(i).udtSlotInfo(j).shtTerinf = gudt2.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf
+                            End If
+                        End If
+
                     End If
+
                 Next
             Next
 
@@ -1373,116 +1406,41 @@
             Dim intTerSlot As Integer = 0
 
 
-            '>>>OUT基板のFUｱﾄﾞﾚｽを格納(DO基板とAO基板)
-            With gudt.SetFu
-                For i = 0 To UBound(.udtFu) Step 1
-                    For j = 0 To UBound(.udtFu(i).udtSlotInfo) Step 1
-                        If .udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeDO Or _
+            '>>>OUT基板のFUｱﾄﾞﾚｽを格納(DO基板とAO基板
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                With gudt.SetFu
+                    For i = 0 To UBound(.udtFu) Step 1
+                        For j = 0 To UBound(.udtFu(i).udtSlotInfo) Step 1
+                            If .udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeDO Or
                             .udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeAO Then
-                            strFUadr = i.ToString & "," & (j + 1).ToString
-                            aryFUout.Add(strFUadr)
-                        End If
-                    Next j
-                Next i
-            End With
+                                strFUadr = i.ToString & "," & (j + 1).ToString
+                                aryFUout.Add(strFUadr)
+                            End If
+                        Next j
+                    Next i
+                End With
 
-            'Ver2.0.6.0 DEL ｺﾝﾊﾟｲﾙ時にエラーでひっかけるのみにとどめる
-            ''>>>計測点リスト全点でOUT設定があるCHのFU判定
-            'With gudt.SetChInfo
-            '    '計測点リスト全点ﾙｰﾌﾟ
-            '    For i = 0 To UBound(.udtChannel) Step 1
-            '        '計測点リストが
-            '        ' モーター
-            '        ' バルブ DIDO,AIAO,DIAO,AO,DO
-            '        'の場合のみ対象。FUｱﾄﾞﾚｽを取得しておく
-            '        blOUTch = False
-            '        Select Case .udtChannel(i).udtChCommon.shtChType
-            '            Case gCstCodeChTypeMotor
-            '                'モーター
-            '                blOUTch = True
-            '                intFU = .udtChannel(i).MotorFuNo
-            '                intSlot = .udtChannel(i).MotorPortNo
-            '            Case gCstCodeChTypeValve
-            '                'バルブ
-            '                Select Case .udtChannel(i).udtChCommon.shtData
-            '                    Case gCstCodeChDataTypeValveDI_DO, gCstCodeChDataTypeValveDO
-            '                        'DIDO
-            '                        blOUTch = True
-            '                        intFU = .udtChannel(i).ValveDiDoFuNo
-            '                        intSlot = .udtChannel(i).ValveDiDoPortNo
-            '                    Case gCstCodeChDataTypeValveAI_DO1, gCstCodeChDataTypeValveAI_DO2, gCstCodeChDataTypeValvePT_DO2
-            '                        'AIDO
-            '                        blOUTch = True
-            '                        intFU = .udtChannel(i).ValveAiDoFuNo
-            '                        intSlot = .udtChannel(i).ValveAiDoPortNo
-            '                    Case gCstCodeChDataTypeValveAI_AO1, gCstCodeChDataTypeValveAI_AO2, gCstCodeChDataTypeValvePT_AO2, gCstCodeChDataTypeValveAO_4_20
-            '                        'AIAO
-            '                        blOUTch = True
-            '                        intFU = .udtChannel(i).ValveAiAoFuNo
-            '                        intSlot = .udtChannel(i).ValveAiAoPortNo
-            '                End Select
-            '        End Select
-            '        'アドレスがFFなら何もしない
-            '        If blOUTch = True Then
-            '            If intFU = &HFFFF And intSlot = &HFFFF Then
-            '                blOUTch = False
-            '            End If
-            '        End If
+            Else
+                With gudt2.SetFu
+                    For i = 0 To UBound(.udtFu) Step 1
+                        For j = 0 To UBound(.udtFu(i).udtSlotInfo) Step 1
+                            If .udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeDO Or
+                            .udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeAO Then
+                                strFUadr = i.ToString & "," & (j + 1).ToString
+                                aryFUout.Add(strFUadr)
+                            End If
+                        Next j
+                    Next i
+                End With
+            End If
 
-            '        If blOUTch = True Then
-            '            '基板に同じFUがあるならOK。そうでないならFUをｸﾘｱ
-            '            blDel = False
-            '            For j = 0 To aryFUout.Count - 1 Step 1
-            '                '基板のFuｱﾄﾞﾚｽを1件取り出し
-            '                strFUadr = aryFUout(j)
-            '                strTerFUadr = strFUadr.Split(",")
-            '                intTerFU = CInt(strTerFUadr(0))
-            '                intTerSlot = CInt(strTerFUadr(1))
-            '                If intFU = intTerFU And intSlot = intTerSlot Then
-            '                    blDel = True
-            '                    Exit For
-            '                End If
-            '            Next j
 
-            '            If blDel = False Then
-            '                '該当基板が無いため計測点側のFUｱﾄﾞﾚｽ消去
-            '                Select Case .udtChannel(i).udtChCommon.shtChType
-            '                    Case gCstCodeChTypeMotor
-            '                        'モーター
-            '                        .udtChannel(i).MotorFuNo = &HFFFF
-            '                        .udtChannel(i).MotorPortNo = &HFFFF
-            '                        .udtChannel(i).MotorPin = &HFFFF
-            '                        .udtChannel(i).MotorPinNo = 0
-            '                    Case gCstCodeChTypeValve
-            '                        'バルブ
-            '                        Select Case .udtChannel(i).udtChCommon.shtData
-            '                            Case gCstCodeChDataTypeValveDI_DO, gCstCodeChDataTypeValveDO
-            '                                'DIDO
-            '                                .udtChannel(i).ValveDiDoFuNo = &HFFFF
-            '                                .udtChannel(i).ValveDiDoPortNo = &HFFFF
-            '                                .udtChannel(i).ValveDiDoPin = &HFFFF
-            '                                .udtChannel(i).ValveDiDoPinNo = 0
-            '                            Case gCstCodeChDataTypeValveAI_DO1, gCstCodeChDataTypeValveAI_DO2, gCstCodeChDataTypeValvePT_DO2
-            '                                'AIDO
-            '                                .udtChannel(i).ValveAiDoFuNo = &HFFFF
-            '                                .udtChannel(i).ValveAiDoPortNo = &HFFFF
-            '                                .udtChannel(i).ValveAiDoPin = &HFFFF
-            '                                .udtChannel(i).ValveAiDoPinNo = 0
-            '                            Case gCstCodeChDataTypeValveAI_AO1, gCstCodeChDataTypeValveAI_AO2, gCstCodeChDataTypeValvePT_AO2, gCstCodeChDataTypeValveAO_4_20
-            '                                'AIAO
-            '                                .udtChannel(i).ValveAiAoFuNo = &HFFFF
-            '                                .udtChannel(i).ValveAiAoPortNo = &HFFFF
-            '                                .udtChannel(i).ValveAiAoPin = &HFFFF
-            '                                .udtChannel(i).ValveAiAoPinNo = 0
-            '                        End Select
-            '                End Select
-            '            End If
-            '        End If
-            '    Next i
-            'End With
 
-            '>>>OUTputとAndOrテーブルのｸﾘｱ
-            With gudt.SetChOutput
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                '>>>OUTputとAndOrテーブルのｸﾘｱ
+                With gudt.SetChOutput
                 '該当FUアドレスかチェック
                 For i = 0 To UBound(.udtCHOutPut) Step 1
                     intFU = .udtCHOutPut(i).bytFuno
@@ -1534,32 +1492,116 @@
                 Next i
             End With
 
+
+            Else
+
+                With gudt2.SetChOutput
+                    '該当FUアドレスかチェック
+                    For i = 0 To UBound(.udtCHOutPut) Step 1
+                        intFU = .udtCHOutPut(i).bytFuno
+                        intSlot = .udtCHOutPut(i).bytPortno
+                        '基板に同じFUがあるならOK。そうでないならFUをｸﾘｱ
+                        blDel = False
+                        For j = 0 To aryFUout.Count - 1 Step 1
+                            '基板のFuｱﾄﾞﾚｽを1件取り出し
+                            strFUadr = aryFUout(j)
+                            strTerFUadr = strFUadr.Split(",")
+                            intTerFU = CInt(strTerFUadr(0))
+                            intTerSlot = CInt(strTerFUadr(1))
+                            If intFU = intTerFU And intSlot = intTerSlot Then
+                                blDel = True
+                                Exit For
+                            End If
+                        Next j
+                        'FFなら何もしない
+                        If blDel = False Then
+                            If intFU = &HFF And intSlot = &HFF Then
+                                blDel = True
+                            End If
+                        End If
+
+                        If blDel = False Then
+                            'type<>0　＝論理CHのためAndOrテーブルもｸﾘｱ
+                            If .udtCHOutPut(i).bytType <> 0 Then
+                                'AndOrテーブルもｸﾘｱ
+                                For x = 0 To UBound(gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr) Step 1
+                                    gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(x).shtSysno = 0
+                                    gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(x).shtChid = 0
+                                    gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(x).bytSpare = 0
+                                    gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(x).bytStatus = 0
+                                    gudt2.SetChAndOr.udtCHOut(.udtCHOutPut(i).shtChid - 1).udtCHAndOr(x).shtMask = 0
+                                Next x
+                            End If
+                            '出力テーブルｸﾘｱ
+                            .udtCHOutPut(i).shtSysno = 0
+                            .udtCHOutPut(i).shtChid = 0
+                            .udtCHOutPut(i).bytType = 0
+                            .udtCHOutPut(i).bytStatus = 0
+                            .udtCHOutPut(i).shtMask = 0
+                            .udtCHOutPut(i).bytOutput = 0
+                            .udtCHOutPut(i).bytFuno = gCstCodeChNotSetFuNoByte
+                            .udtCHOutPut(i).bytPortno = gCstCodeChNotSetFuPortByte
+                            .udtCHOutPut(i).bytPin = gCstCodeChNotSetFuPinByte
+
+                        End If
+                    Next i
+                End With
+
+            End If
+
             'Ver2.0.7.7
             '>>>AndOrテーブルのクリア
             'ChOutに無いのにAndOrにある＝ゴミのため削除
-            With gudt.SetChAndOr
-                For i = 0 To UBound(.udtCHOut) Step 1
-                    For j = 0 To UBound(.udtCHOut(i).udtCHAndOr) Step 1
-                        If .udtCHOut(i).udtCHAndOr(j).shtChid <> 0 Then
-                            'CHIDが入っているAndOrテーブルで
-                            blDel = False
-                            For x = 0 To UBound(gudt.SetChOutput.udtCHOutPut) Step 1
-                                If gudt.SetChOutput.udtCHOutPut(x).shtChid - 1 = i Then
-                                    blDel = True
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                With gudt.SetChAndOr
+                    For i = 0 To UBound(.udtCHOut) Step 1
+                        For j = 0 To UBound(.udtCHOut(i).udtCHAndOr) Step 1
+                            If .udtCHOut(i).udtCHAndOr(j).shtChid <> 0 Then
+                                'CHIDが入っているAndOrテーブルで
+                                blDel = False
+                                For x = 0 To UBound(gudt.SetChOutput.udtCHOutPut) Step 1
+                                    If gudt.SetChOutput.udtCHOutPut(x).shtChid - 1 = i Then
+                                        blDel = True
+                                    End If
+                                Next x
+                                'なければゴミとしてAndOr削除
+                                If blDel = False Then
+                                    .udtCHOut(i).udtCHAndOr(j).shtSysno = 0
+                                    .udtCHOut(i).udtCHAndOr(j).shtChid = 0
+                                    .udtCHOut(i).udtCHAndOr(j).bytSpare = 0
+                                    .udtCHOut(i).udtCHAndOr(j).bytStatus = 0
+                                    .udtCHOut(i).udtCHAndOr(j).shtMask = 0
                                 End If
-                            Next x
-                            'なければゴミとしてAndOr削除
-                            If blDel = False Then
-                                .udtCHOut(i).udtCHAndOr(j).shtSysno = 0
-                                .udtCHOut(i).udtCHAndOr(j).shtChid = 0
-                                .udtCHOut(i).udtCHAndOr(j).bytSpare = 0
-                                .udtCHOut(i).udtCHAndOr(j).bytStatus = 0
-                                .udtCHOut(i).udtCHAndOr(j).shtMask = 0
                             End If
-                        End If
-                    Next j
-                Next i
-            End With
+                        Next j
+                    Next i
+                End With
+            Else
+                With gudt2.SetChAndOr
+                    For i = 0 To UBound(.udtCHOut) Step 1
+                        For j = 0 To UBound(.udtCHOut(i).udtCHAndOr) Step 1
+                            If .udtCHOut(i).udtCHAndOr(j).shtChid <> 0 Then
+                                'CHIDが入っているAndOrテーブルで
+                                blDel = False
+                                For x = 0 To UBound(gudt2.SetChOutput.udtCHOutPut) Step 1
+                                    If gudt2.SetChOutput.udtCHOutPut(x).shtChid - 1 = i Then
+                                        blDel = True
+                                    End If
+                                Next x
+                                'なければゴミとしてAndOr削除
+                                If blDel = False Then
+                                    .udtCHOut(i).udtCHAndOr(j).shtSysno = 0
+                                    .udtCHOut(i).udtCHAndOr(j).shtChid = 0
+                                    .udtCHOut(i).udtCHAndOr(j).bytSpare = 0
+                                    .udtCHOut(i).udtCHAndOr(j).bytStatus = 0
+                                    .udtCHOut(i).udtCHAndOr(j).shtMask = 0
+                                End If
+                            End If
+                        Next j
+                    Next i
+                End With
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -1585,14 +1627,25 @@
     '   Ver.2.0.8.P
     '----------------------------------------------------------------------------
     Friend Function mChkFuDoTermSetting(FuNo As Integer, PortNo As Integer) As Boolean
-
-        If mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf > 20 Or mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf < 0 Then
-            If gudt.SetFu.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf <> mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf Then
-                Return True
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            If mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf > 20 Or mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf < 0 Then
+                If gudt.SetFu.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf <> mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf Then
+                    Return True
+                End If
             End If
-        End If
 
-        Return False
+            Return False
+
+        Else
+            If mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf > 20 Or mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf < 0 Then
+                If gudt2.SetFu.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf <> mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf Then
+                    Return True
+                End If
+            End If
+
+            Return False
+        End If
 
     End Function
 
@@ -1602,7 +1655,13 @@
     '   Ver.2.0.8.P
     '----------------------------------------------------------------------------
     Friend Sub mSetDoTermSettingForTemp(FuNo As Integer, PortNo As Integer)
-        mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf = gudt.SetFu.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf = gudt.SetFu.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf
+        Else
+            mudtSetFuNew.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf = gudt2.SetFu.udtFu(FuNo).udtSlotInfo(PortNo).shtTerinf
+        End If
+
     End Sub
 
     '----------------------------------------------------------------------------
@@ -1613,16 +1672,29 @@
     Friend Sub mSaveFuDoTermSetting()
 
         Dim i, j As Integer
-
-        For i = 0 To 20
-            For j = 0 To 8 - 1
-                If mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf <> 0 Then
-                    If gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf <> mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf Then
-                        gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf = mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            For i = 0 To 20
+                For j = 0 To 8 - 1
+                    If mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf <> 0 Then
+                        If gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf <> mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf Then
+                            gudt.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf = mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf
+                        End If
                     End If
-                End If
+                Next
             Next
-        Next
+        Else
+            For i = 0 To 20
+                For j = 0 To 8 - 1
+                    If mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf <> 0 Then
+                        If gudt2.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf <> mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf Then
+                            gudt2.SetFu.udtFu(i).udtSlotInfo(j).shtTerinf = mudtSetFuNew.udtFu(i).udtSlotInfo(j).shtTerinf
+                        End If
+                    End If
+                Next
+            Next
+        End If
+
     End Sub
 
 End Class

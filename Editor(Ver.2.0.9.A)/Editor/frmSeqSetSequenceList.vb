@@ -60,9 +60,16 @@
                 Call mudtSetSequenceSetNew.udtDetail(i).InitArray()
             Next
 
-            ''構造体コピー
-            Call mCopyStructure(gudt.SetSeqID, mudtSetSequenceIDNew)
-            Call mCopyStructure(gudt.SetSeqSet, mudtSetSequenceSetNew)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''構造体コピー
+                Call mCopyStructure(gudt.SetSeqID, mudtSetSequenceIDNew)
+                Call mCopyStructure(gudt.SetSeqSet, mudtSetSequenceSetNew)
+            Else
+                Call mCopyStructure(gudt2.SetSeqID, mudtSetSequenceIDNew)
+                Call mCopyStructure(gudt2.SetSeqSet, mudtSetSequenceSetNew)
+            End If
+
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
 
             ''画面設定
             Call mSetDisplay(mudtSetSequenceIDNew)
@@ -367,18 +374,32 @@
             Call mSetStructure(mudtSetSequenceIDNew)
             Call mSetStructure(mudtSetSequenceSetNew)
 
+            If modFcuSelect.nFcuNo = 1 Then
+                ''シーケンスID（USE列）が変更されている場合は設定を更新する
+                If Not mChkStructureEquals(mudtSetSequenceIDNew, gudt.SetSeqID) Then
+                    Call mCopyStructure(mudtSetSequenceIDNew, gudt.SetSeqID)
+                    blnFlgID = True
+                End If
 
-            ''シーケンスID（USE列）が変更されている場合は設定を更新する
-            If Not mChkStructureEquals(mudtSetSequenceIDNew, gudt.SetSeqID) Then
-                Call mCopyStructure(mudtSetSequenceIDNew, gudt.SetSeqID)
-                blnFlgID = True
+                ''シーケンス設定が変更されている場合は設定を更新する
+                If Not mChkStructureEquals(mudtSetSequenceSetNew, gudt.SetSeqSet) Then
+                    Call mCopyStructure(mudtSetSequenceSetNew, gudt.SetSeqSet)
+                    blnFlgSet = True
+                End If
+            Else
+                If Not mChkStructureEquals(mudtSetSequenceIDNew, gudt2.SetSeqID) Then
+                    Call mCopyStructure(mudtSetSequenceIDNew, gudt2.SetSeqID)
+                    blnFlgID = True
+                End If
+
+                ''シーケンス設定が変更されている場合は設定を更新する
+                If Not mChkStructureEquals(mudtSetSequenceSetNew, gudt2.SetSeqSet) Then
+                    Call mCopyStructure(mudtSetSequenceSetNew, gudt2.SetSeqSet)
+                    blnFlgSet = True
+                End If
             End If
 
-            ''シーケンス設定が変更されている場合は設定を更新する
-            If Not mChkStructureEquals(mudtSetSequenceSetNew, gudt.SetSeqSet) Then
-                Call mCopyStructure(mudtSetSequenceSetNew, gudt.SetSeqSet)
-                blnFlgSet = True
-            End If
+
 
             If blnFlgID Or blnFlgSet Then
 
@@ -702,10 +723,15 @@
             Call mSetStructure(mudtSetSequenceIDNew)
             Call mSetStructure(mudtSetSequenceSetNew)
 
+            If modFcuSelect.nFcuNo = 1 Then
+                ''更新フラグ取得
+                If Not mChkStructureEquals(mudtSetSequenceIDNew, gudt.SetSeqID) Then blnFlgID = True
+                If Not mChkStructureEquals(mudtSetSequenceSetNew, gudt.SetSeqSet) Then blnFlgSet = True
+            Else
+                If Not mChkStructureEquals(mudtSetSequenceIDNew, gudt2.SetSeqID) Then blnFlgID = True
+                If Not mChkStructureEquals(mudtSetSequenceSetNew, gudt2.SetSeqSet) Then blnFlgSet = True
+            End If
 
-            ''更新フラグ取得
-            If Not mChkStructureEquals(mudtSetSequenceIDNew, gudt.SetSeqID) Then blnFlgID = True
-            If Not mChkStructureEquals(mudtSetSequenceSetNew, gudt.SetSeqSet) Then blnFlgSet = True
 
             ''データが変更されているかチェック
             If blnFlgID Or blnFlgSet Then
@@ -722,20 +748,37 @@
                             Return
                         End If
 
-                        ''変更された場合は設定を更新する
-                        If blnFlgID Then
-                            Call mCopyStructure(mudtSetSequenceIDNew, gudt.SetSeqID)
-                            gblnUpdateAll = True
-                            gudt.SetEditorUpdateInfo.udtSave.bytSeqSequenceID = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytSeqSequenceID = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更された場合は設定を更新する
+                            If blnFlgID Then
+                                Call mCopyStructure(mudtSetSequenceIDNew, gudt.SetSeqID)
+                                gblnUpdateAll = True
+                                gudt.SetEditorUpdateInfo.udtSave.bytSeqSequenceID = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytSeqSequenceID = 1
+                            End If
+
+                            If blnFlgSet Then
+                                Call mCopyStructure(mudtSetSequenceSetNew, gudt.SetSeqSet)
+                                gblnUpdateAll = True
+                                gudt.SetEditorUpdateInfo.udtSave.bytSeqSequenceSet = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytSeqSequenceSet = 1
+                            End If
+                        Else
+                            If blnFlgID Then
+                                Call mCopyStructure(mudtSetSequenceIDNew, gudt2.SetSeqID)
+                                gblnUpdateAll = True
+                                gudt2.SetEditorUpdateInfo.udtSave.bytSeqSequenceID = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytSeqSequenceID = 1
+                            End If
+
+                            If blnFlgSet Then
+                                Call mCopyStructure(mudtSetSequenceSetNew, gudt2.SetSeqSet)
+                                gblnUpdateAll = True
+                                gudt2.SetEditorUpdateInfo.udtSave.bytSeqSequenceSet = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytSeqSequenceSet = 1
+                            End If
                         End If
 
-                        If blnFlgSet Then
-                            Call mCopyStructure(mudtSetSequenceSetNew, gudt.SetSeqSet)
-                            gblnUpdateAll = True
-                            gudt.SetEditorUpdateInfo.udtSave.bytSeqSequenceSet = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytSeqSequenceSet = 1
-                        End If
 
 
 

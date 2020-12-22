@@ -202,6 +202,7 @@
             Call gSetComboBox(cmbControlType, gEnmComboType.ctChListChannelListOutputControlType)
 
             ''チャンネルグループ情報取得
+
             Call gMakeChannelData(gudt.SetChInfo, mudtChannelGroup)
             'Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
 

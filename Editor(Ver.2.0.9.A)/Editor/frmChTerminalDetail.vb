@@ -278,18 +278,37 @@
                 mudtSetCHAndOrNew.udtCHOut(i).InitArray()
             Next
 
-            ''構造体複製(CH OutPut) ---------------------------------------------------------------------------
-            Call mCopyStructure1(gudt.SetChOutput, mudtSetCHOutPut)
-            Call mCopyStructure1(gudt.SetChOutput, mudtSetCHOutPutNew)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
 
-            Call mCopyStructure2(gudt.SetChAndOr, mudtSetCHAndOr)
-            Call mCopyStructure2(gudt.SetChAndOr, mudtSetCHAndOrNew)
+                ''構造体複製(CH OutPut) ---------------------------------------------------------------------------
+                Call mCopyStructure1(gudt.SetChOutput, mudtSetCHOutPut)
+                Call mCopyStructure1(gudt.SetChOutput, mudtSetCHOutPutNew)
 
-            ''画面設定 ----------------------------------------------------------------------------------------
-            Call mSetDisplayCh(gudt.SetChInfo)                                           ''チャンネル設定構造体
-            Call mSetDisplayDisp(gudt.SetChDisp)                                         ''チャンネル情報データ構造体
-            Call mSetDisplayChOutPut(gudt.SetChInfo, gudt.SetChOutput, gudt.SetChAndOr)  ''出力チャンネル設定構造体
-            ''-------------------------------------------------------------------------------------------------
+                Call mCopyStructure2(gudt.SetChAndOr, mudtSetCHAndOr)
+                Call mCopyStructure2(gudt.SetChAndOr, mudtSetCHAndOrNew)
+
+                ''画面設定 ----------------------------------------------------------------------------------------
+                Call mSetDisplayCh(gudt.SetChInfo)                                           ''チャンネル設定構造体
+                Call mSetDisplayDisp(gudt.SetChDisp)                                         ''チャンネル情報データ構造体
+                Call mSetDisplayChOutPut(gudt.SetChInfo, gudt.SetChOutput, gudt.SetChAndOr)  ''出力チャンネル設定構造体
+                ''-------------------------------------------------------------------------------------------------
+            Else
+                'FCU2が選択されている場合
+                ''構造体複製(CH OutPut) ---------------------------------------------------------------------------
+                Call mCopyStructure1(gudt2.SetChOutput, mudtSetCHOutPut)
+                Call mCopyStructure1(gudt2.SetChOutput, mudtSetCHOutPutNew)
+
+                Call mCopyStructure2(gudt2.SetChAndOr, mudtSetCHAndOr)
+                Call mCopyStructure2(gudt2.SetChAndOr, mudtSetCHAndOrNew)
+
+                ''画面設定 ----------------------------------------------------------------------------------------
+                Call mSetDisplayCh(gudt2.SetChInfo)                                           ''チャンネル設定構造体
+                Call mSetDisplayDisp(gudt2.SetChDisp)                                         ''チャンネル情報データ構造体
+                Call mSetDisplayChOutPut(gudt2.SetChInfo, gudt2.SetChOutput, gudt2.SetChAndOr)  ''出力チャンネル設定構造体
+                ''-----------------------------------------------------------------------------------------------
+
+            End If
 
             mIntClearChNo = Val(grdTerminal(2, 0).Value)
 
@@ -400,13 +419,28 @@
             ''設定値を比較用構造体に格納
             Call mSetStructure(mudtSetChDispNew)
 
-            ''データが変更されているかチェック
-            If Not mChkStructureEquals(gudt.SetChDisp, mudtSetChDispNew) Then
 
-                ''変更された場合は設定を更新する
-                Call mCopyStructureDisp(mudtSetChDispNew, gudt.SetChDisp)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''データが変更されているかチェック
+                If Not mChkStructureEquals(gudt.SetChDisp, mudtSetChDispNew) Then
 
-                blnIsSave = True
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructureDisp(mudtSetChDispNew, gudt.SetChDisp)
+
+                    blnIsSave = True
+                End If
+            Else
+                'FCU2が選択されている場合
+                ''データが変更されているかチェック
+                If Not mChkStructureEquals(gudt2.SetChDisp, mudtSetChDispNew) Then
+
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructureDisp(mudtSetChDispNew, gudt2.SetChDisp)
+
+                    blnIsSave = True
+
+                End If
             End If
 
             ''チャンネル設定構造体(CH) ------------------------------------
@@ -421,17 +455,34 @@
 
             ''出力チャンネル設定構造体(CH OutPut, CHAndOr) ---------------
 
-            ''データが変更されているかチェック
-            If Not mChkStructureEqualsChOutPut(mudtSetCHOutPut, mudtSetCHOutPutNew, mudtSetCHAndOr, mudtSetCHAndOrNew) Then
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''データが変更されているかチェック
+                If Not mChkStructureEqualsChOutPut(mudtSetCHOutPut, mudtSetCHOutPutNew, mudtSetCHAndOr, mudtSetCHAndOrNew) Then
 
-                ''変更された場合は設定を更新する
-                Call mCopyStructure1(mudtSetCHOutPutNew, gudt.SetChOutput)
-                Call mCopyStructure2(mudtSetCHAndOrNew, gudt.SetChAndOr)
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructure1(mudtSetCHOutPutNew, gudt.SetChOutput)
+                    Call mCopyStructure2(mudtSetCHAndOrNew, gudt.SetChAndOr)
 
-                Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
-                Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
+                    Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
+                    Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
 
-                blnIsSave = True
+                    blnIsSave = True
+
+                End If
+            Else
+                If Not mChkStructureEqualsChOutPut(mudtSetCHOutPut, mudtSetCHOutPutNew, mudtSetCHAndOr, mudtSetCHAndOrNew) Then
+
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructure1(mudtSetCHOutPutNew, gudt2.SetChOutput)
+                    Call mCopyStructure2(mudtSetCHAndOrNew, gudt2.SetChAndOr)
+
+                    Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
+                    Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
+
+                    blnIsSave = True
+
+                End If
 
             End If
 
@@ -474,26 +525,51 @@
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                ''更新フラグ設定
-                gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytOutPut = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
 
-                gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
-
-                'Ver.2.0.8.P FU端子設定が変更されている場合、更新フラグをON
-                If blnFuDoTermSetChg = True Then
-                    gudt.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                    ''更新フラグ設定
+                    gblnUpdateAll = True
                     gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                    gudt.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
-                    gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
-                End If
+                    gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                    gudt.SetEditorUpdateInfo.udtSave.bytOutPut = 1
+                    gudt.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
 
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
+
+                    'Ver.2.0.8.P FU端子設定が変更されている場合、更新フラグをON
+                    If blnFuDoTermSetChg = True Then
+                        gudt.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                        gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                        gudt.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
+                        gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                    End If
+                Else
+
+                    ''更新フラグ設定
+                    gblnUpdateAll = True
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytOutPut = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
+
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
+
+                    'Ver.2.0.8.P FU端子設定が変更されている場合、更新フラグをON
+                    If blnFuDoTermSetChg = True Then
+                        gudt2.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                        gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                        gudt2.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
+                        gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                    End If
+
+                End If
             End If
 
             mintChange = 0      ''延長警報盤用チェンジフラグ
@@ -568,12 +644,12 @@
             End If
 
             ''データが変更されているかチェック
-            If (Not mChkStructureEquals(gudt.SetChDisp, mudtSetChDispNew)) Or _
-                mIsChangeCH() Or _
+            If (Not mChkStructureEquals(gudt.SetChDisp, mudtSetChDispNew)) Or
+                (Not mChkStructureEquals(gudt2.SetChDisp, mudtSetChDispNew)) Or mIsChangeCH() Or
                 Not mChkStructureEqualsChOutPut(mudtSetCHOutPut, mudtSetCHOutPutNew, mudtSetCHAndOr, mudtSetCHAndOrNew) Or blFuDoSettingChange = True Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
                     Case Windows.Forms.DialogResult.Yes
@@ -584,43 +660,89 @@
                             Return
                         End If
 
-                        ''チャンネル情報データ構造体(Disp) ---------------------
-                        Call mCopyStructureDisp(mudtSetChDispNew, gudt.SetChDisp)
+                        If modFcuSelect.nFcuNo = 1 Then
+                            'FCU1が選択されている場合
 
-                        ''チャンネル設定構造体(CH) -----------------------------
-                        Call mSaveCH()
+                            ''チャンネル情報データ構造体(Disp) ---------------------
+                            Call mCopyStructureDisp(mudtSetChDispNew, gudt.SetChDisp)
 
-                        ''出力チャンネル設定構造体(CH OutPut, CHAndOr) ---------
-                        Call mCopyStructure1(mudtSetCHOutPutNew, gudt.SetChOutput)
-                        Call mCopyStructure2(mudtSetCHAndOrNew, gudt.SetChAndOr)
+                            ''チャンネル設定構造体(CH) -----------------------------
+                            Call mSaveCH()
 
-                        Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
-                        Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
+                            ''出力チャンネル設定構造体(CH OutPut, CHAndOr) ---------
+                            Call mCopyStructure1(mudtSetCHOutPutNew, gudt.SetChOutput)
+                            Call mCopyStructure2(mudtSetCHAndOrNew, gudt.SetChAndOr)
 
-                        'Ver.2.0.8.P 
-                        If blFuDoSettingChange = True Then
-                            mSetFuDoTerminal()
+                            Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
+                            Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
+
+                            'Ver.2.0.8.P 
+                            If blFuDoSettingChange = True Then
+                                mSetFuDoTerminal()
+                            End If
+
+                            ''更新フラグ設定
+                            gblnUpdateAll = True
+                            gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1      '' ver1.4.0 2011.08.22
+                            gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1     '' ver1.4.0 2011.08.22
+                            gudt.SetEditorUpdateInfo.udtSave.bytOutPut = 1
+                            gudt.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
+
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1   '' ver1.4.0 2011.08.22
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1  '' ver1.4.0 2011.08.22
+                            gudt.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
+
+                            'Ver.2.0.8.P FU端子設定が変更されている場合、更新フラグをON
+                            If blFuDoSettingChange = True Then
+                                gudt.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                                gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                            End If
+                        Else
+                            'FCU2が選択されている場合
+                            ''チャンネル情報データ構造体(Disp) ---------------------
+                            Call mCopyStructureDisp(mudtSetChDispNew, gudt2.SetChDisp)
+
+                            ''チャンネル設定構造体(CH) -----------------------------
+                            Call mSaveCH()
+
+                            ''出力チャンネル設定構造体(CH OutPut, CHAndOr) ---------
+                            Call mCopyStructure1(mudtSetCHOutPutNew, gudt2.SetChOutput)
+                            Call mCopyStructure2(mudtSetCHAndOrNew, gudt2.SetChAndOr)
+
+                            Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
+                            Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
+
+                            'Ver.2.0.8.P 
+                            If blFuDoSettingChange = True Then
+                                mSetFuDoTerminal()
+                            End If
+
+                            ''更新フラグ設定
+                            gblnUpdateAll = True
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1      '' ver1.4.0 2011.08.22
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1     '' ver1.4.0 2011.08.22
+                            gudt2.SetEditorUpdateInfo.udtSave.bytOutPut = 1
+                            gudt2.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
+
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1   '' ver1.4.0 2011.08.22
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1  '' ver1.4.0 2011.08.22
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
+
+                            'Ver.2.0.8.P FU端子設定が変更されている場合、更新フラグをON
+                            If blFuDoSettingChange = True Then
+                                gudt2.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
+                                gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                            End If
+
                         End If
 
-                        ''更新フラグ設定
-                        gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1      '' ver1.4.0 2011.08.22
-                        gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1     '' ver1.4.0 2011.08.22
-                        gudt.SetEditorUpdateInfo.udtSave.bytOutPut = 1
-                        gudt.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
 
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1   '' ver1.4.0 2011.08.22
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1  '' ver1.4.0 2011.08.22
-                        gudt.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
-
-                        'Ver.2.0.8.P FU端子設定が変更されている場合、更新フラグをON
-                        If blFuDoSettingChange = True Then
-                            gudt.SetEditorUpdateInfo.udtSave.bytFuChannel = 1
-                            gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytFuChannel = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
-                        End If
 
                     Case Windows.Forms.DialogResult.No
 
@@ -1260,36 +1382,72 @@
 
         '保存するべきか判定
         Call mSetStructure(mudtSetChDispNew)
-        ''データが変更されているかチェック
-        If (Not mChkStructureEquals(gudt.SetChDisp, mudtSetChDispNew)) Or _
-            mIsChangeCH() Or _
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            ''データが変更されているかチェック
+            If (Not mChkStructureEquals(gudt.SetChDisp, mudtSetChDispNew)) Or
+            mIsChangeCH() Or
             Not mChkStructureEqualsChOutPut(mudtSetCHOutPut, mudtSetCHOutPutNew, mudtSetCHAndOr, mudtSetCHAndOrNew) Then
 
-            ''チャンネル情報データ構造体(Disp) ---------------------
-            Call mCopyStructureDisp(mudtSetChDispNew, gudt.SetChDisp)
+                ''チャンネル情報データ構造体(Disp) ---------------------
+                Call mCopyStructureDisp(mudtSetChDispNew, gudt.SetChDisp)
 
-            ''チャンネル設定構造体(CH) -----------------------------
-            Call mSaveCH()
+                ''チャンネル設定構造体(CH) -----------------------------
+                Call mSaveCH()
 
-            ''出力チャンネル設定構造体(CH OutPut, CHAndOr) ---------
-            Call mCopyStructure1(mudtSetCHOutPutNew, gudt.SetChOutput)
-            Call mCopyStructure2(mudtSetCHAndOrNew, gudt.SetChAndOr)
+                ''出力チャンネル設定構造体(CH OutPut, CHAndOr) ---------
+                Call mCopyStructure1(mudtSetCHOutPutNew, gudt.SetChOutput)
+                Call mCopyStructure2(mudtSetCHAndOrNew, gudt.SetChAndOr)
 
-            Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
-            Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
+                Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
+                Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
 
-            ''更新フラグ設定
-            gblnUpdateAll = True
-            gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1      '' ver1.4.0 2011.08.22
-            gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1     '' ver1.4.0 2011.08.22
-            gudt.SetEditorUpdateInfo.udtSave.bytOutPut = 1
-            gudt.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
+                ''更新フラグ設定
+                gblnUpdateAll = True
+                gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1      '' ver1.4.0 2011.08.22
+                gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1     '' ver1.4.0 2011.08.22
+                gudt.SetEditorUpdateInfo.udtSave.bytOutPut = 1
+                gudt.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
 
-            gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1   '' ver1.4.0 2011.08.22
-            gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1  '' ver1.4.0 2011.08.22
-            gudt.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
-            gudt.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
+                gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1   '' ver1.4.0 2011.08.22
+                gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1  '' ver1.4.0 2011.08.22
+                gudt.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
+                gudt.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
+            End If
+        Else
+            ''データが変更されているかチェック
+            If (Not mChkStructureEquals(gudt2.SetChDisp, mudtSetChDispNew)) Or
+            mIsChangeCH() Or
+            Not mChkStructureEqualsChOutPut(mudtSetCHOutPut, mudtSetCHOutPutNew, mudtSetCHAndOr, mudtSetCHAndOrNew) Then
+
+                ''チャンネル情報データ構造体(Disp) ---------------------
+                Call mCopyStructureDisp(mudtSetChDispNew, gudt2.SetChDisp)
+
+                ''チャンネル設定構造体(CH) -----------------------------
+                Call mSaveCH()
+
+                ''出力チャンネル設定構造体(CH OutPut, CHAndOr) ---------
+                Call mCopyStructure1(mudtSetCHOutPutNew, gudt2.SetChOutput)
+                Call mCopyStructure2(mudtSetCHAndOrNew, gudt2.SetChAndOr)
+
+                Call mCopyStructure1(mudtSetCHOutPutNew, mudtSetCHOutPut)
+                Call mCopyStructure2(mudtSetCHAndOrNew, mudtSetCHAndOr)
+
+                ''更新フラグ設定
+                gblnUpdateAll = True
+                gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1      '' ver1.4.0 2011.08.22
+                gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1     '' ver1.4.0 2011.08.22
+                gudt2.SetEditorUpdateInfo.udtSave.bytOutPut = 1
+                gudt2.SetEditorUpdateInfo.udtSave.bytOrAnd = 1
+
+                gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1   '' ver1.4.0 2011.08.22
+                gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1  '' ver1.4.0 2011.08.22
+                gudt2.SetEditorUpdateInfo.udtCompile.bytOutPut = 1
+                gudt2.SetEditorUpdateInfo.udtCompile.bytOrAnd = 1
+            End If
         End If
+
+
 
         'Ver2.0.1.3 端子表印刷はいきなりﾌﾟﾚﾋﾞｭｰではなく印刷設定へ
         'frmChTerminalPreview.ShowDialog()
@@ -1667,60 +1825,120 @@
 
             Dim intType As Integer = mTerminalData.TypeCode ''スロット種別コード
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-                With gudt.SetChInfo.udtChannel(i)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                    If gGet2Byte(.udtChCommon.shtChno) = intChNo Then
+                        If gGet2Byte(.udtChCommon.shtChno) = intChNo Then
 
-                        If intType = gCstCodeFuSlotTypeDO _
-                        Or intType = gCstCodeFuSlotTypeAO Then
+                            If intType = gCstCodeFuSlotTypeDO _
+                            Or intType = gCstCodeFuSlotTypeAO Then
 
-                            ''OUT
-                            If .udtChCommon.shtChType = gCstCodeChTypeMotor Then
-                                .MotorFuNo = intFuNo            ''FU番号
-                                .MotorPortNo = intPortNo        ''ポート番号
-                                .MotorPin = intPin              ''計測点番号
+                                ''OUT
+                                If .udtChCommon.shtChType = gCstCodeChTypeMotor Then
+                                    .MotorFuNo = intFuNo            ''FU番号
+                                    .MotorPortNo = intPortNo        ''ポート番号
+                                    .MotorPin = intPin              ''計測点番号
 
-                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then
+                                ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then
 
-                                If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or _
-                                   .udtChCommon.shtData = gCstCodeChDataTypeValveDO Or _
-                                   .udtChCommon.shtData = gCstCodeChDataTypeValveExt Then
-                                    .ValveDiDoFuNo = intFuNo        ''FU番号
-                                    .ValveDiDoPortNo = intPortNo    ''ポート番号
-                                    .ValveDiDoPin = intPin          ''計測点番号
+                                    If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveDO Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveExt Then
+                                        .ValveDiDoFuNo = intFuNo        ''FU番号
+                                        .ValveDiDoPortNo = intPortNo    ''ポート番号
+                                        .ValveDiDoPin = intPin          ''計測点番号
 
-                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
-                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
-                                    .ValveAiDoFuNo = intFuNo        ''FU番号
-                                    .ValveAiDoPortNo = intPortNo    ''ポート番号
-                                    .ValveAiDoPin = intPin          ''計測点番号
+                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                           .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+                                        .ValveAiDoFuNo = intFuNo        ''FU番号
+                                        .ValveAiDoPortNo = intPortNo    ''ポート番号
+                                        .ValveAiDoPin = intPin          ''計測点番号
 
-                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or _
-                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or _
-                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
-                                    .ValveAiAoFuNo = intFuNo        ''FU番号
-                                    .ValveAiAoPortNo = intPortNo    ''ポート番号
-                                    .ValveAiAoPin = intPin          ''計測点番号
+                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                           .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
+                                           .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
+                                        .ValveAiAoFuNo = intFuNo        ''FU番号
+                                        .ValveAiAoPortNo = intPortNo    ''ポート番号
+                                        .ValveAiAoPin = intPin          ''計測点番号
+                                    End If
+
                                 End If
 
+                            Else
+                                ''IN
+                                .udtChCommon.shtFuno = intFuNo      ''FU番号
+                                .udtChCommon.shtPortno = intPortNo  ''ポート番号
+                                .udtChCommon.shtPin = intPin        ''計測点番号
                             End If
 
-                        Else
-                            ''IN
-                            .udtChCommon.shtFuno = intFuNo      ''FU番号
-                            .udtChCommon.shtPortno = intPortNo  ''ポート番号
-                            .udtChCommon.shtPin = intPin        ''計測点番号
+                            Exit For
+
                         End If
 
-                        Exit For
+                    End With
 
-                    End If
+                Next
+            Else
+                'FCU2が選択されている場合
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
 
-                End With
+                    With gudt2.SetChInfo.udtChannel(i)
 
-            Next
+                        If gGet2Byte(.udtChCommon.shtChno) = intChNo Then
+
+                            If intType = gCstCodeFuSlotTypeDO _
+                        Or intType = gCstCodeFuSlotTypeAO Then
+
+                                ''OUT
+                                If .udtChCommon.shtChType = gCstCodeChTypeMotor Then
+                                    .MotorFuNo = intFuNo            ''FU番号
+                                    .MotorPortNo = intPortNo        ''ポート番号
+                                    .MotorPin = intPin              ''計測点番号
+
+                                ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then
+
+                                    If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
+                                   .udtChCommon.shtData = gCstCodeChDataTypeValveDO Or
+                                   .udtChCommon.shtData = gCstCodeChDataTypeValveExt Then
+                                        .ValveDiDoFuNo = intFuNo        ''FU番号
+                                        .ValveDiDoPortNo = intPortNo    ''ポート番号
+                                        .ValveDiDoPin = intPin          ''計測点番号
+
+                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+                                        .ValveAiDoFuNo = intFuNo        ''FU番号
+                                        .ValveAiDoPortNo = intPortNo    ''ポート番号
+                                        .ValveAiDoPin = intPin          ''計測点番号
+
+                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
+                                        .ValveAiAoFuNo = intFuNo        ''FU番号
+                                        .ValveAiAoPortNo = intPortNo    ''ポート番号
+                                        .ValveAiAoPin = intPin          ''計測点番号
+                                    End If
+
+                                End If
+
+                            Else
+                                ''IN
+                                .udtChCommon.shtFuno = intFuNo      ''FU番号
+                                .udtChCommon.shtPortno = intPortNo  ''ポート番号
+                                .udtChCommon.shtPin = intPin        ''計測点番号
+                            End If
+
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
+
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -1747,14 +1965,103 @@
             Dim intChId As Integer = 0, intIndex As Integer = 0
             Dim strValue As String
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-                    ''チャンネルが一致
-                    If gGet2Byte(.shtChno) = intChNo Then
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
+                        ''チャンネルが一致
+                        If gGet2Byte(.shtChno) = intChNo Then
+
+                            .shtSysno = grdTerminal(1, intRow).Value
+                            .shtChType = gCstCodeChTypeDigital              ''デジタルCH
+                            .shtData = gCstCodeChDataTypeDigitalExt         ''延長警報盤
+                            .shtFlag1 = gBitSet(.shtFlag1, 1, True)         ''SC(隠しCH設定) 有
+
+                            .shtFuno = intFuNo      ''FU番号
+                            .shtPortno = intPortNo  ''ポート番号
+                            .shtPin = intPin        ''計測点番号
+
+                            cmbFunction.Text = grdTerminal(3, intRow).Value
+                            .shtEccFunc = cmbFunction.SelectedValue
+
+                            strValue = grdTerminal(18, intRow).Value
+                            If strValue <> "" Then
+                                .shtGroupNo = CCInt(strValue.Substring(0, 2))
+                                .shtDispPos = CCInt(strValue.Substring(3, 3))
+                                .strRemark = strValue.Substring(7)
+                            End If
+
+                            flg = 1
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        ''チャンネルが一致
+                        If gGet2Byte(.shtChno) = intChNo Then
+
+                            .shtSysno = grdTerminal(1, intRow).Value
+                            .shtChType = gCstCodeChTypeDigital              ''デジタルCH
+                            .shtData = gCstCodeChDataTypeDigitalExt         ''延長警報盤
+                            .shtFlag1 = gBitSet(.shtFlag1, 1, True)         ''SC(隠しCH設定) 有
+
+                            .shtFuno = intFuNo      ''FU番号
+                            .shtPortno = intPortNo  ''ポート番号
+                            .shtPin = intPin        ''計測点番号
+
+                            cmbFunction.Text = grdTerminal(3, intRow).Value
+                            .shtEccFunc = cmbFunction.SelectedValue
+
+                            strValue = grdTerminal(18, intRow).Value
+                            If strValue <> "" Then
+                                .shtGroupNo = CCInt(strValue.Substring(0, 2))
+                                .shtDispPos = CCInt(strValue.Substring(3, 3))
+                                .strRemark = strValue.Substring(7)
+                            End If
+
+                            flg = 1
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
+
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''一致するチャンネルがない場合は新規登録する
+                If flg = 0 Then
+
+
+                    ''CHの空きインデックスをGET
+                    intIndex = mGetChId(gudt.SetChInfo.udtChannel)
+
+                    With gudt.SetChInfo.udtChannel(intIndex).udtChCommon
+
+                        .shtChid = CCUInt16(intChNo)
+                        .shtChno = CCUInt16(intChNo)
                         .shtSysno = grdTerminal(1, intRow).Value
+
+                        strValue = grdTerminal(18, intRow).Value
+                        If strValue <> "" Then
+                            .shtGroupNo = CCInt(strValue.Substring(0, 2))
+                            .shtDispPos = CCInt(strValue.Substring(3, 3))
+                            .strRemark = strValue.Substring(7)
+                        End If
+
                         .shtChType = gCstCodeChTypeDigital              ''デジタルCH
                         .shtData = gCstCodeChDataTypeDigitalExt         ''延長警報盤
                         .shtFlag1 = gBitSet(.shtFlag1, 1, True)         ''SC(隠しCH設定) 有
@@ -1766,6 +2073,23 @@
                         cmbFunction.Text = grdTerminal(3, intRow).Value
                         .shtEccFunc = cmbFunction.SelectedValue
 
+                    End With
+
+                End If
+            Else
+                ''一致するチャンネルがない場合は新規登録する
+                If flg = 0 Then
+
+
+                    ''CHの空きインデックスをGET
+                    intIndex = mGetChId(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(intIndex).udtChCommon
+
+                        .shtChid = CCUInt16(intChNo)
+                        .shtChno = CCUInt16(intChNo)
+                        .shtSysno = grdTerminal(1, intRow).Value
+
                         strValue = grdTerminal(18, intRow).Value
                         If strValue <> "" Then
                             .shtGroupNo = CCInt(strValue.Substring(0, 2))
@@ -1773,47 +2097,21 @@
                             .strRemark = strValue.Substring(7)
                         End If
 
-                        flg = 1
-                        Exit For
+                        .shtChType = gCstCodeChTypeDigital              ''デジタルCH
+                        .shtData = gCstCodeChDataTypeDigitalExt         ''延長警報盤
+                        .shtFlag1 = gBitSet(.shtFlag1, 1, True)         ''SC(隠しCH設定) 有
 
-                    End If
+                        .shtFuno = intFuNo      ''FU番号
+                        .shtPortno = intPortNo  ''ポート番号
+                        .shtPin = intPin        ''計測点番号
 
-                End With
+                        cmbFunction.Text = grdTerminal(3, intRow).Value
+                        .shtEccFunc = cmbFunction.SelectedValue
 
-            Next
+                    End With
 
-            ''一致するチャンネルがない場合は新規登録する
-            If flg = 0 Then
 
-                ''CHの空きインデックスをGET
-                intIndex = mGetChId(gudt.SetChInfo.udtChannel)
-
-                With gudt.SetChInfo.udtChannel(intIndex).udtChCommon
-
-                    .shtChid = CCUInt16(intChNo)
-                    .shtChno = CCUInt16(intChNo)
-                    .shtSysno = grdTerminal(1, intRow).Value
-
-                    strValue = grdTerminal(18, intRow).Value
-                    If strValue <> "" Then
-                        .shtGroupNo = CCInt(strValue.Substring(0, 2))
-                        .shtDispPos = CCInt(strValue.Substring(3, 3))
-                        .strRemark = strValue.Substring(7)
-                    End If
-
-                    .shtChType = gCstCodeChTypeDigital              ''デジタルCH
-                    .shtData = gCstCodeChDataTypeDigitalExt         ''延長警報盤
-                    .shtFlag1 = gBitSet(.shtFlag1, 1, True)         ''SC(隠しCH設定) 有
-
-                    .shtFuno = intFuNo      ''FU番号
-                    .shtPortno = intPortNo  ''ポート番号
-                    .shtPin = intPin        ''計測点番号
-
-                    cmbFunction.Text = grdTerminal(3, intRow).Value
-                    .shtEccFunc = cmbFunction.SelectedValue
-
-                End With
-
+                End If
             End If
 
         Catch ex As Exception
@@ -1841,20 +2139,116 @@
             Dim intChId As Integer = 0, intIndex As Integer = 0
             Dim strValue As String
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-                    ''チャンネルが一致
-                    If gGet2Byte(.shtChno) = intChNo Then
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
+                        ''チャンネルが一致
+                        If gGet2Byte(.shtChno) = intChNo Then
+
+                            .shtSysno = grdTerminal(1, intRow).Value
+                            .shtChType = gCstCodeChTypeValve            ''バルブCH
+                            .shtData = gCstCodeChDataTypeValveExt       ''延長警報盤
+                            .shtFlag1 = gBitSet(.shtFlag1, 1, True)     ''SC(隠しCH設定) 有
+
+                            cmbFunction.Text = grdTerminal(3, intRow).Value
+                            .shtEccFunc = cmbFunction.SelectedValue
+
+                            strValue = grdTerminal(18, intRow).Value
+                            If strValue <> "" Then
+                                .shtGroupNo = CCInt(strValue.Substring(0, 2))
+                                .shtDispPos = CCInt(strValue.Substring(3, 3))
+                                .strRemark = strValue.Substring(7)
+                            End If
+
+                            With gudt.SetChInfo.udtChannel(i)
+
+                                .ValveDiDoFuNo = intFuNo        ''FU番号
+                                .ValveDiDoPortNo = intPortNo    ''ポート番号
+                                .ValveDiDoPin = intPin          ''計測点番号
+                                .ValveDiDoPinNo = 1             ''計測点番号
+
+                            End With
+
+                            ''入力側は設定なし
+                            .shtFuno = gCstCodeChNotSetFuNo        ''FU No:設定なし(FFFF)
+                            .shtPortno = gCstCodeChNotSetFuPort    ''Fu PortNo:設定なし(FFFF)
+                            .shtPin = gCstCodeChNotSetFuPin        ''Fu Pin:設定なし(FFFF)
+
+                            flg = 1
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            Else
+
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        ''チャンネルが一致
+                        If gGet2Byte(.shtChno) = intChNo Then
+
+                            .shtSysno = grdTerminal(1, intRow).Value
+                            .shtChType = gCstCodeChTypeValve            ''バルブCH
+                            .shtData = gCstCodeChDataTypeValveExt       ''延長警報盤
+                            .shtFlag1 = gBitSet(.shtFlag1, 1, True)     ''SC(隠しCH設定) 有
+
+                            cmbFunction.Text = grdTerminal(3, intRow).Value
+                            .shtEccFunc = cmbFunction.SelectedValue
+
+                            strValue = grdTerminal(18, intRow).Value
+                            If strValue <> "" Then
+                                .shtGroupNo = CCInt(strValue.Substring(0, 2))
+                                .shtDispPos = CCInt(strValue.Substring(3, 3))
+                                .strRemark = strValue.Substring(7)
+                            End If
+
+                            With gudt2.SetChInfo.udtChannel(i)
+
+                                .ValveDiDoFuNo = intFuNo        ''FU番号
+                                .ValveDiDoPortNo = intPortNo    ''ポート番号
+                                .ValveDiDoPin = intPin          ''計測点番号
+                                .ValveDiDoPinNo = 1             ''計測点番号
+
+                            End With
+
+                            ''入力側は設定なし
+                            .shtFuno = gCstCodeChNotSetFuNo        ''FU No:設定なし(FFFF)
+                            .shtPortno = gCstCodeChNotSetFuPort    ''Fu PortNo:設定なし(FFFF)
+                            .shtPin = gCstCodeChNotSetFuPin        ''Fu Pin:設定なし(FFFF)
+
+                            flg = 1
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+
+            End If
+
+
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''一致するチャンネルがない場合は新規登録する
+                If flg = 0 Then
+
+                    ''CHの空きインデックスをGET
+                    intIndex = mGetChId(gudt.SetChInfo.udtChannel)
+
+                    With gudt.SetChInfo.udtChannel(intIndex).udtChCommon
+
+                        .shtChid = CCUInt16(intChNo)
+                        .shtChno = CCUInt16(intChNo)
                         .shtSysno = grdTerminal(1, intRow).Value
-                        .shtChType = gCstCodeChTypeValve            ''バルブCH
-                        .shtData = gCstCodeChDataTypeValveExt       ''延長警報盤
-                        .shtFlag1 = gBitSet(.shtFlag1, 1, True)     ''SC(隠しCH設定) 有
-
-                        cmbFunction.Text = grdTerminal(3, intRow).Value
-                        .shtEccFunc = cmbFunction.SelectedValue
 
                         strValue = grdTerminal(18, intRow).Value
                         If strValue <> "" Then
@@ -1863,7 +2257,19 @@
                             .strRemark = strValue.Substring(7)
                         End If
 
-                        With gudt.SetChInfo.udtChannel(i)
+                        .shtChType = gCstCodeChTypeValve            ''バルブCH
+                        .shtData = gCstCodeChDataTypeValveExt       ''延長警報盤
+                        .shtFlag1 = gBitSet(.shtFlag1, 1, True)     ''SC(隠しCH設定) 有
+
+                        cmbFunction.Text = grdTerminal(3, intRow).Value
+                        .shtEccFunc = cmbFunction.SelectedValue
+
+                        .shtExtGroup = gCstCodeChCommonExtGroupNothing
+                        .shtDelay = gCstCodeChCommonDelayTimerNothing
+                        .shtGRepose1 = gCstCodeChCommonGroupRepose1Nothing
+                        .shtGRepose2 = gCstCodeChCommonGroupRepose2Nothing
+
+                        With gudt.SetChInfo.udtChannel(intIndex)
 
                             .ValveDiDoFuNo = intFuNo        ''FU番号
                             .ValveDiDoPortNo = intPortNo    ''ポート番号
@@ -1877,63 +2283,62 @@
                         .shtPortno = gCstCodeChNotSetFuPort    ''Fu PortNo:設定なし(FFFF)
                         .shtPin = gCstCodeChNotSetFuPin        ''Fu Pin:設定なし(FFFF)
 
-                        flg = 1
-                        Exit For
+                    End With
 
-                    End If
+                End If
+            Else
 
-                End With
+                ''一致するチャンネルがない場合は新規登録する
+                If flg = 0 Then
 
-            Next
+                    ''CHの空きインデックスをGET
+                    intIndex = mGetChId(gudt2.SetChInfo.udtChannel)
 
-            ''一致するチャンネルがない場合は新規登録する
-            If flg = 0 Then
+                    With gudt2.SetChInfo.udtChannel(intIndex).udtChCommon
 
-                ''CHの空きインデックスをGET
-                intIndex = mGetChId(gudt.SetChInfo.udtChannel)
+                        .shtChid = CCUInt16(intChNo)
+                        .shtChno = CCUInt16(intChNo)
+                        .shtSysno = grdTerminal(1, intRow).Value
 
-                With gudt.SetChInfo.udtChannel(intIndex).udtChCommon
+                        strValue = grdTerminal(18, intRow).Value
+                        If strValue <> "" Then
+                            .shtGroupNo = CCInt(strValue.Substring(0, 2))
+                            .shtDispPos = CCInt(strValue.Substring(3, 3))
+                            .strRemark = strValue.Substring(7)
+                        End If
 
-                    .shtChid = CCUInt16(intChNo)
-                    .shtChno = CCUInt16(intChNo)
-                    .shtSysno = grdTerminal(1, intRow).Value
+                        .shtChType = gCstCodeChTypeValve            ''バルブCH
+                        .shtData = gCstCodeChDataTypeValveExt       ''延長警報盤
+                        .shtFlag1 = gBitSet(.shtFlag1, 1, True)     ''SC(隠しCH設定) 有
 
-                    strValue = grdTerminal(18, intRow).Value
-                    If strValue <> "" Then
-                        .shtGroupNo = CCInt(strValue.Substring(0, 2))
-                        .shtDispPos = CCInt(strValue.Substring(3, 3))
-                        .strRemark = strValue.Substring(7)
-                    End If
+                        cmbFunction.Text = grdTerminal(3, intRow).Value
+                        .shtEccFunc = cmbFunction.SelectedValue
 
-                    .shtChType = gCstCodeChTypeValve            ''バルブCH
-                    .shtData = gCstCodeChDataTypeValveExt       ''延長警報盤
-                    .shtFlag1 = gBitSet(.shtFlag1, 1, True)     ''SC(隠しCH設定) 有
+                        .shtExtGroup = gCstCodeChCommonExtGroupNothing
+                        .shtDelay = gCstCodeChCommonDelayTimerNothing
+                        .shtGRepose1 = gCstCodeChCommonGroupRepose1Nothing
+                        .shtGRepose2 = gCstCodeChCommonGroupRepose2Nothing
 
-                    cmbFunction.Text = grdTerminal(3, intRow).Value
-                    .shtEccFunc = cmbFunction.SelectedValue
+                        With gudt2.SetChInfo.udtChannel(intIndex)
 
-                    .shtExtGroup = gCstCodeChCommonExtGroupNothing
-                    .shtDelay = gCstCodeChCommonDelayTimerNothing
-                    .shtGRepose1 = gCstCodeChCommonGroupRepose1Nothing
-                    .shtGRepose2 = gCstCodeChCommonGroupRepose2Nothing
+                            .ValveDiDoFuNo = intFuNo        ''FU番号
+                            .ValveDiDoPortNo = intPortNo    ''ポート番号
+                            .ValveDiDoPin = intPin          ''計測点番号
+                            .ValveDiDoPinNo = 1             ''計測点番号
 
-                    With gudt.SetChInfo.udtChannel(intIndex)
+                        End With
 
-                        .ValveDiDoFuNo = intFuNo        ''FU番号
-                        .ValveDiDoPortNo = intPortNo    ''ポート番号
-                        .ValveDiDoPin = intPin          ''計測点番号
-                        .ValveDiDoPinNo = 1             ''計測点番号
+                        ''入力側は設定なし
+                        .shtFuno = gCstCodeChNotSetFuNo        ''FU No:設定なし(FFFF)
+                        .shtPortno = gCstCodeChNotSetFuPort    ''Fu PortNo:設定なし(FFFF)
+                        .shtPin = gCstCodeChNotSetFuPin        ''Fu Pin:設定なし(FFFF)
 
                     End With
 
-                    ''入力側は設定なし
-                    .shtFuno = gCstCodeChNotSetFuNo        ''FU No:設定なし(FFFF)
-                    .shtPortno = gCstCodeChNotSetFuPort    ''Fu PortNo:設定なし(FFFF)
-                    .shtPin = gCstCodeChNotSetFuPin        ''Fu Pin:設定なし(FFFF)
-
-                End With
-
+                End If
             End If
+
+
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -2061,344 +2466,522 @@
 
             mintEventCancelFlag = 1
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
 
-                With gudt.SetChInfo.udtChannel(i)
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-                    If gGet2Byte(.udtChCommon.shtChno) = hChNo Then    ''チャンネル番号が一致 ☆  
+                    With gudt.SetChInfo.udtChannel(i)
 
-                        ''スロット種別とチャンネルタイプが一致しているか？
-                        intFlag = 0
-                        Select Case intType
+                        If gGet2Byte(.udtChCommon.shtChno) = hChNo Then    ''チャンネル番号が一致 ☆  
 
-                            Case gCstCodeFuSlotTypeDO  ''DO
+                            ''スロット種別とチャンネルタイプが一致しているか？
+                            intFlag = 0
+                            Select Case intType
 
-                                ''モーター
-                                If .udtChCommon.shtChType = gCstCodeChTypeMotor Then
-                                    'Ver2.0.0.2 モーター種別増加 R Device 追加
-                                    If .udtChCommon.shtData = gCstCodeChDataTypeMotorDevice Or .udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom Or .udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom55 Or _
+                                Case gCstCodeFuSlotTypeDO  ''DO
+
+                                    ''モーター
+                                    If .udtChCommon.shtChType = gCstCodeChTypeMotor Then
+                                        'Ver2.0.0.2 モーター種別増加 R Device 追加
+                                        If .udtChCommon.shtData = gCstCodeChDataTypeMotorDevice Or .udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom Or .udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom55 Or
                                        .udtChCommon.shtData = gCstCodeChDataTypeMotorRDevice Then
-                                        intFlag = 0
-                                    Else
-                                        intFlag = 1
+                                            intFlag = 0
+                                        Else
+                                            intFlag = 1
+                                        End If
                                     End If
-                                End If
 
-                                ''バルブ
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Then intFlag = 1 ''DI -> DO
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Then intFlag = 1 ''AI(1-5V)   -> DO
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then intFlag = 1 ''AI(4-20mA) -> DO
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDO Then intFlag = 1 ''Digital
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveExt Then intFlag = 1 ''Ext Device (EXT PANEL)
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Then intFlag = 1 ''DI -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Then intFlag = 1 ''AI(1-5V)   -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then intFlag = 1 ''AI(4-20mA) -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDO Then intFlag = 1 ''Digital
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveExt Then intFlag = 1 ''Ext Device (EXT PANEL)
 
-                            Case gCstCodeFuSlotTypeDI  ''DI
+                                Case gCstCodeFuSlotTypeDI  ''DI
 
-                                ''デジタル
-                                If .udtChCommon.shtChType = gCstCodeChTypeDigital And _
+                                    ''デジタル
+                                    If .udtChCommon.shtChType = gCstCodeChTypeDigital And
                                   (.udtChCommon.shtData = gCstCodeChDataTypeDigitalNC _
                                 Or .udtChCommon.shtData = gCstCodeChDataTypeDigitalNO _
                                 Or .udtChCommon.shtData = gCstCodeChDataTypeDigitalExt) Then intFlag = 1
 
-                                ''モーター
-                                If (.udtChCommon.shtChType = gCstCodeChTypeMotor And .udtChCommon.shtData <> gCstCodeChDataTypeMotorDeviceJacom) Or _
+                                    ''モーター
+                                    If (.udtChCommon.shtChType = gCstCodeChTypeMotor And .udtChCommon.shtData <> gCstCodeChDataTypeMotorDeviceJacom) Or
                                    (.udtChCommon.shtChType = gCstCodeChTypeMotor And .udtChCommon.shtData <> gCstCodeChDataTypeMotorDeviceJacom55) Then intFlag = 1
 
-                                ''バルブ
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Then intFlag = 1 ''DI -> DO
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Then intFlag = 1 ''DI -> DO
 
-                                ''デジタルコンポジット
-                                If .udtChCommon.shtChType = gCstCodeChTypeComposite Then intFlag = 1
+                                    ''デジタルコンポジット
+                                    If .udtChCommon.shtChType = gCstCodeChTypeComposite Then intFlag = 1
 
-                                ''パルス
-                                If .udtChCommon.shtChType = gCstCodeChTypePulse Then intFlag = 1
+                                    ''パルス
+                                    If .udtChCommon.shtChType = gCstCodeChTypePulse Then intFlag = 1
 
                                 ''システム(デジタルの機器状態) 4-26
                                 'If .udtChCommon.shtChType = gCstCodeChTypeSystem Then intFlag = 1
 
-                            Case gCstCodeFuSlotTypeAO  ''AO
+                                Case gCstCodeFuSlotTypeAO  ''AO
 
-                                ''バルブ
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Then intFlag = 1 ''AI(1-5V)   -> AO
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then intFlag = 1 ''AI(4-20mA) -> AO
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then intFlag = 1 ''Analog 4-20 mA
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Then intFlag = 1 ''AI(1-5V)   -> AO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then intFlag = 1 ''AI(4-20mA) -> AO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then intFlag = 1 ''Analog 4-20 mA
 
-                            Case gCstCodeFuSlotTypeAI_2  ''AI(2 Line)
+                                Case gCstCodeFuSlotTypeAI_2  ''AI(2 Line)
 
-                                ''アナログ
-                                If .udtChCommon.shtChType = gCstCodeChTypeAnalog And (.udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt) Then intFlag = 1
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And (.udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt) Then intFlag = 1
 
-                            Case gCstCodeFuSlotTypeAI_3  ''AI(3 Line)
+                                Case gCstCodeFuSlotTypeAI_3  ''AI(3 Line)
 
-                                ''アナログ
-                                If .udtChCommon.shtChType = gCstCodeChTypeAnalog And (.udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog3Jpt) Then intFlag = 1
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And (.udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog3Jpt) Then intFlag = 1
 
-                            Case gCstCodeFuSlotTypeAI_1_5  ''AI(1-5V)
+                                Case gCstCodeFuSlotTypeAI_1_5  ''AI(1-5V)
 
-                                ''アナログ
-                                If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalog1_5v Then intFlag = 1
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalog1_5v Then intFlag = 1
 
-                                ''バルブ
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Then intFlag = 1 ''AI(1-5V)   -> DO
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Then intFlag = 1 ''AI(1-5V)   -> AO
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Then intFlag = 1 ''AI(1-5V)   -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Then intFlag = 1 ''AI(1-5V)   -> AO
 
-                            Case gCstCodeFuSlotTypeAI_4_20  ''AI(4-20mA)
+                                Case gCstCodeFuSlotTypeAI_4_20  ''AI(4-20mA)
 
-                                ''アナログ
-                                If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalog4_20mA Then intFlag = 1
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalog4_20mA Then intFlag = 1
 
-                                ''バルブ
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then intFlag = 1 ''AI(4-20mA) -> DO
-                                If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then intFlag = 1 ''AI(4-20mA) -> AO
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then intFlag = 1 ''AI(4-20mA) -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then intFlag = 1 ''AI(4-20mA) -> AO
 
-                            Case gCstCodeFuSlotTypeAI_K  ''AI(K)
+                                Case gCstCodeFuSlotTypeAI_K  ''AI(K)
 
-                                ''アナログ
-                                If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalogK Then intFlag = 1
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalogK Then intFlag = 1
 
-                        End Select
+                            End Select
 
-                        If intFlag = 0 Then
-                            mintEventCancelFlag = 0
-                            Return 1 ''スロット種別に合わないCH
-                        End If
+                            If intFlag = 0 Then
+                                mintEventCancelFlag = 0
+                                Return 1 ''スロット種別に合わないCH
+                            End If
 
 
-                        'Ver2.0.2.4 複数Pin使用CHだが基板MAXを超えるならエラー(戻り値2)
-                        Dim intHanPin As Integer = 0
-                        Dim intHanMax As Integer = 0
-                        '>>>基板MAX取得
-                        Select Case mTerminalData.TypeCode
-                            Case gCstCodeFuSlotTypeDO, gCstCodeFuSlotTypeDI     'DO, DI
-                                intHanMax = gCstFuSlotMaxDO
-                            Case gCstCodeFuSlotTypeAO                           'AO
-                                intHanMax = gCstFuSlotMaxAO
-                            Case gCstCodeFuSlotTypeAI_2                         '2線式
-                                intHanMax = gCstFuSlotMaxAI_2Line
-                            Case gCstCodeFuSlotTypeAI_3                         '3線式(3行毎)
-                                intHanMax = gCstFuSlotMaxAI_3Line * 3
-                            Case gCstCodeFuSlotTypeAI_1_5, gCstCodeFuSlotTypeAI_K   '1-5V, K
-                                intHanMax = gCstFuSlotMaxAI_1_5
-                            Case gCstCodeFuSlotTypeAI_4_20                      '4-20mA
-                                intHanMax = gCstFuSlotMaxAI_4_20
-                        End Select
-                        '>>>PIN数取得 該当外は初期値のまま＝０となる
-                        Select Case .udtChCommon.shtChType
-                            Case gCstCodeChTypeMotor        'モーター
-                                If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
-                                    'DI
-                                    intHanPin = .udtChCommon.shtPinNo
-                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
-                                    'DO
-                                    intHanPin = .MotorPinNo
-                                End If
-                            Case gCstCodeChTypeValve        'バルブ
-                                If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
-                                    'DI
-                                    intHanPin = .udtChCommon.shtPinNo
-                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_1_5 Or _
+                            'Ver2.0.2.4 複数Pin使用CHだが基板MAXを超えるならエラー(戻り値2)
+                            Dim intHanPin As Integer = 0
+                            Dim intHanMax As Integer = 0
+                            '>>>基板MAX取得
+                            Select Case mTerminalData.TypeCode
+                                Case gCstCodeFuSlotTypeDO, gCstCodeFuSlotTypeDI     'DO, DI
+                                    intHanMax = gCstFuSlotMaxDO
+                                Case gCstCodeFuSlotTypeAO                           'AO
+                                    intHanMax = gCstFuSlotMaxAO
+                                Case gCstCodeFuSlotTypeAI_2                         '2線式
+                                    intHanMax = gCstFuSlotMaxAI_2Line
+                                Case gCstCodeFuSlotTypeAI_3                         '3線式(3行毎)
+                                    intHanMax = gCstFuSlotMaxAI_3Line * 3
+                                Case gCstCodeFuSlotTypeAI_1_5, gCstCodeFuSlotTypeAI_K   '1-5V, K
+                                    intHanMax = gCstFuSlotMaxAI_1_5
+                                Case gCstCodeFuSlotTypeAI_4_20                      '4-20mA
+                                    intHanMax = gCstFuSlotMaxAI_4_20
+                            End Select
+                            '>>>PIN数取得 該当外は初期値のまま＝０となる
+                            Select Case .udtChCommon.shtChType
+                                Case gCstCodeChTypeMotor        'モーター
+                                    If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
+                                        'DI
+                                        intHanPin = .udtChCommon.shtPinNo
+                                    ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                        'DO
+                                        intHanPin = .MotorPinNo
+                                    End If
+                                Case gCstCodeChTypeValve        'バルブ
+                                    If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
+                                        'DI
+                                        intHanPin = .udtChCommon.shtPinNo
+                                    ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_1_5 Or
                                        mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_4_20 Then
-                                    'AI
-                                    intHanPin = .udtChCommon.shtPinNo
-                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
-                                    'DO
-                                    If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or _
+                                        'AI
+                                        intHanPin = .udtChCommon.shtPinNo
+                                    ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                        'DO
+                                        If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
                                        .udtChCommon.shtData = gCstCodeChDataTypeValveDO Then
-                                        intHanPin = .ValveDiDoPinNo
-                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
+                                            intHanPin = .ValveDiDoPinNo
+                                        ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
                                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
-                                        intHanPin = .ValveAiDoPinNo
+                                            intHanPin = .ValveAiDoPinNo
+                                        End If
+                                    ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAO Then
+                                        'AO
+                                        intHanPin = .ValveAiAoPinNo
                                     End If
-                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAO Then
-                                    'AO
-                                    intHanPin = .ValveAiAoPinNo
-                                End If
-                            Case gCstCodeChTypeComposite    'コンポジット
-                                intHanPin = .udtChCommon.shtPinNo
-                        End Select
-                        '>>>判定
-                        '指定行+(PIN数-1) > MAX行-1 ならエラー
-                        If hRow + (intHanPin - 1) > intHanMax - 1 Then
-                            mintEventCancelFlag = 0
-                            Return 2
-                        End If
-
-
-                        grdTerminal(0, hRow).Value = .udtChCommon.shtChType
-                        grdTerminal(1, hRow).Value = .udtChCommon.shtSysno
-                        grdTerminal(2, hRow).Value = gGet2Byte(.udtChCommon.shtChno).ToString("0000")
-                        grdTerminal(3, hRow).Value = .udtChCommon.strChitem
-                        grdTerminal(4, hRow).Value = "" : grdTerminal(5, hRow).Value = "" : grdTerminal(6, hRow).Value = "" : grdTerminal(7, hRow).Value = ""
-
-                        ''<Status> <DataType> ------------------------------------------------------
-                        If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then        ''アナログ -------------------------
-
-                            If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
-                                Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
-                                cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
-                                grdTerminal(4, hRow).Value = cmbStatus.Text
-                            Else
-                                grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
+                                Case gCstCodeChTypeComposite    'コンポジット
+                                    intHanPin = .udtChCommon.shtPinNo
+                            End Select
+                            '>>>判定
+                            '指定行+(PIN数-1) > MAX行-1 ならエラー
+                            If hRow + (intHanPin - 1) > intHanMax - 1 Then
+                                mintEventCancelFlag = 0
+                                Return 2
                             End If
 
-                            Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeAnalog)
-                            cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
-                            grdTerminal(7, hRow).Value = cmbDataType.Text
 
-                        ElseIf .udtChCommon.shtChType = gCstCodeChTypeDigital Then    ''デジタル -------------------------
+                            grdTerminal(0, hRow).Value = .udtChCommon.shtChType
+                            grdTerminal(1, hRow).Value = .udtChCommon.shtSysno
+                            grdTerminal(2, hRow).Value = gGet2Byte(.udtChCommon.shtChno).ToString("0000")
+                            grdTerminal(3, hRow).Value = .udtChCommon.strChitem
+                            grdTerminal(4, hRow).Value = "" : grdTerminal(5, hRow).Value = "" : grdTerminal(6, hRow).Value = "" : grdTerminal(7, hRow).Value = ""
 
-                            If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
-                                Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusDigital)
-                                cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
-                                grdTerminal(4, hRow).Value = cmbStatus.Text
-                            Else
-                                strValue = mGetString(.udtChCommon.strStatus)     ''特殊コード対応
-                                'Ver2.0.7.L
-                                'If strValue.Length > 8 Then
-                                If LenB(strValue) > 8 Then
+                            ''<Status> <DataType> ------------------------------------------------------
+                            If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then        ''アナログ -------------------------
+
+                                If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                                    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
+                                    grdTerminal(4, hRow).Value = cmbStatus.Text
+                                Else
+                                    grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
+                                End If
+
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeAnalog)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
+
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeDigital Then    ''デジタル -------------------------
+
+                                If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusDigital)
+                                    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
+                                    grdTerminal(4, hRow).Value = cmbStatus.Text
+                                Else
+                                    strValue = mGetString(.udtChCommon.strStatus)     ''特殊コード対応
                                     'Ver2.0.7.L
-                                    'grdTerminal(4, hRow).Value = strValue.Substring(0, 8).Trim & "/" & strValue.Substring(8).Trim
-                                    grdTerminal(4, hRow).Value = MidB(strValue, 0, 8).Trim & "/" & MidB(strValue, 8).Trim
-                                Else
-                                    grdTerminal(4, hRow).Value = Trim(strValue)
-                                End If
-                            End If
-
-                            Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeDigital)
-                            cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
-                            grdTerminal(7, hRow).Value = cmbDataType.Text
-
-                            ''延長警報盤
-                            If .udtChCommon.shtData.ToString = gCstCodeChDataTypeDigitalExt Then
-                                cmbFunction.SelectedValue = .udtChCommon.shtEccFunc.ToString
-                                grdTerminal(3, hRow).Value = cmbFunction.Text
-
-                                grdTerminal(0, hRow).Value = 10  ''延長警報盤　SET
-
-                                ''非表示エリアに グループ番号, 行番号, Remark をSET
-                                grdTerminal(18, hRow).Value = .udtChCommon.shtGroupNo.ToString("00") & ","
-                                grdTerminal(18, hRow).Value += .udtChCommon.shtDispPos.ToString("000") & ","
-                                grdTerminal(18, hRow).Value += .udtChCommon.strRemark
-                            End If
-
-                        ElseIf .udtChCommon.shtChType = gCstCodeChTypeMotor Then    ''モーター --------------------------
-
-                            ''Data Type
-                            Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeMotor)
-                            cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
-                            grdTerminal(7, hRow).Value = cmbDataType.Text
-
-                            ''Status
-                            Dim strwk(7) As String
-                            Dim strbp(7) As String
-
-                            Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusMotor)
-
-                            If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
-                                ''DI
-                                cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString   ''入力ステータス
-                                intPinNo = .udtChCommon.shtPinNo                            ''計測点個数
-
-                                If cmbStatus.SelectedValue = gCstCodeChManualInputStatus Then
-                                    grdTerminal(4, hRow).Value = .udtChCommon.strStatus  ''入力ステータス名称(手入力)
-                                Else
-                                    ''データ種別、ステータス種別により状態が変化する
-                                    If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorManRun And _
-                                       cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorManRunK Then 'Ver2.0.0.2 モーター種別増加 JをKへ
-                                        strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
-
-                                        'Ver2.0.0.2 モーター種別増加 START
-                                    ElseIf cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorRManRun And _
-                                       cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorRManRunJ Then
-                                        strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
-                                        'Ver2.0.0.2 モーター種別増加 END
-
-                                    ElseIf cmbDataType.SelectedValue = gCstCodeChDataTypeMotorDevice Or cmbDataType.SelectedValue = gCstCodeChDataTypeMotorRDevice Then   'Ver2.0.0.2 モーター種別増加 R Device ADD
-                                        ''データ種別がDevice Operationの場合、入力側の表示ステータスは固定で"RUN/STOP"にする
-                                        ''.status(入力側ステータス種別コード)には、0を設定
-                                        ' 2013.07.22 MO表示変更  K.Fujimoto
-                                        'strwk(0) = "RUN/STOP"
-                                        strwk(0) = "RUN"
+                                    'If strValue.Length > 8 Then
+                                    If LenB(strValue) > 8 Then
+                                        'Ver2.0.7.L
+                                        'grdTerminal(4, hRow).Value = strValue.Substring(0, 8).Trim & "/" & strValue.Substring(8).Trim
+                                        grdTerminal(4, hRow).Value = MidB(strValue, 0, 8).Trim & "/" & MidB(strValue, 8).Trim
                                     Else
-                                        strwk = mMotorStatus2(cmbStatus.SelectedIndex).ToString.Split("_")
+                                        grdTerminal(4, hRow).Value = Trim(strValue)
+                                    End If
+                                End If
+
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeDigital)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
+
+                                ''延長警報盤
+                                If .udtChCommon.shtData.ToString = gCstCodeChDataTypeDigitalExt Then
+                                    cmbFunction.SelectedValue = .udtChCommon.shtEccFunc.ToString
+                                    grdTerminal(3, hRow).Value = cmbFunction.Text
+
+                                    grdTerminal(0, hRow).Value = 10  ''延長警報盤　SET
+
+                                    ''非表示エリアに グループ番号, 行番号, Remark をSET
+                                    grdTerminal(18, hRow).Value = .udtChCommon.shtGroupNo.ToString("00") & ","
+                                    grdTerminal(18, hRow).Value += .udtChCommon.shtDispPos.ToString("000") & ","
+                                    grdTerminal(18, hRow).Value += .udtChCommon.strRemark
+                                End If
+
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeMotor Then    ''モーター --------------------------
+
+                                ''Data Type
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeMotor)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
+
+                                ''Status
+                                Dim strwk(7) As String
+                                Dim strbp(7) As String
+
+                                Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusMotor)
+
+                                If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
+                                    ''DI
+                                    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString   ''入力ステータス
+                                    intPinNo = .udtChCommon.shtPinNo                            ''計測点個数
+
+                                    If cmbStatus.SelectedValue = gCstCodeChManualInputStatus Then
+                                        grdTerminal(4, hRow).Value = .udtChCommon.strStatus  ''入力ステータス名称(手入力)
+                                    Else
+                                        ''データ種別、ステータス種別により状態が変化する
+                                        If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorManRun And
+                                       cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorManRunK Then 'Ver2.0.0.2 モーター種別増加 JをKへ
+                                            strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
+
+                                            'Ver2.0.0.2 モーター種別増加 START
+                                        ElseIf cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorRManRun And
+                                       cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorRManRunJ Then
+                                            strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                            'Ver2.0.0.2 モーター種別増加 END
+
+                                        ElseIf cmbDataType.SelectedValue = gCstCodeChDataTypeMotorDevice Or cmbDataType.SelectedValue = gCstCodeChDataTypeMotorRDevice Then   'Ver2.0.0.2 モーター種別増加 R Device ADD
+                                            ''データ種別がDevice Operationの場合、入力側の表示ステータスは固定で"RUN/STOP"にする
+                                            ''.status(入力側ステータス種別コード)には、0を設定
+                                            ' 2013.07.22 MO表示変更  K.Fujimoto
+                                            'strwk(0) = "RUN/STOP"
+                                            strwk(0) = "RUN"
+                                        Else
+                                            strwk = mMotorStatus2(cmbStatus.SelectedIndex).ToString.Split("_")
+                                        End If
+
+                                        grdTerminal(4, hRow).Value = strwk(0)
                                     End If
 
-                                    grdTerminal(4, hRow).Value = strwk(0)
-                                End If
+                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                    ''DO
 
-                            ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
-                                ''DO
-
-                                ''ステータス種別コード=0 <-- Device Statsuの場合ステータスは固定で"STOP/RUN"とする
-                                If .udtChCommon.shtStatus = 0 Then
-                                    strwk(0) = "RUN"    ' 実際ここは通らないが、「STOP/RUN」→「RUN」に変更    2013.08.07 K.Fujimoto
-                                Else
-                                    ''入力ステータスのビット位置から出力ステータスの格納インデックスをGETする
-                                    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString   ''入力ステータス
-                                    If cmbStatus.SelectedValue = gCstCodeChManualInputStatus Then
-                                        '手入力のステータスの場合、計測点個数は1
-                                        strwk(0) = gGetString(.MotorOutStatus1)
+                                    ''ステータス種別コード=0 <-- Device Statsuの場合ステータスは固定で"STOP/RUN"とする
+                                    If .udtChCommon.shtStatus = 0 Then
+                                        strwk(0) = "RUN"    ' 実際ここは通らないが、「STOP/RUN」→「RUN」に変更    2013.08.07 K.Fujimoto
                                     Else
-                                        If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorManRun And _
-                                           cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorManRunK Then     'Ver2.0.0.2 モーター種別増加 JをKへ
-                                            strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
-                                            strbp = mMotorBitPos1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                        ''入力ステータスのビット位置から出力ステータスの格納インデックスをGETする
+                                        cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString   ''入力ステータス
+                                        If cmbStatus.SelectedValue = gCstCodeChManualInputStatus Then
+                                            '手入力のステータスの場合、計測点個数は1
+                                            strwk(0) = gGetString(.MotorOutStatus1)
                                         Else
-                                            'Ver2.0.0.2 モーター種別増加 Rの処理を追加
-                                            If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorRManRun And _
-                                                cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorRManRunK Then
-                                                '正常Rは正常ステータス扱い
+                                            If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorManRun And
+                                           cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorManRunK Then     'Ver2.0.0.2 モーター種別増加 JをKへ
                                                 strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
                                                 strbp = mMotorBitPos1(cmbStatus.SelectedIndex).ToString.Split("_")
                                             Else
-                                                strwk = mMotorStatus2(cmbStatus.SelectedIndex).ToString.Split("_")
-                                                strbp = mMotorBitPos2(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                'Ver2.0.0.2 モーター種別増加 Rの処理を追加
+                                                If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorRManRun And
+                                                cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorRManRunK Then
+                                                    '正常Rは正常ステータス扱い
+                                                    strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                    strbp = mMotorBitPos1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                Else
+                                                    strwk = mMotorStatus2(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                    strbp = mMotorBitPos2(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                End If
                                             End If
                                         End If
                                     End If
+
+                                    Dim wkMotorStatus(7) As String
+                                    wkMotorStatus(0) = gGetString(.MotorOutStatus1) : wkMotorStatus(1) = gGetString(.MotorOutStatus2)
+                                    wkMotorStatus(2) = gGetString(.MotorOutStatus3) : wkMotorStatus(3) = gGetString(.MotorOutStatus4)
+                                    wkMotorStatus(4) = gGetString(.MotorOutStatus5) : wkMotorStatus(5) = gGetString(.MotorOutStatus6)
+                                    wkMotorStatus(6) = gGetString(.MotorOutStatus7) : wkMotorStatus(7) = gGetString(.MotorOutStatus8)
+
+                                    If strbp(0) <> "" Then strwk(0) = wkMotorStatus(strbp(0))
+                                    If strbp(1) <> "" Then strwk(1) = wkMotorStatus(strbp(1))
+                                    If strbp(2) <> "" Then strwk(2) = wkMotorStatus(strbp(2))
+                                    If strbp(3) <> "" Then strwk(3) = wkMotorStatus(strbp(3))
+                                    If strbp(4) <> "" Then strwk(4) = wkMotorStatus(strbp(4))
+
+                                    grdTerminal(4, hRow).Value = strwk(0)
+
+                                    intPinNo = .MotorPinNo                  ''計測点個数
+
                                 End If
 
-                                Dim wkMotorStatus(7) As String
-                                wkMotorStatus(0) = gGetString(.MotorOutStatus1) : wkMotorStatus(1) = gGetString(.MotorOutStatus2)
-                                wkMotorStatus(2) = gGetString(.MotorOutStatus3) : wkMotorStatus(3) = gGetString(.MotorOutStatus4)
-                                wkMotorStatus(4) = gGetString(.MotorOutStatus5) : wkMotorStatus(5) = gGetString(.MotorOutStatus6)
-                                wkMotorStatus(6) = gGetString(.MotorOutStatus7) : wkMotorStatus(7) = gGetString(.MotorOutStatus8)
+                                ''連続するPINにも設定する
+                                For ii As Integer = 1 To intPinNo - 1
+                                    For col As Integer = 0 To 7
 
-                                If strbp(0) <> "" Then strwk(0) = wkMotorStatus(strbp(0))
-                                If strbp(1) <> "" Then strwk(1) = wkMotorStatus(strbp(1))
-                                If strbp(2) <> "" Then strwk(2) = wkMotorStatus(strbp(2))
-                                If strbp(3) <> "" Then strwk(3) = wkMotorStatus(strbp(3))
-                                If strbp(4) <> "" Then strwk(4) = wkMotorStatus(strbp(4))
+                                        If col = 4 Then  ''Status
+                                            grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                        Else
+                                            grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                        End If
 
-                                grdTerminal(4, hRow).Value = strwk(0)
+                                    Next
+                                Next
 
-                                intPinNo = .MotorPinNo                  ''計測点個数
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then    ''バルブ ----------------------------
+                                Dim strwk(7) As String
 
-                            End If
+                                If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
+                                    ''DI
+                                    intPinNo = .udtChCommon.shtPinNo        ''計測点個数
 
-                            ''連続するPINにも設定する
-                            For ii As Integer = 1 To intPinNo - 1
-                                For col As Integer = 0 To 7
+                                    ''コンポジット設定テーブルよりステータス情報GET
+                                    Dim intIndex As Integer = .ValveCompositeTableIndex  ''コンポジットテーブルインデックス
+                                    If intIndex > 0 Then
+                                        If gudt.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
+                                            For ii As Integer = 0 To 7
+                                                strwk(ii) = gudt.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
+                                            Next
+                                        End If
+                                    End If
+                                    grdTerminal(4, hRow).Value = strwk(0)
 
-                                    If col = 4 Then  ''Status
-                                        grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                    ''入力ステータス
+                                    'Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusDigital)
+
+                                    'If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                    '    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
+                                    '    grdTerminal(4, hRow).Value = cmbStatus.Text
+                                    'Else
+                                    '    grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
+                                    'End If
+
+                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_1_5 Or
+                                   mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_4_20 Then
+                                    ''AI
+                                    intPinNo = .udtChCommon.shtPinNo        ''計測点個数
+
+                                    ''入力ステータス
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+
+                                    If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                        cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
+                                        grdTerminal(4, hRow).Value = cmbStatus.Text
                                     Else
-                                        grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                        grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
                                     End If
 
-                                Next
-                            Next
+                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                    ''DO
 
-                        ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then    ''バルブ ----------------------------
-                            Dim strwk(7) As String
+                                    If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
+                                   .udtChCommon.shtData = gCstCodeChDataTypeValveDO Then
 
-                            If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
-                                ''DI
-                                intPinNo = .udtChCommon.shtPinNo        ''計測点個数
+                                        intPinNo = .ValveDiDoPinNo  ''計測点個数
+
+                                        ''出力ステータス
+                                        strwk(0) = gGetString(.ValveDiDoOutStatus1) : strwk(1) = gGetString(.ValveDiDoOutStatus2)
+                                        strwk(2) = gGetString(.ValveDiDoOutStatus3) : strwk(3) = gGetString(.ValveDiDoOutStatus4)
+                                        strwk(4) = gGetString(.ValveDiDoOutStatus5) : strwk(5) = gGetString(.ValveDiDoOutStatus6)
+                                        strwk(6) = gGetString(.ValveDiDoOutStatus7) : strwk(7) = gGetString(.ValveDiDoOutStatus8)
+                                        grdTerminal(4, hRow).Value = strwk(0)
+
+                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+                                        ''計測点個数
+                                        intPinNo = .ValveAiDoPinNo
+
+                                        ''出力ステータス
+                                        strwk(0) = gGetString(.ValveAiDoOutStatus1) : strwk(1) = gGetString(.ValveAiDoOutStatus2)
+                                        strwk(2) = gGetString(.ValveAiDoOutStatus3) : strwk(3) = gGetString(.ValveAiDoOutStatus4)
+                                        strwk(4) = gGetString(.ValveAiDoOutStatus5) : strwk(5) = gGetString(.ValveAiDoOutStatus6)
+                                        strwk(6) = gGetString(.ValveAiDoOutStatus7) : strwk(7) = gGetString(.ValveAiDoOutStatus8)
+                                        grdTerminal(4, hRow).Value = strwk(0)
+                                    End If
+
+                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAO Then
+                                    ''AO
+                                    intPinNo = .ValveAiAoPinNo  ''計測点個数
+
+                                    ''出力ステータス
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+
+                                    If .ValveAiAoOutStatus <> gCstCodeChManualInputStatus Then
+                                        cmbStatus.SelectedValue = .ValveAiAoOutStatus
+                                        grdTerminal(4, hRow).Value = cmbStatus.Text
+                                    Else
+                                        grdTerminal(4, hRow).Value = gGetString(.ValveAiAoOutStatus1)     ''特殊コード対応
+                                    End If
+
+                                End If
+
+                                ''Data Type
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeValve)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
+
+                                ''Range
+                                If .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                               .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+
+                                    intDecimalP = .ValveAiDoDecimalPosition     ''Decimal Position
+                                    strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
+
+                                    dblLowValue = .ValveAiDoRangeLow / (10 ^ intDecimalP)
+                                    strValue = dblLowValue.ToString(strDecimalFormat)           ''Range  Low
+
+                                    dblHiValue = .ValveAiDoRangeHigh / (10 ^ intDecimalP)
+                                    strValue += " - " & dblHiValue.ToString(strDecimalFormat)   ''Range Hi
+
+                                    grdTerminal(5, hRow).Value = strValue    ''Range Type
+
+                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                   .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
+                                   .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
+
+                                    intDecimalP = .ValveAiAoDecimalPosition     ''Decimal Position
+                                    strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
+
+                                    dblLowValue = .ValveAiAoRangeLow / (10 ^ intDecimalP)
+                                    strValue = dblLowValue.ToString(strDecimalFormat)           ''Range  Low
+
+                                    dblHiValue = .ValveAiAoRangeHigh / (10 ^ intDecimalP)
+                                    strValue += " - " & dblHiValue.ToString(strDecimalFormat)   ''Range Hi
+
+                                    grdTerminal(5, hRow).Value = strValue    ''Range Type
+                                End If
+
+                                ''連続するPINにも設定する
+                                If (.udtChCommon.shtData <> gCstCodeChDataTypeValveJacom) And
+                               (.udtChCommon.shtData <> gCstCodeChDataTypeValveJacom55) And
+                               (.udtChCommon.shtData <> gCstCodeChDataTypeValveExt) Then
+
+                                    For ii As Integer = 1 To intPinNo - 1
+                                        For col As Integer = 0 To 7
+
+                                            If col = 4 Then  ''Status
+
+                                                If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Or
+                                               mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                                    grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                                Else
+                                                    grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                                End If
+
+                                                'If mTerminalData.TypeCode <> gCstCodeFuSlotTypeDO Then
+                                                '    grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                                'Else
+                                                '    grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                                'End If
+                                            Else
+                                                grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                            End If
+
+                                        Next
+                                    Next
+                                End If
+
+                                ''延長警報盤
+                                If .udtChCommon.shtData.ToString = gCstCodeChDataTypeValveExt Then
+
+                                    cmbFunction.SelectedValue = .udtChCommon.shtEccFunc.ToString
+                                    grdTerminal(3, hRow).Value = cmbFunction.Text
+
+                                    grdTerminal(0, hRow).Value = mCstCodeFunction  ''延長警報盤　SET
+
+                                    ''出力ステータス
+                                    If .ValveDiDoStatus <> gCstCodeChManualInputStatus Then
+                                        cmbStatus.SelectedValue = .ValveDiDoStatus
+                                        grdTerminal(4, hRow).Value = cmbStatus.Text
+                                    Else
+                                        grdTerminal(4, hRow).Value = ""
+                                    End If
+
+                                    ''非表示エリアにグループ番号, 行番号, RemarkをSET
+                                    grdTerminal(18, hRow).Value = .udtChCommon.shtGroupNo.ToString("00") & ","
+                                    grdTerminal(18, hRow).Value += .udtChCommon.shtDispPos.ToString("000") & ","
+                                    grdTerminal(18, hRow).Value += .udtChCommon.strRemark
+                                End If
+
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeComposite Then    ''コンポジット ----------------------
+
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeComposite)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
 
                                 ''コンポジット設定テーブルよりステータス情報GET
-                                Dim intIndex As Integer = .ValveCompositeTableIndex  ''コンポジットテーブルインデックス
+                                Dim strwk(7) As String
+                                Dim intIndex As Integer = .CompositeTableIndex  ''コンポジットテーブルインデックス
                                 If intIndex > 0 Then
-                                    If gudt.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
+                                    If gudt.SetChComposite.udtComposite(intIndex - 1).shtChid = hChNo Then
                                         For ii As Integer = 0 To 7
                                             strwk(ii) = gudt.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
                                         Next
@@ -2406,271 +2989,721 @@
                                 End If
                                 grdTerminal(4, hRow).Value = strwk(0)
 
-                                ''入力ステータス
-                                'Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusDigital)
-
-                                'If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
-                                '    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
-                                '    grdTerminal(4, hRow).Value = cmbStatus.Text
-                                'Else
-                                '    grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
-                                'End If
-
-                            ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_1_5 Or _
-                                   mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_4_20 Then
-                                ''AI
+                                ''連続するPINにも設定する
                                 intPinNo = .udtChCommon.shtPinNo        ''計測点個数
+                                For ii As Integer = 1 To intPinNo - 1
+                                    For col As Integer = 0 To 9
+                                        If col = 4 Then  ''Status
+                                            grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                        Else
+                                            grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                        End If
+                                    Next
+                                Next
 
-                                ''入力ステータス
-                                Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypePulse Then    ''パルス ----------------------------
 
                                 If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusPulse)
                                     cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
                                     grdTerminal(4, hRow).Value = cmbStatus.Text
                                 Else
                                     grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
                                 End If
 
-                            ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
-                                ''DO
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypePulse)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
 
-                                If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or _
-                                   .udtChCommon.shtData = gCstCodeChDataTypeValveDO Then
+                            End If
 
-                                    intPinNo = .ValveDiDoPinNo  ''計測点個数
+                            ''<Range> --------------------------------------------------------------------
+                            If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then        ''アナログ
 
-                                    ''出力ステータス
-                                    strwk(0) = gGetString(.ValveDiDoOutStatus1) : strwk(1) = gGetString(.ValveDiDoOutStatus2)
-                                    strwk(2) = gGetString(.ValveDiDoOutStatus3) : strwk(3) = gGetString(.ValveDiDoOutStatus4)
-                                    strwk(4) = gGetString(.ValveDiDoOutStatus5) : strwk(5) = gGetString(.ValveDiDoOutStatus6)
-                                    strwk(6) = gGetString(.ValveDiDoOutStatus7) : strwk(7) = gGetString(.ValveDiDoOutStatus8)
-                                    grdTerminal(4, hRow).Value = strwk(0)
+                                intDecimalP = .AnalogDecimalPosition     ''Decimal Position
+                                strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
 
-                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
-                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
-                                    ''計測点個数
-                                    intPinNo = .ValveAiDoPinNo
+                                If .udtChCommon.shtData >= gCstCodeChDataTypeAnalog2Pt And
+                               .udtChCommon.shtData <= gCstCodeChDataTypeAnalog3Jpt Then
 
-                                    ''出力ステータス
-                                    strwk(0) = gGetString(.ValveAiDoOutStatus1) : strwk(1) = gGetString(.ValveAiDoOutStatus2)
-                                    strwk(2) = gGetString(.ValveAiDoOutStatus3) : strwk(3) = gGetString(.ValveAiDoOutStatus4)
-                                    strwk(4) = gGetString(.ValveAiDoOutStatus5) : strwk(5) = gGetString(.ValveAiDoOutStatus6)
-                                    strwk(6) = gGetString(.ValveAiDoOutStatus7) : strwk(7) = gGetString(.ValveAiDoOutStatus8)
-                                    grdTerminal(4, hRow).Value = strwk(0)
+                                    ''データ種別コード　2,3線式
+                                    dblValue = .AnalogRangeLow / (10 ^ intDecimalP)
+                                    strValue = dblValue.ToString(strDecimalFormat)            ''Range Type 上位 Low
+
+                                    dblValue = .AnalogRangeHigh / (10 ^ intDecimalP)
+                                    strValue += " - " & dblValue.ToString(strDecimalFormat)   ''Range Type 上位 Low　+　下位 High
+
+                                    grdTerminal(5, hRow).Value = strValue   ''Range Type("999 - 999")
+
+                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeAnalogK _
+                                Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog1_5v _
+                                Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog4_20mA Then
+
+                                    ''データ種別コード　K, 1-5 V, 4-20 mA
+                                    dblValue = .AnalogRangeLow / (10 ^ intDecimalP)     ''Range  Low
+                                    strValue = dblValue.ToString(strDecimalFormat)
+
+                                    dblValue = .AnalogRangeHigh / (10 ^ intDecimalP)    ''Range Hi
+                                    strValue += " - " & dblValue.ToString(strDecimalFormat)
+
+                                    grdTerminal(5, hRow).Value = strValue   ''Range Type("999 - 999")
+
+                                End If
+                            End If
+
+                            ''<Unit> --------------------------------------------------------------------
+                            If (.udtChCommon.shtChType = gCstCodeChTypeAnalog) _
+                        Or (.udtChCommon.shtChType = gCstCodeChTypePulse) _
+                        Or (.udtChCommon.shtChType = gCstCodeChTypeValve And
+                           (.udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Or
+                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
+                            .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20)) Then    ''アナログ/パルス/バルブ(A)
+
+                                If .udtChCommon.shtUnit <> gCstCodeChManualInputUnit Then
+                                    cmbUnit.SelectedValue = .udtChCommon.shtUnit.ToString
+                                    grdTerminal(6, hRow).Value = cmbUnit.Text
+                                Else
+                                    grdTerminal(6, hRow).Value = gGetString(.udtChCommon.strUnit)     ''特殊コード対応
                                 End If
 
-                            ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAO Then
-                                ''AO
-                                intPinNo = .ValveAiAoPinNo  ''計測点個数
+                            End If
 
-                                ''出力ステータス
-                                Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                            mintEventCancelFlag = 0
 
-                                If .ValveAiAoOutStatus <> gCstCodeChManualInputStatus Then
-                                    cmbStatus.SelectedValue = .ValveAiAoOutStatus
+                            Return 0
+
+                        End If
+
+                    End With
+
+                Next
+
+            Else
+
+
+
+                'FCU2が選択されている場合
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(i)
+
+                        If gGet2Byte(.udtChCommon.shtChno) = hChNo Then    ''チャンネル番号が一致 ☆  
+
+                            ''スロット種別とチャンネルタイプが一致しているか？
+                            intFlag = 0
+                            Select Case intType
+
+                                Case gCstCodeFuSlotTypeDO  ''DO
+
+                                    ''モーター
+                                    If .udtChCommon.shtChType = gCstCodeChTypeMotor Then
+                                        'Ver2.0.0.2 モーター種別増加 R Device 追加
+                                        If .udtChCommon.shtData = gCstCodeChDataTypeMotorDevice Or .udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom Or .udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom55 Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeMotorRDevice Then
+                                            intFlag = 0
+                                        Else
+                                            intFlag = 1
+                                        End If
+                                    End If
+
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Then intFlag = 1 ''DI -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Then intFlag = 1 ''AI(1-5V)   -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then intFlag = 1 ''AI(4-20mA) -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDO Then intFlag = 1 ''Digital
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveExt Then intFlag = 1 ''Ext Device (EXT PANEL)
+
+                                Case gCstCodeFuSlotTypeDI  ''DI
+
+                                    ''デジタル
+                                    If .udtChCommon.shtChType = gCstCodeChTypeDigital And
+                                  (.udtChCommon.shtData = gCstCodeChDataTypeDigitalNC _
+                                Or .udtChCommon.shtData = gCstCodeChDataTypeDigitalNO _
+                                Or .udtChCommon.shtData = gCstCodeChDataTypeDigitalExt) Then intFlag = 1
+
+                                    ''モーター
+                                    If (.udtChCommon.shtChType = gCstCodeChTypeMotor And .udtChCommon.shtData <> gCstCodeChDataTypeMotorDeviceJacom) Or
+                                   (.udtChCommon.shtChType = gCstCodeChTypeMotor And .udtChCommon.shtData <> gCstCodeChDataTypeMotorDeviceJacom55) Then intFlag = 1
+
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Then intFlag = 1 ''DI -> DO
+
+                                    ''デジタルコンポジット
+                                    If .udtChCommon.shtChType = gCstCodeChTypeComposite Then intFlag = 1
+
+                                    ''パルス
+                                    If .udtChCommon.shtChType = gCstCodeChTypePulse Then intFlag = 1
+
+                                ''システム(デジタルの機器状態) 4-26
+                                'If .udtChCommon.shtChType = gCstCodeChTypeSystem Then intFlag = 1
+
+                                Case gCstCodeFuSlotTypeAO  ''AO
+
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Then intFlag = 1 ''AI(1-5V)   -> AO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then intFlag = 1 ''AI(4-20mA) -> AO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then intFlag = 1 ''Analog 4-20 mA
+
+                                Case gCstCodeFuSlotTypeAI_2  ''AI(2 Line)
+
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And (.udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt) Then intFlag = 1
+
+                                Case gCstCodeFuSlotTypeAI_3  ''AI(3 Line)
+
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And (.udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog3Jpt) Then intFlag = 1
+
+                                Case gCstCodeFuSlotTypeAI_1_5  ''AI(1-5V)
+
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalog1_5v Then intFlag = 1
+
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Then intFlag = 1 ''AI(1-5V)   -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Then intFlag = 1 ''AI(1-5V)   -> AO
+
+                                Case gCstCodeFuSlotTypeAI_4_20  ''AI(4-20mA)
+
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalog4_20mA Then intFlag = 1
+
+                                    ''バルブ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then intFlag = 1 ''AI(4-20mA) -> DO
+                                    If .udtChCommon.shtChType = gCstCodeChTypeValve And .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then intFlag = 1 ''AI(4-20mA) -> AO
+
+                                Case gCstCodeFuSlotTypeAI_K  ''AI(K)
+
+                                    ''アナログ
+                                    If .udtChCommon.shtChType = gCstCodeChTypeAnalog And .udtChCommon.shtData = gCstCodeChDataTypeAnalogK Then intFlag = 1
+
+                            End Select
+
+                            If intFlag = 0 Then
+                                mintEventCancelFlag = 0
+                                Return 1 ''スロット種別に合わないCH
+                            End If
+
+
+                            'Ver2.0.2.4 複数Pin使用CHだが基板MAXを超えるならエラー(戻り値2)
+                            Dim intHanPin As Integer = 0
+                            Dim intHanMax As Integer = 0
+                            '>>>基板MAX取得
+                            Select Case mTerminalData.TypeCode
+                                Case gCstCodeFuSlotTypeDO, gCstCodeFuSlotTypeDI     'DO, DI
+                                    intHanMax = gCstFuSlotMaxDO
+                                Case gCstCodeFuSlotTypeAO                           'AO
+                                    intHanMax = gCstFuSlotMaxAO
+                                Case gCstCodeFuSlotTypeAI_2                         '2線式
+                                    intHanMax = gCstFuSlotMaxAI_2Line
+                                Case gCstCodeFuSlotTypeAI_3                         '3線式(3行毎)
+                                    intHanMax = gCstFuSlotMaxAI_3Line * 3
+                                Case gCstCodeFuSlotTypeAI_1_5, gCstCodeFuSlotTypeAI_K   '1-5V, K
+                                    intHanMax = gCstFuSlotMaxAI_1_5
+                                Case gCstCodeFuSlotTypeAI_4_20                      '4-20mA
+                                    intHanMax = gCstFuSlotMaxAI_4_20
+                            End Select
+                            '>>>PIN数取得 該当外は初期値のまま＝０となる
+                            Select Case .udtChCommon.shtChType
+                                Case gCstCodeChTypeMotor        'モーター
+                                    If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
+                                        'DI
+                                        intHanPin = .udtChCommon.shtPinNo
+                                    ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                        'DO
+                                        intHanPin = .MotorPinNo
+                                    End If
+                                Case gCstCodeChTypeValve        'バルブ
+                                    If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
+                                        'DI
+                                        intHanPin = .udtChCommon.shtPinNo
+                                    ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_1_5 Or
+                                       mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_4_20 Then
+                                        'AI
+                                        intHanPin = .udtChCommon.shtPinNo
+                                    ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                        'DO
+                                        If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveDO Then
+                                            intHanPin = .ValveDiDoPinNo
+                                        ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                           .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+                                            intHanPin = .ValveAiDoPinNo
+                                        End If
+                                    ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAO Then
+                                        'AO
+                                        intHanPin = .ValveAiAoPinNo
+                                    End If
+                                Case gCstCodeChTypeComposite    'コンポジット
+                                    intHanPin = .udtChCommon.shtPinNo
+                            End Select
+                            '>>>判定
+                            '指定行+(PIN数-1) > MAX行-1 ならエラー
+                            If hRow + (intHanPin - 1) > intHanMax - 1 Then
+                                mintEventCancelFlag = 0
+                                Return 2
+                            End If
+
+
+                            grdTerminal(0, hRow).Value = .udtChCommon.shtChType
+                            grdTerminal(1, hRow).Value = .udtChCommon.shtSysno
+                            grdTerminal(2, hRow).Value = gGet2Byte(.udtChCommon.shtChno).ToString("0000")
+                            grdTerminal(3, hRow).Value = .udtChCommon.strChitem
+                            grdTerminal(4, hRow).Value = "" : grdTerminal(5, hRow).Value = "" : grdTerminal(6, hRow).Value = "" : grdTerminal(7, hRow).Value = ""
+
+                            ''<Status> <DataType> ------------------------------------------------------
+                            If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then        ''アナログ -------------------------
+
+                                If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                                    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
                                     grdTerminal(4, hRow).Value = cmbStatus.Text
                                 Else
-                                    grdTerminal(4, hRow).Value = gGetString(.ValveAiAoOutStatus1)     ''特殊コード対応
+                                    grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
                                 End If
 
-                            End If
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeAnalog)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
 
-                            ''Data Type
-                            Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeValve)
-                            cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
-                            grdTerminal(7, hRow).Value = cmbDataType.Text
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeDigital Then    ''デジタル -------------------------
 
-                            ''Range
-                            If .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
-                               .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+                                If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusDigital)
+                                    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
+                                    grdTerminal(4, hRow).Value = cmbStatus.Text
+                                Else
+                                    strValue = mGetString(.udtChCommon.strStatus)     ''特殊コード対応
+                                    'Ver2.0.7.L
+                                    'If strValue.Length > 8 Then
+                                    If LenB(strValue) > 8 Then
+                                        'Ver2.0.7.L
+                                        'grdTerminal(4, hRow).Value = strValue.Substring(0, 8).Trim & "/" & strValue.Substring(8).Trim
+                                        grdTerminal(4, hRow).Value = MidB(strValue, 0, 8).Trim & "/" & MidB(strValue, 8).Trim
+                                    Else
+                                        grdTerminal(4, hRow).Value = Trim(strValue)
+                                    End If
+                                End If
 
-                                intDecimalP = .ValveAiDoDecimalPosition     ''Decimal Position
-                                strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeDigital)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
 
-                                dblLowValue = .ValveAiDoRangeLow / (10 ^ intDecimalP)
-                                strValue = dblLowValue.ToString(strDecimalFormat)           ''Range  Low
+                                ''延長警報盤
+                                If .udtChCommon.shtData.ToString = gCstCodeChDataTypeDigitalExt Then
+                                    cmbFunction.SelectedValue = .udtChCommon.shtEccFunc.ToString
+                                    grdTerminal(3, hRow).Value = cmbFunction.Text
 
-                                dblHiValue = .ValveAiDoRangeHigh / (10 ^ intDecimalP)
-                                strValue += " - " & dblHiValue.ToString(strDecimalFormat)   ''Range Hi
+                                    grdTerminal(0, hRow).Value = 10  ''延長警報盤　SET
 
-                                grdTerminal(5, hRow).Value = strValue    ''Range Type
+                                    ''非表示エリアに グループ番号, 行番号, Remark をSET
+                                    grdTerminal(18, hRow).Value = .udtChCommon.shtGroupNo.ToString("00") & ","
+                                    grdTerminal(18, hRow).Value += .udtChCommon.shtDispPos.ToString("000") & ","
+                                    grdTerminal(18, hRow).Value += .udtChCommon.strRemark
+                                End If
 
-                            ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or _
-                                   .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or _
-                                   .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeMotor Then    ''モーター --------------------------
 
-                                intDecimalP = .ValveAiAoDecimalPosition     ''Decimal Position
-                                strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
+                                ''Data Type
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeMotor)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
 
-                                dblLowValue = .ValveAiAoRangeLow / (10 ^ intDecimalP)
-                                strValue = dblLowValue.ToString(strDecimalFormat)           ''Range  Low
+                                ''Status
+                                Dim strwk(7) As String
+                                Dim strbp(7) As String
 
-                                dblHiValue = .ValveAiAoRangeHigh / (10 ^ intDecimalP)
-                                strValue += " - " & dblHiValue.ToString(strDecimalFormat)   ''Range Hi
+                                Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusMotor)
 
-                                grdTerminal(5, hRow).Value = strValue    ''Range Type
-                            End If
+                                If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
+                                    ''DI
+                                    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString   ''入力ステータス
+                                    intPinNo = .udtChCommon.shtPinNo                            ''計測点個数
 
-                            ''連続するPINにも設定する
-                            If (.udtChCommon.shtData <> gCstCodeChDataTypeValveJacom) And _
-                               (.udtChCommon.shtData <> gCstCodeChDataTypeValveJacom55) And _
-                               (.udtChCommon.shtData <> gCstCodeChDataTypeValveExt) Then
+                                    If cmbStatus.SelectedValue = gCstCodeChManualInputStatus Then
+                                        grdTerminal(4, hRow).Value = .udtChCommon.strStatus  ''入力ステータス名称(手入力)
+                                    Else
+                                        ''データ種別、ステータス種別により状態が変化する
+                                        If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorManRun And
+                                       cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorManRunK Then 'Ver2.0.0.2 モーター種別増加 JをKへ
+                                            strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
 
+                                            'Ver2.0.0.2 モーター種別増加 START
+                                        ElseIf cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorRManRun And
+                                       cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorRManRunJ Then
+                                            strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                            'Ver2.0.0.2 モーター種別増加 END
+
+                                        ElseIf cmbDataType.SelectedValue = gCstCodeChDataTypeMotorDevice Or cmbDataType.SelectedValue = gCstCodeChDataTypeMotorRDevice Then   'Ver2.0.0.2 モーター種別増加 R Device ADD
+                                            ''データ種別がDevice Operationの場合、入力側の表示ステータスは固定で"RUN/STOP"にする
+                                            ''.status(入力側ステータス種別コード)には、0を設定
+                                            ' 2013.07.22 MO表示変更  K.Fujimoto
+                                            'strwk(0) = "RUN/STOP"
+                                            strwk(0) = "RUN"
+                                        Else
+                                            strwk = mMotorStatus2(cmbStatus.SelectedIndex).ToString.Split("_")
+                                        End If
+
+                                        grdTerminal(4, hRow).Value = strwk(0)
+                                    End If
+
+                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                    ''DO
+
+                                    ''ステータス種別コード=0 <-- Device Statsuの場合ステータスは固定で"STOP/RUN"とする
+                                    If .udtChCommon.shtStatus = 0 Then
+                                        strwk(0) = "RUN"    ' 実際ここは通らないが、「STOP/RUN」→「RUN」に変更    2013.08.07 K.Fujimoto
+                                    Else
+                                        ''入力ステータスのビット位置から出力ステータスの格納インデックスをGETする
+                                        cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString   ''入力ステータス
+                                        If cmbStatus.SelectedValue = gCstCodeChManualInputStatus Then
+                                            '手入力のステータスの場合、計測点個数は1
+                                            strwk(0) = gGetString(.MotorOutStatus1)
+                                        Else
+                                            If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorManRun And
+                                           cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorManRunK Then     'Ver2.0.0.2 モーター種別増加 JをKへ
+                                                strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                strbp = mMotorBitPos1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                            Else
+                                                'Ver2.0.0.2 モーター種別増加 Rの処理を追加
+                                                If cmbDataType.SelectedValue >= gCstCodeChDataTypeMotorRManRun And
+                                                cmbDataType.SelectedValue <= gCstCodeChDataTypeMotorRManRunK Then
+                                                    '正常Rは正常ステータス扱い
+                                                    strwk = mMotorStatus1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                    strbp = mMotorBitPos1(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                Else
+                                                    strwk = mMotorStatus2(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                    strbp = mMotorBitPos2(cmbStatus.SelectedIndex).ToString.Split("_")
+                                                End If
+                                            End If
+                                        End If
+                                    End If
+
+                                    Dim wkMotorStatus(7) As String
+                                    wkMotorStatus(0) = gGetString(.MotorOutStatus1) : wkMotorStatus(1) = gGetString(.MotorOutStatus2)
+                                    wkMotorStatus(2) = gGetString(.MotorOutStatus3) : wkMotorStatus(3) = gGetString(.MotorOutStatus4)
+                                    wkMotorStatus(4) = gGetString(.MotorOutStatus5) : wkMotorStatus(5) = gGetString(.MotorOutStatus6)
+                                    wkMotorStatus(6) = gGetString(.MotorOutStatus7) : wkMotorStatus(7) = gGetString(.MotorOutStatus8)
+
+                                    If strbp(0) <> "" Then strwk(0) = wkMotorStatus(strbp(0))
+                                    If strbp(1) <> "" Then strwk(1) = wkMotorStatus(strbp(1))
+                                    If strbp(2) <> "" Then strwk(2) = wkMotorStatus(strbp(2))
+                                    If strbp(3) <> "" Then strwk(3) = wkMotorStatus(strbp(3))
+                                    If strbp(4) <> "" Then strwk(4) = wkMotorStatus(strbp(4))
+
+                                    grdTerminal(4, hRow).Value = strwk(0)
+
+                                    intPinNo = .MotorPinNo                  ''計測点個数
+
+                                End If
+
+                                ''連続するPINにも設定する
                                 For ii As Integer = 1 To intPinNo - 1
                                     For col As Integer = 0 To 7
 
                                         If col = 4 Then  ''Status
-
-                                            If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Or _
-                                               mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
-                                                grdTerminal(col, hRow + ii).Value = strwk(ii)
-                                            Else
-                                                grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
-                                            End If
-
-                                            'If mTerminalData.TypeCode <> gCstCodeFuSlotTypeDO Then
-                                            '    grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
-                                            'Else
-                                            '    grdTerminal(col, hRow + ii).Value = strwk(ii)
-                                            'End If
+                                            grdTerminal(col, hRow + ii).Value = strwk(ii)
                                         Else
                                             grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
                                         End If
 
                                     Next
                                 Next
-                            End If
 
-                            ''延長警報盤
-                            If .udtChCommon.shtData.ToString = gCstCodeChDataTypeValveExt Then
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then    ''バルブ ----------------------------
+                                Dim strwk(7) As String
 
-                                cmbFunction.SelectedValue = .udtChCommon.shtEccFunc.ToString
-                                grdTerminal(3, hRow).Value = cmbFunction.Text
+                                If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Then
+                                    ''DI
+                                    intPinNo = .udtChCommon.shtPinNo        ''計測点個数
 
-                                grdTerminal(0, hRow).Value = mCstCodeFunction  ''延長警報盤　SET
+                                    ''コンポジット設定テーブルよりステータス情報GET
+                                    Dim intIndex As Integer = .ValveCompositeTableIndex  ''コンポジットテーブルインデックス
+                                    If intIndex > 0 Then
+                                        If gudt2.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
+                                            For ii As Integer = 0 To 7
+                                                strwk(ii) = gudt2.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
+                                            Next
+                                        End If
+                                    End If
+                                    grdTerminal(4, hRow).Value = strwk(0)
 
-                                ''出力ステータス
-                                If .ValveDiDoStatus <> gCstCodeChManualInputStatus Then
-                                    cmbStatus.SelectedValue = .ValveDiDoStatus
-                                    grdTerminal(4, hRow).Value = cmbStatus.Text
-                                Else
-                                    grdTerminal(4, hRow).Value = ""
+                                    ''入力ステータス
+                                    'Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusDigital)
+
+                                    'If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                    '    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
+                                    '    grdTerminal(4, hRow).Value = cmbStatus.Text
+                                    'Else
+                                    '    grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
+                                    'End If
+
+                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_1_5 Or
+                                   mTerminalData.TypeCode = gCstCodeFuSlotTypeAI_4_20 Then
+                                    ''AI
+                                    intPinNo = .udtChCommon.shtPinNo        ''計測点個数
+
+                                    ''入力ステータス
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+
+                                    If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                        cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
+                                        grdTerminal(4, hRow).Value = cmbStatus.Text
+                                    Else
+                                        grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
+                                    End If
+
+                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                    ''DO
+
+                                    If .udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
+                                   .udtChCommon.shtData = gCstCodeChDataTypeValveDO Then
+
+                                        intPinNo = .ValveDiDoPinNo  ''計測点個数
+
+                                        ''出力ステータス
+                                        strwk(0) = gGetString(.ValveDiDoOutStatus1) : strwk(1) = gGetString(.ValveDiDoOutStatus2)
+                                        strwk(2) = gGetString(.ValveDiDoOutStatus3) : strwk(3) = gGetString(.ValveDiDoOutStatus4)
+                                        strwk(4) = gGetString(.ValveDiDoOutStatus5) : strwk(5) = gGetString(.ValveDiDoOutStatus6)
+                                        strwk(6) = gGetString(.ValveDiDoOutStatus7) : strwk(7) = gGetString(.ValveDiDoOutStatus8)
+                                        grdTerminal(4, hRow).Value = strwk(0)
+
+                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+                                        ''計測点個数
+                                        intPinNo = .ValveAiDoPinNo
+
+                                        ''出力ステータス
+                                        strwk(0) = gGetString(.ValveAiDoOutStatus1) : strwk(1) = gGetString(.ValveAiDoOutStatus2)
+                                        strwk(2) = gGetString(.ValveAiDoOutStatus3) : strwk(3) = gGetString(.ValveAiDoOutStatus4)
+                                        strwk(4) = gGetString(.ValveAiDoOutStatus5) : strwk(5) = gGetString(.ValveAiDoOutStatus6)
+                                        strwk(6) = gGetString(.ValveAiDoOutStatus7) : strwk(7) = gGetString(.ValveAiDoOutStatus8)
+                                        grdTerminal(4, hRow).Value = strwk(0)
+                                    End If
+
+                                ElseIf mTerminalData.TypeCode = gCstCodeFuSlotTypeAO Then
+                                    ''AO
+                                    intPinNo = .ValveAiAoPinNo  ''計測点個数
+
+                                    ''出力ステータス
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+
+                                    If .ValveAiAoOutStatus <> gCstCodeChManualInputStatus Then
+                                        cmbStatus.SelectedValue = .ValveAiAoOutStatus
+                                        grdTerminal(4, hRow).Value = cmbStatus.Text
+                                    Else
+                                        grdTerminal(4, hRow).Value = gGetString(.ValveAiAoOutStatus1)     ''特殊コード対応
+                                    End If
+
                                 End If
 
-                                ''非表示エリアにグループ番号, 行番号, RemarkをSET
-                                grdTerminal(18, hRow).Value = .udtChCommon.shtGroupNo.ToString("00") & ","
-                                grdTerminal(18, hRow).Value += .udtChCommon.shtDispPos.ToString("000") & ","
-                                grdTerminal(18, hRow).Value += .udtChCommon.strRemark
-                            End If
+                                ''Data Type
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeValve)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
 
-                        ElseIf .udtChCommon.shtChType = gCstCodeChTypeComposite Then    ''コンポジット ----------------------
+                                ''Range
+                                If .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                               .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
 
-                            Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeComposite)
-                            cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
-                            grdTerminal(7, hRow).Value = cmbDataType.Text
+                                    intDecimalP = .ValveAiDoDecimalPosition     ''Decimal Position
+                                    strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
 
-                            ''コンポジット設定テーブルよりステータス情報GET
-                            Dim strwk(7) As String
-                            Dim intIndex As Integer = .CompositeTableIndex  ''コンポジットテーブルインデックス
-                            If intIndex > 0 Then
-                                If gudt.SetChComposite.udtComposite(intIndex - 1).shtChid = hChNo Then
-                                    For ii As Integer = 0 To 7
-                                        strwk(ii) = gudt.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
+                                    dblLowValue = .ValveAiDoRangeLow / (10 ^ intDecimalP)
+                                    strValue = dblLowValue.ToString(strDecimalFormat)           ''Range  Low
+
+                                    dblHiValue = .ValveAiDoRangeHigh / (10 ^ intDecimalP)
+                                    strValue += " - " & dblHiValue.ToString(strDecimalFormat)   ''Range Hi
+
+                                    grdTerminal(5, hRow).Value = strValue    ''Range Type
+
+                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                   .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
+                                   .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
+
+                                    intDecimalP = .ValveAiAoDecimalPosition     ''Decimal Position
+                                    strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
+
+                                    dblLowValue = .ValveAiAoRangeLow / (10 ^ intDecimalP)
+                                    strValue = dblLowValue.ToString(strDecimalFormat)           ''Range  Low
+
+                                    dblHiValue = .ValveAiAoRangeHigh / (10 ^ intDecimalP)
+                                    strValue += " - " & dblHiValue.ToString(strDecimalFormat)   ''Range Hi
+
+                                    grdTerminal(5, hRow).Value = strValue    ''Range Type
+                                End If
+
+                                ''連続するPINにも設定する
+                                If (.udtChCommon.shtData <> gCstCodeChDataTypeValveJacom) And
+                               (.udtChCommon.shtData <> gCstCodeChDataTypeValveJacom55) And
+                               (.udtChCommon.shtData <> gCstCodeChDataTypeValveExt) Then
+
+                                    For ii As Integer = 1 To intPinNo - 1
+                                        For col As Integer = 0 To 7
+
+                                            If col = 4 Then  ''Status
+
+                                                If mTerminalData.TypeCode = gCstCodeFuSlotTypeDI Or
+                                               mTerminalData.TypeCode = gCstCodeFuSlotTypeDO Then
+                                                    grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                                Else
+                                                    grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                                End If
+
+                                                'If mTerminalData.TypeCode <> gCstCodeFuSlotTypeDO Then
+                                                '    grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                                'Else
+                                                '    grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                                'End If
+                                            Else
+                                                grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                            End If
+
+                                        Next
                                     Next
                                 End If
-                            End If
-                            grdTerminal(4, hRow).Value = strwk(0)
 
-                            ''連続するPINにも設定する
-                            intPinNo = .udtChCommon.shtPinNo        ''計測点個数
-                            For ii As Integer = 1 To intPinNo - 1
-                                For col As Integer = 0 To 9
-                                    If col = 4 Then  ''Status
-                                        grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                ''延長警報盤
+                                If .udtChCommon.shtData.ToString = gCstCodeChDataTypeValveExt Then
+
+                                    cmbFunction.SelectedValue = .udtChCommon.shtEccFunc.ToString
+                                    grdTerminal(3, hRow).Value = cmbFunction.Text
+
+                                    grdTerminal(0, hRow).Value = mCstCodeFunction  ''延長警報盤　SET
+
+                                    ''出力ステータス
+                                    If .ValveDiDoStatus <> gCstCodeChManualInputStatus Then
+                                        cmbStatus.SelectedValue = .ValveDiDoStatus
+                                        grdTerminal(4, hRow).Value = cmbStatus.Text
                                     Else
-                                        grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                        grdTerminal(4, hRow).Value = ""
                                     End If
+
+                                    ''非表示エリアにグループ番号, 行番号, RemarkをSET
+                                    grdTerminal(18, hRow).Value = .udtChCommon.shtGroupNo.ToString("00") & ","
+                                    grdTerminal(18, hRow).Value += .udtChCommon.shtDispPos.ToString("000") & ","
+                                    grdTerminal(18, hRow).Value += .udtChCommon.strRemark
+                                End If
+
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeComposite Then    ''コンポジット ----------------------
+
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypeComposite)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
+
+                                ''コンポジット設定テーブルよりステータス情報GET
+                                Dim strwk(7) As String
+                                Dim intIndex As Integer = .CompositeTableIndex  ''コンポジットテーブルインデックス
+                                If intIndex > 0 Then
+                                    If gudt2.SetChComposite.udtComposite(intIndex - 1).shtChid = hChNo Then
+                                        For ii As Integer = 0 To 7
+                                            strwk(ii) = gudt2.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
+                                        Next
+                                    End If
+                                End If
+                                grdTerminal(4, hRow).Value = strwk(0)
+
+                                ''連続するPINにも設定する
+                                intPinNo = .udtChCommon.shtPinNo        ''計測点個数
+                                For ii As Integer = 1 To intPinNo - 1
+                                    For col As Integer = 0 To 9
+                                        If col = 4 Then  ''Status
+                                            grdTerminal(col, hRow + ii).Value = strwk(ii)
+                                        Else
+                                            grdTerminal(col, hRow + ii).Value = grdTerminal(col, hRow).Value
+                                        End If
+                                    Next
                                 Next
-                            Next
 
-                        ElseIf .udtChCommon.shtChType = gCstCodeChTypePulse Then    ''パルス ----------------------------
+                            ElseIf .udtChCommon.shtChType = gCstCodeChTypePulse Then    ''パルス ----------------------------
 
-                            If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
-                                Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusPulse)
-                                cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
-                                grdTerminal(4, hRow).Value = cmbStatus.Text
-                            Else
-                                grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
+                                If .udtChCommon.shtStatus <> gCstCodeChManualInputStatus Then
+                                    Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusPulse)
+                                    cmbStatus.SelectedValue = .udtChCommon.shtStatus.ToString
+                                    grdTerminal(4, hRow).Value = cmbStatus.Text
+                                Else
+                                    grdTerminal(4, hRow).Value = gGetString(.udtChCommon.strStatus)     ''特殊コード対応
+                                End If
+
+                                Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypePulse)
+                                cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
+                                grdTerminal(7, hRow).Value = cmbDataType.Text
+
                             End If
 
-                            Call gSetComboBox(cmbDataType, gEnmComboType.ctChListChannelListDataTypePulse)
-                            cmbDataType.SelectedValue = .udtChCommon.shtData.ToString
-                            grdTerminal(7, hRow).Value = cmbDataType.Text
+                            ''<Range> --------------------------------------------------------------------
+                            If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then        ''アナログ
 
-                        End If
+                                intDecimalP = .AnalogDecimalPosition     ''Decimal Position
+                                strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
 
-                        ''<Range> --------------------------------------------------------------------
-                        If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then        ''アナログ
-
-                            intDecimalP = .AnalogDecimalPosition     ''Decimal Position
-                            strDecimalFormat = "0.".PadRight(intDecimalP + 2, "0"c)
-
-                            If .udtChCommon.shtData >= gCstCodeChDataTypeAnalog2Pt And _
+                                If .udtChCommon.shtData >= gCstCodeChDataTypeAnalog2Pt And
                                .udtChCommon.shtData <= gCstCodeChDataTypeAnalog3Jpt Then
 
-                                ''データ種別コード　2,3線式
-                                dblValue = .AnalogRangeLow / (10 ^ intDecimalP)
-                                strValue = dblValue.ToString(strDecimalFormat)            ''Range Type 上位 Low
+                                    ''データ種別コード　2,3線式
+                                    dblValue = .AnalogRangeLow / (10 ^ intDecimalP)
+                                    strValue = dblValue.ToString(strDecimalFormat)            ''Range Type 上位 Low
 
-                                dblValue = .AnalogRangeHigh / (10 ^ intDecimalP)
-                                strValue += " - " & dblValue.ToString(strDecimalFormat)   ''Range Type 上位 Low　+　下位 High
+                                    dblValue = .AnalogRangeHigh / (10 ^ intDecimalP)
+                                    strValue += " - " & dblValue.ToString(strDecimalFormat)   ''Range Type 上位 Low　+　下位 High
 
-                                grdTerminal(5, hRow).Value = strValue   ''Range Type("999 - 999")
+                                    grdTerminal(5, hRow).Value = strValue   ''Range Type("999 - 999")
 
-                            ElseIf .udtChCommon.shtData = gCstCodeChDataTypeAnalogK _
+                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeAnalogK _
                                 Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog1_5v _
                                 Or .udtChCommon.shtData = gCstCodeChDataTypeAnalog4_20mA Then
 
-                                ''データ種別コード　K, 1-5 V, 4-20 mA
-                                dblValue = .AnalogRangeLow / (10 ^ intDecimalP)     ''Range  Low
-                                strValue = dblValue.ToString(strDecimalFormat)
+                                    ''データ種別コード　K, 1-5 V, 4-20 mA
+                                    dblValue = .AnalogRangeLow / (10 ^ intDecimalP)     ''Range  Low
+                                    strValue = dblValue.ToString(strDecimalFormat)
 
-                                dblValue = .AnalogRangeHigh / (10 ^ intDecimalP)    ''Range Hi
-                                strValue += " - " & dblValue.ToString(strDecimalFormat)
+                                    dblValue = .AnalogRangeHigh / (10 ^ intDecimalP)    ''Range Hi
+                                    strValue += " - " & dblValue.ToString(strDecimalFormat)
 
-                                grdTerminal(5, hRow).Value = strValue   ''Range Type("999 - 999")
+                                    grdTerminal(5, hRow).Value = strValue   ''Range Type("999 - 999")
 
+                                End If
                             End If
-                        End If
 
-                        ''<Unit> --------------------------------------------------------------------
-                        If (.udtChCommon.shtChType = gCstCodeChTypeAnalog) _
+                            ''<Unit> --------------------------------------------------------------------
+                            If (.udtChCommon.shtChType = gCstCodeChTypeAnalog) _
                         Or (.udtChCommon.shtChType = gCstCodeChTypePulse) _
-                        Or (.udtChCommon.shtChType = gCstCodeChTypeValve And _
-                           (.udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
-                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Or _
-                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or _
-                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or _
+                        Or (.udtChCommon.shtChType = gCstCodeChTypeValve And
+                           (.udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Or
+                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                            .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
                             .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20)) Then    ''アナログ/パルス/バルブ(A)
 
-                            If .udtChCommon.shtUnit <> gCstCodeChManualInputUnit Then
-                                cmbUnit.SelectedValue = .udtChCommon.shtUnit.ToString
-                                grdTerminal(6, hRow).Value = cmbUnit.Text
-                            Else
-                                grdTerminal(6, hRow).Value = gGetString(.udtChCommon.strUnit)     ''特殊コード対応
+                                If .udtChCommon.shtUnit <> gCstCodeChManualInputUnit Then
+                                    cmbUnit.SelectedValue = .udtChCommon.shtUnit.ToString
+                                    grdTerminal(6, hRow).Value = cmbUnit.Text
+                                Else
+                                    grdTerminal(6, hRow).Value = gGetString(.udtChCommon.strUnit)     ''特殊コード対応
+                                End If
+
                             End If
+
+                            mintEventCancelFlag = 0
+
+                            Return 0
 
                         End If
 
-                        mintEventCancelFlag = 0
+                    End With
 
-                        Return 0
+                Next
 
-                    End If
 
-                End With
 
-            Next
+
+            End If
+
+
+
+
 
             mintEventCancelFlag = 0
 
@@ -3165,13 +4198,29 @@
                                                     ''コンポジット設定テーブルよりステータス情報GET
                                                     Dim intIndex As Integer = .ValveCompositeTableIndex  ''コンポジットテーブルインデックス
                                                     If intIndex > 0 Then
-                                                        If gudt.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
-                                                            For ii As Integer = 0 To 7
-                                                                strwk(ii) = gudt.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
-                                                            Next
+
+
+                                                        If modFcuSelect.nFcuNo = 1 Then
+                                                            'FCU1が選択されている場合
+
+                                                            If gudt.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
+                                                                For ii As Integer = 0 To 7
+                                                                    strwk(ii) = gudt.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
+                                                                Next
+                                                            End If
+
+                                                        Else
+                                                            If gudt2.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
+                                                                For ii As Integer = 0 To 7
+                                                                    strwk(ii) = gudt2.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
+                                                                Next
+                                                            End If
                                                         End If
+
+
+
                                                     End If
-                                                    grdTerminal(4, row).Value = strwk(0)
+                                                        grdTerminal(4, row).Value = strwk(0)
 
                                                 Else
                                                     Call gSetComboBox(cmbStatus, gEnmComboType.ctChListChannelListStatusAnalog)
@@ -3346,11 +4395,28 @@
                                             Dim strwk(7) As String
                                             Dim intIndex As Integer = .CompositeTableIndex  ''コンポジットテーブルインデックス
                                             If intIndex > 0 Then
-                                                If gudt.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
-                                                    For ii As Integer = 0 To 7
-                                                        strwk(ii) = gudt.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
-                                                    Next
+
+
+                                                If modFcuSelect.nFcuNo = 1 Then
+                                                    'FCU1が選択されている場合
+                                                    If gudt.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
+                                                        For ii As Integer = 0 To 7
+                                                            strwk(ii) = gudt.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
+                                                        Next
+                                                    End If
+
+
+                                                Else
+
+                                                    If gudt2.SetChComposite.udtComposite(intIndex - 1).shtChid = gGet2Byte(.udtChCommon.shtChno) Then
+                                                        For ii As Integer = 0 To 7
+                                                            strwk(ii) = gudt2.SetChComposite.udtComposite(intIndex - 1).udtCompInf(ii).strStatusName
+                                                        Next
+                                                    End If
+
                                                 End If
+
+
                                             End If
                                             grdTerminal(4, row).Value = strwk(0)
 
@@ -4998,8 +6064,12 @@
                             If mDoDetail.Type = gCstCodeFuOutputChTypeCh Then
                                 ''CH情報表示
                                 grdTerminal(2, row).Value = IIf(mDoDetail.Chid = 0, "", Val(mDoDetail.Chid).ToString("0000"))
-
-                                Call mSetChInfoChOut(mDoDetail.Chid, row, gudt.SetChInfo)
+                                If modFcuSelect.nFcuNo = 1 Then
+                                    'FCU1が選択されている場合
+                                    Call mSetChInfoChOut(mDoDetail.Chid, row, gudt.SetChInfo)
+                                Else
+                                    Call mSetChInfoChOut(mDoDetail.Chid, row, gudt2.SetChInfo)
+                                End If
 
                             Else
                                 ''論理出力CH用表示

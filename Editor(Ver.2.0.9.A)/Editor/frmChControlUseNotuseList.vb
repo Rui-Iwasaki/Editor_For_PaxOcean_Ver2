@@ -68,12 +68,20 @@
                 Call mudtSetCtrlUseNotuseNewCarg.udtCtrlUseNotuseRec(i).InitArray()
             Next
 
-            ''Machinery/Cargoの情報を取得する
-            Call mCopyStructure(gudt.SetChCtrlUseM, mudtSetCtrlUseNotuseNewMach)
-            Call mCopyStructure(gudt.SetChCtrlUseC, mudtSetCtrlUseNotuseNewCarg)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''Machinery/Cargoの情報を取得する
+                Call mCopyStructure(gudt.SetChCtrlUseM, mudtSetCtrlUseNotuseNewMach)
+                Call mCopyStructure(gudt.SetChCtrlUseC, mudtSetCtrlUseNotuseNewCarg)
+            Else
+                Call mCopyStructure(gudt2.SetChCtrlUseM, mudtSetCtrlUseNotuseNewMach)
+                Call mCopyStructure(gudt2.SetChCtrlUseC, mudtSetCtrlUseNotuseNewCarg)
+            End If
+
 
             ''Machinery/Cargoボタン設定
             Call gSetCombineControl(optMachinery, optCargo)
+
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
 
             ''画面設定
             If optMachinery.Checked Then Call mCopyStructure(mudtSetCtrlUseNotuseNewMach, mudtSetCtrlUseNotuseWork)
@@ -164,26 +172,43 @@
             ''設定値を比較用構造体に格納
             '　→グリッドイベント実行時に情報保存済
 
-            ''データが変更されているかチェック
-            blnMach = mChkStructureEquals(mudtSetCtrlUseNotuseNewMach, gudt.SetChCtrlUseM)
-            blnCarg = mChkStructureEquals(mudtSetCtrlUseNotuseNewCarg, gudt.SetChCtrlUseC)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''データが変更されているかチェック
+                blnMach = mChkStructureEquals(mudtSetCtrlUseNotuseNewMach, gudt.SetChCtrlUseM)
+                blnCarg = mChkStructureEquals(mudtSetCtrlUseNotuseNewCarg, gudt.SetChCtrlUseC)
+            Else
+                blnMach = mChkStructureEquals(mudtSetCtrlUseNotuseNewMach, gudt2.SetChCtrlUseM)
+                blnCarg = mChkStructureEquals(mudtSetCtrlUseNotuseNewCarg, gudt2.SetChCtrlUseC)
+            End If
 
             ''データが変更されている場合
             If (Not blnMach) Or (Not blnCarg) Then
 
-                ''変更された場合は設定を更新する
-                If Not blnMach Then Call mCopyStructure(mudtSetCtrlUseNotuseNewMach, gudt.SetChCtrlUseM)
-                If Not blnCarg Then Call mCopyStructure(mudtSetCtrlUseNotuseNewCarg, gudt.SetChCtrlUseC)
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''変更された場合は設定を更新する
+                    If Not blnMach Then Call mCopyStructure(mudtSetCtrlUseNotuseNewMach, gudt.SetChCtrlUseM)
+                    If Not blnCarg Then Call mCopyStructure(mudtSetCtrlUseNotuseNewCarg, gudt.SetChCtrlUseC)
+                Else
+                    If Not blnMach Then Call mCopyStructure(mudtSetCtrlUseNotuseNewMach, gudt2.SetChCtrlUseM)
+                    If Not blnCarg Then Call mCopyStructure(mudtSetCtrlUseNotuseNewCarg, gudt2.SetChCtrlUseC)
+                End If
 
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                If Not blnMach Then gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM = 1
-                If Not blnCarg Then gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC = 1
-                If Not blnMach Then gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseM = 1
-                If Not blnCarg Then gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseC = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    If Not blnMach Then gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM = 1
+                    If Not blnCarg Then gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC = 1
+                    If Not blnMach Then gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseM = 1
+                    If Not blnCarg Then gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseC = 1
+                Else
+                    If Not blnMach Then gudt2.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM = 1
+                    If Not blnCarg Then gudt2.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC = 1
+                    If Not blnMach Then gudt2.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseM = 1
+                    If Not blnCarg Then gudt2.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseC = 1
+                End If
 
             End If
 

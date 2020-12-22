@@ -25,7 +25,6 @@ Partial Class frmFcuSelect
         Me.rbtSelectFcu1 = New System.Windows.Forms.RadioButton()
         Me.rbtSelectFcu2 = New System.Windows.Forms.RadioButton()
         Me.btnOpen = New System.Windows.Forms.Button()
-        Me.btnCancel = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
@@ -60,15 +59,6 @@ Partial Class frmFcuSelect
         Me.btnOpen.Text = "OPEN"
         Me.btnOpen.UseVisualStyleBackColor = True
         '
-        'btnCancel
-        '
-        Me.btnCancel.Location = New System.Drawing.Point(139, 189)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(100, 51)
-        Me.btnCancel.TabIndex = 3
-        Me.btnCancel.Text = "CANCEL"
-        Me.btnCancel.UseVisualStyleBackColor = True
-        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -82,10 +72,9 @@ Partial Class frmFcuSelect
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(266, 263)
+        Me.ClientSize = New System.Drawing.Size(219, 263)
         Me.ControlBox = False
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnOpen)
         Me.Controls.Add(Me.rbtSelectFcu2)
         Me.Controls.Add(Me.rbtSelectFcu1)
@@ -99,6 +88,5 @@ Partial Class frmFcuSelect
     Friend WithEvents rbtSelectFcu1 As RadioButton
     Friend WithEvents rbtSelectFcu2 As RadioButton
     Friend WithEvents btnOpen As Button
-    Friend WithEvents btnCancel As Button
     Friend WithEvents Label1 As Label
 End Class

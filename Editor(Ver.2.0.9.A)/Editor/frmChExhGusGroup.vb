@@ -85,6 +85,8 @@
                 Call mCopyStructure(gudt2.SetChExhGus, mudtSetExhGusNew)
             End If
 
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
+
             ''画面設定
             Call mSetDisplay(cmbNo.SelectedIndex, mudtSetExhGusNew)
 

@@ -64,8 +64,14 @@
             ''配列再定義
             mudtSetChRunHour.InitArray()
 
-            ''画面設定
-            Call mSetDisplay(gudt.SetChRunHour)
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
+
+            If modFcuSelect.nFcuNo = 1 Then
+                ''画面設定
+                Call mSetDisplay(gudt.SetChRunHour)
+            Else
+                Call mSetDisplay(gudt2.SetChRunHour)
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -289,29 +295,47 @@
             Call mSetStructure(mudtSetChRunHour)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetChRunHour, gudt.SetChRunHour) Then
+            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChRunHour, gudt.SetChRunHour)) Or
+               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChRunHour, gudt2.SetChRunHour)) Then
 
-                ''変更された場合は設定を更新する
-                Call mCopyStructure(mudtSetChRunHour, gudt.SetChRunHour)
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructure(mudtSetChRunHour, gudt.SetChRunHour)
+                Else
+                    Call mCopyStructure(mudtSetChRunHour, gudt2.SetChRunHour)
+                End If
 
                 ''チャンネル構造体のトリガチャンネルを設定する
                 Call mSetTrrigerChannelInfo(gudt.SetChInfo)
 
-                ''メッセージ表示
-                Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    ''メッセージ表示
+                    Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytChRunHour = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChRunHour = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    gudt.SetEditorUpdateInfo.udtSave.bytChRunHour = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChRunHour = 1
 
-                ''更新フラグ設定   Ver1.10.4 2016.03.30 追加
-                gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                    ''更新フラグ設定   Ver1.10.4 2016.03.30 追加
+                    gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                    gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                    gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                Else
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChRunHour = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChRunHour = 1
+
+                    ''更新フラグ設定   Ver1.10.4 2016.03.30 追加
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                End If
 
             End If
 
@@ -356,10 +380,11 @@
             Call mSetStructure(mudtSetChRunHour)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetChRunHour, gudt.SetChRunHour) Then
+            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChRunHour, gudt.SetChRunHour)) Or
+               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChRunHour, gudt2.SetChRunHour)) Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
                     Case Windows.Forms.DialogResult.Yes
@@ -370,21 +395,40 @@
                             Return
                         End If
 
-                        ''変更された場合は設定を更新する
-                        Call mCopyStructure(mudtSetChRunHour, gudt.SetChRunHour)
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更された場合は設定を更新する
+                            Call mCopyStructure(mudtSetChRunHour, gudt.SetChRunHour)
+                        Else
+                            Call mCopyStructure(mudtSetChRunHour, gudt2.SetChRunHour)
+                        End If
+
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytChRunHour = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChRunHour = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            gudt.SetEditorUpdateInfo.udtSave.bytChRunHour = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChRunHour = 1
 
-                        ''更新フラグ設定   Ver1.10.4 2016.03.30 追加
-                        gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
-                        gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
-                        gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                            ''更新フラグ設定   Ver1.10.4 2016.03.30 追加
+                            gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                            gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                            gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                        Else
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChRunHour = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChRunHour = 1
+
+                            ''更新フラグ設定   Ver1.10.4 2016.03.30 追加
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                        End If
+
 
                     Case Windows.Forms.DialogResult.No
 

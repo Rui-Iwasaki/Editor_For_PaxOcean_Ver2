@@ -431,7 +431,8 @@ Public Class frmMenuMain
     Private Sub cmdSystem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSystem1.Click
 
         Try
-
+            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.TERMINAL_INPUT)
+            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmSysSystem.gShow()
             Call mSetShowDispButtonEnable(True, False)

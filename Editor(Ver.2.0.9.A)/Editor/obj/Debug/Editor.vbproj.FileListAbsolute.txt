@@ -25728,6 +25728,8 @@ C:\Users\SDT(IAS)-NOTE003\Desktop\Editor(Ver.2.0.9.9)-1\Editor\obj\Debug\Editor.
 C:\Users\SDT(IAS)-NOTE003\Desktop\Editor(Ver.2.0.9.9)-1\Editor\obj\Debug\Editor.exe
 C:\Users\SDT(IAS)-NOTE003\Desktop\Editor(Ver.2.0.9.9)-1\Editor\obj\Debug\Editor.xml
 C:\Users\SDT(IAS)-NOTE003\Desktop\Editor(Ver.2.0.9.9)-1\Editor\obj\Debug\Editor.pdb
+C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Interop.Scripting.dll
+C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.vbproj.ResolveComReference.cache
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\bin\Debug\Editor.exe.config
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\bin\Debug\Editor.exe
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\bin\Debug\Editor.pdb
@@ -25736,9 +25738,6 @@ C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\bin
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\bin\Debug\NonHCopyNet.dll
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\bin\Debug\ja\Microsoft.VisualBasic.PowerPacks.Vs.resources.dll
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\bin\Debug\Interop.Scripting.dll
-C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.vbprojAssemblyReference.cache
-C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Interop.Scripting.dll
-C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.vbproj.ResolveComReference.cache
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmChExtLANDetail.resources
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmChkFileCompSelect.resources
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmChkFileCompSelectBig.resources
@@ -25755,6 +25754,7 @@ C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmExtPnlLcdGazo.resources
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmExtPnlLED_GAI.resources
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmExtPnlList_GAI.resources
+C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmFcuSelect.resources
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmLoadCurve.resources
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmOpsLogOption.resources
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmClear.resources
@@ -25880,4 +25880,4 @@ C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.exe
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.xml
 C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.pdb
-C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.frmFcuSelect.resources
+C:\Users\iwasaki\Desktop\Editor_For_PaxOcean_Ver2\Editor(Ver.2.0.9.A)\Editor\obj\Debug\Editor.vbprojAssemblyReference.cache
