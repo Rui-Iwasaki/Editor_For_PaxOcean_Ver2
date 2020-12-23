@@ -513,10 +513,18 @@
                     Next
                 Next
 
-                ''画面設定 再表示
-                Call mSetDisplayCh(gudt.SetChInfo)                                          ''チャンネル設定構造体
-                Call mSetDisplayDisp(gudt.SetChDisp)                                        ''チャンネル情報データ構造体
-                Call mSetDisplayChOutPut(gudt.SetChInfo, gudt.SetChOutput, gudt.SetChAndOr) ''出力チャンネル設定構造体
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    ''画面設定 再表示
+                    Call mSetDisplayCh(gudt.SetChInfo)                                          ''チャンネル設定構造体
+                    Call mSetDisplayDisp(gudt.SetChDisp)                                        ''チャンネル情報データ構造体
+                    Call mSetDisplayChOutPut(gudt.SetChInfo, gudt.SetChOutput, gudt.SetChAndOr) ''出力チャンネル設定構造体
+                Else
+                    ''画面設定 再表示
+                    Call mSetDisplayCh(gudt2.SetChInfo)                                          ''チャンネル設定構造体
+                    Call mSetDisplayDisp(gudt2.SetChDisp)                                        ''チャンネル情報データ構造体
+                    Call mSetDisplayChOutPut(gudt2.SetChInfo, gudt2.SetChOutput, gudt2.SetChAndOr) ''出力チャンネル設定構造体
+                End If
 
                 mIntClearChNo = Val(grdTerminal(2, 0).Value)
                 mintEventCancelFlag = 0

@@ -301,11 +301,18 @@
         Try
 
             For i As Integer = 0 To grdGrid.RowCount - 1
-
-                grdGrid.Rows(i).Cells(0).Value = gudt.SetChInfo.udtChannel(i).udtChCommon.shtChid
-                grdGrid.Rows(i).Cells(1).Value = gudt.SetChInfo.udtChannel(i).udtChCommon.shtChno.ToString("0000")
-                grdGrid.Rows(i).Cells(2).Value = gudt.SetChConvNow.udtChConv(i).shtChid
-                grdGrid.Rows(i).Cells(3).Value = gudt.SetChConvPrev.udtChConv(i).shtChid
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    grdGrid.Rows(i).Cells(0).Value = gudt.SetChInfo.udtChannel(i).udtChCommon.shtChid
+                    grdGrid.Rows(i).Cells(1).Value = gudt.SetChInfo.udtChannel(i).udtChCommon.shtChno.ToString("0000")
+                    grdGrid.Rows(i).Cells(2).Value = gudt.SetChConvNow.udtChConv(i).shtChid
+                    grdGrid.Rows(i).Cells(3).Value = gudt.SetChConvPrev.udtChConv(i).shtChid
+                Else
+                    grdGrid.Rows(i).Cells(0).Value = gudt2.SetChInfo.udtChannel(i).udtChCommon.shtChid
+                    grdGrid.Rows(i).Cells(1).Value = gudt2.SetChInfo.udtChannel(i).udtChCommon.shtChno.ToString("0000")
+                    grdGrid.Rows(i).Cells(2).Value = gudt2.SetChConvNow.udtChConv(i).shtChid
+                    grdGrid.Rows(i).Cells(3).Value = gudt2.SetChConvPrev.udtChConv(i).shtChid
+                End If
 
             Next
 

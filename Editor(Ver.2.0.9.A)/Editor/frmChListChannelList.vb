@@ -1088,12 +1088,26 @@
             mFlagFirst = True
 
             ''チャンネルグループ情報取得
+            ' If modFcuSelect.nFcuNo = 1 Then
+            ''FCU1が選択されている場合
             Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
+            'Else
+
             Call gMakeChannelGroupData(gudt2.SetChInfo, mudtChannelGroup)
+            'End If
+
             read_flg = False
+
             ''チャネルの最大数を確認する
+            'If modFcuSelect.nFcuNo = 1 Then
+            ''FCU1が選択されている場合
+
             Call mGetChannelMax(gudt.SetChInfo.udtChannel)
+            ' Else
+
             Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
+            '  End If
+
             ''選択済みグループの情報をGET
             mChDataGroup = mudtChannelGroup.udtGroup(mSelectGroupIndex).udtChannelData
 
@@ -1306,23 +1320,43 @@
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                ''更新フラグ設定
-                gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                    ''更新フラグ設定
+                    ' If modFcuSelect.nFcuNo = 1 Then
+                    ''FCU1が選択されている場合
+                    gblnUpdateAll = True
+                        gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                        gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                        gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                        gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                        gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                        gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
 
-                '' 端子設定も保存  2014.01.17
-                gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                        '' 端子設定も保存  2014.01.17
+                        gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                        gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                    '    mFlagChange = False
+                    'mFlagFirst = False
+                    'Else
+                    'gblnUpdateAll = True
+                    'gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                    'gudt2.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                    'gudt2.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                    '   gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                    ' gudt2.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                    'gudt2.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
 
-                mFlagChange = False
-                mFlagFirst = False
+                    '' 端子設定も保存  2014.01.17
+                    'gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                    'gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                    mFlagChange = False
+                        mFlagFirst = False
+                    'End If
 
-            End If
+
+                    '   mFlagChange = False
+                    '     mFlagFirst = False
+
+                End If
 
             End If
 
@@ -1516,18 +1550,35 @@
                         'エラーの場合は処理しない
                         If blnSaveDataChkFlg = True Then
 
-                            ''更新フラグ設定
-                            gblnUpdateAll = True
-                            gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
-                            gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
-                            gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                            If modFcuSelect.nFcuNo = 1 Then
+                                ''FCU1が選択されている場合
+                                ''更新フラグ設定
+                                gblnUpdateAll = True
+                                gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                                gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                                gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
 
-                            '' 端子設定も保存  2014.01.17
-                            gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                            gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                                '' 端子設定も保存  2014.01.17
+                                gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                                gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                            Else
+
+                                gblnUpdateAll = True
+                                gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                                gudt2.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                                gudt2.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+
+                                '' 端子設定も保存  2014.01.17
+                                gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                                gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+
+                            End If
                         Else
                             '保存しないとした場合画面を閉じない
                             e.Cancel = True
@@ -1596,18 +1647,35 @@
                             'Ver2.0.0.0 保存しないのに画面遷移してしまう対策
                             ''データ保存処理
                             If mSaveChData() = True Then
-                                ''更新フラグ設定
-                                gblnUpdateAll = True
-                                gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
-                                gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
-                                gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
-                                gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
-                                gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
-                                gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                                If modFcuSelect.nFcuNo = 1 Then
+                                    ''FCU1が選択されている場合
+                                    ''更新フラグ設定
+                                    gblnUpdateAll = True
+                                    gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                                    gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                                    gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                                    gudt.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                                    gudt.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                                    gudt.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
 
-                                '' 端子設定も保存  2014.01.17
-                                gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                                gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                                    '' 端子設定も保存  2014.01.17
+                                    gudt.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                                    gudt.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                                Else
+                                    ''更新フラグ設定
+                                    gblnUpdateAll = True
+                                    gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                                    gudt2.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                                    gudt2.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                                    gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                                    gudt2.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                                    gudt2.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+
+                                    '' 端子設定も保存  2014.01.17
+                                    gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                                    gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                                End If
+
                             Else
                                 ''画面を閉じない
                                 Return
@@ -3748,24 +3816,47 @@
                 mChDataGroupBK(i) = mudtChannelGroup.udtGroup(mSelectGroupIndex).udtChannelData(i)
             Next
 
-            ''チャンネル情報データ(FU表示名称設定データ)バックアップを作成(ケーブルマーク用)
-            For i As Integer = 0 To UBound(gudt.SetChDisp.udtChDisp)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                ''チャンネル情報データ(FU表示名称設定データ)バックアップを作成(ケーブルマーク用)
+                For i As Integer = 0 To UBound(gudt.SetChDisp.udtChDisp)
 
-                ReDim mChDispRec(i).udtSlotInfo(7)
-                For j As Integer = 0 To UBound(gudt.SetChDisp.udtChDisp(i).udtSlotInfo)
+                    ReDim mChDispRec(i).udtSlotInfo(7)
+                    For j As Integer = 0 To UBound(gudt.SetChDisp.udtChDisp(i).udtSlotInfo)
 
-                    ReDim mChDispRec(i).udtSlotInfo(j).udtPinInfo(63)
-                    For k As Integer = 0 To UBound(gudt.SetChDisp.udtChDisp(i).udtSlotInfo(j).udtPinInfo)
+                        ReDim mChDispRec(i).udtSlotInfo(j).udtPinInfo(63)
+                        For k As Integer = 0 To UBound(gudt.SetChDisp.udtChDisp(i).udtSlotInfo(j).udtPinInfo)
 
-                        mChDispRec(i).udtSlotInfo(j).udtPinInfo(k) = gudt.SetChDisp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(k)
+                            mChDispRec(i).udtSlotInfo(j).udtPinInfo(k) = gudt.SetChDisp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(k)
 
+                        Next
                     Next
                 Next
-            Next
+            Else
+                ''チャンネル情報データ(FU表示名称設定データ)バックアップを作成(ケーブルマーク用)
+                For i As Integer = 0 To UBound(gudt2.SetChDisp.udtChDisp)
 
-            ''チャネルの最大数を確認する
-            Call mGetChannelMax(gudt.SetChInfo.udtChannel)
-            Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
+                    ReDim mChDispRec(i).udtSlotInfo(7)
+                    For j As Integer = 0 To UBound(gudt2.SetChDisp.udtChDisp(i).udtSlotInfo)
+
+                        ReDim mChDispRec(i).udtSlotInfo(j).udtPinInfo(63)
+                        For k As Integer = 0 To UBound(gudt2.SetChDisp.udtChDisp(i).udtSlotInfo(j).udtPinInfo)
+
+                            mChDispRec(i).udtSlotInfo(j).udtPinInfo(k) = gudt2.SetChDisp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(k)
+
+                        Next
+                    Next
+                Next
+
+            End If
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                ''チャネルの最大数を確認する
+                Call mGetChannelMax(gudt.SetChInfo.udtChannel)
+            Else
+                Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
+            End If
+
             mFlagFirst = True
 
             ''グリッドの完全初期化は処理速度を考慮してForm Loadの1回にする
@@ -8408,58 +8499,69 @@
                 Call mSetStructureGroup()
                 ''============================================
 
-                ''データクリア
-                Call gInitSetChannelDisp(gudt.SetChInfo)
-                Call gInitSetChannelDisp(gudt2.SetChInfo)
+                ''データクリア  
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''FCU1が選択されている場合
+                    Call gInitSetChannelDisp(gudt.SetChInfo)
+                Else
+                    Call gInitSetChannelDisp(gudt2.SetChInfo)
+                End If
+
                 ''グループの構造体をグローバル構造体にマージする
                 Dim wkChDataGroup(gCstOneGroupChannelMax - 1) As gTypSetChRec
 
-                For i As Integer = 1 To gCstChannelGroupMax
+                    For i As Integer = 1 To gCstChannelGroupMax
 
-                    wkChDataGroup = mudtChannelGroup.udtGroup(i - 1).udtChannelData
+                        wkChDataGroup = mudtChannelGroup.udtGroup(i - 1).udtChannelData
 
-                    For j As Integer = 0 To gCstOneGroupChannelMax - 1
+                        For j As Integer = 0 To gCstOneGroupChannelMax - 1
 
-                        If wkChDataGroup(j).udtChCommon.shtChType <> gCstCodeChTypeNothing Then
+                            If wkChDataGroup(j).udtChCommon.shtChType <> gCstCodeChTypeNothing Then
 
                             ''======================================================================================
-                            gudt.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
+                            If modFcuSelect.nFcuNo = 1 Then
+                                ''FCU1が選択されている場合
+                                gudt.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
+                            Else
+                                gudt2.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
+                            End If
+
                             ''======================================================================================
 
                             icnt += 1
 
-                        End If
+                            End If
 
-                    Next j
+                        Next j
 
-                Next i
+                    Next i
 
-                ''現状のメモリ更新 -------------------------------------------
-                mFlagFirst = True
+                    ''現状のメモリ更新 -------------------------------------------
+                    mFlagFirst = True
 
-                ''チャンネルグループ情報取得
-                Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
-                Call gMakeChannelGroupData(gudt2.SetChInfo, mudtChannelGroup)
-                read_flg = False ''保存後再読み込みをした場合の為にフラグリセット
-                ''チャネルの最大数を確認する
-                Call mGetChannelMax(gudt.SetChInfo.udtChannel)
-
+                    ''チャンネルグループ情報取得
+                    Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
+                    Call gMakeChannelGroupData(gudt2.SetChInfo, mudtChannelGroup)
+                    read_flg = False ''保存後再読み込みをした場合の為にフラグリセット
+                    ''チャネルの最大数を確認する
+                    Call mGetChannelMax(gudt.SetChInfo.udtChannel)
+                Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
                 ''選択済みグループの情報をGET
                 mChDataGroup = mudtChannelGroup.udtGroup(mSelectGroupIndex).udtChannelData
 
-                ''保存時に前回の値を参照したい場合の為にバックアップを作成(参照渡しにならないようにLOOPでCOPY)
-                For i As Integer = 0 To gCstOneGroupChannelMax - 1
-                    mChDataGroupBK(i) = mudtChannelGroup.udtGroup(mSelectGroupIndex).udtChannelData(i)
-                Next
+                    ''保存時に前回の値を参照したい場合の為にバックアップを作成(参照渡しにならないようにLOOPでCOPY)
+                    For i As Integer = 0 To gCstOneGroupChannelMax - 1
+                        mChDataGroupBK(i) = mudtChannelGroup.udtGroup(mSelectGroupIndex).udtChannelData(i)
+                    Next
 
-                mFlagSave = True
-                mFlagChange = False
-                mFlagFirst = False
+                    mFlagSave = True
+                    mFlagChange = False
+                    mFlagFirst = False
 
-                mSaveChData = True
+                    mSaveChData = True
 
-            Else
-                mSaveChData = False
+                Else
+                    mSaveChData = False
             End If
 
         Catch ex As Exception
@@ -14018,31 +14120,32 @@
         Try
 
             If gGet2Byte(hintFuno) = gCstCodeChNotSetFuNo Then Return -1
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        If .shtChType = gCstCodeChTypeAnalog _
+                        Or .shtChType = gCstCodeChTypeDigital Then    ''アナログかデジタル
 
-                    If .shtChType = gCstCodeChTypeAnalog _
-                    Or .shtChType = gCstCodeChTypeDigital Then    ''アナログかデジタル
+                            If .shtChno <> hintCH Then          ''自身のチャンネルは除く
 
-                        If .shtChno <> hintCH Then          ''自身のチャンネルは除く
+                                ''FU Addresuが一致するか？
+                                If .shtFuno = hintFuno And .shtPortno = hintPortno And .shtPin = hintPin Then
 
-                            ''FU Addresuが一致するか？
-                            If .shtFuno = hintFuno And .shtPortno = hintPortno And .shtPin = hintPin Then
+                                    hChNo = .shtChno
+                                    Return 0
+                                End If
 
-                                hChNo = .shtChno
-                                Return 0
                             End If
 
                         End If
+                    End With
 
-                    End If
-                End With
-
-            Next
-
-            For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
+                Next
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
 
                 With gudt2.SetChInfo.udtChannel(i).udtChCommon
 
@@ -14064,6 +14167,7 @@
                 End With
 
             Next
+            End If
 
             Return -1
 
@@ -14113,43 +14217,85 @@
 
         ''旧アドレスのスロット種別　GET
         ''ポート設定が無い場合は処理しない(コピー、ペースト時エラーとなる)     2013.12.16      
-        If hintFuno <> gCstCodeChCommonFuNoNothing And hintPortno <> gCstCodeChCommonPortNoNothing Then
+        If modFcuSelect.nFcuNo = 1 Then
+            ''FCU1が選択されている場合
+            If hintFuno <> gCstCodeChCommonFuNoNothing And hintPortno <> gCstCodeChCommonPortNoNothing Then
 
-            intType = gudt.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
+                intType = gudt.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
 
-            ''スロット種別により必要端子数が異なる
-            If intType = gCstCodeFuSlotTypeDO Or intType = gCstCodeFuSlotTypeDI Then
-                intLoopMax = 1 : intIdx = 1
+                ''スロット種別により必要端子数が異なる
+                If intType = gCstCodeFuSlotTypeDO Or intType = gCstCodeFuSlotTypeDI Then
+                    intLoopMax = 1 : intIdx = 1
 
-                ''Di/Do の場合計測点個数により端子数が異なる
-                If hintPinNo > 1 Then
-                    intLoopMax = hintPinNo
-                End If
-
-            ElseIf intType = gCstCodeFuSlotTypeAO Or intType = gCstCodeFuSlotTypeAI_2 Or _
-                   intType = gCstCodeFuSlotTypeAI_1_5 Or intType = gCstCodeFuSlotTypeAI_K Then
-                intLoopMax = 2 : intIdx = 2
-
-            ElseIf intType = gCstCodeFuSlotTypeAI_3 Or intType = gCstCodeFuSlotTypeAI_4_20 Then
-                intLoopMax = 3 : intIdx = 3
-            End If
-
-            For i As Integer = 0 To intLoopMax - 1
-
-                ''旧アドレスのCH No クリア
-                With gudt.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
-
-                    'Ver2.0.7.B 不具合対応
-                    If ((hintPin - 1) * intIdx + i) <= 63 Then
-
-                        If .shtChid = hintChNo Then .shtChid = 0
-
+                    ''Di/Do の場合計測点個数により端子数が異なる
+                    If hintPinNo > 1 Then
+                        intLoopMax = hintPinNo
                     End If
 
-                End With
+                ElseIf intType = gCstCodeFuSlotTypeAO Or intType = gCstCodeFuSlotTypeAI_2 Or
+                   intType = gCstCodeFuSlotTypeAI_1_5 Or intType = gCstCodeFuSlotTypeAI_K Then
+                    intLoopMax = 2 : intIdx = 2
 
-            Next
+                ElseIf intType = gCstCodeFuSlotTypeAI_3 Or intType = gCstCodeFuSlotTypeAI_4_20 Then
+                    intLoopMax = 3 : intIdx = 3
+                End If
 
+                For i As Integer = 0 To intLoopMax - 1
+
+                    ''旧アドレスのCH No クリア
+                    With gudt.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
+
+                        'Ver2.0.7.B 不具合対応
+                        If ((hintPin - 1) * intIdx + i) <= 63 Then
+
+                            If .shtChid = hintChNo Then .shtChid = 0
+
+                        End If
+
+                    End With
+
+                Next
+
+            End If
+        Else
+            If hintFuno <> gCstCodeChCommonFuNoNothing And hintPortno <> gCstCodeChCommonPortNoNothing Then
+
+                intType = gudt2.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
+
+                ''スロット種別により必要端子数が異なる
+                If intType = gCstCodeFuSlotTypeDO Or intType = gCstCodeFuSlotTypeDI Then
+                    intLoopMax = 1 : intIdx = 1
+
+                    ''Di/Do の場合計測点個数により端子数が異なる
+                    If hintPinNo > 1 Then
+                        intLoopMax = hintPinNo
+                    End If
+
+                ElseIf intType = gCstCodeFuSlotTypeAO Or intType = gCstCodeFuSlotTypeAI_2 Or
+                       intType = gCstCodeFuSlotTypeAI_1_5 Or intType = gCstCodeFuSlotTypeAI_K Then
+                    intLoopMax = 2 : intIdx = 2
+
+                ElseIf intType = gCstCodeFuSlotTypeAI_3 Or intType = gCstCodeFuSlotTypeAI_4_20 Then
+                    intLoopMax = 3 : intIdx = 3
+                End If
+
+                For i As Integer = 0 To intLoopMax - 1
+
+                    ''旧アドレスのCH No クリア
+                    With gudt2.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
+
+                        'Ver2.0.7.B 不具合対応
+                        If ((hintPin - 1) * intIdx + i) <= 63 Then
+
+                            If .shtChid = hintChNo Then .shtChid = 0
+
+                        End If
+
+                    End With
+
+                Next
+
+            End If
         End If
 
         ''新アドレスのスロット種別　GET 'T.Ueki ポート番号が未設定の場合処理しない　2015/5/13
@@ -14292,31 +14438,57 @@
                     End With
 
                     If hblnCopy = False Then
+                        If modFcuSelect.nFcuNo = 1 Then
+                            'FCU1が選択されている場合
+                            With gudt.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
 
-                        With gudt.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
+                                ''旧アドレスの計測点情報 クリア 'T.Ueki 変更処理無し 2015/4/14
+                                '.strWireMark = ""
+                                '.strWireMarkClass = ""
+                                '.strDest = ""
+                                '.strCoreNoIn = ""
+                                '.strCoreNoCom = ""
 
-                            ''旧アドレスの計測点情報 クリア 'T.Ueki 変更処理無し 2015/4/14
-                            '.strWireMark = ""
-                            '.strWireMarkClass = ""
-                            '.strDest = ""
-                            '.strCoreNoIn = ""
-                            '.strCoreNoCom = ""
+                            End With
+                        Else
+                            With gudt2.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
+
+                                ''旧アドレスの計測点情報 クリア 'T.Ueki 変更処理無し 2015/4/14
+                                '.strWireMark = ""
+                                '.strWireMarkClass = ""
+                                '.strDest = ""
+                                '.strCoreNoIn = ""
+                                '.strCoreNoCom = ""
+
+                            End With
+                        End If
+                    End If
+                    If modFcuSelect.nFcuNo = 1 Then
+                        'FCU1が選択されている場合
+                        ''新アドレスの計測点情報　SET
+                        With gudt.SetChDisp.udtChDisp(hintFunoNew).udtSlotInfo(hintPortnoNew - 1).udtPinInfo((hintPinNew - 1) * intIdx + i)
+
+                            'T.Ueki 変更処理無し 2015/4/14
+                            '.strWireMark = strWireMark(i)
+                            '.strWireMarkClass = strWireMarkClass(i)
+                            '.strDest = strDest(i)
+                            '.strCoreNoIn = strCoreNoIn(i)
+                            '.strCoreNoCom = strCoreNoCom(i)
 
                         End With
+                    Else
+                        ''新アドレスの計測点情報　SET
+                        With gudt2.SetChDisp.udtChDisp(hintFunoNew).udtSlotInfo(hintPortnoNew - 1).udtPinInfo((hintPinNew - 1) * intIdx + i)
 
+                            'T.Ueki 変更処理無し 2015/4/14
+                            '.strWireMark = strWireMark(i)
+                            '.strWireMarkClass = strWireMarkClass(i)
+                            '.strDest = strDest(i)
+                            '.strCoreNoIn = strCoreNoIn(i)
+                            '.strCoreNoCom = strCoreNoCom(i)
+
+                        End With
                     End If
-
-                    ''新アドレスの計測点情報　SET
-                    With gudt.SetChDisp.udtChDisp(hintFunoNew).udtSlotInfo(hintPortnoNew - 1).udtPinInfo((hintPinNew - 1) * intIdx + i)
-
-                        'T.Ueki 変更処理無し 2015/4/14
-                        '.strWireMark = strWireMark(i)
-                        '.strWireMarkClass = strWireMarkClass(i)
-                        '.strDest = strDest(i)
-                        '.strCoreNoIn = strCoreNoIn(i)
-                        '.strCoreNoCom = strCoreNoCom(i)
-
-                    End With
 
                 Next
 
@@ -15184,45 +15356,88 @@
 
                 intDataType = grdCHList(gCstChListColPosDataType, intRow).Value
 
-                ''FU使用/未使用フラグ
-                If gudt.SetFu.udtFu(intFuNo).shtUse = 1 Then
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''FCU1が選択されている場合
+                    ''FU使用/未使用フラグ
+                    If gudt.SetFu.udtFu(intFuNo).shtUse = 1 Then
 
-                    ''スロット種別 GET
-                    intSlotType = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortNo - 1).shtType
+                        ''スロット種別 GET
+                        intSlotType = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortNo - 1).shtType
 
-                    Select Case intSlotType
+                        Select Case intSlotType
 
-                        Case gCstCodeFuSlotTypeAI_2
-                            If intDataType = gCstCodeChDataTypeAnalog2Pt Or _
+                            Case gCstCodeFuSlotTypeAI_2
+                                If intDataType = gCstCodeChDataTypeAnalog2Pt Or
                                intDataType = gCstCodeChDataTypeAnalog2Jpt Then
-                            Else
-                                grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog2Pt.ToString
-                            End If
+                                Else
+                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog2Pt.ToString
+                                End If
 
-                        Case gCstCodeFuSlotTypeAI_3
-                            If intDataType = gCstCodeChDataTypeAnalog3Pt Or _
+                            Case gCstCodeFuSlotTypeAI_3
+                                If intDataType = gCstCodeChDataTypeAnalog3Pt Or
                                intDataType = gCstCodeChDataTypeAnalog3Jpt Then
-                            Else
-                                grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog3Pt.ToString
-                            End If
+                                Else
+                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog3Pt.ToString
+                                End If
 
-                        Case gCstCodeFuSlotTypeAI_1_5
-                            grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog1_5v.ToString
+                            Case gCstCodeFuSlotTypeAI_1_5
+                                grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog1_5v.ToString
 
-                        Case gCstCodeFuSlotTypeAI_4_20
-                            ' 現在の設定確認追加　ver1.4.0 2011.07.29
-                            If intDataType = gCstCodeChDataTypeAnalog4_20mA Or intDataType = gCstCodeChDataTypeAnalogPT4_20mA Then
-                            Else
-                                grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog4_20mA.ToString
-                            End If
+                            Case gCstCodeFuSlotTypeAI_4_20
+                                ' 現在の設定確認追加　ver1.4.0 2011.07.29
+                                If intDataType = gCstCodeChDataTypeAnalog4_20mA Or intDataType = gCstCodeChDataTypeAnalogPT4_20mA Then
+                                Else
+                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog4_20mA.ToString
+                                End If
 
-                        Case gCstCodeFuSlotTypeAI_K
-                            grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogK.ToString
+                            Case gCstCodeFuSlotTypeAI_K
+                                grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogK.ToString
 
-                        Case Else
+                            Case Else
 
-                    End Select
+                        End Select
 
+                    End If
+                Else
+                    If gudt2.SetFu.udtFu(intFuNo).shtUse = 1 Then
+
+                        ''スロット種別 GET
+                        intSlotType = gudt2.SetFu.udtFu(intFuNo).udtSlotInfo(intPortNo - 1).shtType
+
+                        Select Case intSlotType
+
+                            Case gCstCodeFuSlotTypeAI_2
+                                If intDataType = gCstCodeChDataTypeAnalog2Pt Or
+                                   intDataType = gCstCodeChDataTypeAnalog2Jpt Then
+                                Else
+                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog2Pt.ToString
+                                End If
+
+                            Case gCstCodeFuSlotTypeAI_3
+                                If intDataType = gCstCodeChDataTypeAnalog3Pt Or
+                                   intDataType = gCstCodeChDataTypeAnalog3Jpt Then
+                                Else
+                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog3Pt.ToString
+                                End If
+
+                            Case gCstCodeFuSlotTypeAI_1_5
+                                grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog1_5v.ToString
+
+                            Case gCstCodeFuSlotTypeAI_4_20
+                                ' 現在の設定確認追加　ver1.4.0 2011.07.29
+                                If intDataType = gCstCodeChDataTypeAnalog4_20mA Or intDataType = gCstCodeChDataTypeAnalogPT4_20mA Then
+                                Else
+                                    grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalog4_20mA.ToString
+                                End If
+
+                            Case gCstCodeFuSlotTypeAI_K
+                                grdCHList(gCstChListColPosDataType, intRow).Value = gCstCodeChDataTypeAnalogK.ToString
+
+                            Case Else
+
+                        End Select
+
+                    End If
                 End If
 
             End If

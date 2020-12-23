@@ -587,21 +587,40 @@ Module modCommon
 
             Dim shtChID As Short = -1
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                    If .shtChno = intChNo Then
+                        If .shtChno = intChNo Then
 
-                        shtChID = .shtChid
+                            shtChID = .shtChid
 
-                        Exit For
+                            Exit For
 
-                    End If
+                        End If
 
-                End With
+                    End With
 
-            Next
+                Next
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        If .shtChno = intChNo Then
+
+                            shtChID = .shtChid
+
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
 
             Return shtChID
 
@@ -627,21 +646,40 @@ Module modCommon
 
             Dim intChNo As Integer = -1
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                    If .shtChid = intChId Then
+                        If .shtChid = intChId Then
 
-                        intChNo = .shtChno
+                            intChNo = .shtChno
 
-                        Exit For
+                            Exit For
 
-                    End If
+                        End If
 
-                End With
+                    End With
 
-            Next
+                Next
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        If .shtChid = intChId Then
+
+                            intChNo = .shtChno
+
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
 
             Return intChNo
 
@@ -670,22 +708,40 @@ Module modCommon
             If intChNo = 0 Then Return 0
 
             Dim shtLoopIndex As Short = -1
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        If .shtChno = intChNo Then
 
-                    If .shtChno = intChNo Then
+                            shtLoopIndex = i
 
-                        shtLoopIndex = i
+                            Exit For
 
-                        Exit For
+                        End If
 
-                    End If
+                    End With
 
-                End With
+                Next
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
 
-            Next
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        If .shtChno = intChNo Then
+
+                            shtLoopIndex = i
+
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
 
             Return shtLoopIndex
 
@@ -711,23 +767,41 @@ Module modCommon
         Try
 
             Dim intSysNo As Integer = 255
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        If .shtChid = intChId Then
 
-                    If .shtChid = intChId Then
+                            intSysNo = .shtSysno
 
-                        intSysNo = .shtSysno
+                            Exit For
 
-                        Exit For
+                        End If
 
-                    End If
+                    End With
 
-                End With
+                Next
 
-            Next
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
 
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        If .shtChid = intChId Then
+
+                            intSysNo = .shtSysno
+
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
             Return intSysNo
 
         Catch ex As Exception
@@ -748,22 +822,40 @@ Module modCommon
         Try
 
             Dim intSysNo As Integer = 255
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        If .shtChno = CUShort(strChNo) Then
 
-                    If .shtChno = CUShort(strChNo) Then
+                            intSysNo = .shtSysno
 
-                        intSysNo = .shtSysno
+                            Exit For
 
-                        Exit For
+                        End If
 
-                    End If
+                    End With
 
-                End With
+                Next
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
 
-            Next
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        If .shtChno = CUShort(strChNo) Then
+
+                            intSysNo = .shtSysno
+
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
 
             Return intSysNo
 
@@ -3243,17 +3335,30 @@ Module modCommon
         Try
 
             If intChNo = 0 Then Return False
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    If gudt.SetChInfo.udtChannel(i).udtChCommon.shtChno = intChNo Then
 
-                If gudt.SetChInfo.udtChannel(i).udtChCommon.shtChno = intChNo Then
+                        udtChInfo = DeepCopyHelper.DeepCopy(gudt.SetChInfo.udtChannel(i))
+                        Return True
 
-                    udtChInfo = DeepCopyHelper.DeepCopy(gudt.SetChInfo.udtChannel(i))
-                    Return True
+                    End If
 
-                End If
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-            Next
+                    If gudt2.SetChInfo.udtChannel(i).udtChCommon.shtChno = intChNo Then
+
+                        udtChInfo = DeepCopyHelper.DeepCopy(gudt2.SetChInfo.udtChannel(i))
+                        Return True
+
+                    End If
+
+                Next
+            End If
 
             Return False
 
@@ -3279,25 +3384,46 @@ Module modCommon
         Try
 
             If intChNo = 0 Then Return False
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                With gudt.SetChInfo.udtChannel(i)
+                        If .udtChCommon.shtChno = intChNo Then
 
-                    If .udtChCommon.shtChno = intChNo Then
+                            ''Range  Low
+                            intRangeLo = .AnalogRangeLow
 
-                        ''Range  Low
-                        intRangeLo = .AnalogRangeLow
+                            ''Range Hi
+                            intRangeHi = .AnalogRangeHigh
 
-                        ''Range Hi
-                        intRangeHi = .AnalogRangeHigh
+                            Return True
 
-                        Return True
+                        End If
 
-                    End If
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-                End With
-            Next
+                    With gudt2.SetChInfo.udtChannel(i)
+
+                        If .udtChCommon.shtChno = intChNo Then
+
+                            ''Range  Low
+                            intRangeLo = .AnalogRangeLow
+
+                            ''Range Hi
+                            intRangeHi = .AnalogRangeHigh
+
+                            Return True
+
+                        End If
+
+                    End With
+                Next
+            End If
 
             Return False
 
@@ -3319,20 +3445,34 @@ Module modCommon
         Try
 
             If intChNo = 0 Then Return False
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                With gudt.SetChInfo.udtChannel(i)
+                        If .udtChCommon.shtChno = intChNo Then
 
-                    If .udtChCommon.shtChno = intChNo Then
+                            Return .udtChCommon.shtChType
 
-                        Return .udtChCommon.shtChType
+                        End If
 
-                    End If
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-                End With
-            Next
+                    With gudt2.SetChInfo.udtChannel(i)
 
+                        If .udtChCommon.shtChno = intChNo Then
+
+                            Return .udtChCommon.shtChType
+
+                        End If
+
+                    End With
+                Next
+            End If
             Return 0
 
         Catch ex As Exception
@@ -3466,112 +3606,220 @@ Module modCommon
         Try
 
             If intChNo = 0 Then Return False
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                With gudt.SetChInfo.udtChannel(i)
+                        If .udtChCommon.shtChno = intChNo Then
 
-                    If .udtChCommon.shtChno = intChNo Then
+                            Select Case .udtChCommon.shtChType
+                                Case gCstCodeChTypeAnalog
 
-                        Select Case .udtChCommon.shtChType
-                            Case gCstCodeChTypeAnalog
-
-                                '================
-                                ''アナログ
-                                '================
-                                If .AnalogHiHiUse = 1 Or .AnalogHiUse = 1 Or _
-                                   .AnalogLoLoUse = 1 Or .AnalogLoUse = 1 Or _
+                                    '================
+                                    ''アナログ
+                                    '================
+                                    If .AnalogHiHiUse = 1 Or .AnalogHiUse = 1 Or
+                                   .AnalogLoLoUse = 1 Or .AnalogLoUse = 1 Or
                                    .AnalogSensorFailUse = 1 Then
-                                    Return True
-                                End If
+                                        Return True
+                                    End If
 
-                            Case gCstCodeChTypeDigital
+                                Case gCstCodeChTypeDigital
 
-                                If .udtChCommon.shtData <> gCstCodeChDataTypeDigitalDeviceStatus Then
+                                    If .udtChCommon.shtData <> gCstCodeChDataTypeDigitalDeviceStatus Then
+
+                                        '================
+                                        ''デジタル
+                                        '================
+                                        If .DigitalUse = 1 Then Return True
+
+                                    Else
+
+                                        '================
+                                        ''システム
+                                        '================
+                                        If .SystemUse = 1 Then Return True
+
+                                    End If
+
+                                Case gCstCodeChTypeMotor
 
                                     '================
-                                    ''デジタル
+                                    ''モーター
                                     '================
-                                    If .DigitalUse = 1 Then Return True
+                                    If .MotorUse = 1 Then Return True
 
-                                Else
+                                Case gCstCodeChTypeValve
 
                                     '================
-                                    ''システム
+                                    ''バルブ
                                     '================
-                                    If .SystemUse = 1 Then Return True
 
-                                End If
+                                    Select Case .udtChCommon.shtData
 
-                            Case gCstCodeChTypeMotor
+                                        Case gCstCodeChDataTypeValveDI_DO
 
-                                '================
-                                ''モーター
-                                '================
-                                If .MotorUse = 1 Then Return True
+                                            If .ValveDiDoAlarmUse = 1 Then
+                                                Return True
+                                            End If
 
-                            Case gCstCodeChTypeValve
+                                        Case gCstCodeChDataTypeValveAI_DO1, gCstCodeChDataTypeValveAI_DO2
 
-                                '================
-                                ''バルブ
-                                '================
-
-                                Select Case .udtChCommon.shtData
-
-                                    Case gCstCodeChDataTypeValveDI_DO
-
-                                        If .ValveDiDoAlarmUse = 1 Then
-                                            Return True
-                                        End If
-
-                                    Case gCstCodeChDataTypeValveAI_DO1, gCstCodeChDataTypeValveAI_DO2
-
-                                        If .ValveAiDoHiHiUse = 1 Or .ValveAiDoHiUse = 1 Or _
-                                           .ValveAiDoLoLoUse = 1 Or .ValveAiDoLoUse = 1 Or _
+                                            If .ValveAiDoHiHiUse = 1 Or .ValveAiDoHiUse = 1 Or
+                                           .ValveAiDoLoLoUse = 1 Or .ValveAiDoLoUse = 1 Or
                                            .ValveAiDoSensorFailUse = 1 Then
-                                            Return True
-                                        End If
+                                                Return True
+                                            End If
 
-                                    Case gCstCodeChDataTypeValveAI_AO1, gCstCodeChDataTypeValveAI_AO2
+                                        Case gCstCodeChDataTypeValveAI_AO1, gCstCodeChDataTypeValveAI_AO2
 
-                                        If .ValveAiAoHiHiUse = 1 Or .ValveAiAoHiUse = 1 Or _
-                                           .ValveAiAoLoLoUse = 1 Or .ValveAiAoLoUse = 1 Or _
+                                            If .ValveAiAoHiHiUse = 1 Or .ValveAiAoHiUse = 1 Or
+                                           .ValveAiAoLoLoUse = 1 Or .ValveAiAoLoUse = 1 Or
                                            .ValveAiAoSensorFailUse = 1 Then
-                                            Return True
-                                        End If
+                                                Return True
+                                            End If
 
-                                End Select
+                                    End Select
 
-                            Case gCstCodeChTypeComposite
+                                Case gCstCodeChTypeComposite
 
-                                '================
-                                ''コンポジット
-                                '================
-                                For j As Integer = 0 To UBound(gudt.SetChComposite.udtComposite(.CompositeTableIndex - 1).udtCompInf)
+                                    '================
+                                    ''コンポジット
+                                    '================
+                                    For j As Integer = 0 To UBound(gudt.SetChComposite.udtComposite(.CompositeTableIndex - 1).udtCompInf)
 
-                                    With gudt.SetChComposite.udtComposite(.CompositeTableIndex - 1).udtCompInf(j)
+                                        With gudt.SetChComposite.udtComposite(.CompositeTableIndex - 1).udtCompInf(j)
 
-                                        If gBitCheck(.bytAlarmUse, 1) Then
-                                            Return True
-                                        End If
+                                            If gBitCheck(.bytAlarmUse, 1) Then
+                                                Return True
+                                            End If
 
-                                    End With
+                                        End With
 
-                                Next
+                                    Next
 
-                            Case gCstCodeChTypePulse
+                                Case gCstCodeChTypePulse
 
-                                '================
-                                ''パルス積算
-                                '================
-                                If .PulseUse = 1 Then Return True
+                                    '================
+                                    ''パルス積算
+                                    '================
+                                    If .PulseUse = 1 Then Return True
 
-                        End Select
+                            End Select
 
-                    End If
+                        End If
 
-                End With
-            Next
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(i)
+
+                        If .udtChCommon.shtChno = intChNo Then
+
+                            Select Case .udtChCommon.shtChType
+                                Case gCstCodeChTypeAnalog
+
+                                    '================
+                                    ''アナログ
+                                    '================
+                                    If .AnalogHiHiUse = 1 Or .AnalogHiUse = 1 Or
+                                   .AnalogLoLoUse = 1 Or .AnalogLoUse = 1 Or
+                                   .AnalogSensorFailUse = 1 Then
+                                        Return True
+                                    End If
+
+                                Case gCstCodeChTypeDigital
+
+                                    If .udtChCommon.shtData <> gCstCodeChDataTypeDigitalDeviceStatus Then
+
+                                        '================
+                                        ''デジタル
+                                        '================
+                                        If .DigitalUse = 1 Then Return True
+
+                                    Else
+
+                                        '================
+                                        ''システム
+                                        '================
+                                        If .SystemUse = 1 Then Return True
+
+                                    End If
+
+                                Case gCstCodeChTypeMotor
+
+                                    '================
+                                    ''モーター
+                                    '================
+                                    If .MotorUse = 1 Then Return True
+
+                                Case gCstCodeChTypeValve
+
+                                    '================
+                                    ''バルブ
+                                    '================
+
+                                    Select Case .udtChCommon.shtData
+
+                                        Case gCstCodeChDataTypeValveDI_DO
+
+                                            If .ValveDiDoAlarmUse = 1 Then
+                                                Return True
+                                            End If
+
+                                        Case gCstCodeChDataTypeValveAI_DO1, gCstCodeChDataTypeValveAI_DO2
+
+                                            If .ValveAiDoHiHiUse = 1 Or .ValveAiDoHiUse = 1 Or
+                                           .ValveAiDoLoLoUse = 1 Or .ValveAiDoLoUse = 1 Or
+                                           .ValveAiDoSensorFailUse = 1 Then
+                                                Return True
+                                            End If
+
+                                        Case gCstCodeChDataTypeValveAI_AO1, gCstCodeChDataTypeValveAI_AO2
+
+                                            If .ValveAiAoHiHiUse = 1 Or .ValveAiAoHiUse = 1 Or
+                                           .ValveAiAoLoLoUse = 1 Or .ValveAiAoLoUse = 1 Or
+                                           .ValveAiAoSensorFailUse = 1 Then
+                                                Return True
+                                            End If
+
+                                    End Select
+
+                                Case gCstCodeChTypeComposite
+
+                                    '================
+                                    ''コンポジット
+                                    '================
+                                    For j As Integer = 0 To UBound(gudt2.SetChComposite.udtComposite(.CompositeTableIndex - 1).udtCompInf)
+
+                                        With gudt2.SetChComposite.udtComposite(.CompositeTableIndex - 1).udtCompInf(j)
+
+                                            If gBitCheck(.bytAlarmUse, 1) Then
+                                                Return True
+                                            End If
+
+                                        End With
+
+                                    Next
+
+                                Case gCstCodeChTypePulse
+
+                                    '================
+                                    ''パルス積算
+                                    '================
+                                    If .PulseUse = 1 Then Return True
+
+                            End Select
+
+                        End If
+
+                    End With
+                Next
+            End If
 
             Return False
 
@@ -5112,60 +5360,117 @@ Module modCommon
             Next
 
             ''チャンネル情報データ（表示名設定データ）から端子台リストの情報を移す ==============================
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i = 0 To UBound(gudt.SetChDisp.udtChDisp)
+                    Call mSetFuInfoChName(udtFuInfo, i)
 
-            For i = 0 To UBound(gudt.SetChDisp.udtChDisp)
-                Call mSetFuInfoChName(udtFuInfo, i)
+                    '' Ver1.9.3 2016.01.16  予備基板も印刷可能とするように変更
+                    For j = 0 To UBound(udtFuInfo(i).udtFuPort)
+                        udtFuInfo(i).udtFuPort(j).intPortType = gudt.SetFu.udtFu(i).udtSlotInfo(j).shtType
 
-                '' Ver1.9.3 2016.01.16  予備基板も印刷可能とするように変更
-                For j = 0 To UBound(udtFuInfo(i).udtFuPort)
-                    udtFuInfo(i).udtFuPort(j).intPortType = gudt.SetFu.udtFu(i).udtSlotInfo(j).shtType
-
-                    'Ver2.0.3.6
-                    'ワイヤーマーク類はCHoutがあってもなくても格納
-                    For x = 0 To UBound(udtFuInfo(i).udtFuPort(j).udtFuPin)
-                        If gudt.SetFu.udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeAI_3 Then
-                            If x <= 20 Then
-                                Call mGetFuInfoSlotInfo(udtFuInfo(i).udtFuPort(j).udtFuPin(x), _
-                                   i, _
-                                   j + 1, _
+                        'Ver2.0.3.6
+                        'ワイヤーマーク類はCHoutがあってもなくても格納
+                        For x = 0 To UBound(udtFuInfo(i).udtFuPort(j).udtFuPin)
+                            If gudt.SetFu.udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeAI_3 Then
+                                If x <= 20 Then
+                                    Call mGetFuInfoSlotInfo(udtFuInfo(i).udtFuPort(j).udtFuPin(x),
+                                   i,
+                                   j + 1,
                                    x + 1)
-                            End If
-                        Else
-                            Call mGetFuInfoSlotInfo(udtFuInfo(i).udtFuPort(j).udtFuPin(x), _
-                                           i, _
-                                           j + 1, _
+                                End If
+                            Else
+                                Call mGetFuInfoSlotInfo(udtFuInfo(i).udtFuPort(j).udtFuPin(x),
+                                           i,
+                                           j + 1,
                                            x + 1)
-                        End If
+                            End If
 
-                    Next x
+                        Next x
+                    Next
+
+
+
                 Next
+            Else
+                For i = 0 To UBound(gudt2.SetChDisp.udtChDisp)
+                    Call mSetFuInfoChName(udtFuInfo, i)
+
+                    '' Ver1.9.3 2016.01.16  予備基板も印刷可能とするように変更
+                    For j = 0 To UBound(udtFuInfo(i).udtFuPort)
+                        udtFuInfo(i).udtFuPort(j).intPortType = gudt2.SetFu.udtFu(i).udtSlotInfo(j).shtType
+
+                        'Ver2.0.3.6
+                        'ワイヤーマーク類はCHoutがあってもなくても格納
+                        For x = 0 To UBound(udtFuInfo(i).udtFuPort(j).udtFuPin)
+                            If gudt2.SetFu.udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeAI_3 Then
+                                If x <= 20 Then
+                                    Call mGetFuInfoSlotInfo(udtFuInfo(i).udtFuPort(j).udtFuPin(x),
+                                       i,
+                                       j + 1,
+                                       x + 1)
+                                End If
+                            Else
+                                Call mGetFuInfoSlotInfo(udtFuInfo(i).udtFuPort(j).udtFuPin(x),
+                                               i,
+                                               j + 1,
+                                               x + 1)
+                            End If
+
+                        Next x
+                    Next
 
 
 
-            Next
+                Next
+            End If
+
 
 
             ''出力チャンネル構造体からFU構造体へ情報を移す ======================================================
+            If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                For i = 0 To UBound(gudt.SetChOutput.udtCHOutPut)
 
-            For i = 0 To UBound(gudt.SetChOutput.udtCHOutPut)
+                    With gudt.SetChOutput.udtCHOutPut(i)
+                        intFuNo = .bytFuno
+                        intPortNo = .bytPortno
+                        intPin = .bytPin
+                    End With
 
-                With gudt.SetChOutput.udtCHOutPut(i)
-                    intFuNo = .bytFuno
-                    intPortNo = .bytPortno
-                    intPin = .bytPin
-                End With
+                    ''各設定値が範囲内のものだけ追加する
+                    If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                       (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                       (intPin >= 1 And intPin <= gCstCountFuPin) Then
 
-                ''各設定値が範囲内のものだけ追加する
-                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And _
-                   (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And _
-                   (intPin >= 1 And intPin <= gCstCountFuPin) Then
+                        ''出力チャンネル構造体からFU構造体に情報を移す
+                        Call mSetFuInfoChOutput(udtFuInfo, i, intFuNo, intPortNo, intPin)
 
-                    ''出力チャンネル構造体からFU構造体に情報を移す
-                    Call mSetFuInfoChOutput(udtFuInfo, i, intFuNo, intPortNo, intPin)
+                    End If
 
-                End If
+                Next i
+            Else
+                For i = 0 To UBound(gudt2.SetChOutput.udtCHOutPut)
 
-            Next i
+                    With gudt2.SetChOutput.udtCHOutPut(i)
+                        intFuNo = .bytFuno
+                        intPortNo = .bytPortno
+                        intPin = .bytPin
+                    End With
+
+                    ''各設定値が範囲内のものだけ追加する
+                    If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                       (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                       (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                        ''出力チャンネル構造体からFU構造体に情報を移す
+                        Call mSetFuInfoChOutput(udtFuInfo, i, intFuNo, intPortNo, intPin)
+
+                    End If
+
+                Next i
+            End If
+
 
             ''チャンネル構造体からFU構造体へ情報を移す ==========================================================
 
@@ -5179,177 +5484,131 @@ Module modCommon
                 gGetChNoOrder(aryCheck, x, strChNo, strListIndex)
 
                 i = Val(strListIndex)   '' リストインデックスをセット    2015.07.10
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''FCU1が選択されている場合
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                    If .shtChno = 1401 Then
-                        Dim debuA As Integer = 0
-                    End If
+                        If .shtChno = 1401 Then
+                            Dim debuA As Integer = 0
+                        End If
 
-                    CHViewFlg = False
-                    bOutputFlg = False      '' Ver1.12.0.1 2017.01.13 追加
+                        CHViewFlg = False
+                        bOutputFlg = False      '' Ver1.12.0.1 2017.01.13 追加
 
-                    Select Case .shtChType
+                        Select Case .shtChType
 
-                        Case gCstCodeChTypeAnalog       'アナログ
+                            Case gCstCodeChTypeAnalog       'アナログ
 
-                            '' Ver1.11.1 2016.07.12 緯度・経度追加
-                            If .shtData = gCstCodeChDataTypeAnalogModbus Or .shtData = gCstCodeChDataTypeAnalogExtDev _
-                                   Or .shtData = gCstCodeChDataTypeAnalogExhAve Or .shtData = gCstCodeChDataTypeAnalogExhRepose Or .shtData = gCstCodeChDataTypeAnalogJacom Or _
+                                '' Ver1.11.1 2016.07.12 緯度・経度追加
+                                If .shtData = gCstCodeChDataTypeAnalogModbus Or .shtData = gCstCodeChDataTypeAnalogExtDev _
+                                   Or .shtData = gCstCodeChDataTypeAnalogExhAve Or .shtData = gCstCodeChDataTypeAnalogExhRepose Or .shtData = gCstCodeChDataTypeAnalogJacom Or
                                    .shtData = gCstCodeChDataTypeAnalogLatitude Or .shtData = gCstCodeChDataTypeAnalogLongitude Or .shtData = gCstCodeChDataTypeAnalogJacom55 Then
-                                CHViewFlg = True
-                            End If
-
-                        Case gCstCodeChTypeDigital      'デジタル
-
-                            '' Ver1.12.0.1 2017.01.13  JACOM CHの場合はOutputﾃｰﾌﾞﾙ設定有無を確認
-                            If .shtData = gCstCodeChDataTypeDigitalJacomNC Or .shtData = gCstCodeChDataTypeDigitalJacomNO Or _
-                               .shtData = gCstCodeChDataTypeDigitalJacom55NC Or .shtData = gCstCodeChDataTypeDigitalJacom55NO Then
-                                bOutputFlg = ChkOutputCH(._shtChno, bytFUNo, bytPortNo, bytPinNo)
-                                If bOutputFlg = False Then
                                     CHViewFlg = True
+                                End If
+
+                            Case gCstCodeChTypeDigital      'デジタル
+
+                                '' Ver1.12.0.1 2017.01.13  JACOM CHの場合はOutputﾃｰﾌﾞﾙ設定有無を確認
+                                If .shtData = gCstCodeChDataTypeDigitalJacomNC Or .shtData = gCstCodeChDataTypeDigitalJacomNO Or
+                               .shtData = gCstCodeChDataTypeDigitalJacom55NC Or .shtData = gCstCodeChDataTypeDigitalJacom55NO Then
+                                    bOutputFlg = ChkOutputCH(._shtChno, bytFUNo, bytPortNo, bytPinNo)
+                                    If bOutputFlg = False Then
+                                        CHViewFlg = True
+                                    End If
+                                Else
+                                    ''If .shtData = gCstCodeChDataTypeDigitalDeviceStatus Or .shtData = gCstCodeChDataTypeDigitalJacomNC _
+                                    ''      Or .shtData = gCstCodeChDataTypeDigitalJacomNO Or .shtData = gCstCodeChDataTypeDigitalModbusNC Or .shtData = gCstCodeChDataTypeDigitalModbusNO Then
+                                    If .shtData = gCstCodeChDataTypeDigitalDeviceStatus Or
+                                      .shtData = gCstCodeChDataTypeDigitalModbusNC Or .shtData = gCstCodeChDataTypeDigitalModbusNO Then
+                                        CHViewFlg = True
+                                    End If
+                                End If
+
+                            Case gCstCodeChTypeMotor        'モーター
+
+                                'Ver2.0.7.S JACOMより大きい＝通信CHは非表示
+                                'If .shtData = gCstCodeChDataTypeMotorDeviceJacom Then
+                                If .shtData >= gCstCodeChDataTypeMotorDeviceJacom Then
+                                    CHViewFlg = True
+                                End If '' Ver1.12.0.1 2017.01.13  JACOM CHの場合はOutputﾃｰﾌﾞﾙ設定有無を確認
+                                If (.shtData = gCstCodeChDataTypeMotorDeviceJacom) Or
+                               (.shtData = gCstCodeChDataTypeMotorDeviceJacom55) Then
+                                    bOutputFlg = ChkOutputCH(._shtChno, bytFUNo, bytPortNo, bytPinNo)
+                                    If bOutputFlg = False Then
+                                        CHViewFlg = True
+                                    Else
+                                        'Ver2.0.2.7 OUTPUTテーブルがあるときは印刷
+                                        CHViewFlg = False
+                                    End If
+                                End If
+
+                            Case gCstCodeChTypeValve        'バルブ
+
+                                If .shtData = gCstCodeChDataTypeValveJacom Or .shtData = gCstCodeChDataTypeValveJacom55 Then
+                                    CHViewFlg = True
+                                End If
+
+                            Case gCstCodeChTypeComposite    'コンポジット
+
+                            '処理無し
+
+                            Case gCstCodeChTypePulse        'パルス
+
+                                '' Ver1.11.8.3 2016.11.08 運転積算 通信CH追加
+                                '' Ver1.12.0.1 2017.01.13 運転積算種類追加
+                                If .shtData = gCstCodeChDataTypePulseExtDev Or
+                                .shtData = gCstCodeChDataTypePulseRevoExtDev Or .shtData = gCstCodeChDataTypePulseRevoExtDevTotalMin Or
+                                .shtData = gCstCodeChDataTypePulseRevoExtDevDayHour Or .shtData = gCstCodeChDataTypePulseRevoExtDevDayMin Or
+                                .shtData = gCstCodeChDataTypePulseRevoExtDevLapHour Or .shtData = gCstCodeChDataTypePulseRevoExtDevLapMin Then
+                                    CHViewFlg = True
+                                End If
+
+                            Case Else
+
+                                '処理無し
+                        End Select
+
+                        If CHViewFlg = False Then
+
+                            '' Ver1.12.0.1 2017.01.13  Outputﾃｰﾌﾞﾙ設定時 (JACOM出力用)
+                            If bOutputFlg = True Then
+                                If udtFuInfo(bytFUNo).udtFuPort(bytPortNo - 1).udtFuPin(bytPinNo - 1).strStatus = "" Then
+                                    Call mGetFuInfoStatus(udtFuInfo(bytFUNo).udtFuPort(bytPortNo - 1).udtFuPin(bytPinNo - 1),
+                                              i, .shtChType, 1, True, False)
                                 End If
                             Else
-                                ''If .shtData = gCstCodeChDataTypeDigitalDeviceStatus Or .shtData = gCstCodeChDataTypeDigitalJacomNC _
-                                ''      Or .shtData = gCstCodeChDataTypeDigitalJacomNO Or .shtData = gCstCodeChDataTypeDigitalModbusNC Or .shtData = gCstCodeChDataTypeDigitalModbusNO Then
-                                If .shtData = gCstCodeChDataTypeDigitalDeviceStatus Or _
-                                      .shtData = gCstCodeChDataTypeDigitalModbusNC Or .shtData = gCstCodeChDataTypeDigitalModbusNO Then
-                                    CHViewFlg = True
-                                End If
-                            End If
+                                Select Case .shtChType
 
-                        Case gCstCodeChTypeMotor        'モーター
-
-                            'Ver2.0.7.S JACOMより大きい＝通信CHは非表示
-                            'If .shtData = gCstCodeChDataTypeMotorDeviceJacom Then
-                            If .shtData >= gCstCodeChDataTypeMotorDeviceJacom Then
-                                CHViewFlg = True
-                            End If '' Ver1.12.0.1 2017.01.13  JACOM CHの場合はOutputﾃｰﾌﾞﾙ設定有無を確認
-                            If (.shtData = gCstCodeChDataTypeMotorDeviceJacom) Or _
-                               (.shtData = gCstCodeChDataTypeMotorDeviceJacom55) Then
-                                bOutputFlg = ChkOutputCH(._shtChno, bytFUNo, bytPortNo, bytPinNo)
-                                If bOutputFlg = False Then
-                                    CHViewFlg = True
-                                Else
-                                    'Ver2.0.2.7 OUTPUTテーブルがあるときは印刷
-                                    CHViewFlg = False
-                                End If
-                            End If
-
-                        Case gCstCodeChTypeValve        'バルブ
-
-                            If .shtData = gCstCodeChDataTypeValveJacom Or .shtData = gCstCodeChDataTypeValveJacom55 Then
-                                CHViewFlg = True
-                            End If
-
-                        Case gCstCodeChTypeComposite    'コンポジット
-
-                            '処理無し
-
-                        Case gCstCodeChTypePulse        'パルス
-
-                            '' Ver1.11.8.3 2016.11.08 運転積算 通信CH追加
-                            '' Ver1.12.0.1 2017.01.13 運転積算種類追加
-                            If .shtData = gCstCodeChDataTypePulseExtDev Or _
-                                .shtData = gCstCodeChDataTypePulseRevoExtDev Or .shtData = gCstCodeChDataTypePulseRevoExtDevTotalMin Or _
-                                .shtData = gCstCodeChDataTypePulseRevoExtDevDayHour Or .shtData = gCstCodeChDataTypePulseRevoExtDevDayMin Or _
-                                .shtData = gCstCodeChDataTypePulseRevoExtDevLapHour Or .shtData = gCstCodeChDataTypePulseRevoExtDevLapMin Then
-                                CHViewFlg = True
-                            End If
-
-                        Case Else
-
-                            '処理無し
-                    End Select
-
-                    If CHViewFlg = False Then
-
-                        '' Ver1.12.0.1 2017.01.13  Outputﾃｰﾌﾞﾙ設定時 (JACOM出力用)
-                        If bOutputFlg = True Then
-                            If udtFuInfo(bytFUNo).udtFuPort(bytPortNo - 1).udtFuPin(bytPinNo - 1).strStatus = "" Then
-                                Call mGetFuInfoStatus(udtFuInfo(bytFUNo).udtFuPort(bytPortNo - 1).udtFuPin(bytPinNo - 1), _
-                                              i, .shtChType, 1, True, False)
-                            End If
-                        Else
-                            Select Case .shtChType
-
-                                Case gCstCodeChTypeAnalog, _
-                                     gCstCodeChTypeDigital, _
+                                    Case gCstCodeChTypeAnalog,
+                                     gCstCodeChTypeDigital,
                                      gCstCodeChTypePulse, gCstCodeChTypePID 'Ver2.0.7.H PID対応
 
-                                    ''各設定値が範囲内のものだけ追加する
-                                    If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And _
-                                       (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And _
+                                        ''各設定値が範囲内のものだけ追加する
+                                        If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                       (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
                                        (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
 
-                                        ''INPUT：チャンネル構造体からFU構造体に情報を移す
-                                        Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
-
-                                    End If
-
-                                Case gCstCodeChTypeMotor
-
-                                    ''各設定値が範囲内のものだけ追加する
-                                    If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And _
-                                       (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And _
-                                       (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
-
-                                        ''INPUT
-                                        'Ver2.0.0.2 モーター種別増加 R Device ADD
-                                        If (.shtData = gCstCodeChDataTypeMotorDevice Or .shtData = gCstCodeChDataTypeMotorRDevice) And _
-                                           (.shtStatus = gCstCodeChManualInputStatus) Then
-
-                                            ''機器運転かつ手入力の時
+                                            ''INPUT：チャンネル構造体からFU構造体に情報を移す
                                             Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
 
-                                        Else
-
-                                            If .shtPinNo >= 0 Then
-                                                If .shtPin - 1 + .shtPinNo <= gCstCountFuPin Then
-                                                    For j = 0 To .shtPinNo - 1
-                                                        ''チャンネル構造体からFU構造体に情報を移す
-                                                        Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin + j, j)
-                                                    Next
-                                                End If
-                                            End If
-
                                         End If
 
-                                        ''OUTPUT
-                                        With gudt.SetChInfo.udtChannel(i)
-                                            intFuNo = .MotorFuNo        ''Fu No
-                                            intPortNo = .MotorPortNo    ''Port No
-                                            intPin = .MotorPin          ''Pin
-                                            intPinNo = .MotorPinNo      ''Pin No
-                                        End With
+                                    Case gCstCodeChTypeMotor
 
-                                        If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And _
-                                           (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And _
-                                           (intPin >= 1 And intPin <= gCstCountFuPin) Then
-
-                                            If intPinNo >= 0 Then
-                                                If intPin - 1 + intPinNo <= gCstCountFuPin Then
-                                                    For j = 0 To intPinNo - 1
-                                                        ''チャンネル構造体からFU構造体に情報を移す
-                                                        Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
-                                                    Next
-                                                End If
-                                            End If
-
-                                        End If
-
-                                    End If
-
-                                Case gCstCodeChTypeValve
-
-                                    ''各設定値が範囲内のものだけ追加する。
-                                    Select Case .shtData
-
-                                        Case gCstCodeChDataTypeValveDI_DO
+                                        ''各設定値が範囲内のものだけ追加する
+                                        If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                       (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                       (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
 
                                             ''INPUT
-                                            If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And _
-                                               (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And _
-                                               (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+                                            'Ver2.0.0.2 モーター種別増加 R Device ADD
+                                            If (.shtData = gCstCodeChDataTypeMotorDevice Or .shtData = gCstCodeChDataTypeMotorRDevice) And
+                                           (.shtStatus = gCstCodeChManualInputStatus) Then
+
+                                                ''機器運転かつ手入力の時
+                                                Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
+
+                                            Else
 
                                                 If .shtPinNo >= 0 Then
                                                     If .shtPin - 1 + .shtPinNo <= gCstCountFuPin Then
@@ -5364,15 +5623,15 @@ Module modCommon
 
                                             ''OUTPUT
                                             With gudt.SetChInfo.udtChannel(i)
-                                                intFuNo = .ValveDiDoFuNo        ''Fu No
-                                                intPortNo = .ValveDiDoPortNo    ''Port No
-                                                intPin = .ValveDiDoPin          ''Pin
-                                                intPinNo = .ValveDiDoPinNo      ''Pin No
+                                                intFuNo = .MotorFuNo        ''Fu No
+                                                intPortNo = .MotorPortNo    ''Port No
+                                                intPin = .MotorPin          ''Pin
+                                                intPinNo = .MotorPinNo      ''Pin No
                                             End With
 
-                                            If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And _
-                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And _
-                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
+                                            If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                           (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                           (intPin >= 1 And intPin <= gCstCountFuPin) Then
 
                                                 If intPinNo >= 0 Then
                                                     If intPin - 1 + intPinNo <= gCstCountFuPin Then
@@ -5385,162 +5644,574 @@ Module modCommon
 
                                             End If
 
-                                        Case gCstCodeChDataTypeValveAI_DO1, _
-                                             gCstCodeChDataTypeValveAI_DO2
-
-                                            ''INPUT
-                                            If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And _
-                                               (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And _
-                                               (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
-
-                                                ''チャンネル構造体からFU構造体に情報を移す
-                                                Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
-
-                                            End If
-
-                                            ''OUTPUT    
-                                            With gudt.SetChInfo.udtChannel(i)
-                                                intFuNo = .ValveAiDoFuNo        ''Fu No
-                                                intPortNo = .ValveAiDoPortNo    ''Port No
-                                                intPin = .ValveAiDoPin          ''Pin
-                                                intPinNo = .ValveAiDoPinNo      ''Pin No
-                                            End With
-
-                                            If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And _
-                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And _
-                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
-
-                                                If intPinNo >= 0 Then
-                                                    If intPin - 1 + intPinNo <= gCstCountFuPin Then
-                                                        For j = 0 To intPinNo - 1
-                                                            ''チャンネル構造体からFU構造体に情報を移す
-                                                            Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
-                                                        Next
-                                                    End If
-                                                End If
-
-                                            End If
-
-                                        Case gCstCodeChDataTypeValveAI_AO1, _
-                                             gCstCodeChDataTypeValveAI_AO2
-
-                                            ''INPUT
-                                            If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And _
-                                               (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And _
-                                               (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
-
-                                                ''チャンネル構造体からFU構造体に情報を移す
-                                                Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
-
-                                            End If
-
-                                            ''OUTPUT
-                                            With gudt.SetChInfo.udtChannel(i)
-                                                intFuNo = .ValveAiAoFuNo        ''Fu No
-                                                intPortNo = .ValveAiAoPortNo    ''Port No
-                                                intPin = .ValveAiAoPin          ''Pin
-                                            End With
-
-                                            If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And _
-                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And _
-                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
-
-                                                ''チャンネル構造体からFU構造体に情報を移す
-                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
-
-                                            End If
-
-                                        Case gCstCodeChDataTypeValveAO_4_20
-
-                                            ''OUTPUT
-                                            With gudt.SetChInfo.udtChannel(i)
-                                                intFuNo = .ValveAiAoFuNo        ''Fu No
-                                                intPortNo = .ValveAiAoPortNo    ''Port No
-                                                intPin = .ValveAiAoPin          ''Pin
-                                            End With
-
-                                            If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And _
-                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And _
-                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
-
-                                                ''チャンネル構造体からFU構造体に情報を移す
-                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
-
-                                            End If
-
-                                        Case gCstCodeChDataTypeValveDO
-
-                                            ''OUTPUT
-                                            With gudt.SetChInfo.udtChannel(i)
-                                                intFuNo = .ValveDiDoFuNo        ''Fu No
-                                                intPortNo = .ValveDiDoPortNo    ''Port No
-                                                intPin = .ValveDiDoPin          ''Pin
-                                                'Ver2.0.7.Z DOのPin数は１固定
-                                                'intPinNo = .ValveDiDoPinNo      ''Pin No
-                                                intPinNo = 1      ''Pin No
-                                                '-
-                                            End With
-
-                                            If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And _
-                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And _
-                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
-
-                                                If intPinNo >= 0 Then
-                                                    If intPin - 1 + intPinNo <= gCstCountFuPin Then
-                                                        For j = 0 To intPinNo - 1 'Ver2.0.2.1 復活 Ver2.0.0.2 「-1」をDEL
-                                                            ''チャンネル構造体からFU構造体に情報を移す
-                                                            Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
-                                                        Next
-                                                    End If
-                                                End If
-
-                                            End If
-
-                                        Case gCstCodeChDataTypeValveExt
-
-                                            ''OUTPUT
-                                            With gudt.SetChInfo.udtChannel(i)
-                                                intFuNo = .ValveDiDoFuNo        ''Fu No
-                                                intPortNo = .ValveDiDoPortNo    ''Port No
-                                                intPin = .ValveDiDoPin          ''Pin
-                                            End With
-
-                                            If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And _
-                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And _
-                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
-
-                                                ''チャンネル構造体からFU構造体に情報を移す
-                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
-
-                                            End If
-
-                                    End Select
-
-                                Case gCstCodeChTypeComposite
-
-                                    ''各設定値が範囲内のものだけ追加する
-                                    If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And _
-                                       (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And _
-                                       (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
-
-                                        If .shtPinNo >= 0 Then
-                                            If .shtPin - 1 + .shtPinNo <= gCstCountFuPin Then
-                                                ''INPUT
-                                                For j = 0 To .shtPinNo - 1
-                                                    ''INPUT：チャンネル構造体からFU構造体に情報を移す
-                                                    Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin + j, j)
-                                                Next
-                                            End If
                                         End If
 
-                                    End If
+                                    Case gCstCodeChTypeValve
 
-                            End Select
+                                        ''各設定値が範囲内のものだけ追加する。
+                                        Select Case .shtData
+
+                                            Case gCstCodeChDataTypeValveDI_DO
+
+                                                ''INPUT
+                                                If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                               (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                               (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                                    If .shtPinNo >= 0 Then
+                                                        If .shtPin - 1 + .shtPinNo <= gCstCountFuPin Then
+                                                            For j = 0 To .shtPinNo - 1
+                                                                ''チャンネル構造体からFU構造体に情報を移す
+                                                                Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin + j, j)
+                                                            Next
+                                                        End If
+                                                    End If
+
+                                                End If
+
+                                                ''OUTPUT
+                                                With gudt.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveDiDoFuNo        ''Fu No
+                                                    intPortNo = .ValveDiDoPortNo    ''Port No
+                                                    intPin = .ValveDiDoPin          ''Pin
+                                                    intPinNo = .ValveDiDoPinNo      ''Pin No
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    If intPinNo >= 0 Then
+                                                        If intPin - 1 + intPinNo <= gCstCountFuPin Then
+                                                            For j = 0 To intPinNo - 1
+                                                                ''チャンネル構造体からFU構造体に情報を移す
+                                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
+                                                            Next
+                                                        End If
+                                                    End If
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveAI_DO1,
+                                             gCstCodeChDataTypeValveAI_DO2
+
+                                                ''INPUT
+                                                If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                               (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                               (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
+
+                                                End If
+
+                                                ''OUTPUT    
+                                                With gudt.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveAiDoFuNo        ''Fu No
+                                                    intPortNo = .ValveAiDoPortNo    ''Port No
+                                                    intPin = .ValveAiDoPin          ''Pin
+                                                    intPinNo = .ValveAiDoPinNo      ''Pin No
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    If intPinNo >= 0 Then
+                                                        If intPin - 1 + intPinNo <= gCstCountFuPin Then
+                                                            For j = 0 To intPinNo - 1
+                                                                ''チャンネル構造体からFU構造体に情報を移す
+                                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
+                                                            Next
+                                                        End If
+                                                    End If
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveAI_AO1,
+                                             gCstCodeChDataTypeValveAI_AO2
+
+                                                ''INPUT
+                                                If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                               (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                               (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
+
+                                                End If
+
+                                                ''OUTPUT
+                                                With gudt.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveAiAoFuNo        ''Fu No
+                                                    intPortNo = .ValveAiAoPortNo    ''Port No
+                                                    intPin = .ValveAiAoPin          ''Pin
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveAO_4_20
+
+                                                ''OUTPUT
+                                                With gudt.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveAiAoFuNo        ''Fu No
+                                                    intPortNo = .ValveAiAoPortNo    ''Port No
+                                                    intPin = .ValveAiAoPin          ''Pin
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveDO
+
+                                                ''OUTPUT
+                                                With gudt.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveDiDoFuNo        ''Fu No
+                                                    intPortNo = .ValveDiDoPortNo    ''Port No
+                                                    intPin = .ValveDiDoPin          ''Pin
+                                                    'Ver2.0.7.Z DOのPin数は１固定
+                                                    'intPinNo = .ValveDiDoPinNo      ''Pin No
+                                                    intPinNo = 1      ''Pin No
+                                                    '-
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    If intPinNo >= 0 Then
+                                                        If intPin - 1 + intPinNo <= gCstCountFuPin Then
+                                                            For j = 0 To intPinNo - 1 'Ver2.0.2.1 復活 Ver2.0.0.2 「-1」をDEL
+                                                                ''チャンネル構造体からFU構造体に情報を移す
+                                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
+                                                            Next
+                                                        End If
+                                                    End If
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveExt
+
+                                                ''OUTPUT
+                                                With gudt.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveDiDoFuNo        ''Fu No
+                                                    intPortNo = .ValveDiDoPortNo    ''Port No
+                                                    intPin = .ValveDiDoPin          ''Pin
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
+
+                                                End If
+
+                                        End Select
+
+                                    Case gCstCodeChTypeComposite
+
+                                        ''各設定値が範囲内のものだけ追加する
+                                        If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                       (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                       (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                            If .shtPinNo >= 0 Then
+                                                If .shtPin - 1 + .shtPinNo <= gCstCountFuPin Then
+                                                    ''INPUT
+                                                    For j = 0 To .shtPinNo - 1
+                                                        ''INPUT：チャンネル構造体からFU構造体に情報を移す
+                                                        Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin + j, j)
+                                                    Next
+                                                End If
+                                            End If
+
+                                        End If
+
+                                End Select
+                            End If
+
                         End If
 
-                    End If
+                    End With
+                Else
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
 
-                End With
+                        If .shtChno = 1401 Then
+                            Dim debuA As Integer = 0
+                        End If
+
+                        CHViewFlg = False
+                        bOutputFlg = False      '' Ver1.12.0.1 2017.01.13 追加
+
+                        Select Case .shtChType
+
+                            Case gCstCodeChTypeAnalog       'アナログ
+
+                                '' Ver1.11.1 2016.07.12 緯度・経度追加
+                                If .shtData = gCstCodeChDataTypeAnalogModbus Or .shtData = gCstCodeChDataTypeAnalogExtDev _
+                                       Or .shtData = gCstCodeChDataTypeAnalogExhAve Or .shtData = gCstCodeChDataTypeAnalogExhRepose Or .shtData = gCstCodeChDataTypeAnalogJacom Or
+                                       .shtData = gCstCodeChDataTypeAnalogLatitude Or .shtData = gCstCodeChDataTypeAnalogLongitude Or .shtData = gCstCodeChDataTypeAnalogJacom55 Then
+                                    CHViewFlg = True
+                                End If
+
+                            Case gCstCodeChTypeDigital      'デジタル
+
+                                '' Ver1.12.0.1 2017.01.13  JACOM CHの場合はOutputﾃｰﾌﾞﾙ設定有無を確認
+                                If .shtData = gCstCodeChDataTypeDigitalJacomNC Or .shtData = gCstCodeChDataTypeDigitalJacomNO Or
+                                   .shtData = gCstCodeChDataTypeDigitalJacom55NC Or .shtData = gCstCodeChDataTypeDigitalJacom55NO Then
+                                    bOutputFlg = ChkOutputCH(._shtChno, bytFUNo, bytPortNo, bytPinNo)
+                                    If bOutputFlg = False Then
+                                        CHViewFlg = True
+                                    End If
+                                Else
+                                    ''If .shtData = gCstCodeChDataTypeDigitalDeviceStatus Or .shtData = gCstCodeChDataTypeDigitalJacomNC _
+                                    ''      Or .shtData = gCstCodeChDataTypeDigitalJacomNO Or .shtData = gCstCodeChDataTypeDigitalModbusNC Or .shtData = gCstCodeChDataTypeDigitalModbusNO Then
+                                    If .shtData = gCstCodeChDataTypeDigitalDeviceStatus Or
+                                          .shtData = gCstCodeChDataTypeDigitalModbusNC Or .shtData = gCstCodeChDataTypeDigitalModbusNO Then
+                                        CHViewFlg = True
+                                    End If
+                                End If
+
+                            Case gCstCodeChTypeMotor        'モーター
+
+                                'Ver2.0.7.S JACOMより大きい＝通信CHは非表示
+                                'If .shtData = gCstCodeChDataTypeMotorDeviceJacom Then
+                                If .shtData >= gCstCodeChDataTypeMotorDeviceJacom Then
+                                    CHViewFlg = True
+                                End If '' Ver1.12.0.1 2017.01.13  JACOM CHの場合はOutputﾃｰﾌﾞﾙ設定有無を確認
+                                If (.shtData = gCstCodeChDataTypeMotorDeviceJacom) Or
+                                   (.shtData = gCstCodeChDataTypeMotorDeviceJacom55) Then
+                                    bOutputFlg = ChkOutputCH(._shtChno, bytFUNo, bytPortNo, bytPinNo)
+                                    If bOutputFlg = False Then
+                                        CHViewFlg = True
+                                    Else
+                                        'Ver2.0.2.7 OUTPUTテーブルがあるときは印刷
+                                        CHViewFlg = False
+                                    End If
+                                End If
+
+                            Case gCstCodeChTypeValve        'バルブ
+
+                                If .shtData = gCstCodeChDataTypeValveJacom Or .shtData = gCstCodeChDataTypeValveJacom55 Then
+                                    CHViewFlg = True
+                                End If
+
+                            Case gCstCodeChTypeComposite    'コンポジット
+
+                            '処理無し
+
+                            Case gCstCodeChTypePulse        'パルス
+
+                                '' Ver1.11.8.3 2016.11.08 運転積算 通信CH追加
+                                '' Ver1.12.0.1 2017.01.13 運転積算種類追加
+                                If .shtData = gCstCodeChDataTypePulseExtDev Or
+                                    .shtData = gCstCodeChDataTypePulseRevoExtDev Or .shtData = gCstCodeChDataTypePulseRevoExtDevTotalMin Or
+                                    .shtData = gCstCodeChDataTypePulseRevoExtDevDayHour Or .shtData = gCstCodeChDataTypePulseRevoExtDevDayMin Or
+                                    .shtData = gCstCodeChDataTypePulseRevoExtDevLapHour Or .shtData = gCstCodeChDataTypePulseRevoExtDevLapMin Then
+                                    CHViewFlg = True
+                                End If
+
+                            Case Else
+
+                                '処理無し
+                        End Select
+
+                        If CHViewFlg = False Then
+
+                            '' Ver1.12.0.1 2017.01.13  Outputﾃｰﾌﾞﾙ設定時 (JACOM出力用)
+                            If bOutputFlg = True Then
+                                If udtFuInfo(bytFUNo).udtFuPort(bytPortNo - 1).udtFuPin(bytPinNo - 1).strStatus = "" Then
+                                    Call mGetFuInfoStatus(udtFuInfo(bytFUNo).udtFuPort(bytPortNo - 1).udtFuPin(bytPinNo - 1),
+                                                  i, .shtChType, 1, True, False)
+                                End If
+                            Else
+                                Select Case .shtChType
+
+                                    Case gCstCodeChTypeAnalog,
+                                         gCstCodeChTypeDigital,
+                                         gCstCodeChTypePulse, gCstCodeChTypePID 'Ver2.0.7.H PID対応
+
+                                        ''各設定値が範囲内のものだけ追加する
+                                        If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                           (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                           (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                            ''INPUT：チャンネル構造体からFU構造体に情報を移す
+                                            Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
+
+                                        End If
+
+                                    Case gCstCodeChTypeMotor
+
+                                        ''各設定値が範囲内のものだけ追加する
+                                        If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                           (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                           (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                            ''INPUT
+                                            'Ver2.0.0.2 モーター種別増加 R Device ADD
+                                            If (.shtData = gCstCodeChDataTypeMotorDevice Or .shtData = gCstCodeChDataTypeMotorRDevice) And
+                                               (.shtStatus = gCstCodeChManualInputStatus) Then
+
+                                                ''機器運転かつ手入力の時
+                                                Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
+
+                                            Else
+
+                                                If .shtPinNo >= 0 Then
+                                                    If .shtPin - 1 + .shtPinNo <= gCstCountFuPin Then
+                                                        For j = 0 To .shtPinNo - 1
+                                                            ''チャンネル構造体からFU構造体に情報を移す
+                                                            Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin + j, j)
+                                                        Next
+                                                    End If
+                                                End If
+
+                                            End If
+
+                                            ''OUTPUT
+                                            With gudt2.SetChInfo.udtChannel(i)
+                                                intFuNo = .MotorFuNo        ''Fu No
+                                                intPortNo = .MotorPortNo    ''Port No
+                                                intPin = .MotorPin          ''Pin
+                                                intPinNo = .MotorPinNo      ''Pin No
+                                            End With
+
+                                            If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                               (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                               (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                If intPinNo >= 0 Then
+                                                    If intPin - 1 + intPinNo <= gCstCountFuPin Then
+                                                        For j = 0 To intPinNo - 1
+                                                            ''チャンネル構造体からFU構造体に情報を移す
+                                                            Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
+                                                        Next
+                                                    End If
+                                                End If
+
+                                            End If
+
+                                        End If
+
+                                    Case gCstCodeChTypeValve
+
+                                        ''各設定値が範囲内のものだけ追加する。
+                                        Select Case .shtData
+
+                                            Case gCstCodeChDataTypeValveDI_DO
+
+                                                ''INPUT
+                                                If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                                   (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                                   (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                                    If .shtPinNo >= 0 Then
+                                                        If .shtPin - 1 + .shtPinNo <= gCstCountFuPin Then
+                                                            For j = 0 To .shtPinNo - 1
+                                                                ''チャンネル構造体からFU構造体に情報を移す
+                                                                Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin + j, j)
+                                                            Next
+                                                        End If
+                                                    End If
+
+                                                End If
+
+                                                ''OUTPUT
+                                                With gudt2.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveDiDoFuNo        ''Fu No
+                                                    intPortNo = .ValveDiDoPortNo    ''Port No
+                                                    intPin = .ValveDiDoPin          ''Pin
+                                                    intPinNo = .ValveDiDoPinNo      ''Pin No
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                                   (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                                   (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    If intPinNo >= 0 Then
+                                                        If intPin - 1 + intPinNo <= gCstCountFuPin Then
+                                                            For j = 0 To intPinNo - 1
+                                                                ''チャンネル構造体からFU構造体に情報を移す
+                                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
+                                                            Next
+                                                        End If
+                                                    End If
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveAI_DO1,
+                                                 gCstCodeChDataTypeValveAI_DO2
+
+                                                ''INPUT
+                                                If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                                   (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                                   (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
+
+                                                End If
+
+                                                ''OUTPUT    
+                                                With gudt2.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveAiDoFuNo        ''Fu No
+                                                    intPortNo = .ValveAiDoPortNo    ''Port No
+                                                    intPin = .ValveAiDoPin          ''Pin
+                                                    intPinNo = .ValveAiDoPinNo      ''Pin No
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                                   (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                                   (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    If intPinNo >= 0 Then
+                                                        If intPin - 1 + intPinNo <= gCstCountFuPin Then
+                                                            For j = 0 To intPinNo - 1
+                                                                ''チャンネル構造体からFU構造体に情報を移す
+                                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
+                                                            Next
+                                                        End If
+                                                    End If
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveAI_AO1,
+                                                 gCstCodeChDataTypeValveAI_AO2
+
+                                                ''INPUT
+                                                If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                                   (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                                   (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin)
+
+                                                End If
+
+                                                ''OUTPUT
+                                                With gudt2.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveAiAoFuNo        ''Fu No
+                                                    intPortNo = .ValveAiAoPortNo    ''Port No
+                                                    intPin = .ValveAiAoPin          ''Pin
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                                   (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                                   (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveAO_4_20
+
+                                                ''OUTPUT
+                                                With gudt2.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveAiAoFuNo        ''Fu No
+                                                    intPortNo = .ValveAiAoPortNo    ''Port No
+                                                    intPin = .ValveAiAoPin          ''Pin
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                                   (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                                   (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveDO
+
+                                                ''OUTPUT
+                                                With gudt2.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveDiDoFuNo        ''Fu No
+                                                    intPortNo = .ValveDiDoPortNo    ''Port No
+                                                    intPin = .ValveDiDoPin          ''Pin
+                                                    'Ver2.0.7.Z DOのPin数は１固定
+                                                    'intPinNo = .ValveDiDoPinNo      ''Pin No
+                                                    intPinNo = 1      ''Pin No
+                                                    '-
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                                   (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                                   (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    If intPinNo >= 0 Then
+                                                        If intPin - 1 + intPinNo <= gCstCountFuPin Then
+                                                            For j = 0 To intPinNo - 1 'Ver2.0.2.1 復活 Ver2.0.0.2 「-1」をDEL
+                                                                ''チャンネル構造体からFU構造体に情報を移す
+                                                                Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin + j, j, False)
+                                                            Next
+                                                        End If
+                                                    End If
+
+                                                End If
+
+                                            Case gCstCodeChDataTypeValveExt
+
+                                                ''OUTPUT
+                                                With gudt2.SetChInfo.udtChannel(i)
+                                                    intFuNo = .ValveDiDoFuNo        ''Fu No
+                                                    intPortNo = .ValveDiDoPortNo    ''Port No
+                                                    intPin = .ValveDiDoPin          ''Pin
+                                                End With
+
+                                                If (intFuNo >= 0 And intFuNo <= gCstCountFuNo - 1) And
+                                                   (intPortNo >= 1 And intPortNo <= gCstCountFuPort) And
+                                                   (intPin >= 1 And intPin <= gCstCountFuPin) Then
+
+                                                    ''チャンネル構造体からFU構造体に情報を移す
+                                                    Call mSetFuInfoChData(udtFuInfo, i, intFuNo, intPortNo, intPin, intLoopNothing, False)
+
+                                                End If
+
+                                        End Select
+
+                                    Case gCstCodeChTypeComposite
+
+                                        ''各設定値が範囲内のものだけ追加する
+                                        If (.shtFuno >= 0 And .shtFuno <= gCstCountFuNo - 1) And
+                                           (.shtPortno >= 1 And .shtPortno <= gCstCountFuPort) And
+                                           (.shtPin >= 1 And .shtPin <= gCstCountFuPin) Then
+
+                                            If .shtPinNo >= 0 Then
+                                                If .shtPin - 1 + .shtPinNo <= gCstCountFuPin Then
+                                                    ''INPUT
+                                                    For j = 0 To .shtPinNo - 1
+                                                        ''INPUT：チャンネル構造体からFU構造体に情報を移す
+                                                        Call mSetFuInfoChData(udtFuInfo, i, .shtFuno, .shtPortno, .shtPin + j, j)
+                                                    Next
+                                                End If
+                                            End If
+
+                                        End If
+
+                                End Select
+                            End If
+
+                        End If
+
+                    End With
+                End If
 
             Next x
 
@@ -5608,98 +6279,192 @@ Module modCommon
                           Optional ByVal blnInputProcess As Boolean = True)
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''Port種別
+                udtFuInfo(intFuNo).udtFuPort(intPortno - 1).intPortType = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
 
-            ''Port種別
-            udtFuInfo(intFuNo).udtFuPort(intPortno - 1).intPortType = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
+                ''端子台種別
+                udtFuInfo(intFuNo).udtFuPort(intPortno - 1).intTerinf = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
 
-            ''端子台種別
-            udtFuInfo(intFuNo).udtFuPort(intPortno - 1).intTerinf = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
+                With udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1)
 
-            With udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1)
+                    ''ChNO
+                    Select Case gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytType
+                        Case gCstCodeFuOutputChTypeCh
 
-                ''ChNO
-                Select Case gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytType
-                    Case gCstCodeFuOutputChTypeCh
+                            ''ChNO
+                            .strChNo = gConvNullToZero(gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).shtChid).ToString("0000")
 
-                        ''ChNO
-                        .strChNo = gConvNullToZero(gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).shtChid).ToString("0000")
+                        Case gCstCodeFuOutputChTypeOr
+                            ''印刷表示用
+                            .strChNo = " OR "
 
-                    Case gCstCodeFuOutputChTypeOr
-                        ''印刷表示用
-                        .strChNo = " OR "
+                        Case gCstCodeFuOutputChTypeAnd
+                            .strChNo = "AND "
 
-                    Case gCstCodeFuOutputChTypeAnd
-                        .strChNo = "AND "
+                    End Select
 
-                End Select
+                    ''出力設定
+                    .bytOutput = gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytOutput
+                    .bytOutStatus = gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytStatus
+                    .intOutMask = gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).shtMask
 
-                ''出力設定
-                .bytOutput = gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytOutput
-                .bytOutStatus = gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytStatus
-                .intOutMask = gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).shtMask
-
-                ''------------------------------------------------------------
-                '' 出力チャンネルのTYPE：論理出力(AND/OR)チャネル時の処理
-                ''------------------------------------------------------------
-                If gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytType = gCstCodeFuOutputChTypeOr Or _
+                    ''------------------------------------------------------------
+                    '' 出力チャンネルのTYPE：論理出力(AND/OR)チャネル時の処理
+                    ''------------------------------------------------------------
+                    If gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytType = gCstCodeFuOutputChTypeOr Or
                    gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).bytType = gCstCodeFuOutputChTypeAnd Then
 
-                    .strItemName = mSetFuInfoChOutputItemName(gudt.SetChAndOr, gudt.SetChOutput.udtCHOutPut(intChoutputChIndex))
-                    .strStatus = ""
+                        .strItemName = mSetFuInfoChOutputItemName(gudt.SetChAndOr, gudt.SetChOutput.udtCHOutPut(intChoutputChIndex))
+                        .strStatus = ""
 
-                    ' 2015.11.07  Outputﾀｲﾌﾟ
-                    ' ''Public Const gCstCodeFuOutputTypeInvalid As Integer = 0
-                    ' ''Public Const gCstCodeFuOutputTypeAlmFtLt As Integer = 1
-                    ' ''Public Const gCstCodeFuOutputTypeAlmFt__ As Integer = 2
-                    ' ''Public Const gCstCodeFuOutputTypeAlm__LT As Integer = 3
-                    ' ''Public Const gCstCodeFuOutputTypeAlm____ As Integer = 4
-                    ' ''Public Const gCstCodeFuOutputTypeCh____ As Integer = 5
-                    ' ''Public Const gCstCodeFuOutputTypeRun__LT As Integer = 6
+                        ' 2015.11.07  Outputﾀｲﾌﾟ
+                        ' ''Public Const gCstCodeFuOutputTypeInvalid As Integer = 0
+                        ' ''Public Const gCstCodeFuOutputTypeAlmFtLt As Integer = 1
+                        ' ''Public Const gCstCodeFuOutputTypeAlmFt__ As Integer = 2
+                        ' ''Public Const gCstCodeFuOutputTypeAlm__LT As Integer = 3
+                        ' ''Public Const gCstCodeFuOutputTypeAlm____ As Integer = 4
+                        ' ''Public Const gCstCodeFuOutputTypeCh____ As Integer = 5
+                        ' ''Public Const gCstCodeFuOutputTypeRun__LT As Integer = 6
 
-                Else
+                    Else
 
-                    ''--------------------------------------------
-                    '' 出力チャンネルのTYPE：CHデータ時の処理
-                    ''--------------------------------------------
-                    .strItemName = mSetFuInfoChOutputItemName(gudt.SetChAndOr, gudt.SetChOutput.udtCHOutPut(intChoutputChIndex))
+                        ''--------------------------------------------
+                        '' 出力チャンネルのTYPE：CHデータ時の処理
+                        ''--------------------------------------------
+                        .strItemName = mSetFuInfoChOutputItemName(gudt.SetChAndOr, gudt.SetChOutput.udtCHOutPut(intChoutputChIndex))
 
-                    ''出力チャンネルのチャンネル番号から、チャンネルデータの該当Indexを取得
-                    Dim intChinfoChIndex As Integer = mGetChIndex(gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).shtChid)
+                        ''出力チャンネルのチャンネル番号から、チャンネルデータの該当Indexを取得
+                        Dim intChinfoChIndex As Integer = mGetChIndex(gudt.SetChOutput.udtCHOutPut(intChoutputChIndex).shtChid)
 
-                    If intChinfoChIndex <> -1 Then
+                        If intChinfoChIndex <> -1 Then
 
-                        .blnChComDmy = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtFlag1, 0), 1, 0)
-                        .blnChComSc = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtFlag1, 1), 1, 0)
-                        .strGroupNo = gGetString(gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtGroupNo)
-                        .intChType = gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtChType
-                        .intDataType = gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtData  ''データ種別　ver.1.4.0 2011.08.17
-                        .intSignal = gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtSignal  ''入力信号　　ver.1.4.0 2011.08.17
+                            .blnChComDmy = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtFlag1, 0), 1, 0)
+                            .blnChComSc = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+                            .strGroupNo = gGetString(gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtGroupNo)
+                            .intChType = gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtChType
+                            .intDataType = gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtData  ''データ種別　ver.1.4.0 2011.08.17
+                            .intSignal = gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtSignal  ''入力信号　　ver.1.4.0 2011.08.17
 
-                        ''ステータス種別（.strStatus：コードを名称に変換）
-                        Call mGetFuInfoStatus(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1), _
-                                              intChinfoChIndex, _
-                                              gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtChType, _
-                                              intLoopCnt, _
-                                              blnInputProcess, _
+                            ''ステータス種別（.strStatus：コードを名称に変換）
+                            Call mGetFuInfoStatus(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1),
+                                              intChinfoChIndex,
+                                              gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtChType,
+                                              intLoopCnt,
+                                              blnInputProcess,
                                               True)
-                        ''レンジ設定　
-                        Call mGetFuInfoRange(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1), intChinfoChIndex)
+                            ''レンジ設定　
+                            Call mGetFuInfoRange(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1), intChinfoChIndex)
 
-                        '' Ver1.9.3 2016.01.16  出力ｽﾃｰﾀｽ名称追加
-                        .strOutStatus = GetOutStatus(gudt.SetChInfo.udtChannel(intChinfoChIndex), _
+                            '' Ver1.9.3 2016.01.16  出力ｽﾃｰﾀｽ名称追加
+                            .strOutStatus = GetOutStatus(gudt.SetChInfo.udtChannel(intChinfoChIndex),
                                              .bytOutput, .bytOutStatus, .intOutMask)
+
+                        End If
 
                     End If
 
-                End If
-
-                ''計測点詳細情報（CableMark1, CableMark2, Core1, Core2, Dist）
-                Call mGetFuInfoSlotInfo(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1), _
-                                        intFuNo, _
-                                        intPortno, _
+                    ''計測点詳細情報（CableMark1, CableMark2, Core1, Core2, Dist）
+                    Call mGetFuInfoSlotInfo(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1),
+                                        intFuNo,
+                                        intPortno,
                                         intPin)
 
-            End With
+                End With
+            Else
+                ''Port種別
+                udtFuInfo(intFuNo).udtFuPort(intPortno - 1).intPortType = gudt2.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
+
+                ''端子台種別
+                udtFuInfo(intFuNo).udtFuPort(intPortno - 1).intTerinf = gudt2.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
+
+                With udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1)
+
+                    ''ChNO
+                    Select Case gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex).bytType
+                        Case gCstCodeFuOutputChTypeCh
+
+                            ''ChNO
+                            .strChNo = gConvNullToZero(gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex).shtChid).ToString("0000")
+
+                        Case gCstCodeFuOutputChTypeOr
+                            ''印刷表示用
+                            .strChNo = " OR "
+
+                        Case gCstCodeFuOutputChTypeAnd
+                            .strChNo = "AND "
+
+                    End Select
+
+                    ''出力設定
+                    .bytOutput = gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex).bytOutput
+                    .bytOutStatus = gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex).bytStatus
+                    .intOutMask = gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex).shtMask
+
+                    ''------------------------------------------------------------
+                    '' 出力チャンネルのTYPE：論理出力(AND/OR)チャネル時の処理
+                    ''------------------------------------------------------------
+                    If gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex).bytType = gCstCodeFuOutputChTypeOr Or
+                       gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex).bytType = gCstCodeFuOutputChTypeAnd Then
+
+                        .strItemName = mSetFuInfoChOutputItemName(gudt2.SetChAndOr, gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex))
+                        .strStatus = ""
+
+                        ' 2015.11.07  Outputﾀｲﾌﾟ
+                        ' ''Public Const gCstCodeFuOutputTypeInvalid As Integer = 0
+                        ' ''Public Const gCstCodeFuOutputTypeAlmFtLt As Integer = 1
+                        ' ''Public Const gCstCodeFuOutputTypeAlmFt__ As Integer = 2
+                        ' ''Public Const gCstCodeFuOutputTypeAlm__LT As Integer = 3
+                        ' ''Public Const gCstCodeFuOutputTypeAlm____ As Integer = 4
+                        ' ''Public Const gCstCodeFuOutputTypeCh____ As Integer = 5
+                        ' ''Public Const gCstCodeFuOutputTypeRun__LT As Integer = 6
+
+                    Else
+
+                        ''--------------------------------------------
+                        '' 出力チャンネルのTYPE：CHデータ時の処理
+                        ''--------------------------------------------
+                        .strItemName = mSetFuInfoChOutputItemName(gudt2.SetChAndOr, gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex))
+
+                        ''出力チャンネルのチャンネル番号から、チャンネルデータの該当Indexを取得
+                        Dim intChinfoChIndex As Integer = mGetChIndex(gudt2.SetChOutput.udtCHOutPut(intChoutputChIndex).shtChid)
+
+                        If intChinfoChIndex <> -1 Then
+
+                            .blnChComDmy = IIf(gBitCheck(gudt2.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtFlag1, 0), 1, 0)
+                            .blnChComSc = IIf(gBitCheck(gudt2.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+                            .strGroupNo = gGetString(gudt2.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtGroupNo)
+                            .intChType = gudt2.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtChType
+                            .intDataType = gudt2.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtData  ''データ種別　ver.1.4.0 2011.08.17
+                            .intSignal = gudt2.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtSignal  ''入力信号　　ver.1.4.0 2011.08.17
+
+                            ''ステータス種別（.strStatus：コードを名称に変換）
+                            Call mGetFuInfoStatus(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1),
+                                                  intChinfoChIndex,
+                                                  gudt2.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.shtChType,
+                                                  intLoopCnt,
+                                                  blnInputProcess,
+                                                  True)
+                            ''レンジ設定　
+                            Call mGetFuInfoRange(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1), intChinfoChIndex)
+
+                            '' Ver1.9.3 2016.01.16  出力ｽﾃｰﾀｽ名称追加
+                            .strOutStatus = GetOutStatus(gudt2.SetChInfo.udtChannel(intChinfoChIndex),
+                                                 .bytOutput, .bytOutStatus, .intOutMask)
+
+                        End If
+
+                    End If
+
+                    ''計測点詳細情報（CableMark1, CableMark2, Core1, Core2, Dist）
+                    Call mGetFuInfoSlotInfo(udtFuInfo(intFuNo).udtFuPort(intPortno - 1).udtFuPin(intPin - 1),
+                                            intFuNo,
+                                            intPortno,
+                                            intPin)
+
+                End With
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -6127,24 +6892,44 @@ Module modCommon
 
             ''チャンネルNOが0の時は処理を抜ける
             If intChNo = 0 Then Exit Function
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        If .shtChno = intChNo Then
 
-                    If .shtChno = intChNo Then
+                            ''チャンネルデータのIndexを取得
+                            intLoopCnt = i
 
-                        ''チャンネルデータのIndexを取得
-                        intLoopCnt = i
+                            ''一致したら処理を抜ける
+                            Exit For
 
-                        ''一致したら処理を抜ける
-                        Exit For
+                        End If
 
-                    End If
+                    End With
 
-                End With
+                Next
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
 
-            Next
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        If .shtChno = intChNo Then
+
+                            ''チャンネルデータのIndexを取得
+                            intLoopCnt = i
+
+                            ''一致したら処理を抜ける
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
 
             Return intLoopCnt
 
@@ -6169,23 +6954,40 @@ Module modCommon
             If intChNo = 0 Then Return 0
 
             Dim shtLoopIndex As Short = -1
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        If .shtChno = intChNo Then
 
-                    If .shtChno = intChNo Then
+                            shtLoopIndex = i
 
-                        shtLoopIndex = i
+                            Exit For
 
-                        Exit For
+                        End If
 
-                    End If
+                    End With
 
-                End With
+                Next
+            Else
+                For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
 
-            Next
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
 
+                        If .shtChno = intChNo Then
+
+                            shtLoopIndex = i
+
+                            Exit For
+
+                        End If
+
+                    End With
+
+                Next
+            End If
             Return shtLoopIndex
 
         Catch ex As Exception
@@ -6225,60 +7027,116 @@ Module modCommon
                 '' ※論理出力構造体から該当チャンネル番号を取得し、ItemName文字列を作成する
                 ''------------------------------------------------------------------------
                 intChIndex = hudtSetChOutput.shtChid - 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    With gudt.SetChOutput.udtCHOutPut(intChIndex)
 
-                With gudt.SetChOutput.udtCHOutPut(intChIndex)
+                        ''スタートCH番号を取得する
+                        strChStart = gGet2Byte(hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr(0).shtChid)
 
-                    ''スタートCH番号を取得する
-                    strChStart = gGet2Byte(hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr(0).shtChid)
+                        ''ItemName文字列を作成する際の終了CH番号を取得する
+                        For j = 0 To UBound(hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr)
 
-                    ''ItemName文字列を作成する際の終了CH番号を取得する
-                    For j = 0 To UBound(hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr)
+                            With hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr(j)
 
-                        With hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr(j)
+                                If gGet2Byte(.shtChid) <> 0 Then strChEnd = gGet2Byte(.shtChid)
 
-                            If gGet2Byte(.shtChid) <> 0 Then strChEnd = gGet2Byte(.shtChid)
+                                '' Ver1.9.3 2016.01.16 追加
+                                intCH = gGet2Byte(.shtChid)
+                                If intCH <> 0 Then
+                                    If intPreCH = 0 Then        '' 最初のﾃﾞｰﾀ
+                                        If intCH < 1000 Then
+                                            strTemp = intCH.ToString("0000")
+                                        Else
+                                            strTemp = intCH.ToString
+                                        End If
 
-                            '' Ver1.9.3 2016.01.16 追加
-                            intCH = gGet2Byte(.shtChid)
-                            If intCH <> 0 Then
-                                If intPreCH = 0 Then        '' 最初のﾃﾞｰﾀ
-                                    If intCH < 1000 Then
-                                        strTemp = intCH.ToString("0000")
+                                    ElseIf CInt(intPreCH / 100) = CInt(intCH / 100) Then     '' 
+                                        If intCH < 1000 Then
+                                            strTemp = strTemp & "/" & intCH.ToString.Substring(1)
+                                        Else
+                                            strTemp = strTemp & "/" & intCH.ToString.Substring(2)
+                                        End If
                                     Else
-                                        strTemp = intCH.ToString
+                                        If intCH < 1000 Then
+                                            strTemp = strTemp & "/" & intCH.ToString("0000")
+                                        Else
+                                            strTemp = strTemp & "/" & intCH.ToString
+                                        End If
                                     End If
-
-                                ElseIf CInt(intPreCH / 100) = CInt(intCH / 100) Then     '' 
-                                    If intCH < 1000 Then
-                                        strTemp = strTemp & "/" & intCH.ToString.Substring(1)
-                                    Else
-                                        strTemp = strTemp & "/" & intCH.ToString.Substring(2)
-                                    End If
-                                Else
-                                    If intCH < 1000 Then
-                                        strTemp = strTemp & "/" & intCH.ToString("0000")
-                                    Else
-                                        strTemp = strTemp & "/" & intCH.ToString
-                                    End If
+                                    intPreCH = intCH
                                 End If
-                                intPreCH = intCH
-                            End If
-                            ''//
+                                ''//
 
-                        End With
+                            End With
 
-                    Next
+                        Next
 
-                    '' Ver1.9.3 2016.01.29  CHOR のCH番号表示　先頭と最終のみ表示する方法にて保留
-                    ''If LenB(strTemp) > 30 Then
-                    ''ItemName文字列の作成
-                    strRtn = "CH No." & strChStart & " - CH No." & strChEnd
-                    ''Else
-                    ''strRtn = "CH" & strTemp
-                    ''End If
+                        '' Ver1.9.3 2016.01.29  CHOR のCH番号表示　先頭と最終のみ表示する方法にて保留
+                        ''If LenB(strTemp) > 30 Then
+                        ''ItemName文字列の作成
+                        strRtn = "CH No." & strChStart & " - CH No." & strChEnd
+                        ''Else
+                        ''strRtn = "CH" & strTemp
+                        ''End If
 
 
-                End With
+                    End With
+                Else
+                    With gudt2.SetChOutput.udtCHOutPut(intChIndex)
+
+                        ''スタートCH番号を取得する
+                        strChStart = gGet2Byte(hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr(0).shtChid)
+
+                        ''ItemName文字列を作成する際の終了CH番号を取得する
+                        For j = 0 To UBound(hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr)
+
+                            With hudtSetChAndOr.udtCHOut(intChIndex).udtCHAndOr(j)
+
+                                If gGet2Byte(.shtChid) <> 0 Then strChEnd = gGet2Byte(.shtChid)
+
+                                '' Ver1.9.3 2016.01.16 追加
+                                intCH = gGet2Byte(.shtChid)
+                                If intCH <> 0 Then
+                                    If intPreCH = 0 Then        '' 最初のﾃﾞｰﾀ
+                                        If intCH < 1000 Then
+                                            strTemp = intCH.ToString("0000")
+                                        Else
+                                            strTemp = intCH.ToString
+                                        End If
+
+                                    ElseIf CInt(intPreCH / 100) = CInt(intCH / 100) Then     '' 
+                                        If intCH < 1000 Then
+                                            strTemp = strTemp & "/" & intCH.ToString.Substring(1)
+                                        Else
+                                            strTemp = strTemp & "/" & intCH.ToString.Substring(2)
+                                        End If
+                                    Else
+                                        If intCH < 1000 Then
+                                            strTemp = strTemp & "/" & intCH.ToString("0000")
+                                        Else
+                                            strTemp = strTemp & "/" & intCH.ToString
+                                        End If
+                                    End If
+                                    intPreCH = intCH
+                                End If
+                                ''//
+
+                            End With
+
+                        Next
+
+                        '' Ver1.9.3 2016.01.29  CHOR のCH番号表示　先頭と最終のみ表示する方法にて保留
+                        ''If LenB(strTemp) > 30 Then
+                        ''ItemName文字列の作成
+                        strRtn = "CH No." & strChStart & " - CH No." & strChEnd
+                        ''Else
+                        ''strRtn = "CH" & strTemp
+                        ''End If
+
+
+                    End With
+                End If
 
             Else
 
@@ -6288,11 +7146,20 @@ Module modCommon
                 ''------------------------------------------------------------------------
                 ''出力チャンネルのチャンネル番号から、チャンネルデータの該当Indexを取得する
                 intChinfoChIndex = mGetChIndex(hudtSetChOutput.shtChid)
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    If intChinfoChIndex <> -1 Then
 
-                If intChinfoChIndex <> -1 Then
+                        strRtn = gGetString(gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.strChitem)
 
-                    strRtn = gGetString(gudt.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.strChitem)
+                    End If
+                Else
+                    'FCU1が選択されている場合
+                    If intChinfoChIndex <> -1 Then
 
+                        strRtn = gGetString(gudt2.SetChInfo.udtChannel(intChinfoChIndex).udtChCommon.strChitem)
+
+                    End If
                 End If
 
             End If
@@ -6334,189 +7201,375 @@ Module modCommon
         Try
 
             Dim RH_flg As Integer = 0
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''運転積算は2CH目の設定とする  2013.11.23
+                ''パルス積算CHの場合
+                If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType = gCstCodeChTypePulse Then
 
-            ''運転積算は2CH目の設定とする  2013.11.23
-            ''パルス積算CHの場合
-            If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType = gCstCodeChTypePulse Then
+                    ''データ種別が運転積算の場合
+                    '' Ver1.11.8.3 2016.11.08  運転積算 通信CH追加
+                    'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoTotalHour _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoTotalMin _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoDayHour _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoDayMin _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoLapHour _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoLapMin _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoExtDev Then
+                    '' Ver1.12.0.1 2017.01.13 関数に変更
+                    If gChkRunHourCH(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon._shtChno) Then
+                        RH_flg = 1  ' 運転積算CH
+                    End If
 
-                ''データ種別が運転積算の場合
-                '' Ver1.11.8.3 2016.11.08  運転積算 通信CH追加
-                'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoTotalHour _
-                'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoTotalMin _
-                'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoDayHour _
-                'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoDayMin _
-                'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoLapHour _
-                'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoLapMin _
-                'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoExtDev Then
-                '' Ver1.12.0.1 2017.01.13 関数に変更
-                If gChkRunHourCH(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon._shtChno) Then
-                    RH_flg = 1  ' 運転積算CH
                 End If
+            Else
+                If gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType = gCstCodeChTypePulse Then
 
+                    ''データ種別が運転積算の場合
+                    '' Ver1.11.8.3 2016.11.08  運転積算 通信CH追加
+                    'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoTotalHour _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoTotalMin _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoDayHour _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoDayMin _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoLapHour _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoLapMin _
+                    'Or gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData = gCstCodeChDataTypePulseRevoExtDev Then
+                    '' Ver1.12.0.1 2017.01.13 関数に変更
+                    If gChkRunHourCH(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon._shtChno) Then
+                        RH_flg = 1  ' 運転積算CH
+                    End If
+
+                End If
             End If
 
-            With udtFuInfo(intFuNo).udtFuPort(intPortno - 1)
-                ' 1CHにしか対応していない為、既にCH設定されていない場合のみ　ver.1.4.0 2011.08.17
-                If .udtFuPin(intPin - 1).strChNo = "" And RH_flg = 0 Then   '' 運転積算は2CH目の設定とする  2013.11.23
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                With udtFuInfo(intFuNo).udtFuPort(intPortno - 1)
+                    ' 1CHにしか対応していない為、既にCH設定されていない場合のみ　ver.1.4.0 2011.08.17
+                    If .udtFuPin(intPin - 1).strChNo = "" And RH_flg = 0 Then   '' 運転積算は2CH目の設定とする  2013.11.23
 
-                    '' 運転積算CH設定済で対象CHが隠しCHの場合はCH番号のみセット 2015.04.23
-                    If .udtFuPin(intPin - 1).strChNo2 <> "" And gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1) = True Then
-                        ''チャンネル番号
-                        ''.udtFuPin(intPin - 1).strChNo = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
-                    Else
+                        '' 運転積算CH設定済で対象CHが隠しCHの場合はCH番号のみセット 2015.04.23
+                        If .udtFuPin(intPin - 1).strChNo2 <> "" And gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1) = True Then
+                            ''チャンネル番号
+                            ''.udtFuPin(intPin - 1).strChNo = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
+                        Else
 
-                        ''ダミーフラグ
-                        .udtFuPin(intPin - 1).blnChComDmy = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 0), 1, 0)
+                            ''ダミーフラグ
+                            .udtFuPin(intPin - 1).blnChComDmy = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 0), 1, 0)
 
-                        ''SCフラグ
-                        .udtFuPin(intPin - 1).blnChComSc = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
-                        'Ver2.0.2.6
-                        .udtFuPin(intPin - 1).blnChComSc2 = False
-                        .udtFuPin(intPin - 1).blnChComSc3 = False
+                            ''SCフラグ
+                            .udtFuPin(intPin - 1).blnChComSc = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+                            'Ver2.0.2.6
+                            .udtFuPin(intPin - 1).blnChComSc2 = False
+                            .udtFuPin(intPin - 1).blnChComSc3 = False
 
 
+                            ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                            If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                                ''チャンネル番号
+                                .udtFuPin(intPin - 1).strChNo = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
+                            Else
+                                .udtFuPin(intPin - 1).strChNo = GetTagNo(gudt.SetChInfo.udtChannel(intChIndex))
+                            End If
+
+                            '' 2015.10.16  ﾀｸﾞ表示強制
+                            'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Length < 6 Then
+                            '    .udtFuPin(intPin - 1).strChNo = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
+                            'Else
+                            '    .udtFuPin(intPin - 1).strChNo = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
+                            'End If
+                            ' //
+
+                            ''チャンネル種別
+                            .udtFuPin(intPin - 1).intChType = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType
+
+                            ''データ種別　ver.1.4.0 2011.08.17
+                            .udtFuPin(intPin - 1).intDataType = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData
+
+                            ''入力信号　ver.1.4.0 2011.08.17
+                            .udtFuPin(intPin - 1).intSignal = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtSignal
+
+                            ''グループ番号
+                            .udtFuPin(intPin - 1).strGroupNo = gGetString(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtGroupNo)
+
+                            ''アイテム名称
+                            .udtFuPin(intPin - 1).strItemName = mSetFuInfoChDataItemName(gudt.SetChAndOr, intChIndex)
+
+                            ''Port種別
+                            .intPortType = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
+
+                            ''端子種別
+                            .intTerinf = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
+
+                            ''ステータス名称
+                            Call mGetFuInfoStatus(.udtFuPin(intPin - 1),
+                                              intChIndex,
+                                              gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType,
+                                              intLoopCnt,
+                                              blnInputProcess)
+
+                            ''レンジ設定
+                            Call mGetFuInfoRange(.udtFuPin(intPin - 1), intChIndex)
+
+                            ''端子台情報
+                            Call mGetFuInfoSlotInfo(.udtFuPin(intPin - 1), intFuNo, intPortno, intPin)
+
+                        End If
+
+                    ElseIf .udtFuPin(intPin - 1).strChNo2 = "" Then  ' CH_NO (同一端子CH表示用)     2013.11.23
                         ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
                         If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
                             ''チャンネル番号
-                            .udtFuPin(intPin - 1).strChNo = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
+                            .udtFuPin(intPin - 1).strChNo2 = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
                         Else
-                            .udtFuPin(intPin - 1).strChNo = GetTagNo(gudt.SetChInfo.udtChannel(intChIndex))
+                            .udtFuPin(intPin - 1).strChNo2 = GetTagNo(gudt.SetChInfo.udtChannel(intChIndex))
                         End If
 
                         '' 2015.10.16  ﾀｸﾞ表示強制
                         'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Length < 6 Then
-                        '    .udtFuPin(intPin - 1).strChNo = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
+                        '    .udtFuPin(intPin - 1).strChNo2 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
                         'Else
-                        '    .udtFuPin(intPin - 1).strChNo = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
+                        '    .udtFuPin(intPin - 1).strChNo2 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
                         'End If
                         ' //
 
-                        ''チャンネル種別
-                        .udtFuPin(intPin - 1).intChType = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType
+                        If .udtFuPin(intPin - 1).strChNo = "" Then   ' 1CH目の設定がない場合に情報をセットしておく(運転積算用)
+                            ''ダミーフラグ
+                            .udtFuPin(intPin - 1).blnChComDmy = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 0), 1, 0)
 
-                        ''データ種別　ver.1.4.0 2011.08.17
-                        .udtFuPin(intPin - 1).intDataType = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData
+                            ''SCフラグ
+                            .udtFuPin(intPin - 1).blnChComSc = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+                            'Ver2.0.2.6
+                            .udtFuPin(intPin - 1).blnChComSc2 = False
+                            .udtFuPin(intPin - 1).blnChComSc3 = False
 
-                        ''入力信号　ver.1.4.0 2011.08.17
-                        .udtFuPin(intPin - 1).intSignal = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtSignal
+                            ''チャンネル種別
+                            .udtFuPin(intPin - 1).intChType = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType
 
-                        ''グループ番号
-                        .udtFuPin(intPin - 1).strGroupNo = gGetString(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtGroupNo)
+                            ''データ種別　ver.1.4.0 2011.08.17
+                            .udtFuPin(intPin - 1).intDataType = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData
 
-                        ''アイテム名称
-                        .udtFuPin(intPin - 1).strItemName = mSetFuInfoChDataItemName(gudt.SetChAndOr, intChIndex)
+                            ''入力信号　ver.1.4.0 2011.08.17
+                            .udtFuPin(intPin - 1).intSignal = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtSignal
 
-                        ''Port種別
-                        .intPortType = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
+                            ''グループ番号
+                            .udtFuPin(intPin - 1).strGroupNo = gGetString(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtGroupNo)
 
-                        ''端子種別
-                        .intTerinf = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
+                            ''アイテム名称
+                            .udtFuPin(intPin - 1).strItemName = mSetFuInfoChDataItemName(gudt.SetChAndOr, intChIndex)
 
-                        ''ステータス名称
-                        Call mGetFuInfoStatus(.udtFuPin(intPin - 1), _
-                                              intChIndex, _
-                                              gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType, _
-                                              intLoopCnt, _
+                            ''Port種別
+                            .intPortType = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
+
+                            ''端子種別
+                            .intTerinf = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
+
+                            ''ステータス名称
+                            Call mGetFuInfoStatus(.udtFuPin(intPin - 1),
+                                              intChIndex,
+                                              gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType,
+                                              intLoopCnt,
                                               blnInputProcess)
 
-                        ''レンジ設定
-                        Call mGetFuInfoRange(.udtFuPin(intPin - 1), intChIndex)
+                            ''レンジ設定
+                            Call mGetFuInfoRange(.udtFuPin(intPin - 1), intChIndex)
 
-                        ''端子台情報
-                        Call mGetFuInfoSlotInfo(.udtFuPin(intPin - 1), intFuNo, intPortno, intPin)
+                            ''端子台情報
+                            Call mGetFuInfoSlotInfo(.udtFuPin(intPin - 1), intFuNo, intPortno, intPin)
+                        Else
+                            'Ver2.0.2.6
+                            .udtFuPin(intPin - 1).blnChComSc2 = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+                            .udtFuPin(intPin - 1).blnChComSc3 = False
+                        End If
 
-                    End If
+                    ElseIf .udtFuPin(intPin - 1).strChNo3 = "" Then  ' CH_NO (同一端子CH表示用)     2014.09.18
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            ''チャンネル番号
+                            .udtFuPin(intPin - 1).strChNo3 = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
 
-                ElseIf .udtFuPin(intPin - 1).strChNo2 = "" Then  ' CH_NO (同一端子CH表示用)     2013.11.23
-                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
-                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                        ''チャンネル番号
-                        .udtFuPin(intPin - 1).strChNo2 = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
-                    Else
-                        .udtFuPin(intPin - 1).strChNo2 = GetTagNo(gudt.SetChInfo.udtChannel(intChIndex))
-                    End If
+                        Else
+                            .udtFuPin(intPin - 1).strChNo3 = GetTagNo(gudt.SetChInfo.udtChannel(intChIndex))
+                        End If
 
-                    '' 2015.10.16  ﾀｸﾞ表示強制
-                    'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Length < 6 Then
-                    '    .udtFuPin(intPin - 1).strChNo2 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
-                    'Else
-                    '    .udtFuPin(intPin - 1).strChNo2 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
-                    'End If
-                    ' //
-
-                    If .udtFuPin(intPin - 1).strChNo = "" Then   ' 1CH目の設定がない場合に情報をセットしておく(運転積算用)
-                        ''ダミーフラグ
-                        .udtFuPin(intPin - 1).blnChComDmy = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 0), 1, 0)
-
-                        ''SCフラグ
-                        .udtFuPin(intPin - 1).blnChComSc = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
                         'Ver2.0.2.6
-                        .udtFuPin(intPin - 1).blnChComSc2 = False
-                        .udtFuPin(intPin - 1).blnChComSc3 = False
+                        .udtFuPin(intPin - 1).blnChComSc3 = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
 
-                        ''チャンネル種別
-                        .udtFuPin(intPin - 1).intChType = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType
+                        '' 2015.10.16  ﾀｸﾞ表示強制
+                        'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Length < 6 Then
+                        '    .udtFuPin(intPin - 1).strChNo3 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
+                        'Else
+                        '    .udtFuPin(intPin - 1).strChNo3 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
+                        'End If
+                        ' //
 
-                        ''データ種別　ver.1.4.0 2011.08.17
-                        .udtFuPin(intPin - 1).intDataType = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData
+                    End If
 
-                        ''入力信号　ver.1.4.0 2011.08.17
-                        .udtFuPin(intPin - 1).intSignal = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtSignal
+                End With
+            Else
+                With udtFuInfo(intFuNo).udtFuPort(intPortno - 1)
+                    ' 1CHにしか対応していない為、既にCH設定されていない場合のみ　ver.1.4.0 2011.08.17
+                    If .udtFuPin(intPin - 1).strChNo = "" And RH_flg = 0 Then   '' 運転積算は2CH目の設定とする  2013.11.23
 
-                        ''グループ番号
-                        .udtFuPin(intPin - 1).strGroupNo = gGetString(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtGroupNo)
+                        '' 運転積算CH設定済で対象CHが隠しCHの場合はCH番号のみセット 2015.04.23
+                        If .udtFuPin(intPin - 1).strChNo2 <> "" And gBitCheck(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1) = True Then
+                            ''チャンネル番号
+                            ''.udtFuPin(intPin - 1).strChNo = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
+                        Else
 
-                        ''アイテム名称
-                        .udtFuPin(intPin - 1).strItemName = mSetFuInfoChDataItemName(gudt.SetChAndOr, intChIndex)
+                            ''ダミーフラグ
+                            .udtFuPin(intPin - 1).blnChComDmy = IIf(gBitCheck(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 0), 1, 0)
 
-                        ''Port種別
-                        .intPortType = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
+                            ''SCフラグ
+                            .udtFuPin(intPin - 1).blnChComSc = IIf(gBitCheck(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+                            'Ver2.0.2.6
+                            .udtFuPin(intPin - 1).blnChComSc2 = False
+                            .udtFuPin(intPin - 1).blnChComSc3 = False
 
-                        ''端子種別
-                        .intTerinf = gudt.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
 
-                        ''ステータス名称
-                        Call mGetFuInfoStatus(.udtFuPin(intPin - 1), _
-                                              intChIndex, _
-                                              gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType, _
-                                              intLoopCnt, _
-                                              blnInputProcess)
+                            ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                            If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                                ''チャンネル番号
+                                .udtFuPin(intPin - 1).strChNo = gConvNullToZero(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
+                            Else
+                                .udtFuPin(intPin - 1).strChNo = GetTagNo(gudt2.SetChInfo.udtChannel(intChIndex))
+                            End If
 
-                        ''レンジ設定
-                        Call mGetFuInfoRange(.udtFuPin(intPin - 1), intChIndex)
+                            '' 2015.10.16  ﾀｸﾞ表示強制
+                            'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Length < 6 Then
+                            '    .udtFuPin(intPin - 1).strChNo = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
+                            'Else
+                            '    .udtFuPin(intPin - 1).strChNo = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
+                            'End If
+                            ' //
 
-                        ''端子台情報
-                        Call mGetFuInfoSlotInfo(.udtFuPin(intPin - 1), intFuNo, intPortno, intPin)
-                    Else
+                            ''チャンネル種別
+                            .udtFuPin(intPin - 1).intChType = gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType
+
+                            ''データ種別　ver.1.4.0 2011.08.17
+                            .udtFuPin(intPin - 1).intDataType = gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData
+
+                            ''入力信号　ver.1.4.0 2011.08.17
+                            .udtFuPin(intPin - 1).intSignal = gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtSignal
+
+                            ''グループ番号
+                            .udtFuPin(intPin - 1).strGroupNo = gGetString(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtGroupNo)
+
+                            ''アイテム名称
+                            .udtFuPin(intPin - 1).strItemName = mSetFuInfoChDataItemName(gudt2.SetChAndOr, intChIndex)
+
+                            ''Port種別
+                            .intPortType = gudt2.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
+
+                            ''端子種別
+                            .intTerinf = gudt2.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
+
+                            ''ステータス名称
+                            Call mGetFuInfoStatus(.udtFuPin(intPin - 1),
+                                                  intChIndex,
+                                                  gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType,
+                                                  intLoopCnt,
+                                                  blnInputProcess)
+
+                            ''レンジ設定
+                            Call mGetFuInfoRange(.udtFuPin(intPin - 1), intChIndex)
+
+                            ''端子台情報
+                            Call mGetFuInfoSlotInfo(.udtFuPin(intPin - 1), intFuNo, intPortno, intPin)
+
+                        End If
+
+                    ElseIf .udtFuPin(intPin - 1).strChNo2 = "" Then  ' CH_NO (同一端子CH表示用)     2013.11.23
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            ''チャンネル番号
+                            .udtFuPin(intPin - 1).strChNo2 = gConvNullToZero(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
+                        Else
+                            .udtFuPin(intPin - 1).strChNo2 = GetTagNo(gudt2.SetChInfo.udtChannel(intChIndex))
+                        End If
+
+                        '' 2015.10.16  ﾀｸﾞ表示強制
+                        'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Length < 6 Then
+                        '    .udtFuPin(intPin - 1).strChNo2 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
+                        'Else
+                        '    .udtFuPin(intPin - 1).strChNo2 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
+                        'End If
+                        ' //
+
+                        If .udtFuPin(intPin - 1).strChNo = "" Then   ' 1CH目の設定がない場合に情報をセットしておく(運転積算用)
+                            ''ダミーフラグ
+                            .udtFuPin(intPin - 1).blnChComDmy = IIf(gBitCheck(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 0), 1, 0)
+
+                            ''SCフラグ
+                            .udtFuPin(intPin - 1).blnChComSc = IIf(gBitCheck(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+                            'Ver2.0.2.6
+                            .udtFuPin(intPin - 1).blnChComSc2 = False
+                            .udtFuPin(intPin - 1).blnChComSc3 = False
+
+                            ''チャンネル種別
+                            .udtFuPin(intPin - 1).intChType = gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType
+
+                            ''データ種別　ver.1.4.0 2011.08.17
+                            .udtFuPin(intPin - 1).intDataType = gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtData
+
+                            ''入力信号　ver.1.4.0 2011.08.17
+                            .udtFuPin(intPin - 1).intSignal = gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtSignal
+
+                            ''グループ番号
+                            .udtFuPin(intPin - 1).strGroupNo = gGetString(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtGroupNo)
+
+                            ''アイテム名称
+                            .udtFuPin(intPin - 1).strItemName = mSetFuInfoChDataItemName(gudt2.SetChAndOr, intChIndex)
+
+                            ''Port種別
+                            .intPortType = gudt2.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtType
+
+                            ''端子種別
+                            .intTerinf = gudt2.SetFu.udtFu(intFuNo).udtSlotInfo(intPortno - 1).shtTerinf
+
+                            ''ステータス名称
+                            Call mGetFuInfoStatus(.udtFuPin(intPin - 1),
+                                                  intChIndex,
+                                                  gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChType,
+                                                  intLoopCnt,
+                                                  blnInputProcess)
+
+                            ''レンジ設定
+                            Call mGetFuInfoRange(.udtFuPin(intPin - 1), intChIndex)
+
+                            ''端子台情報
+                            Call mGetFuInfoSlotInfo(.udtFuPin(intPin - 1), intFuNo, intPortno, intPin)
+                        Else
+                            'Ver2.0.2.6
+                            .udtFuPin(intPin - 1).blnChComSc2 = IIf(gBitCheck(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+                            .udtFuPin(intPin - 1).blnChComSc3 = False
+                        End If
+
+                    ElseIf .udtFuPin(intPin - 1).strChNo3 = "" Then  ' CH_NO (同一端子CH表示用)     2014.09.18
+                        ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
+                        If gudt2.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
+                            ''チャンネル番号
+                            .udtFuPin(intPin - 1).strChNo3 = gConvNullToZero(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
+
+                        Else
+                            .udtFuPin(intPin - 1).strChNo3 = GetTagNo(gudt2.SetChInfo.udtChannel(intChIndex))
+                        End If
+
                         'Ver2.0.2.6
-                        .udtFuPin(intPin - 1).blnChComSc2 = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
-                        .udtFuPin(intPin - 1).blnChComSc3 = False
+                        .udtFuPin(intPin - 1).blnChComSc3 = IIf(gBitCheck(gudt2.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
+
+                        '' 2015.10.16  ﾀｸﾞ表示強制
+                        'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Length < 6 Then
+                        '    .udtFuPin(intPin - 1).strChNo3 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
+                        'Else
+                        '    .udtFuPin(intPin - 1).strChNo3 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
+                        'End If
+                        ' //
+
                     End If
 
-                ElseIf .udtFuPin(intPin - 1).strChNo3 = "" Then  ' CH_NO (同一端子CH表示用)     2014.09.18
-                    ' 2015.10.22 Ver1.7.5  CHNo./ﾀｸﾞ表示切替処理追加
-                    If gudt.SetSystem.udtSysOps.shtTagMode = 0 Then     ' 標準
-                        ''チャンネル番号
-                        .udtFuPin(intPin - 1).strChNo3 = gConvNullToZero(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtChno).ToString("0000")
-
-                    Else
-                        .udtFuPin(intPin - 1).strChNo3 = GetTagNo(gudt.SetChInfo.udtChannel(intChIndex))
-                    End If
-
-                    'Ver2.0.2.6
-                    .udtFuPin(intPin - 1).blnChComSc3 = IIf(gBitCheck(gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.shtFlag1, 1), 1, 0)
-
-                    '' 2015.10.16  ﾀｸﾞ表示強制
-                    'If gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Length < 6 Then
-                    '    .udtFuPin(intPin - 1).strChNo3 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark
-                    'Else
-                    '    .udtFuPin(intPin - 1).strChNo3 = gudt.SetChInfo.udtChannel(intChIndex).udtChCommon.strRemark.Substring(0, 6)
-                    'End If
-                    ' //
-
-                End If
-
-            End With
+                End With
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -6539,29 +7592,14 @@ Module modCommon
 
         Try
 
-            '' ECCもCH名称表示に変更    2013.10.22
-            ''-----------------------
-            '' デジタルCH-外部機器
-            ''-----------------------
-            'If (gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtChType = gCstCodeChTypeDigital) And _
-            '   (gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeDigitalExt) Then
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strChitem)
+            Else
+                strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.strChitem)
 
-            '    strRtn = gGetComboItemName(gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtEccFunc, gEnmComboType.ctChTerminalFunctionFuncDI)
+            End If
 
-
-            '    ''-----------------------
-            '    '' バルブCH-外部機器
-            '    ''-----------------------
-            'ElseIf (gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtChType = gCstCodeChTypeValve) And _
-            '       (gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveExt) Then
-
-            '    strRtn = gGetComboItemName(gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtEccFunc, gEnmComboType.ctChTerminalFunctionFuncDO)
-
-            'Else
-
-            strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strChitem)
-
-            'End If
 
             Return strRtn
 
@@ -6606,132 +7644,482 @@ Module modCommon
             Dim strValue As String = ""
 
             With udtSet
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    Select Case hintChType
+
+                        Case gCstCodeChTypeAnalog
+
+                            ''仮設定フラグ
+                            .blnDmyStatusIn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+
+                            'Ver2.0.2.4 FUdummyフラグ
+                            .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+
+                            ''ManualInputの時は手入力した値を取得。その他はiniファイルより取得
+                            If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
+                                .strStatus = ""
+                            Else
+                                .strStatus = gGetComboItemName(gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus,
+                                                               gEnmComboType.ctChListChannelListStatusAnalog)
+                            End If
+
+
+                        Case gCstCodeChTypeDigital
+
+                            ''仮設定フラグ
+                            .blnDmyStatusIn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+
+                            'Ver2.0.2.4 FUdummyフラグ
+                            .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+
+                            ''ManualInputの時は手入力した値を取得。その他はiniファイルより取得
+                            If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
+                                ''MANUAL INPUTに'/'を追加　ver1.4.0 2011.08.17
+                                '.strStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
+
+                                strValue = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
+                                'Ver2.0.7.L
+                                'If strValue.Length > 8 Then
+                                If LenB(strValue) > 8 Then
+                                    '.strStatus = strValue.Substring(0, 8).Trim & "/" & strValue.Substring(8).Trim
+                                    .strStatus = MidB(strValue, 0, 8).Trim & "/" & MidB(strValue, 8).Trim
+                                Else
+                                    .strStatus = Trim(strValue)
+                                End If
+                            Else
+                                .strStatus = gGetComboItemName(gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus,
+                                                               gEnmComboType.ctChListChannelListStatusDigital)
+                            End If
+
+
+                        Case gCstCodeChTypeMotor
+
+                            '--------------------------------------------
+                            ''入力ステータスの仮設定フラグは出力側のみ
+                            '--------------------------------------------
+
+                            'Ver2.0.0.2 モーター種別増加 R Device ADD
+                            If hblnInputProcess And
+                               gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDevice Or
+                               gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorRDevice Then
+
+                                ''Status I：DeviceOperation
+                                ' 2013.07.22 MO表示変更  K.Fujimoto
+                                '.strStatus = "RUN/STOP"
+                                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様
+                                    .strStatus = "運転"
+                                Else
+                                    .strStatus = "RUN"
+                                End If
+
+                            ElseIf hblnInputProcess And
+                                   gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
+
+                                ''Status I：Manual Input
+                                .strStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
+
+                            ElseIf Not hblnInputProcess And
+                                   gudt.SetChInfo.udtChannel(hintChIndex).MotorStatus = gCstCodeChManualInputStatus Then
+
+                                ''仮設定フラグ
+                                .blnDmyStatusOut = mGetFuInfoStatusDmyMotor(hintChIndex, hintLoopCnt)
+
+                                'Ver2.0.2.4 FUdummyフラグ
+                                .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
+
+                                ''Status O：Manual Input
+                                .strStatus = mGetFuInfoStatusDoMotor(hintChIndex, hintLoopCnt)
+
+                            Else
+
+                                ''ステータス種別コード（※モーターのStatusはInput側のコードをI/O共通で参照）
+                                intStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
+
+                                ''モーターチャンネルのステータス種別コードを取得
+                                Call GetStatusMotor2(mMotorStatusNormal, mMotorStatusAbnormal, "StatusMotor")
+                                '' Ver1.7.6 ﾓｰﾀｰのｽﾃｰﾀｽの考え方が違うので変更
+                                If hblnOutputCH = True Then     '' Ver1.8.6 2015.12.02 Outputの場合のみ
+                                    If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
+                                        Select Case intStatus
+                                            Case &H30
+                                                .strStatus = "運転"
+                                            Case &H31
+                                                .strStatus = "運転-A"
+                                            Case &H32
+                                                .strStatus = "運転-B"
+                                            Case &H33
+                                                .strStatus = "運転-C"
+                                            Case &H34
+                                                .strStatus = "運転-D"
+                                            Case &H35
+                                                .strStatus = "運転-E"
+                                            Case &H36
+                                                .strStatus = "運転-F"
+                                            Case &H37
+                                                .strStatus = "運転-G"
+                                            Case &H38
+                                                .strStatus = "運転-H"
+                                            Case &H39
+                                                .strStatus = "運転-I"
+                                            Case &H3A
+                                                .strStatus = "運転-J"
+                                            Case &H3B
+                                                .strStatus = "運転-K"
+                                            Case Else
+                                                .strStatus = ""
+                                        End Select
+                                    Else
+                                        Select Case intStatus
+                                            Case &H30
+                                                .strStatus = "RUN"
+                                            Case &H31
+                                                .strStatus = "RUN-A"
+                                            Case &H32
+                                                .strStatus = "RUN-B"
+                                            Case &H33
+                                                .strStatus = "RUN-C"
+                                            Case &H34
+                                                .strStatus = "RUN-D"
+                                            Case &H35
+                                                .strStatus = "RUN-E"
+                                            Case &H36
+                                                .strStatus = "RUN-F"
+                                            Case &H37
+                                                .strStatus = "RUN-G"
+                                            Case &H38
+                                                .strStatus = "RUN-H"
+                                            Case &H39
+                                                .strStatus = "RUN-I"
+                                            Case &H3A
+                                                .strStatus = "RUN-J"
+                                            Case &H3B
+                                                .strStatus = "RUN-K"
+                                            Case Else
+                                                .strStatus = ""
+                                        End Select
+                                    End If
+
+                                    ''仮設定フラグ()
+                                    .blnDmyStatusOut = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+
+                                    'Ver2.0.2.4 FUdummyフラグ
+                                    .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
+                                Else
+
+                                    ''データ種別によって、表示するステータス種別が異なる
+                                    ''　[データ種別]ManualStop  → [ステータス種別]備考欄'/'の左側表示
+                                    ''　[データ種別]Abnormal　　→ [ステータス種別]備考欄'/'の右側表示
+                                    'Ver1.11.9.6 モーター種別増加 START
+                                    'Ver1.12.0.1 2017.01.13 JACOM追加
+                                    If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom Then
+                                        If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = &H14 Then
+                                            .strStatus = "RUN"
+                                        Else
+                                            .strStatus = ""
+                                        End If
+                                    ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom55 Then
+                                        If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = &H14 Then
+                                            .strStatus = "RUN"
+                                        Else
+                                            .strStatus = ""
+                                        End If
+                                    ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData <= gCstCodeChDataTypeMotorManRunK _
+                                            Or (
+                                                gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData >= gCstCodeChDataTypeMotorRManRun _
+                                                And
+                                                gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData <= gCstCodeChDataTypeMotorRManRunK
+                                                ) _
+                                            Then
+                                        'Ver1.11.9.6 モーター種別増加 END
+
+                                        '-------------
+                                        ''ManualStop
+                                        '-------------
+                                        ''引き算の結果、0より小さければ空文字返す
+                                        If intStatus - gCstCodeChStatusTypeMotorRun < 0 Then
+                                            .strStatus = ""
+                                        Else
+                                            strwk = mMotorStatusNormal(intStatus - gCstCodeChStatusTypeMotorRun).Split("_")
+                                            .strStatus = strwk(hintLoopCnt)
+                                        End If
+
+                                    Else
+
+                                        ''引き算の結果、0より小さければ空文字返す
+                                        If intStatus - gCstCodeChStatusTypeMotorRun < 0 Then
+                                            .strStatus = ""
+                                        Else
+
+                                            '-------------
+                                            ''Abnormal
+                                            '-------------
+                                            ''仮設定フラグ
+                                            .blnDmyStatusOut = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+
+                                            'Ver2.0.2.4 FUdummyフラグ
+                                            .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
+
+                                            ''ステータス
+                                            .strStatus = mGetFuInfoStatusMotorAbnormal(hblnInputProcess, intStatus, hintChIndex, hintLoopCnt)
+
+                                        End If
+
+                                    End If
+                                End If
+
+
+
+                            End If
+
+
+                        Case gCstCodeChTypeValve
+
+                            If hblnOutputCH Then
+
+                                ''出力CHの場合は空欄
+                                .strStatus = ""
+
+                            Else
+
+                                If hblnInputProcess Then
+
+                                    '-----------
+                                    '' Input
+                                    '-----------
+                                    ''仮設定フラグ
+                                    .blnDmyStatusIn = mGetFuInfoStatusDmyCmp(hintChIndex, hintLoopCnt)
+
+                                    'Ver2.0.2.4 FUdummyフラグ
+                                    .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+
+                                    If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Or
+                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then
+
+                                        ''[AIDO][AIAO]
+                                        intStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
+                                        If intStatus = gCstCodeChManualInputStatus Then
+                                            .strStatus = "" ''Manual Input
+                                        Else
+                                            .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                                        End If
+
+                                    Else
+
+                                        ''[DIDO] コンポジットテーブルのステータスを参照する
+                                        intCompositeIdx = gudt.SetChInfo.udtChannel(hintChIndex).ValveCompositeTableIndex - 1
+                                        .strStatus = gGetString(gudt.SetChComposite.udtComposite(intCompositeIdx).udtCompInf(hintLoopCnt).strStatusName)
+
+                                    End If
+
+                                Else
+
+                                    '-----------
+                                    '' Output
+                                    '-----------
+                                    ''仮設定フラグ
+                                    .blnDmyStatusOut = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+
+                                    'Ver2.0.2.4 FUdummyフラグ
+                                    .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
+
+                                    If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
+                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveDO Then
+
+                                        ''DIDO, Digital, 外部機器(Jacom-22/延長警報盤)
+                                        .strStatus = mGetFuInfoStatusDoValDIDO(hintChIndex, hintLoopCnt)
+
+                                    ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                           gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+
+                                        ''AIDO(1-5V/4-20mA)
+                                        .strStatus = mGetFuInfoStatusDoValAIDO(hintChIndex, hintLoopCnt)
+
+                                    ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                           gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
+                                           gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
+
+                                        ''AIAO(1-5V/4-20mA), Analog(4-20mA)
+                                        intStatus = gudt.SetChInfo.udtChannel(hintChIndex).ValveAiAoOutStatus
+                                        If intStatus = gCstCodeChManualInputStatus Then
+                                            ''Manual Input
+                                            .strStatus = gudt.SetChInfo.udtChannel(hintChIndex).ValveAiAoOutStatus1
+                                        Else
+                                            .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                                        End If
+
+                                    ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveJacom Or
+                                           gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveJacom55 Or
+                                           gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveExt Then
+
+                                        ''外部機器(Jacom-22/延長警報盤)
+                                        intStatus = gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoStatus
+                                        .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusDigital)
+
+                                    End If
+
+                                End If
+
+                            End If
+
+                        Case gCstCodeChTypeComposite
+
+                            ''仮設定フラグ
+                            .blnDmyStatusIn = mGetFuInfoStatusDmyCmp(hintChIndex, hintLoopCnt)
+
+                            'Ver2.0.2.4 FUdummyフラグ
+                            .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+
+                            ''コンポジットテーブルのステータスを参照する
+                            intCompositeIdx = gudt.SetChInfo.udtChannel(hintChIndex).CompositeTableIndex - 1
+                            .strStatus = gGetString(gudt.SetChComposite.udtComposite(intCompositeIdx).udtCompInf(hintLoopCnt).strStatusName)
+
+                        Case gCstCodeChTypePulse
+
+                            ''仮設定フラグ
+                            .blnDmyStatusIn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+
+                            'Ver2.0.2.4 FUdummyフラグ
+                            .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+
+                            intStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
+                            If intStatus = gCstCodeChManualInputStatus Then
+                                .strStatus = "" ''Manual Input
+                            Else
+                                .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                            End If
+
+                    End Select
+
+                Else
 
                 Select Case hintChType
 
                     Case gCstCodeChTypeAnalog
 
-                        ''仮設定フラグ
-                        .blnDmyStatusIn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+                            ''仮設定フラグ
+                            .blnDmyStatusIn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
 
-                        'Ver2.0.2.4 FUdummyフラグ
-                        .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+                            'Ver2.0.2.4 FUdummyフラグ
+                            .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
 
-                        ''ManualInputの時は手入力した値を取得。その他はiniファイルより取得
-                        If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
-                            .strStatus = ""
-                        Else
-                            .strStatus = gGetComboItemName(gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus, _
+                            ''ManualInputの時は手入力した値を取得。その他はiniファイルより取得
+                            If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
+                                .strStatus = ""
+                            Else
+                                .strStatus = gGetComboItemName(gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus,
                                                            gEnmComboType.ctChListChannelListStatusAnalog)
-                        End If
+                            End If
 
 
                     Case gCstCodeChTypeDigital
 
-                        ''仮設定フラグ
-                        .blnDmyStatusIn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+                            ''仮設定フラグ
+                            .blnDmyStatusIn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
 
-                        'Ver2.0.2.4 FUdummyフラグ
-                        .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+                            'Ver2.0.2.4 FUdummyフラグ
+                            .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
 
-                        ''ManualInputの時は手入力した値を取得。その他はiniファイルより取得
-                        If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
-                            ''MANUAL INPUTに'/'を追加　ver1.4.0 2011.08.17
-                            '.strStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
+                            ''ManualInputの時は手入力した値を取得。その他はiniファイルより取得
+                            If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
+                                ''MANUAL INPUTに'/'を追加　ver1.4.0 2011.08.17
+                                '.strStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
 
-                            strValue = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
-                            'Ver2.0.7.L
-                            'If strValue.Length > 8 Then
-                            If LenB(strValue) > 8 Then
-                                '.strStatus = strValue.Substring(0, 8).Trim & "/" & strValue.Substring(8).Trim
-                                .strStatus = MidB(strValue, 0, 8).Trim & "/" & MidB(strValue, 8).Trim
+                                strValue = gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
+                                'Ver2.0.7.L
+                                'If strValue.Length > 8 Then
+                                If LenB(strValue) > 8 Then
+                                    '.strStatus = strValue.Substring(0, 8).Trim & "/" & strValue.Substring(8).Trim
+                                    .strStatus = MidB(strValue, 0, 8).Trim & "/" & MidB(strValue, 8).Trim
+                                Else
+                                    .strStatus = Trim(strValue)
+                                End If
                             Else
-                                .strStatus = Trim(strValue)
-                            End If
-                        Else
-                            .strStatus = gGetComboItemName(gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus, _
+                                .strStatus = gGetComboItemName(gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus,
                                                            gEnmComboType.ctChListChannelListStatusDigital)
-                        End If
+                            End If
 
 
                     Case gCstCodeChTypeMotor
 
-                        '--------------------------------------------
-                        ''入力ステータスの仮設定フラグは出力側のみ
-                        '--------------------------------------------
+                            '--------------------------------------------
+                            ''入力ステータスの仮設定フラグは出力側のみ
+                            '--------------------------------------------
 
-                        'Ver2.0.0.2 モーター種別増加 R Device ADD
-                        If hblnInputProcess And _
-                           gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDevice Or _
-                           gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorRDevice Then
+                            'Ver2.0.0.2 モーター種別増加 R Device ADD
+                            If hblnInputProcess And
+                           gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDevice Or
+                           gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorRDevice Then
 
-                            ''Status I：DeviceOperation
-                            ' 2013.07.22 MO表示変更  K.Fujimoto
-                            '.strStatus = "RUN/STOP"
-                            If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様
-                                .strStatus = "運転"
+                                ''Status I：DeviceOperation
+                                ' 2013.07.22 MO表示変更  K.Fujimoto
+                                '.strStatus = "RUN/STOP"
+                                If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様
+                                    .strStatus = "運転"
+                                Else
+                                    .strStatus = "RUN"
+                                End If
+
+                            ElseIf hblnInputProcess And
+                               gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
+
+                                ''Status I：Manual Input
+                                .strStatus = gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
+
+                            ElseIf Not hblnInputProcess And
+                               gudt2.SetChInfo.udtChannel(hintChIndex).MotorStatus = gCstCodeChManualInputStatus Then
+
+                                ''仮設定フラグ
+                                .blnDmyStatusOut = mGetFuInfoStatusDmyMotor(hintChIndex, hintLoopCnt)
+
+                                'Ver2.0.2.4 FUdummyフラグ
+                                .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
+
+                                ''Status O：Manual Input
+                                .strStatus = mGetFuInfoStatusDoMotor(hintChIndex, hintLoopCnt)
+
                             Else
-                                .strStatus = "RUN"
-                            End If
 
-                        ElseIf hblnInputProcess And _
-                               gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = gCstCodeChManualInputStatus Then
+                                ''ステータス種別コード（※モーターのStatusはInput側のコードをI/O共通で参照）
+                                intStatus = gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
 
-                            ''Status I：Manual Input
-                            .strStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.strStatus
-
-                        ElseIf Not hblnInputProcess And _
-                               gudt.SetChInfo.udtChannel(hintChIndex).MotorStatus = gCstCodeChManualInputStatus Then
-
-                            ''仮設定フラグ
-                            .blnDmyStatusOut = mGetFuInfoStatusDmyMotor(hintChIndex, hintLoopCnt)
-
-                            'Ver2.0.2.4 FUdummyフラグ
-                            .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
-
-                            ''Status O：Manual Input
-                            .strStatus = mGetFuInfoStatusDoMotor(hintChIndex, hintLoopCnt)
-
-                        Else
-
-                            ''ステータス種別コード（※モーターのStatusはInput側のコードをI/O共通で参照）
-                            intStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
-
-                            ''モーターチャンネルのステータス種別コードを取得
-                            Call GetStatusMotor2(mMotorStatusNormal, mMotorStatusAbnormal, "StatusMotor")
+                                ''モーターチャンネルのステータス種別コードを取得
+                                Call GetStatusMotor2(mMotorStatusNormal, mMotorStatusAbnormal, "StatusMotor")
                             '' Ver1.7.6 ﾓｰﾀｰのｽﾃｰﾀｽの考え方が違うので変更
                             If hblnOutputCH = True Then     '' Ver1.8.6 2015.12.02 Outputの場合のみ
-                                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
-                                    Select Case intStatus
-                                        Case &H30
-                                            .strStatus = "運転"
-                                        Case &H31
-                                            .strStatus = "運転-A"
-                                        Case &H32
-                                            .strStatus = "運転-B"
-                                        Case &H33
-                                            .strStatus = "運転-C"
-                                        Case &H34
-                                            .strStatus = "運転-D"
-                                        Case &H35
-                                            .strStatus = "運転-E"
-                                        Case &H36
-                                            .strStatus = "運転-F"
-                                        Case &H37
-                                            .strStatus = "運転-G"
-                                        Case &H38
-                                            .strStatus = "運転-H"
-                                        Case &H39
-                                            .strStatus = "運転-I"
-                                        Case &H3A
-                                            .strStatus = "運転-J"
-                                        Case &H3B
-                                            .strStatus = "運転-K"
-                                        Case Else
-                                            .strStatus = ""
-                                    End Select
-                                Else
-                                    Select Case intStatus
+                                    If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then '全和文仕様 hori
+                                        Select Case intStatus
+                                            Case &H30
+                                                .strStatus = "運転"
+                                            Case &H31
+                                                .strStatus = "運転-A"
+                                            Case &H32
+                                                .strStatus = "運転-B"
+                                            Case &H33
+                                                .strStatus = "運転-C"
+                                            Case &H34
+                                                .strStatus = "運転-D"
+                                            Case &H35
+                                                .strStatus = "運転-E"
+                                            Case &H36
+                                                .strStatus = "運転-F"
+                                            Case &H37
+                                                .strStatus = "運転-G"
+                                            Case &H38
+                                                .strStatus = "運転-H"
+                                            Case &H39
+                                                .strStatus = "運転-I"
+                                            Case &H3A
+                                                .strStatus = "運転-J"
+                                            Case &H3B
+                                                .strStatus = "運転-K"
+                                            Case Else
+                                                .strStatus = ""
+                                        End Select
+                                    Else
+                                        Select Case intStatus
                                         Case &H30
                                             .strStatus = "RUN"
                                         Case &H31
@@ -6761,68 +8149,68 @@ Module modCommon
                                     End Select
                                 End If
 
-                                ''仮設定フラグ()
-                                .blnDmyStatusOut = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+                                    ''仮設定フラグ()
+                                    .blnDmyStatusOut = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
 
-                                'Ver2.0.2.4 FUdummyフラグ
-                                .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
-                            Else
-
-                                ''データ種別によって、表示するステータス種別が異なる
-                                ''　[データ種別]ManualStop  → [ステータス種別]備考欄'/'の左側表示
-                                ''　[データ種別]Abnormal　　→ [ステータス種別]備考欄'/'の右側表示
-                                'Ver1.11.9.6 モーター種別増加 START
-                                'Ver1.12.0.1 2017.01.13 JACOM追加
-                                If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom Then
-                                    If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = &H14 Then
-                                        .strStatus = "RUN"
-                                    Else
-                                        .strStatus = ""
-                                    End If
-                                ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom55 Then
-                                    If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = &H14 Then
-                                        .strStatus = "RUN"
-                                    Else
-                                        .strStatus = ""
-                                    End If
-                                ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData <= gCstCodeChDataTypeMotorManRunK _
-                                        Or ( _
-                                            gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData >= gCstCodeChDataTypeMotorRManRun _
-                                            And _
-                                            gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData <= gCstCodeChDataTypeMotorRManRunK
-                                            ) _
-                                        Then
-                                    'Ver1.11.9.6 モーター種別増加 END
-
-                                    '-------------
-                                    ''ManualStop
-                                    '-------------
-                                    ''引き算の結果、0より小さければ空文字返す
-                                    If intStatus - gCstCodeChStatusTypeMotorRun < 0 Then
-                                        .strStatus = ""
-                                    Else
-                                        strwk = mMotorStatusNormal(intStatus - gCstCodeChStatusTypeMotorRun).Split("_")
-                                        .strStatus = strwk(hintLoopCnt)
-                                    End If
-
+                                    'Ver2.0.2.4 FUdummyフラグ
+                                    .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
                                 Else
 
-                                    ''引き算の結果、0より小さければ空文字返す
-                                    If intStatus - gCstCodeChStatusTypeMotorRun < 0 Then
+                                    ''データ種別によって、表示するステータス種別が異なる
+                                    ''　[データ種別]ManualStop  → [ステータス種別]備考欄'/'の左側表示
+                                    ''　[データ種別]Abnormal　　→ [ステータス種別]備考欄'/'の右側表示
+                                    'Ver1.11.9.6 モーター種別増加 START
+                                    'Ver1.12.0.1 2017.01.13 JACOM追加
+                                    If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom Then
+                                        If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = &H14 Then
+                                            .strStatus = "RUN"
+                                        Else
+                                            .strStatus = ""
+                                        End If
+                                    ElseIf gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeMotorDeviceJacom55 Then
+                                        If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus = &H14 Then
+                                            .strStatus = "RUN"
+                                        Else
+                                            .strStatus = ""
+                                        End If
+                                    ElseIf gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData <= gCstCodeChDataTypeMotorManRunK _
+                                        Or (
+                                            gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData >= gCstCodeChDataTypeMotorRManRun _
+                                            And
+                                            gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData <= gCstCodeChDataTypeMotorRManRunK
+                                            ) _
+                                        Then
+                                        'Ver1.11.9.6 モーター種別増加 END
+
+                                        '-------------
+                                        ''ManualStop
+                                        '-------------
+                                        ''引き算の結果、0より小さければ空文字返す
+                                        If intStatus - gCstCodeChStatusTypeMotorRun < 0 Then
+                                            .strStatus = ""
+                                        Else
+                                            strwk = mMotorStatusNormal(intStatus - gCstCodeChStatusTypeMotorRun).Split("_")
+                                            .strStatus = strwk(hintLoopCnt)
+                                        End If
+
+                                    Else
+
+                                        ''引き算の結果、0より小さければ空文字返す
+                                        If intStatus - gCstCodeChStatusTypeMotorRun < 0 Then
                                         .strStatus = ""
                                     Else
 
-                                        '-------------
-                                        ''Abnormal
-                                        '-------------
-                                        ''仮設定フラグ
-                                        .blnDmyStatusOut = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+                                            '-------------
+                                            ''Abnormal
+                                            '-------------
+                                            ''仮設定フラグ
+                                            .blnDmyStatusOut = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
 
-                                        'Ver2.0.2.4 FUdummyフラグ
-                                        .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
+                                            'Ver2.0.2.4 FUdummyフラグ
+                                            .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
 
-                                        ''ステータス
-                                        .strStatus = mGetFuInfoStatusMotorAbnormal(hblnInputProcess, intStatus, hintChIndex, hintLoopCnt)
+                                            ''ステータス
+                                            .strStatus = mGetFuInfoStatusMotorAbnormal(hblnInputProcess, intStatus, hintChIndex, hintLoopCnt)
 
                                     End If
 
@@ -6851,73 +8239,73 @@ Module modCommon
                                 ''仮設定フラグ
                                 .blnDmyStatusIn = mGetFuInfoStatusDmyCmp(hintChIndex, hintLoopCnt)
 
-                                'Ver2.0.2.4 FUdummyフラグ
-                                .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+                                    'Ver2.0.2.4 FUdummyフラグ
+                                    .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
 
-                                If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
-                                   gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Or _
-                                   gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or _
-                                   gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then
+                                    If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                   gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Or
+                                   gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                   gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Then
 
-                                    ''[AIDO][AIAO]
-                                    intStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
-                                    If intStatus = gCstCodeChManualInputStatus Then
-                                        .strStatus = "" ''Manual Input
+                                        ''[AIDO][AIAO]
+                                        intStatus = gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
+                                        If intStatus = gCstCodeChManualInputStatus Then
+                                            .strStatus = "" ''Manual Input
+                                        Else
+                                            .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                                        End If
+
                                     Else
-                                        .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+
+                                        ''[DIDO] コンポジットテーブルのステータスを参照する
+                                        intCompositeIdx = gudt2.SetChInfo.udtChannel(hintChIndex).ValveCompositeTableIndex - 1
+                                        .strStatus = gGetString(gudt2.SetChComposite.udtComposite(intCompositeIdx).udtCompInf(hintLoopCnt).strStatusName)
+
                                     End If
-
-                                Else
-
-                                    ''[DIDO] コンポジットテーブルのステータスを参照する
-                                    intCompositeIdx = gudt.SetChInfo.udtChannel(hintChIndex).ValveCompositeTableIndex - 1
-                                    .strStatus = gGetString(gudt.SetChComposite.udtComposite(intCompositeIdx).udtCompInf(hintLoopCnt).strStatusName)
-
-                                End If
 
                             Else
 
-                                '-----------
-                                '' Output
-                                '-----------
-                                ''仮設定フラグ
-                                .blnDmyStatusOut = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+                                    '-----------
+                                    '' Output
+                                    '-----------
+                                    ''仮設定フラグ
+                                    .blnDmyStatusOut = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
 
-                                'Ver2.0.2.4 FUdummyフラグ
-                                .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
+                                    'Ver2.0.2.4 FUdummyフラグ
+                                    .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutFuAddress
 
-                                If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or _
-                                   gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveDO Then
+                                    If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
+                                   gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveDO Then
 
-                                    ''DIDO, Digital, 外部機器(Jacom-22/延長警報盤)
-                                    .strStatus = mGetFuInfoStatusDoValDIDO(hintChIndex, hintLoopCnt)
+                                        ''DIDO, Digital, 外部機器(Jacom-22/延長警報盤)
+                                        .strStatus = mGetFuInfoStatusDoValDIDO(hintChIndex, hintLoopCnt)
 
-                                ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
-                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+                                    ElseIf gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                       gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
 
-                                    ''AIDO(1-5V/4-20mA)
-                                    .strStatus = mGetFuInfoStatusDoValAIDO(hintChIndex, hintLoopCnt)
+                                        ''AIDO(1-5V/4-20mA)
+                                        .strStatus = mGetFuInfoStatusDoValAIDO(hintChIndex, hintLoopCnt)
 
-                                ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or _
-                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or _
-                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
+                                    ElseIf gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                       gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
+                                       gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
 
-                                    ''AIAO(1-5V/4-20mA), Analog(4-20mA)
-                                    intStatus = gudt.SetChInfo.udtChannel(hintChIndex).ValveAiAoOutStatus
-                                    If intStatus = gCstCodeChManualInputStatus Then
-                                        ''Manual Input
-                                        .strStatus = gudt.SetChInfo.udtChannel(hintChIndex).ValveAiAoOutStatus1
-                                    Else
-                                        .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusAnalog)
-                                    End If
+                                        ''AIAO(1-5V/4-20mA), Analog(4-20mA)
+                                        intStatus = gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiAoOutStatus
+                                        If intStatus = gCstCodeChManualInputStatus Then
+                                            ''Manual Input
+                                            .strStatus = gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiAoOutStatus1
+                                        Else
+                                            .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusAnalog)
+                                        End If
 
-                                ElseIf gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveJacom Or _
-                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveJacom55 Or _
-                                       gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveExt Then
+                                    ElseIf gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveJacom Or
+                                       gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveJacom55 Or
+                                       gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData = gCstCodeChDataTypeValveExt Then
 
-                                    ''外部機器(Jacom-22/延長警報盤)
-                                    intStatus = gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoStatus
-                                    .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusDigital)
+                                        ''外部機器(Jacom-22/延長警報盤)
+                                        intStatus = gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoStatus
+                                        .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusDigital)
 
                                 End If
 
@@ -6930,29 +8318,31 @@ Module modCommon
                         ''仮設定フラグ
                         .blnDmyStatusIn = mGetFuInfoStatusDmyCmp(hintChIndex, hintLoopCnt)
 
-                        'Ver2.0.2.4 FUdummyフラグ
-                        .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+                            'Ver2.0.2.4 FUdummyフラグ
+                            .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
 
-                        ''コンポジットテーブルのステータスを参照する
-                        intCompositeIdx = gudt.SetChInfo.udtChannel(hintChIndex).CompositeTableIndex - 1
-                        .strStatus = gGetString(gudt.SetChComposite.udtComposite(intCompositeIdx).udtCompInf(hintLoopCnt).strStatusName)
+                            ''コンポジットテーブルのステータスを参照する
+                            intCompositeIdx = gudt2.SetChInfo.udtChannel(hintChIndex).CompositeTableIndex - 1
+                            .strStatus = gGetString(gudt2.SetChComposite.udtComposite(intCompositeIdx).udtCompInf(hintLoopCnt).strStatusName)
 
-                    Case gCstCodeChTypePulse
+                        Case gCstCodeChTypePulse
 
-                        ''仮設定フラグ
-                        .blnDmyStatusIn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
+                            ''仮設定フラグ
+                            .blnDmyStatusIn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonStatusName
 
-                        'Ver2.0.2.4 FUdummyフラグ
-                        .blnDmyFUadress = gudt.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
+                            'Ver2.0.2.4 FUdummyフラグ
+                            .blnDmyFUadress = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCommonFuAddress
 
-                        intStatus = gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
-                        If intStatus = gCstCodeChManualInputStatus Then
+                            intStatus = gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtStatus
+                            If intStatus = gCstCodeChManualInputStatus Then
                             .strStatus = "" ''Manual Input
                         Else
                             .strStatus = gGetComboItemName(intStatus, gEnmComboType.ctChListChannelListStatusAnalog)
                         End If
 
                 End Select
+                End If
+
 
             End With
 
@@ -6975,18 +8365,33 @@ Module modCommon
         Dim blnRtn As Boolean = False
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus1StaNm
+                    Case 2 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus2StaNm
+                    Case 3 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus3StaNm
+                    Case 4 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus4StaNm
+                    Case 5 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus5StaNm
+                    Case 6 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus6StaNm
+                    Case 7 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus7StaNm
+                    Case 8 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus8StaNm
+                    Case 9 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus9StaNm
+                End Select
+            Else
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus1StaNm
+                    Case 2 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus2StaNm
+                    Case 3 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus3StaNm
+                    Case 4 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus4StaNm
+                    Case 5 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus5StaNm
+                    Case 6 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus6StaNm
+                    Case 7 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus7StaNm
+                    Case 8 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus8StaNm
+                    Case 9 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus9StaNm
+                End Select
 
-            Select Case (hintLoopIdx + 1)
-                Case 1 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus1StaNm
-                Case 2 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus2StaNm
-                Case 3 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus3StaNm
-                Case 4 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus4StaNm
-                Case 5 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus5StaNm
-                Case 6 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus6StaNm
-                Case 7 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus7StaNm
-                Case 8 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus8StaNm
-                Case 9 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyCmpStatus9StaNm
-            End Select
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -7009,17 +8414,30 @@ Module modCommon
         Dim blnRtn As Boolean = False
 
         Try
-
-            Select Case (hintLoopIdx + 1)
-                Case 1 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus1
-                Case 2 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus2
-                Case 3 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus3
-                Case 4 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus4
-                Case 5 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus5
-                Case 6 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus6
-                Case 7 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus7
-                Case 8 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus8
-            End Select
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus1
+                    Case 2 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus2
+                    Case 3 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus3
+                    Case 4 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus4
+                    Case 5 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus5
+                    Case 6 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus6
+                    Case 7 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus7
+                    Case 8 : blnRtn = gudt.SetChInfo.udtChannel(hintChIndex).DummyOutStatus8
+                End Select
+            Else
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutStatus1
+                    Case 2 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutStatus2
+                    Case 3 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutStatus3
+                    Case 4 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutStatus4
+                    Case 5 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutStatus5
+                    Case 6 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutStatus6
+                    Case 7 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutStatus7
+                    Case 8 : blnRtn = gudt2.SetChInfo.udtChannel(hintChIndex).DummyOutStatus8
+                End Select
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -7042,18 +8460,30 @@ Module modCommon
         Dim strRtn As String = ""
 
         Try
-
-            Select Case (hintLoopIdx + 1)
-                Case 1 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus1)
-                Case 2 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus2)
-                Case 3 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus3)
-                Case 4 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus4)
-                Case 5 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus5)
-                Case 6 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus6)
-                Case 7 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus7)
-                Case 8 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus8)
-            End Select
-
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus1)
+                    Case 2 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus2)
+                    Case 3 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus3)
+                    Case 4 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus4)
+                    Case 5 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus5)
+                    Case 6 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus6)
+                    Case 7 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus7)
+                    Case 8 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus8)
+                End Select
+            Else
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus1)
+                    Case 2 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus2)
+                    Case 3 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus3)
+                    Case 4 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus4)
+                    Case 5 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus5)
+                    Case 6 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus6)
+                    Case 7 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus7)
+                    Case 8 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveDiDoOutStatus8)
+                End Select
+            End If
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
         End Try
@@ -7068,17 +8498,31 @@ Module modCommon
         Dim strRtn As String = ""
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus1)
+                    Case 2 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus2)
+                    Case 3 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus3)
+                    Case 4 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus4)
+                    Case 5 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus5)
+                    Case 6 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus6)
+                    Case 7 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus7)
+                    Case 8 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus8)
+                End Select
+            Else
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus1)
+                    Case 2 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus2)
+                    Case 3 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus3)
+                    Case 4 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus4)
+                    Case 5 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus5)
+                    Case 6 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus6)
+                    Case 7 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus7)
+                    Case 8 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus8)
+                End Select
 
-            Select Case (hintLoopIdx + 1)
-                Case 1 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus1)
-                Case 2 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus2)
-                Case 3 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus3)
-                Case 4 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus4)
-                Case 5 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus5)
-                Case 6 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus6)
-                Case 7 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus7)
-                Case 8 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).ValveAiDoOutStatus8)
-            End Select
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -7101,17 +8545,30 @@ Module modCommon
         Dim strRtn As String = ""
 
         Try
-
-            Select Case (hintLoopIdx + 1)
-                Case 1 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus1)
-                Case 2 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus2)
-                Case 3 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus3)
-                Case 4 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus4)
-                Case 5 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus5)
-                Case 6 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus6)
-                Case 7 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus7)
-                Case 8 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus8)
-            End Select
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus1)
+                    Case 2 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus2)
+                    Case 3 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus3)
+                    Case 4 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus4)
+                    Case 5 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus5)
+                    Case 6 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus6)
+                    Case 7 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus7)
+                    Case 8 : strRtn = gGetString(gudt.SetChInfo.udtChannel(hintChIndex).MotorOutStatus8)
+                End Select
+            Else
+                Select Case (hintLoopIdx + 1)
+                    Case 1 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).MotorOutStatus1)
+                    Case 2 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).MotorOutStatus2)
+                    Case 3 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).MotorOutStatus3)
+                    Case 4 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).MotorOutStatus4)
+                    Case 5 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).MotorOutStatus5)
+                    Case 6 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).MotorOutStatus6)
+                    Case 7 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).MotorOutStatus7)
+                    Case 8 : strRtn = gGetString(gudt2.SetChInfo.udtChannel(hintChIndex).MotorOutStatus8)
+                End Select
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -7178,17 +8635,31 @@ Module modCommon
                     '-------------------
                     ''DOスロットの場合
                     '-------------------
-                    ''出力ステータス情報の取得
-                    With gudt.SetChInfo.udtChannel(hintChIndex)
-                        wkMotorStatus(0) = gGetString(.MotorOutStatus1)
-                        wkMotorStatus(1) = gGetString(.MotorOutStatus2)
-                        wkMotorStatus(2) = gGetString(.MotorOutStatus3)
-                        wkMotorStatus(3) = gGetString(.MotorOutStatus4)
-                        wkMotorStatus(4) = gGetString(.MotorOutStatus5)
-                        wkMotorStatus(5) = gGetString(.MotorOutStatus6)
-                        wkMotorStatus(6) = gGetString(.MotorOutStatus7)
-                        wkMotorStatus(7) = gGetString(.MotorOutStatus8)
-                    End With
+                    If modFcuSelect.nFcuNo = 1 Then
+                        'FCU1が選択されている場合
+                        ''出力ステータス情報の取得
+                        With gudt.SetChInfo.udtChannel(hintChIndex)
+                            wkMotorStatus(0) = gGetString(.MotorOutStatus1)
+                            wkMotorStatus(1) = gGetString(.MotorOutStatus2)
+                            wkMotorStatus(2) = gGetString(.MotorOutStatus3)
+                            wkMotorStatus(3) = gGetString(.MotorOutStatus4)
+                            wkMotorStatus(4) = gGetString(.MotorOutStatus5)
+                            wkMotorStatus(5) = gGetString(.MotorOutStatus6)
+                            wkMotorStatus(6) = gGetString(.MotorOutStatus7)
+                            wkMotorStatus(7) = gGetString(.MotorOutStatus8)
+                        End With
+                    Else
+                        With gudt2.SetChInfo.udtChannel(hintChIndex)
+                            wkMotorStatus(0) = gGetString(.MotorOutStatus1)
+                            wkMotorStatus(1) = gGetString(.MotorOutStatus2)
+                            wkMotorStatus(2) = gGetString(.MotorOutStatus3)
+                            wkMotorStatus(3) = gGetString(.MotorOutStatus4)
+                            wkMotorStatus(4) = gGetString(.MotorOutStatus5)
+                            wkMotorStatus(5) = gGetString(.MotorOutStatus6)
+                            wkMotorStatus(6) = gGetString(.MotorOutStatus7)
+                            wkMotorStatus(7) = gGetString(.MotorOutStatus8)
+                        End With
+                    End If
 
                     ''Bit情報通りに並び替え
                     If strbp(0) <> "" Then strwk(0) = wkMotorStatus(strbp(0))
@@ -7230,100 +8701,199 @@ Module modCommon
             Dim strRangeLow As String       ''文字長確認用
             Dim strDecimalFormat As String  ''フォーマットタイプ
 
-            With udtSet
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                With udtSet
 
-                ''仮設定フラグ
-                .blnDmyScaleRange = gudt.SetChInfo.udtChannel(hintChIndex).DummyRangeScale
+                    ''仮設定フラグ
+                    .blnDmyScaleRange = gudt.SetChInfo.udtChannel(hintChIndex).DummyRangeScale
 
-                .intDecimalPosition = gudt.SetChInfo.udtChannel(hintChIndex).AnalogDecimalPosition
-                strDecimalFormat = "0.".PadRight(.intDecimalPosition + 2, "0"c)
+                    .intDecimalPosition = gudt.SetChInfo.udtChannel(hintChIndex).AnalogDecimalPosition
+                    strDecimalFormat = "0.".PadRight(.intDecimalPosition + 2, "0"c)
 
-                ''====================
-                '' レンジ上限値
-                ''====================
-                'Ver2.0.7.B アナログの２、３線式の場合、小数点編集しない
-                'Ver2.0.7.F アナログの２、３線式の場合(温度基板)、も小数点処理
-                'dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
-                Dim blAna23 As Boolean = False
-                If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtChType = gCstCodeChTypeAnalog Then
-                    If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData >= gCstCodeChDataTypeAnalog2Pt And _
+                    ''====================
+                    '' レンジ上限値
+                    ''====================
+                    'Ver2.0.7.B アナログの２、３線式の場合、小数点編集しない
+                    'Ver2.0.7.F アナログの２、３線式の場合(温度基板)、も小数点処理
+                    'dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
+                    Dim blAna23 As Boolean = False
+                    If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtChType = gCstCodeChTypeAnalog Then
+                        If gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData >= gCstCodeChDataTypeAnalog2Pt And
                                gudt.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData <= gCstCodeChDataTypeAnalog3Jpt Then
-                        '判定の結果2,3線式である。
-                        blAna23 = True
+                            '判定の結果2,3線式である。
+                            blAna23 = True
+                        End If
                     End If
-                End If
 
-                If blAna23 = True Then
-                    '2,3線式
-                    'dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh
-                    dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
-                Else
-                    '2,3線式　以外
-                    dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
-                End If
-
-                strRangeHigh = dblRangeHigh.ToString(strDecimalFormat)
-
-                If .intChType = gCstCodeChTypePulse Then
-
-                    .strRangeHigh = ""
-
-                Else
-
-                    ''最大桁数：9byte（例：123456789）
-                    If strRangeHigh.Length > 8 Then
-                        .strRangeHigh = strRangeHigh.Substring(0, 9)
+                    If blAna23 = True Then
+                        '2,3線式
+                        'dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh
+                        dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
                     Else
-                        .strRangeHigh = strRangeHigh
+                        '2,3線式　以外
+                        dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
                     End If
 
-                End If
+                    strRangeHigh = dblRangeHigh.ToString(strDecimalFormat)
 
-                ''====================
-                '' レンジ下限値
-                ''====================
-                'Ver2.0.7.B アナログの２、３線式の場合、小数点編集しない
-                'Ver2.0.7.F アナログの２、３線式の場合(温度基板)、も小数点処理
-                'dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
-                If blAna23 = True Then
-                    '2,3線式
-                    'dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow
-                    dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
-                Else
-                    '2,3線式　以外
-                    dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
-                End If
+                    If .intChType = gCstCodeChTypePulse Then
 
-                strRangeLow = dblRangeLow.ToString(strDecimalFormat)
+                        .strRangeHigh = ""
 
-                'Ver2.0.8.5 mmHgレンジ下限小数点対応
-                Dim intDecMMHG As Integer = 0   'MMHG時の下限専用decpoint
-                Dim strDecMMHG As String = ""   'MMHG時の下限ﾌｫｰﾏｯﾄ
-                Dim dblTempMMHG As Double = 0   'MMHG時の下限を編集する際の一時領域
-                If gudt.SetChInfo.udtChannel(hintChIndex).AnalogMmHgFlg = 1 Then
-                    intDecMMHG = gudt.SetChInfo.udtChannel(hintChIndex).AnalogMmHgDec
-                    strDecMMHG = "0.".PadRight(intDecMMHG + 2, "0"c)
-                    dblTempMMHG = CDbl(dblRangeLow.ToString(strDecimalFormat))
-                    strRangeLow = dblTempMMHG.ToString(strDecMMHG)
-                End If
-                '-
-
-                If .intChType = gCstCodeChTypePulse Then
-
-                    .strRangeLow = ""
-
-                Else
-
-                    ''最大桁数：9byte（例：-1.234567）
-                    If strRangeLow.Length > 8 Then
-                        .strRangeLow = strRangeLow.Substring(0, 9)
                     Else
-                        .strRangeLow = strRangeLow
+
+                        ''最大桁数：9byte（例：123456789）
+                        If strRangeHigh.Length > 8 Then
+                            .strRangeHigh = strRangeHigh.Substring(0, 9)
+                        Else
+                            .strRangeHigh = strRangeHigh
+                        End If
+
                     End If
 
-                End If
+                    ''====================
+                    '' レンジ下限値
+                    ''====================
+                    'Ver2.0.7.B アナログの２、３線式の場合、小数点編集しない
+                    'Ver2.0.7.F アナログの２、３線式の場合(温度基板)、も小数点処理
+                    'dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
+                    If blAna23 = True Then
+                        '2,3線式
+                        'dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow
+                        dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
+                    Else
+                        '2,3線式　以外
+                        dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
+                    End If
 
-            End With
+                    strRangeLow = dblRangeLow.ToString(strDecimalFormat)
+
+                    'Ver2.0.8.5 mmHgレンジ下限小数点対応
+                    Dim intDecMMHG As Integer = 0   'MMHG時の下限専用decpoint
+                    Dim strDecMMHG As String = ""   'MMHG時の下限ﾌｫｰﾏｯﾄ
+                    Dim dblTempMMHG As Double = 0   'MMHG時の下限を編集する際の一時領域
+                    If gudt.SetChInfo.udtChannel(hintChIndex).AnalogMmHgFlg = 1 Then
+                        intDecMMHG = gudt.SetChInfo.udtChannel(hintChIndex).AnalogMmHgDec
+                        strDecMMHG = "0.".PadRight(intDecMMHG + 2, "0"c)
+                        dblTempMMHG = CDbl(dblRangeLow.ToString(strDecimalFormat))
+                        strRangeLow = dblTempMMHG.ToString(strDecMMHG)
+                    End If
+                    '-
+
+                    If .intChType = gCstCodeChTypePulse Then
+
+                        .strRangeLow = ""
+
+                    Else
+
+                        ''最大桁数：9byte（例：-1.234567）
+                        If strRangeLow.Length > 8 Then
+                            .strRangeLow = strRangeLow.Substring(0, 9)
+                        Else
+                            .strRangeLow = strRangeLow
+                        End If
+
+                    End If
+
+                End With
+            Else
+                With udtSet
+
+                    ''仮設定フラグ
+                    .blnDmyScaleRange = gudt2.SetChInfo.udtChannel(hintChIndex).DummyRangeScale
+
+                    .intDecimalPosition = gudt2.SetChInfo.udtChannel(hintChIndex).AnalogDecimalPosition
+                    strDecimalFormat = "0.".PadRight(.intDecimalPosition + 2, "0"c)
+
+                    ''====================
+                    '' レンジ上限値
+                    ''====================
+                    'Ver2.0.7.B アナログの２、３線式の場合、小数点編集しない
+                    'Ver2.0.7.F アナログの２、３線式の場合(温度基板)、も小数点処理
+                    'dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
+                    Dim blAna23 As Boolean = False
+                    If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtChType = gCstCodeChTypeAnalog Then
+                        If gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData >= gCstCodeChDataTypeAnalog2Pt And
+                                   gudt2.SetChInfo.udtChannel(hintChIndex).udtChCommon.shtData <= gCstCodeChDataTypeAnalog3Jpt Then
+                            '判定の結果2,3線式である。
+                            blAna23 = True
+                        End If
+                    End If
+
+                    If blAna23 = True Then
+                        '2,3線式
+                        'dblRangeHigh = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh
+                        dblRangeHigh = gudt2.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
+                    Else
+                        '2,3線式　以外
+                        dblRangeHigh = gudt2.SetChInfo.udtChannel(hintChIndex).AnalogRangeHigh / (10 ^ .intDecimalPosition)
+                    End If
+
+                    strRangeHigh = dblRangeHigh.ToString(strDecimalFormat)
+
+                    If .intChType = gCstCodeChTypePulse Then
+
+                        .strRangeHigh = ""
+
+                    Else
+
+                        ''最大桁数：9byte（例：123456789）
+                        If strRangeHigh.Length > 8 Then
+                            .strRangeHigh = strRangeHigh.Substring(0, 9)
+                        Else
+                            .strRangeHigh = strRangeHigh
+                        End If
+
+                    End If
+
+                    ''====================
+                    '' レンジ下限値
+                    ''====================
+                    'Ver2.0.7.B アナログの２、３線式の場合、小数点編集しない
+                    'Ver2.0.7.F アナログの２、３線式の場合(温度基板)、も小数点処理
+                    'dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
+                    If blAna23 = True Then
+                        '2,3線式
+                        'dblRangeLow = gudt.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow
+                        dblRangeLow = gudt2.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
+                    Else
+                        '2,3線式　以外
+                        dblRangeLow = gudt2.SetChInfo.udtChannel(hintChIndex).AnalogRangeLow / (10 ^ .intDecimalPosition)
+                    End If
+
+                    strRangeLow = dblRangeLow.ToString(strDecimalFormat)
+
+                    'Ver2.0.8.5 mmHgレンジ下限小数点対応
+                    Dim intDecMMHG As Integer = 0   'MMHG時の下限専用decpoint
+                    Dim strDecMMHG As String = ""   'MMHG時の下限ﾌｫｰﾏｯﾄ
+                    Dim dblTempMMHG As Double = 0   'MMHG時の下限を編集する際の一時領域
+                    If gudt2.SetChInfo.udtChannel(hintChIndex).AnalogMmHgFlg = 1 Then
+                        intDecMMHG = gudt2.SetChInfo.udtChannel(hintChIndex).AnalogMmHgDec
+                        strDecMMHG = "0.".PadRight(intDecMMHG + 2, "0"c)
+                        dblTempMMHG = CDbl(dblRangeLow.ToString(strDecimalFormat))
+                        strRangeLow = dblTempMMHG.ToString(strDecMMHG)
+                    End If
+                    '-
+
+                    If .intChType = gCstCodeChTypePulse Then
+
+                        .strRangeLow = ""
+
+                    Else
+
+                        ''最大桁数：9byte（例：-1.234567）
+                        If strRangeLow.Length > 8 Then
+                            .strRangeLow = strRangeLow.Substring(0, 9)
+                        Else
+                            .strRangeLow = strRangeLow
+                        End If
+
+                    End If
+
+                End With
+
+            End If
 
 
         Catch ex As Exception
@@ -7353,10 +8923,11 @@ Module modCommon
             If hintFuNo = 8 And hintPortno = 5 Then
                 Dim debugA As Integer = 0
             End If
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                With udtSet
 
-            With udtSet
-
-                Select Case gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType
+                    Select Case gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType
 
                     '' 3線式のみ3行表示　ver1.4.0 2011.08.22
                     'Case gCstCodeFuSlotTypeAO, _
@@ -7366,53 +8937,114 @@ Module modCommon
 
                     '    intKeisu = 2
 
-                    Case gCstCodeFuSlotTypeAI_3
+                        Case gCstCodeFuSlotTypeAI_3
 
-                        intKeisu = 3
+                            intKeisu = 3
 
-                    Case Else
+                        Case Else
 
-                        intKeisu = 1
+                            intKeisu = 1
 
-                End Select
+                    End Select
 
-                .strWireMark(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strWireMark
-                .strWireMarkClass(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strWireMarkClass
-                .strCoreNoIn(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strCoreNoIn
-                .strCoreNoCom(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strCoreNoCom
-                .strDist(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strDest
+                    .strWireMark(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strWireMark
+                    .strWireMarkClass(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strWireMarkClass
+                    .strCoreNoIn(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strCoreNoIn
+                    .strCoreNoCom(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strCoreNoCom
+                    .strDist(0) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strDest
 
-                '' 3線式のみ3行表示　ver1.4.0 2011.08.22
-                'If gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAO _
-                'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_2 _
-                'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_1_5 _
-                'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_K _
-                'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_4_20 _
-                'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
-                If gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
-                    .strWireMark(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strWireMark
-                    .strWireMarkClass(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strWireMarkClass
-                    .strCoreNoIn(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strCoreNoIn
-                    .strCoreNoCom(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strCoreNoCom
-                    .strDist(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strDest
+                    '' 3線式のみ3行表示　ver1.4.0 2011.08.22
+                    'If gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAO _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_2 _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_1_5 _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_K _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_4_20 _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
+                    If gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
+                        .strWireMark(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strWireMark
+                        .strWireMarkClass(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strWireMarkClass
+                        .strCoreNoIn(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strCoreNoIn
+                        .strCoreNoCom(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strCoreNoCom
+                        .strDist(1) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strDest
 
-                    .strWireMark(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMark
-                    .strWireMarkClass(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMarkClass
-                    .strCoreNoIn(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoIn
-                    .strCoreNoCom(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoCom
-                    .strDist(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strDest
-                End If
+                        .strWireMark(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMark
+                        .strWireMarkClass(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMarkClass
+                        .strCoreNoIn(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoIn
+                        .strCoreNoCom(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoCom
+                        .strDist(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strDest
+                    End If
 
-                'If gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_4_20 _
-                'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
-                '    .strWireMark(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMark
-                '    .strWireMarkClass(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMarkClass
-                '    .strCoreNoIn(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoIn
-                '    .strCoreNoCom(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoCom
-                '    .strDist(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strDest
-                'End If
+                    'If gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_4_20 _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
+                    '    .strWireMark(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMark
+                    '    .strWireMarkClass(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMarkClass
+                    '    .strCoreNoIn(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoIn
+                    '    .strCoreNoCom(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoCom
+                    '    .strDist(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strDest
+                    'End If
 
-            End With
+                End With
+            Else
+                With udtSet
+
+                    Select Case gudt2.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType
+
+                    '' 3線式のみ3行表示　ver1.4.0 2011.08.22
+                    'Case gCstCodeFuSlotTypeAO, _
+                    '     gCstCodeFuSlotTypeAI_2, _
+                    '     gCstCodeFuSlotTypeAI_1_5, _
+                    '     gCstCodeFuSlotTypeAI_K
+
+                    '    intKeisu = 2
+
+                        Case gCstCodeFuSlotTypeAI_3
+
+                            intKeisu = 3
+
+                        Case Else
+
+                            intKeisu = 1
+
+                    End Select
+
+                    .strWireMark(0) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strWireMark
+                    .strWireMarkClass(0) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strWireMarkClass
+                    .strCoreNoIn(0) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strCoreNoIn
+                    .strCoreNoCom(0) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strCoreNoCom
+                    .strDist(0) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intKeisu).strDest
+
+                    '' 3線式のみ3行表示　ver1.4.0 2011.08.22
+                    'If gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAO _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_2 _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_1_5 _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_K _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_4_20 _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
+                    If gudt2.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
+                        .strWireMark(1) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strWireMark
+                        .strWireMarkClass(1) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strWireMarkClass
+                        .strCoreNoIn(1) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strCoreNoIn
+                        .strCoreNoCom(1) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strCoreNoCom
+                        .strDist(1) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 1).strDest
+
+                        .strWireMark(2) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMark
+                        .strWireMarkClass(2) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMarkClass
+                        .strCoreNoIn(2) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoIn
+                        .strCoreNoCom(2) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoCom
+                        .strDist(2) = gudt2.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strDest
+                    End If
+
+                    'If gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_4_20 _
+                    'Or gudt.SetFu.udtFu(hintFuNo).udtSlotInfo(hintPortno - 1).shtType = gCstCodeFuSlotTypeAI_3 Then
+                    '    .strWireMark(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMark
+                    '    .strWireMarkClass(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strWireMarkClass
+                    '    .strCoreNoIn(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoIn
+                    '    .strCoreNoCom(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strCoreNoCom
+                    '    .strDist(2) = gudt.SetChDisp.udtChDisp(hintFuNo).udtSlotInfo(hintPortno - 1).udtPinInfo(((hintPin - 1) * intKeisu) + 2).strDest
+                    'End If
+
+                End With
+            End If
 
 
         Catch ex As Exception
@@ -7457,37 +9089,70 @@ Module modCommon
             ''--------------------------------
             For i = 0 To UBound(udtGraphData.udtOpsGraph)
 
-                With udtGraphData.udtOpsGraph(i)
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    With udtGraphData.udtOpsGraph(i)
 
-                    ''データ取得
-                    If hblnMachinery Then
+                        ''データ取得
+                        If hblnMachinery Then
 
-                        ''Machinery情報
-                        .intNo = gudt.SetOpsGraphM.udtGraphTitleRec(i).bytNo
-                        .intType = gudt.SetOpsGraphM.udtGraphTitleRec(i).bytType
-                        .strGraphName = gGetString(gudt.SetOpsGraphM.udtGraphTitleRec(i).strName)
+                            ''Machinery情報
+                            .intNo = gudt.SetOpsGraphM.udtGraphTitleRec(i).bytNo
+                            .intType = gudt.SetOpsGraphM.udtGraphTitleRec(i).bytType
+                            .strGraphName = gGetString(gudt.SetOpsGraphM.udtGraphTitleRec(i).strName)
 
-                        ''データ設定数のカウント
-                        If .intType <> gCstCodeOpsTitleGraphTypeNothing Then
-                            intCountGraph += 1
+                            ''データ設定数のカウント
+                            If .intType <> gCstCodeOpsTitleGraphTypeNothing Then
+                                intCountGraph += 1
+                            End If
+
+                        Else
+
+                            ''Cargo情報
+                            .intNo = gudt.SetOpsGraphC.udtGraphTitleRec(i).bytNo
+                            .intType = gudt.SetOpsGraphC.udtGraphTitleRec(i).bytType
+                            .strGraphName = gGetString(gudt.SetOpsGraphC.udtGraphTitleRec(i).strName)
+
+                            ''データ設定数のカウント
+                            If .intType <> gCstCodeOpsTitleGraphTypeNothing Then
+                                intCountGraph += 1
+                            End If
+
                         End If
 
-                    Else
+                    End With
+                Else
+                    With udtGraphData.udtOpsGraph(i)
 
-                        ''Cargo情報
-                        .intNo = gudt.SetOpsGraphC.udtGraphTitleRec(i).bytNo
-                        .intType = gudt.SetOpsGraphC.udtGraphTitleRec(i).bytType
-                        .strGraphName = gGetString(gudt.SetOpsGraphC.udtGraphTitleRec(i).strName)
+                        ''データ取得
+                        If hblnMachinery Then
 
-                        ''データ設定数のカウント
-                        If .intType <> gCstCodeOpsTitleGraphTypeNothing Then
-                            intCountGraph += 1
+                            ''Machinery情報
+                            .intNo = gudt2.SetOpsGraphM.udtGraphTitleRec(i).bytNo
+                            .intType = gudt2.SetOpsGraphM.udtGraphTitleRec(i).bytType
+                            .strGraphName = gGetString(gudt2.SetOpsGraphM.udtGraphTitleRec(i).strName)
+
+                            ''データ設定数のカウント
+                            If .intType <> gCstCodeOpsTitleGraphTypeNothing Then
+                                intCountGraph += 1
+                            End If
+
+                        Else
+
+                            ''Cargo情報
+                            .intNo = gudt2.SetOpsGraphC.udtGraphTitleRec(i).bytNo
+                            .intType = gudt2.SetOpsGraphC.udtGraphTitleRec(i).bytType
+                            .strGraphName = gGetString(gudt2.SetOpsGraphC.udtGraphTitleRec(i).strName)
+
+                            ''データ設定数のカウント
+                            If .intType <> gCstCodeOpsTitleGraphTypeNothing Then
+                                intCountGraph += 1
+                            End If
+
                         End If
 
-                    End If
-
-                End With
-
+                    End With
+                End If
             Next
 
             ''データ設定数 設定
@@ -7568,24 +9233,44 @@ Module modCommon
 
         Try
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-                With gudt.SetChInfo.udtChannel(i)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                    If .udtChCommon.shtChno <> 0 Then
+                        If .udtChCommon.shtChno <> 0 Then
 
-                        ''同じチャンネル番号が見つかった場合
-                        If .udtChCommon.shtChno = intChNo Then
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
 
-                            ''名称を返す
-                            Return gGetString(.udtChCommon.strChitem)
+                                ''名称を返す
+                                Return gGetString(.udtChCommon.strChitem)
+
+                            End If
 
                         End If
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-                    End If
-                End With
-            Next
+                    With gudt2.SetChInfo.udtChannel(i)
 
+                        If .udtChCommon.shtChno <> 0 Then
+
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
+
+                                ''名称を返す
+                                Return gGetString(.udtChCommon.strChitem)
+
+                            End If
+
+                        End If
+                    End With
+                Next
+            End If
             Return ""
 
         Catch ex As Exception
@@ -7611,47 +9296,88 @@ Module modCommon
         Dim decimal_p As UInt16 = 0
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                With gudt.SetChInfo.udtChannel(i)
+                        If .udtChCommon.shtChno <> 0 Then
 
-                    If .udtChCommon.shtChno <> 0 Then
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
 
-                        ''同じチャンネル番号が見つかった場合
-                        If .udtChCommon.shtChno = intChNo Then
+                                If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then           ''<アナログ> -------------------
+                                    decimal_p = .AnalogDecimalPosition
 
-                            If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then           ''<アナログ> -------------------
-                                decimal_p = .AnalogDecimalPosition
-
-                            ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then        ''<バルブ> ---------------------
-                                If .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or _
+                                ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then        ''<バルブ> ---------------------
+                                    If .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
                                    .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
-                                    decimal_p = .ValveAiDoDecimalPosition
-                                ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or _
-                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or _
+                                        decimal_p = .ValveAiDoDecimalPosition
+                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
                                        .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
-                                    decimal_p = .ValveAiAoDecimalPosition
-                                End If
+                                        decimal_p = .ValveAiAoDecimalPosition
+                                    End If
 
-                            ElseIf .udtChCommon.shtChType = gCstCodeChTypePulse Then        ''<パルス> ---------------------
-                                ''Data Typeから、パルスCH or 積算CH の判定をする
-                                If .udtChCommon.shtData < gCstCodeChDataTypePulseRevoTotalHour Or _
+                                ElseIf .udtChCommon.shtChType = gCstCodeChTypePulse Then        ''<パルス> ---------------------
+                                    ''Data Typeから、パルスCH or 積算CH の判定をする
+                                    If .udtChCommon.shtData < gCstCodeChDataTypePulseRevoTotalHour Or
                                    .udtChCommon.shtData = gCstCodeChDataTypePulseExtDev Then
-                                    decimal_p = .PulseDecPoint
-                                Else
-                                    decimal_p = .RevoDecPoint
+                                        decimal_p = .PulseDecPoint
+                                    Else
+                                        decimal_p = .RevoDecPoint
+                                    End If
                                 End If
+
+                                ''小数点位置を返す
+                                Return decimal_p
+
                             End If
-
-                            ''小数点位置を返す
-                            Return decimal_p
-
                         End If
-                    End If
-                End With
-            Next
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
+                    With gudt2.SetChInfo.udtChannel(i)
+
+                        If .udtChCommon.shtChno <> 0 Then
+
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
+
+                                If .udtChCommon.shtChType = gCstCodeChTypeAnalog Then           ''<アナログ> -------------------
+                                    decimal_p = .AnalogDecimalPosition
+
+                                ElseIf .udtChCommon.shtChType = gCstCodeChTypeValve Then        ''<バルブ> ---------------------
+                                    If .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO1 Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypeValveAI_DO2 Then
+                                        decimal_p = .ValveAiDoDecimalPosition
+                                    ElseIf .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO1 Or
+                                           .udtChCommon.shtData = gCstCodeChDataTypeValveAI_AO2 Or
+                                           .udtChCommon.shtData = gCstCodeChDataTypeValveAO_4_20 Then
+                                        decimal_p = .ValveAiAoDecimalPosition
+                                    End If
+
+                                ElseIf .udtChCommon.shtChType = gCstCodeChTypePulse Then        ''<パルス> ---------------------
+                                    ''Data Typeから、パルスCH or 積算CH の判定をする
+                                    If .udtChCommon.shtData < gCstCodeChDataTypePulseRevoTotalHour Or
+                                       .udtChCommon.shtData = gCstCodeChDataTypePulseExtDev Then
+                                        decimal_p = .PulseDecPoint
+                                    Else
+                                        decimal_p = .RevoDecPoint
+                                    End If
+                                End If
+
+                                ''小数点位置を返す
+                                Return decimal_p
+
+                            End If
+                        End If
+                    End With
+                Next
+            End If
             Return 0
 
         Catch ex As Exception
@@ -7674,24 +9400,44 @@ Module modCommon
     Public Function gGetChNoToDataTypeCode(ByVal intChNo As Integer) As Integer
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                With gudt.SetChInfo.udtChannel(i)
+                        If .udtChCommon.shtChno <> 0 Then
 
-                    If .udtChCommon.shtChno <> 0 Then
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
 
-                        ''同じチャンネル番号が見つかった場合
-                        If .udtChCommon.shtChno = intChNo Then
+                                ''データ種別コードを返す
+                                Return .udtChCommon.shtData
 
-                            ''データ種別コードを返す
-                            Return .udtChCommon.shtData
+                            End If
 
                         End If
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-                    End If
-                End With
-            Next
+                    With gudt2.SetChInfo.udtChannel(i)
+
+                        If .udtChCommon.shtChno <> 0 Then
+
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
+
+                                ''データ種別コードを返す
+                                Return .udtChCommon.shtData
+
+                            End If
+
+                        End If
+                    End With
+                Next
+            End If
 
             Return 0
 
@@ -7715,24 +9461,42 @@ Module modCommon
     Public Function gExistChNo(ByVal intChNo As Integer) As Boolean
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                With gudt.SetChInfo.udtChannel(i)
+                        If .udtChCommon.shtChno <> 0 Then
 
-                    If .udtChCommon.shtChno <> 0 Then
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
 
-                        ''同じチャンネル番号が見つかった場合
-                        If .udtChCommon.shtChno = intChNo Then
+                                Return True
 
-                            Return True
+                            End If
 
                         End If
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-                    End If
-                End With
-            Next
+                    With gudt2.SetChInfo.udtChannel(i)
 
+                        If .udtChCommon.shtChno <> 0 Then
+
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
+
+                                Return True
+
+                            End If
+
+                        End If
+                    End With
+                Next
+            End If
             Return False
 
         Catch ex As Exception
@@ -7760,29 +9524,54 @@ Module modCommon
                                ByRef intFuPin As Integer) As Boolean
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                With gudt.SetChInfo.udtChannel(i)
+                        If .udtChCommon.shtChno <> 0 Then
 
-                    If .udtChCommon.shtChno <> 0 Then
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
 
-                        ''同じチャンネル番号が見つかった場合
-                        If .udtChCommon.shtChno = intChNo Then
+                                intChType = .udtChCommon.shtChType
+                                intDataType = .udtChCommon.shtData
+                                intFuNo = .udtChCommon.shtFuno
+                                intFuPort = .udtChCommon.shtPortno
+                                intFuPin = .udtChCommon.shtPin
 
-                            intChType = .udtChCommon.shtChType
-                            intDataType = .udtChCommon.shtData
-                            intFuNo = .udtChCommon.shtFuno
-                            intFuPort = .udtChCommon.shtPortno
-                            intFuPin = .udtChCommon.shtPin
+                                Return True
 
-                            Return True
+                            End If
 
                         End If
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-                    End If
-                End With
-            Next
+                    With gudt2.SetChInfo.udtChannel(i)
+
+                        If .udtChCommon.shtChno <> 0 Then
+
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
+
+                                intChType = .udtChCommon.shtChType
+                                intDataType = .udtChCommon.shtData
+                                intFuNo = .udtChCommon.shtFuno
+                                intFuPort = .udtChCommon.shtPortno
+                                intFuPin = .udtChCommon.shtPin
+
+                                Return True
+
+                            End If
+
+                        End If
+                    End With
+                Next
+            End If
 
             Return False
 
@@ -7810,26 +9599,48 @@ Module modCommon
                                ) As Boolean
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i)
 
-                With gudt.SetChInfo.udtChannel(i)
+                        If .udtChCommon.shtChno <> 0 Then
 
-                    If .udtChCommon.shtChno <> 0 Then
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
 
-                        ''同じチャンネル番号が見つかった場合
-                        If .udtChCommon.shtChno = intChNo Then
+                                intChType = .udtChCommon.shtChType
+                                intChIDNo = .udtChCommon.shtChid
 
-                            intChType = .udtChCommon.shtChType
-                            intChIDNo = .udtChCommon.shtChid
+                                Return True
 
-                            Return True
+                            End If
 
                         End If
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-                    End If
-                End With
-            Next
+                    With gudt2.SetChInfo.udtChannel(i)
+
+                        If .udtChCommon.shtChno <> 0 Then
+
+                            ''同じチャンネル番号が見つかった場合
+                            If .udtChCommon.shtChno = intChNo Then
+
+                                intChType = .udtChCommon.shtChType
+                                intChIDNo = .udtChCommon.shtChid
+
+                                Return True
+
+                            End If
+
+                        End If
+                    End With
+                Next
+            End If
 
             Return False
 
@@ -7894,21 +9705,22 @@ Module modCommon
     Public Function gChkRunHourCH(ByVal intChNo As Integer) As Boolean
 
         Try
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        ''チャンネル番号が同じ場合
+                        If .shtChno = intChNo Then
 
-                    ''チャンネル番号が同じ場合
-                    If .shtChno = intChNo Then
+                            ''パルス積算チャンネルの場合
+                            If .shtChType = gCstCodeChTypePulse Then
 
-                        ''パルス積算チャンネルの場合
-                        If .shtChType = gCstCodeChTypePulse Then
-
-                            ''データタイプが運転積算の場合
-                            '' Ver1.11.8.3 2016.11.08 通信CH追加
-                            '' Ver1.12.0.1 2017.01.13 通信CH追加
-                            If .shtData = gCstCodeChDataTypePulseRevoTotalHour _
+                                ''データタイプが運転積算の場合
+                                '' Ver1.11.8.3 2016.11.08 通信CH追加
+                                '' Ver1.12.0.1 2017.01.13 通信CH追加
+                                If .shtData = gCstCodeChDataTypePulseRevoTotalHour _
                             Or .shtData = gCstCodeChDataTypePulseRevoTotalMin _
                             Or .shtData = gCstCodeChDataTypePulseRevoDayHour _
                             Or .shtData = gCstCodeChDataTypePulseRevoDayMin _
@@ -7921,13 +9733,48 @@ Module modCommon
                             Or .shtData = gCstCodeChDataTypePulseRevoExtDevLapHour _
                             Or .shtData = gCstCodeChDataTypePulseRevoExtDevLapMin Then
 
-                                Return True
+                                    Return True
 
+                                End If
                             End If
                         End If
-                    End If
-                End With
-            Next
+                    End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        ''チャンネル番号が同じ場合
+                        If .shtChno = intChNo Then
+
+                            ''パルス積算チャンネルの場合
+                            If .shtChType = gCstCodeChTypePulse Then
+
+                                ''データタイプが運転積算の場合
+                                '' Ver1.11.8.3 2016.11.08 通信CH追加
+                                '' Ver1.12.0.1 2017.01.13 通信CH追加
+                                If .shtData = gCstCodeChDataTypePulseRevoTotalHour _
+                                Or .shtData = gCstCodeChDataTypePulseRevoTotalMin _
+                                Or .shtData = gCstCodeChDataTypePulseRevoDayHour _
+                                Or .shtData = gCstCodeChDataTypePulseRevoDayMin _
+                                Or .shtData = gCstCodeChDataTypePulseRevoLapHour _
+                                Or .shtData = gCstCodeChDataTypePulseRevoLapMin _
+                                Or .shtData = gCstCodeChDataTypePulseRevoExtDev _
+                                Or .shtData = gCstCodeChDataTypePulseRevoExtDevTotalMin _
+                                Or .shtData = gCstCodeChDataTypePulseRevoExtDevDayHour _
+                                Or .shtData = gCstCodeChDataTypePulseRevoExtDevDayMin _
+                                Or .shtData = gCstCodeChDataTypePulseRevoExtDevLapHour _
+                                Or .shtData = gCstCodeChDataTypePulseRevoExtDevLapMin Then
+
+                                    Return True
+
+                                End If
+                            End If
+                        End If
+                    End With
+                Next
+            End If
 
             Return False
 
@@ -8162,10 +10009,19 @@ Module modCommon
             Dim strStatus2() As String = Nothing
 
             ''iniファイル名取得
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200219 hori
-                strIniFileName = gCstIniFileNameComboChListJpn
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200219 hori
+                    strIniFileName = gCstIniFileNameComboChListJpn
+                Else
+                    strIniFileName = gCstIniFileNameComboChList
+                End If
             Else
-                strIniFileName = gCstIniFileNameComboChList
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200219 hori
+                    strIniFileName = gCstIniFileNameComboChListJpn
+                Else
+                    strIniFileName = gCstIniFileNameComboChList
+                End If
             End If
 
             ''iniファイルパス作成
@@ -8276,12 +10132,20 @@ Module modCommon
             Dim strBitPos2() As String = Nothing
 
             ''iniファイル名取得
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200219 hori
-                strIniFileName = gCstIniFileNameComboChListJpn
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200219 hori
+                    strIniFileName = gCstIniFileNameComboChListJpn
+                Else
+                    strIniFileName = gCstIniFileNameComboChList
+                End If
             Else
-                strIniFileName = gCstIniFileNameComboChList
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '和文仕様 20200219 hori
+                    strIniFileName = gCstIniFileNameComboChListJpn
+                Else
+                    strIniFileName = gCstIniFileNameComboChList
+                End If
             End If
-
             ''iniファイルパス作成
             strIniFilePath = System.IO.Path.Combine(gGetDirNameIniFile, strIniFileName)
 
@@ -8398,30 +10262,56 @@ Module modCommon
 
             ''既存データのクリア
             Call gInitSetChSioChDetail(udtSioCh)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        ''チャンネルが設定されている場合
+                        If .shtChno <> 0 Then
 
-                    ''チャンネルが設定されている場合
-                    If .shtChno <> 0 Then
+                            ''対象ポートのビットが立っている場合
+                            If gBitCheck(.shtOutPort, intPortIndex) Then
 
-                        ''対象ポートのビットが立っている場合
-                        If gBitCheck(.shtOutPort, intPortIndex) Then
+                                ''情報セット
+                                udtSioCh.udtSioChRec(intSetCnt).shtChNo = .shtChno
 
-                            ''情報セット
-                            udtSioCh.udtSioChRec(intSetCnt).shtChNo = .shtChno
+                                ''カウントアップ
+                                intSetCnt += 1
 
-                            ''カウントアップ
-                            intSetCnt += 1
+                            End If
 
                         End If
 
-                    End If
+                    End With
 
-                End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-            Next
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        ''チャンネルが設定されている場合
+                        If .shtChno <> 0 Then
+
+                            ''対象ポートのビットが立っている場合
+                            If gBitCheck(.shtOutPort, intPortIndex) Then
+
+                                ''情報セット
+                                udtSioCh.udtSioChRec(intSetCnt).shtChNo = .shtChno
+
+                                ''カウントアップ
+                                intSetCnt += 1
+
+                            End If
+
+                        End If
+
+                    End With
+
+                Next
+            End If
 
             Return 0
 
@@ -8450,21 +10340,40 @@ Module modCommon
 
             '該当ポートが計測点に存在するかチェック
             blOK = False
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                    ''チャンネルが設定されている場合
-                    If .shtChno <> 0 Then
+                        ''チャンネルが設定されている場合
+                        If .shtChno <> 0 Then
 
-                        ''対象ポートのビットが立っている場合
-                        If gBitCheck(.shtOutPort, intPortIndex) Then
-                            blOK = True
-                            Exit For
+                            ''対象ポートのビットが立っている場合
+                            If gBitCheck(.shtOutPort, intPortIndex) Then
+                                blOK = True
+                                Exit For
+                            End If
                         End If
-                    End If
-                End With
-            Next i
+                    End With
+                Next i
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
+
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
+
+                        ''チャンネルが設定されている場合
+                        If .shtChno <> 0 Then
+
+                            ''対象ポートのビットが立っている場合
+                            If gBitCheck(.shtOutPort, intPortIndex) Then
+                                blOK = True
+                                Exit For
+                            End If
+                        End If
+                    End With
+                Next i
+            End If
 
             '計測点に存在しないなら、何もせずに処理抜け
             If blOK = False Then
@@ -8474,31 +10383,56 @@ Module modCommon
 
             ''既存データのクリア
             Call gInitSetChSioChDetail(udtSioCh)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+                    With gudt.SetChInfo.udtChannel(i).udtChCommon
 
-                With gudt.SetChInfo.udtChannel(i).udtChCommon
+                        ''チャンネルが設定されている場合
+                        If .shtChno <> 0 Then
 
-                    ''チャンネルが設定されている場合
-                    If .shtChno <> 0 Then
+                            ''対象ポートのビットが立っている場合
+                            If gBitCheck(.shtOutPort, intPortIndex) Then
 
-                        ''対象ポートのビットが立っている場合
-                        If gBitCheck(.shtOutPort, intPortIndex) Then
+                                ''情報セット
+                                udtSioCh.udtSioChRec(intSetCnt).shtChNo = .shtChno
 
-                            ''情報セット
-                            udtSioCh.udtSioChRec(intSetCnt).shtChNo = .shtChno
+                                ''カウントアップ
+                                intSetCnt += 1
 
-                            ''カウントアップ
-                            intSetCnt += 1
+                            End If
 
                         End If
 
-                    End If
+                    End With
 
-                End With
+                Next
+            Else
+                For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
-            Next
+                    With gudt2.SetChInfo.udtChannel(i).udtChCommon
 
+                        ''チャンネルが設定されている場合
+                        If .shtChno <> 0 Then
+
+                            ''対象ポートのビットが立っている場合
+                            If gBitCheck(.shtOutPort, intPortIndex) Then
+
+                                ''情報セット
+                                udtSioCh.udtSioChRec(intSetCnt).shtChNo = .shtChno
+
+                                ''カウントアップ
+                                intSetCnt += 1
+
+                            End If
+
+                        End If
+
+                    End With
+
+                Next
+            End If
             Return 0
 
         Catch ex As Exception
@@ -10003,18 +11937,32 @@ Module modCommon
 
         Dim intCnt As Integer = 0
 
-        For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            For i As Integer = 0 To UBound(gudt.SetChInfo.udtChannel)
 
-            With gudt.SetChInfo.udtChannel(i)
+                With gudt.SetChInfo.udtChannel(i)
 
-                If .udtChCommon.shtChno <> 0 Then
-                    intCnt += 1
-                End If
+                    If .udtChCommon.shtChno <> 0 Then
+                        intCnt += 1
+                    End If
 
-            End With
+                End With
 
-        Next
+            Next
+        Else
+            For i As Integer = 0 To UBound(gudt2.SetChInfo.udtChannel)
 
+                With gudt2.SetChInfo.udtChannel(i)
+
+                    If .udtChCommon.shtChno <> 0 Then
+                        intCnt += 1
+                    End If
+
+                End With
+
+            Next
+        End If
         Return intCnt
 
     End Function
@@ -10054,30 +12002,59 @@ Module modCommon
 
         Dim strRtn As String = ""
 
-        Select Case udtMC
-            Case gEnmMachineryCargo.mcMachinery
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            Select Case udtMC
+                Case gEnmMachineryCargo.mcMachinery
 
-                For i As Integer = 0 To UBound(gudt.SetOpsScreenTitleM.udtOpsScreenTitle)
+                    For i As Integer = 0 To UBound(gudt.SetOpsScreenTitleM.udtOpsScreenTitle)
 
-                    If gudt.SetOpsScreenTitleM.udtOpsScreenTitle(i).bytScreenNo = intScreenNo Then
-                        strRtn = Trim(gudt.SetOpsScreenTitleM.udtOpsScreenTitle(i).strScreenName)
-                        Exit For
-                    End If
+                        If gudt.SetOpsScreenTitleM.udtOpsScreenTitle(i).bytScreenNo = intScreenNo Then
+                            strRtn = Trim(gudt.SetOpsScreenTitleM.udtOpsScreenTitle(i).strScreenName)
+                            Exit For
+                        End If
 
-                Next
+                    Next
 
-            Case gEnmMachineryCargo.mcCargo
+                Case gEnmMachineryCargo.mcCargo
 
-                For i As Integer = 0 To UBound(gudt.SetOpsScreenTitleC.udtOpsScreenTitle)
+                    For i As Integer = 0 To UBound(gudt.SetOpsScreenTitleC.udtOpsScreenTitle)
 
-                    If gudt.SetOpsScreenTitleC.udtOpsScreenTitle(i).bytScreenNo = intScreenNo Then
-                        strRtn = Trim(gudt.SetOpsScreenTitleC.udtOpsScreenTitle(i).strScreenName)
-                        Exit For
-                    End If
+                        If gudt.SetOpsScreenTitleC.udtOpsScreenTitle(i).bytScreenNo = intScreenNo Then
+                            strRtn = Trim(gudt.SetOpsScreenTitleC.udtOpsScreenTitle(i).strScreenName)
+                            Exit For
+                        End If
 
-                Next
+                    Next
 
-        End Select
+            End Select
+        Else
+            Select Case udtMC
+                Case gEnmMachineryCargo.mcMachinery
+
+                    For i As Integer = 0 To UBound(gudt2.SetOpsScreenTitleM.udtOpsScreenTitle)
+
+                        If gudt2.SetOpsScreenTitleM.udtOpsScreenTitle(i).bytScreenNo = intScreenNo Then
+                            strRtn = Trim(gudt2.SetOpsScreenTitleM.udtOpsScreenTitle(i).strScreenName)
+                            Exit For
+                        End If
+
+                    Next
+
+                Case gEnmMachineryCargo.mcCargo
+
+                    For i As Integer = 0 To UBound(gudt2.SetOpsScreenTitleC.udtOpsScreenTitle)
+
+                        If gudt2.SetOpsScreenTitleC.udtOpsScreenTitle(i).bytScreenNo = intScreenNo Then
+                            strRtn = Trim(gudt2.SetOpsScreenTitleC.udtOpsScreenTitle(i).strScreenName)
+                            Exit For
+                        End If
+
+                    Next
+
+            End Select
+
+        End If
 
         Return strRtn
 
@@ -10191,24 +12168,44 @@ Module modCommon
     ' 機能説明  : コンポジットテーブル使用フラグを初期化する 
     '--------------------------------------------------------------------
     Public Sub gInitCompositeTableUse(ByRef blnCompositeTableUse() As Boolean)
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            ''配列再定義
+            Erase blnCompositeTableUse
+            ReDim blnCompositeTableUse(UBound(gudt.SetChComposite.udtComposite))
 
-        ''配列再定義
-        Erase blnCompositeTableUse
-        ReDim blnCompositeTableUse(UBound(gudt.SetChComposite.udtComposite))
+            For i As Integer = 0 To UBound(gudt.SetChComposite.udtComposite)
 
-        For i As Integer = 0 To UBound(gudt.SetChComposite.udtComposite)
+                With gudt.SetChComposite.udtComposite(i)
 
-            With gudt.SetChComposite.udtComposite(i)
+                    If .shtChid <> 0 Then
+                        blnCompositeTableUse(i) = True
+                    Else
+                        blnCompositeTableUse(i) = False
+                    End If
 
-                If .shtChid <> 0 Then
-                    blnCompositeTableUse(i) = True
-                Else
-                    blnCompositeTableUse(i) = False
-                End If
+                End With
 
-            End With
+            Next
+        Else
+            ''配列再定義
+            Erase blnCompositeTableUse
+            ReDim blnCompositeTableUse(UBound(gudt2.SetChComposite.udtComposite))
 
-        Next
+            For i As Integer = 0 To UBound(gudt2.SetChComposite.udtComposite)
+
+                With gudt2.SetChComposite.udtComposite(i)
+
+                    If .shtChid <> 0 Then
+                        blnCompositeTableUse(i) = True
+                    Else
+                        blnCompositeTableUse(i) = False
+                    End If
+
+                End With
+
+            Next
+        End If
 
     End Sub
 
@@ -11016,9 +13013,16 @@ Module modCommon
                 FileOpen(intFileNo, strPath, OpenMode.Binary, OpenAccess.Read, OpenShare.Shared)
 
                 Try
-                    'ファイル読込み
-                    FileGet(intFileNo, gudt.SetChInfo)
-                    FileClose(intFileNo)
+                    If modFcuSelect.nFcuNo = 1 Then
+                        'FCU1が選択されている場合
+                        'ファイル読込み
+                        FileGet(intFileNo, gudt.SetChInfo)
+                        FileClose(intFileNo)
+                    Else
+                        'ファイル読込み
+                        FileGet(intFileNo, gudt2.SetChInfo)
+                        FileClose(intFileNo)
+                    End If
 
                     intRet = 0
                 Catch ex As Exception
@@ -11048,14 +13052,26 @@ Module modCommon
 
             Dim intRtn As Integer = 0
 
-            With gudt.SetChInfo
-                ''設定されているチャンネル番号のみチャンネル番号と配列番号を配列化
-                For i As Integer = 0 To UBound(.udtChannel)
-                    If .udtChannel(i).udtChCommon.shtChno <> 0 Then
-                        aryCheck.Add(.udtChannel(i).udtChCommon.shtChno.ToString("0000") & "," & i)
-                    End If
-                Next
-            End With
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                With gudt.SetChInfo
+                    ''設定されているチャンネル番号のみチャンネル番号と配列番号を配列化
+                    For i As Integer = 0 To UBound(.udtChannel)
+                        If .udtChannel(i).udtChCommon.shtChno <> 0 Then
+                            aryCheck.Add(.udtChannel(i).udtChCommon.shtChno.ToString("0000") & "," & i)
+                        End If
+                    Next
+                End With
+            Else
+                With gudt2.SetChInfo
+                    ''設定されているチャンネル番号のみチャンネル番号と配列番号を配列化
+                    For i As Integer = 0 To UBound(.udtChannel)
+                        If .udtChannel(i).udtChCommon.shtChno <> 0 Then
+                            aryCheck.Add(.udtChannel(i).udtChCommon.shtChno.ToString("0000") & "," & i)
+                        End If
+                    Next
+                End With
+            End If
 
             ''チャンネル番号が存在する場合
             If Not aryCheck Is Nothing Then
@@ -11125,16 +13141,30 @@ Module modCommon
 
     Private Function ChkOutputCH(ByVal shtCHNo As Integer, ByRef FUNo As Byte, ByRef PortNo As Byte, ByRef PinNo As Byte) As Boolean
 
-        For i = 0 To UBound(gudt.SetChOutput.udtCHOutPut)
-            If gudt.SetChOutput.udtCHOutPut(i).shtChid = shtCHNo Then
-                FUNo = gudt.SetChOutput.udtCHOutPut(i).bytFuno
-                PortNo = gudt.SetChOutput.udtCHOutPut(i).bytPortno
-                PinNo = gudt.SetChOutput.udtCHOutPut(i).bytPin
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            For i = 0 To UBound(gudt.SetChOutput.udtCHOutPut)
+                If gudt.SetChOutput.udtCHOutPut(i).shtChid = shtCHNo Then
+                    FUNo = gudt.SetChOutput.udtCHOutPut(i).bytFuno
+                    PortNo = gudt.SetChOutput.udtCHOutPut(i).bytPortno
+                    PinNo = gudt.SetChOutput.udtCHOutPut(i).bytPin
 
-                Return True
-            End If
+                    Return True
+                End If
 
-        Next i
+            Next i
+        Else
+            For i = 0 To UBound(gudt2.SetChOutput.udtCHOutPut)
+                If gudt2.SetChOutput.udtCHOutPut(i).shtChid = shtCHNo Then
+                    FUNo = gudt2.SetChOutput.udtCHOutPut(i).bytFuno
+                    PortNo = gudt2.SetChOutput.udtCHOutPut(i).bytPortno
+                    PinNo = gudt2.SetChOutput.udtCHOutPut(i).bytPin
+
+                    Return True
+                End If
+
+            Next i
+        End If
 
         Return False
 
@@ -11146,11 +13176,18 @@ Module modCommon
 #Region "CH変換ｸﾘｱ関数"
     ' CH変換削除
     Public Sub gsubCHconvDEL()
-        Call ClearCHConvertSetting(gudt.SetChConvPrev)
-        gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
-        Call ClearCHConvertSetting(gudt.SetChConvNow)
-        gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
-
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            Call ClearCHConvertSetting(gudt.SetChConvPrev)
+            gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+            Call ClearCHConvertSetting(gudt.SetChConvNow)
+            gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+        Else
+            Call ClearCHConvertSetting(gudt2.SetChConvPrev)
+            gudt2.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+            Call ClearCHConvertSetting(gudt2.SetChConvNow)
+            gudt2.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+        End If
         gblnUpdateAll = True
     End Sub
     '--------------------------------------------------------------------
@@ -11175,68 +13212,131 @@ Module modCommon
         Dim intPortNo As Integer
         Dim intPinNo As Integer
         Dim blFUerr As Boolean
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            'FCU設定からPT,JPTを取得
+            If gudt.SetSystem.udtSysFcu.shtPtJptFlg <> 0 Then
+                blPTorJPT = True
+            End If
 
-        'FCU設定からPT,JPTを取得
-        If gudt.SetSystem.udtSysFcu.shtPtJptFlg <> 0 Then
-            blPTorJPT = True
-        End If
-
-        With gudt.SetChInfo
-            For i = 0 To UBound(.udtChannel) Step 1
-                'CHNoが入っていること
-                If .udtChannel(i).udtChCommon.shtChno <> 0 Then
-                    'アナログCHであること
-                    If .udtChannel(i).udtChCommon.shtChType = gCstCodeChTypeAnalog Then
-                        'ﾃﾞｰﾀﾀｲﾌﾟが2PT,2JPT,3PT,3JPTのいずれかであること
-                        If .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt Or _
-                            .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt Or _
-                            .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt Or _
+            With gudt.SetChInfo
+                For i = 0 To UBound(.udtChannel) Step 1
+                    'CHNoが入っていること
+                    If .udtChannel(i).udtChCommon.shtChno <> 0 Then
+                        'アナログCHであること
+                        If .udtChannel(i).udtChCommon.shtChType = gCstCodeChTypeAnalog Then
+                            'ﾃﾞｰﾀﾀｲﾌﾟが2PT,2JPT,3PT,3JPTのいずれかであること
+                            If .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt Or
+                            .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt Or
+                            .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt Or
                             .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Jpt Then
 
-                            '該当CHのFUｱﾄﾞﾚｽ取得(Pinは不要だが取得しておく)
-                            intFUno = .udtChannel(i).udtChCommon.shtFuno
-                            intPortNo = .udtChannel(i).udtChCommon.shtPortno
-                            intPinNo = .udtChannel(i).udtChCommon.shtPin
+                                '該当CHのFUｱﾄﾞﾚｽ取得(Pinは不要だが取得しておく)
+                                intFUno = .udtChannel(i).udtChCommon.shtFuno
+                                intPortNo = .udtChannel(i).udtChCommon.shtPortno
+                                intPinNo = .udtChannel(i).udtChCommon.shtPin
 
-                            'FUｱﾄﾞﾚｽが範囲内であること
-                            blFUerr = False
-                            'FU=0-20,Port=1-8,Pinはﾁｪｯｸ不要
-                            If intFUno < 0 Or intFUno > 20 Then
-                                blFUerr = True
-                            End If
-                            If intPortNo < 1 Or intPortNo > 8 Then
-                                blFUerr = True
-                            End If
-                            If blFUerr = False Then
-                                '該当FUの基板によって処理分岐してChInfoのﾃﾞｰﾀﾀｲﾌﾟ書き換え
-                                Select Case gudt.SetFu.udtFu(intFUno).udtSlotInfo(intPortNo - 1).shtType
-                                    Case 4
-                                        'M100A=2線式
-                                        If blPTorJPT = True Then
-                                            'JPT
-                                            .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt
-                                        Else
-                                            'PT
-                                            .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt
-                                        End If
-                                    Case 5
-                                        'M110A=3線式
-                                        If blPTorJPT = True Then
-                                            'JPT
-                                            .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Jpt
-                                        Else
-                                            'PT
-                                            .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt
-                                        End If
-                                    Case Else
-                                        '該当外は何もしない
-                                End Select
+                                'FUｱﾄﾞﾚｽが範囲内であること
+                                blFUerr = False
+                                'FU=0-20,Port=1-8,Pinはﾁｪｯｸ不要
+                                If intFUno < 0 Or intFUno > 20 Then
+                                    blFUerr = True
+                                End If
+                                If intPortNo < 1 Or intPortNo > 8 Then
+                                    blFUerr = True
+                                End If
+                                If blFUerr = False Then
+                                    '該当FUの基板によって処理分岐してChInfoのﾃﾞｰﾀﾀｲﾌﾟ書き換え
+                                    Select Case gudt.SetFu.udtFu(intFUno).udtSlotInfo(intPortNo - 1).shtType
+                                        Case 4
+                                            'M100A=2線式
+                                            If blPTorJPT = True Then
+                                                'JPT
+                                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt
+                                            Else
+                                                'PT
+                                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt
+                                            End If
+                                        Case 5
+                                            'M110A=3線式
+                                            If blPTorJPT = True Then
+                                                'JPT
+                                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Jpt
+                                            Else
+                                                'PT
+                                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt
+                                            End If
+                                        Case Else
+                                            '該当外は何もしない
+                                    End Select
+                                End If
                             End If
                         End If
                     End If
-                End If
-            Next i
-        End With
+                Next i
+            End With
+        Else
+            If gudt2.SetSystem.udtSysFcu.shtPtJptFlg <> 0 Then
+                blPTorJPT = True
+            End If
+
+            With gudt2.SetChInfo
+                For i = 0 To UBound(.udtChannel) Step 1
+                    'CHNoが入っていること
+                    If .udtChannel(i).udtChCommon.shtChno <> 0 Then
+                        'アナログCHであること
+                        If .udtChannel(i).udtChCommon.shtChType = gCstCodeChTypeAnalog Then
+                            'ﾃﾞｰﾀﾀｲﾌﾟが2PT,2JPT,3PT,3JPTのいずれかであること
+                            If .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt Or
+                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt Or
+                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt Or
+                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Jpt Then
+
+                                '該当CHのFUｱﾄﾞﾚｽ取得(Pinは不要だが取得しておく)
+                                intFUno = .udtChannel(i).udtChCommon.shtFuno
+                                intPortNo = .udtChannel(i).udtChCommon.shtPortno
+                                intPinNo = .udtChannel(i).udtChCommon.shtPin
+
+                                'FUｱﾄﾞﾚｽが範囲内であること
+                                blFUerr = False
+                                'FU=0-20,Port=1-8,Pinはﾁｪｯｸ不要
+                                If intFUno < 0 Or intFUno > 20 Then
+                                    blFUerr = True
+                                End If
+                                If intPortNo < 1 Or intPortNo > 8 Then
+                                    blFUerr = True
+                                End If
+                                If blFUerr = False Then
+                                    '該当FUの基板によって処理分岐してChInfoのﾃﾞｰﾀﾀｲﾌﾟ書き換え
+                                    Select Case gudt2.SetFu.udtFu(intFUno).udtSlotInfo(intPortNo - 1).shtType
+                                        Case 4
+                                            'M100A=2線式
+                                            If blPTorJPT = True Then
+                                                'JPT
+                                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Jpt
+                                            Else
+                                                'PT
+                                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog2Pt
+                                            End If
+                                        Case 5
+                                            'M110A=3線式
+                                            If blPTorJPT = True Then
+                                                'JPT
+                                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Jpt
+                                            Else
+                                                'PT
+                                                .udtChannel(i).udtChCommon.shtData = gCstCodeChDataTypeAnalog3Pt
+                                            End If
+                                        Case Else
+                                            '該当外は何もしない
+                                    End Select
+                                End If
+                            End If
+                        End If
+                    End If
+                Next i
+            End With
+        End If
 
 
     End Sub

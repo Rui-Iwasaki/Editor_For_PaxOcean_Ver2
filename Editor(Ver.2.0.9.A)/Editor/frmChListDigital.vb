@@ -1523,6 +1523,10 @@
 
     End Sub
 
+    Private Sub txtFuNo_TextChanged(sender As Object, e As EventArgs) Handles txtFuNo.TextChanged
+
+    End Sub
+
     'Private Sub txtFuNo_EnabledChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFuNo.EnabledChanged, txtPortNo.EnabledChanged, txtPin.EnabledChanged
 
     '    If sender.Enabled Then
