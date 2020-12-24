@@ -854,8 +854,8 @@ Public Class frmMenuMain
     Private Sub cmdPrint1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdPrint1.Click
 
         Try
-            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.CHANNEL_LIST_PRINT)
-            frmFcuSelect.gShow()
+            ' modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.CHANNEL_LIST_PRINT)
+            'frmFcuSelect.gShow()
             frmPrtChannel.ShowDialog()
 
             ''本画面にフォーカス

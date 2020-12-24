@@ -1799,12 +1799,20 @@
 
 
                             Else
-                                objGraphics.DrawString(CHStr.INAdd, gFnt8, gFntColorBlack, mCstMarginLeft + mCstColumnSize * intColumnPos, mCstMarginUp + mCstRowSize * (intRowPos1 + i * intCHDataRow))
+                                'FCU No.を1行目に表示
+                                If CHStr.SYSNo = "10" Or CHStr.SYSNo = "11" Or CHStr.SYSNo = "12" Then
+                                    objGraphics.DrawString("FCU-1", gFnt8, gFntColorBlack, mCstMarginLeft + mCstColumnSize * intColumnPos, mCstMarginUp + mCstRowSize * (intRowPos1 + i * intCHDataRow))
+                                ElseIf CHStr.SYSNo = "20" Or CHStr.SYSNo = "21" Or CHStr.SYSNo = "22" Then
+                                    objGraphics.DrawString("FCU-2", gFnt8, gFntColorBlack, mCstMarginLeft + mCstColumnSize * intColumnPos, mCstMarginUp + mCstRowSize * (intRowPos1 + i * intCHDataRow))
+                                End If
+
+                                'アドレスを2行目に表示
+                                objGraphics.DrawString(CHStr.INAdd, gFnt8, gFntColorBlack, mCstMarginLeft + mCstColumnSize * intColumnPos, mCstMarginUp + mCstRowSize * (intRowPos2 + i * intCHDataRow))
 
 
 
-                            End If
-                            objGraphics.DrawString(CHStr.OUTAdd, gFnt8, gFntColorBlack, mCstMarginLeft + mCstColumnSize * intColumnPos, mCstMarginUp + mCstRowSize * (intRowPos3 + i * intCHDataRow)) ' 2019/04/15
+                                End If
+                                objGraphics.DrawString(CHStr.OUTAdd, gFnt8, gFntColorBlack, mCstMarginLeft + mCstColumnSize * intColumnPos, mCstMarginUp + mCstRowSize * (intRowPos3 + i * intCHDataRow)) ' 2019/04/15
                             intColumnPos += (mPrtColLen(18) + 1)
                         End If
 

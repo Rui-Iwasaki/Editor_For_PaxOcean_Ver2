@@ -130,7 +130,7 @@ Public Class clsDataGridViewPlus
     ''' <param name="sender">イベントの発生元</param>
     ''' <param name="e">イベントの情報</param>
     ''' <remarks>編集中のTextBoxEditingControlからKeyPressイベント削除</remarks>
-    Private Sub DataGridViewPlus_CellEndEdit(ByVal sender As Object, _
+    Private Sub DataGridViewPlus_CellEndEdit(ByVal sender As Object,
         ByVal e As DataGridViewCellEventArgs) Handles Me.CellEndEdit
         If _editingCtrl Is Nothing = False Then
             ' 編集中のTextBoxEditingControlからKeyPressイベント削除

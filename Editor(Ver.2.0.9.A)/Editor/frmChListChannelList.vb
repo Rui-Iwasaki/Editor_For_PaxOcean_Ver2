@@ -8500,12 +8500,12 @@
                 ''============================================
 
                 ''データクリア  
-                If modFcuSelect.nFcuNo = 1 Then
-                    ''FCU1が選択されている場合
-                    Call gInitSetChannelDisp(gudt.SetChInfo)
-                Else
-                    Call gInitSetChannelDisp(gudt2.SetChInfo)
-                End If
+                ' If modFcuSelect.nFcuNo = 1 Then
+                ''FCU1が選択されている場合
+                Call gInitSetChannelDisp(gudt.SetChInfo)
+                'Else
+                Call gInitSetChannelDisp(gudt2.SetChInfo)
+                'End If
 
                 ''グループの構造体をグローバル構造体にマージする
                 Dim wkChDataGroup(gCstOneGroupChannelMax - 1) As gTypSetChRec
@@ -8519,12 +8519,12 @@
                             If wkChDataGroup(j).udtChCommon.shtChType <> gCstCodeChTypeNothing Then
 
                             ''======================================================================================
-                            If modFcuSelect.nFcuNo = 1 Then
-                                ''FCU1が選択されている場合
-                                gudt.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
-                            Else
-                                gudt2.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
-                            End If
+                            'If modFcuSelect.nFcuNo = 1 Then
+                            ''FCU1が選択されている場合
+                            gudt.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
+                            'Else
+                            gudt2.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
+                            'End If
 
                             ''======================================================================================
 
