@@ -824,8 +824,15 @@
         Dim bRet As Boolean = False
 
         '保存対象がなければ保存せずに印刷処理続行
-        If gudt.SetEditorUpdateInfo.udtSave.bytChDisp <> 1 Then
-            Return True
+        If modFcuSelect.nFcuNo = 1 Then
+            'FCU1が選択されている場合
+            If gudt.SetEditorUpdateInfo.udtSave.bytChDisp <> 1 Then
+                Return True
+            End If
+        Else
+            If gudt2.SetEditorUpdateInfo.udtSave.bytChDisp <> 1 Then
+                Return True
+            End If
         End If
 
         '保存ダイアログ表示

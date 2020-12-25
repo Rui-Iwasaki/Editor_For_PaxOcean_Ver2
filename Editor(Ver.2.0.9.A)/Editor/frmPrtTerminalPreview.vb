@@ -4376,59 +4376,118 @@
 
             Dim iFind1 As Integer = hstrTargetStrings.IndexOf("^"c)     '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞ検索
 
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
-                ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
-                ''全角時の分割処理変更    2015.02.03
-                '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
-                If iFind1 <> -1 Then
-                    ''1行目
-                    strLine = hstrTargetStrings.Substring(0, iFind1)
-                    hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
-
-                    ''2行目
-                    strLine = hstrTargetStrings.Substring(iFind1 + 1)
-                    hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 25)
-                Else
-                    all_len = LenB(hstrTargetStrings)
-                    If all_len > hintLineLength Then
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
+                    ''全角時の分割処理変更    2015.02.03
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
                         ''1行目
-                        strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
                         hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
 
                         ''2行目
-                        line_len = LenB(strLine.Trim)
-                        strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
                         hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 25)
                     Else
-                        ''1行表示
-                        hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 20)
-                    End If
-                End If
-            Else
-                ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
-                '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
-                If iFind1 <> -1 Then
-                    ''1行目
-                    strLine = hstrTargetStrings.Substring(0, iFind1)
-                    hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
+                        all_len = LenB(hstrTargetStrings)
+                        If all_len > hintLineLength Then
+                            ''1行目
+                            strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
 
-                    ''2行目
-                    strLine = hstrTargetStrings.Substring(iFind1 + 1)
-                    hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 25)
+                            ''2行目
+                            line_len = LenB(strLine.Trim)
+                            strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                            hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 25)
+                        Else
+                            ''1行表示
+                            hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 20)
+                        End If
+                    End If
                 Else
-                    If hstrTargetStrings.Length > hintLineLength Then
+                    ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
                         ''1行目
-                        strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
                         hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
 
                         ''2行目
-                        strLine = hstrTargetStrings.Substring(hintLineLength)
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
                         hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 25)
                     Else
-                        ''1行表示
-                        hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 20)
-                    End If
+                        If hstrTargetStrings.Length > hintLineLength Then
+                            ''1行目
+                            strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
 
+                            ''2行目
+                            strLine = hstrTargetStrings.Substring(hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 25)
+                        Else
+                            ''1行表示
+                            hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 20)
+                        End If
+
+                    End If
+                End If
+            Else
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Or gudt2.SetSystem.udtSysSystem.shtLanguage = 2 Then     '' 和文表示の場合  20200306 hori
+                    ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
+                    ''全角時の分割処理変更    2015.02.03
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
+                        ''1行目
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
+                        hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
+
+                        ''2行目
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
+                        hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 25)
+                    Else
+                        all_len = LenB(hstrTargetStrings)
+                        If all_len > hintLineLength Then
+                            ''1行目
+                            strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 14)
+
+                            ''2行目
+                            line_len = LenB(strLine.Trim)
+                            strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                            hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 25)
+                        Else
+                            ''1行表示
+                            hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 20)
+                        End If
+                    End If
+                Else
+                    ''MAXを24文字から20文字に変更、フォントサイズの変更はなし    2013.11.19
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
+                        ''1行目
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
+                        hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
+
+                        ''2行目
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
+                        hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 25)
+                    Else
+                        If hstrTargetStrings.Length > hintLineLength Then
+                            ''1行目
+                            strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 14)
+
+                            ''2行目
+                            strLine = hstrTargetStrings.Substring(hintLineLength)
+                            hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 25)
+                        Else
+                            ''1行表示
+                            hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 20)
+                        End If
+
+                    End If
                 End If
             End If
 
@@ -4601,79 +4660,156 @@
 
             Dim iFind1 As Integer = hstrTargetStrings.IndexOf("^"c)     '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞ検索
 
-            If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then     '' 和文表示の場合  2014.05.19
-                ''全角時の分割処理変更    2015.02.03
-                '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
-                If iFind1 <> -1 Then
-                    ''1ブロック目
-                    strLine = hstrTargetStrings.Substring(0, iFind1)
-                    If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY)
-                    If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 20)
-                    If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 39)
+            If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
 
-                    ''2ブロック目
-                    strLine = hstrTargetStrings.Substring(iFind1 + 1)
-                    If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 10)
-                    If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 30)
-                    If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 49)
-                Else
-                    all_len = LenB(hstrTargetStrings)
-                    If all_len > hintLineLength Then
+                If gudt.SetSystem.udtSysSystem.shtLanguage = 1 Then     '' 和文表示の場合  2014.05.19
+                    ''全角時の分割処理変更    2015.02.03
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
                         ''1ブロック目
-                        strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
                         If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY)
                         If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 20)
                         If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 39)
 
                         ''2ブロック目
-                        line_len = LenB(strLine.Trim)
-                        strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
                         If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 10)
                         If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 30)
                         If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 49)
                     Else
-                        ''1ブロック表示
-                        If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 4)
-                        If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 24)
-                        If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 45)
-                    End If
-                End If
-            Else
-                '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
-                If iFind1 <> -1 Then
-                    ''1ブロック目
-                    strLine = hstrTargetStrings.Substring(0, iFind1)
-                    If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY)
-                    If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 20)
-                    If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 39)
+                        all_len = LenB(hstrTargetStrings)
+                        If all_len > hintLineLength Then
+                            ''1ブロック目
+                            strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 20)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 39)
 
-                    ''2ブロック目
-                    strLine = hstrTargetStrings.Substring(iFind1 + 1)
-                    If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 10)
-                    If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 30)
-                    If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 49)
+                            ''2ブロック目
+                            line_len = LenB(strLine.Trim)
+                            strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 10)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 30)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 49)
+                        Else
+                            ''1ブロック表示
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 4)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 24)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 45)
+                        End If
+                    End If
                 Else
-                    If hstrTargetStrings.Length > hintLineLength Then
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
                         ''1ブロック目
-                        strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
                         If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY)
                         If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 20)
                         If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 39)
 
                         ''2ブロック目
-                        strLine = hstrTargetStrings.Substring(hintLineLength)
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
                         If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 10)
                         If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 30)
                         If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 49)
                     Else
-                        ''1ブロック表示
-                        If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 4)
-                        If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 24)
-                        If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 45)
+                        If hstrTargetStrings.Length > hintLineLength Then
+                            ''1ブロック目
+                            strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 20)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 39)
+
+                            ''2ブロック目
+                            strLine = hstrTargetStrings.Substring(hintLineLength)
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 10)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 30)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 49)
+                        Else
+                            ''1ブロック表示
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 4)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 24)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 45)
+                        End If
                     End If
                 End If
-            End If
+            Else
+                If gudt2.SetSystem.udtSysSystem.shtLanguage = 1 Then     '' 和文表示の場合  2014.05.19
+                    ''全角時の分割処理変更    2015.02.03
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
+                        ''1ブロック目
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
+                        If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY)
+                        If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 20)
+                        If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 39)
 
+                        ''2ブロック目
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
+                        If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 10)
+                        If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 30)
+                        If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 49)
+                    Else
+                        all_len = LenB(hstrTargetStrings)
+                        If all_len > hintLineLength Then
+                            ''1ブロック目
+                            strLine = fStrCut(hstrTargetStrings, 0, hintLineLength)
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 20)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 39)
+
+                            ''2ブロック目
+                            line_len = LenB(strLine.Trim)
+                            strLine = fStrCut(hstrTargetStrings, line_len, all_len - line_len)
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 10)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 30)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8j, gFntColorBlack, hintX, hsngY + 49)
+                        Else
+                            ''1ブロック表示
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 4)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 24)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8j, gFntColorBlack, hintX, hsngY + 45)
+                        End If
+                    End If
+                Else
+                    '' Ver1.9.2 2016.01.06  改行ｺｰﾄﾞに変更
+                    If iFind1 <> -1 Then
+                        ''1ブロック目
+                        strLine = hstrTargetStrings.Substring(0, iFind1)
+                        If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY)
+                        If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 20)
+                        If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 39)
+
+                        ''2ブロック目
+                        strLine = hstrTargetStrings.Substring(iFind1 + 1)
+                        If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 10)
+                        If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 30)
+                        If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 49)
+                    Else
+                        If hstrTargetStrings.Length > hintLineLength Then
+                            ''1ブロック目
+                            strLine = hstrTargetStrings.Substring(0, hintLineLength)
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 20)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 39)
+
+                            ''2ブロック目
+                            strLine = hstrTargetStrings.Substring(hintLineLength)
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 10)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 30)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(strLine, gFnt8, gFntColorBlack, hintX, hsngY + 49)
+                        Else
+                            ''1ブロック表示
+                            If hintPrtLine = mCstCodePrintLine1 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 4)
+                            If hintPrtLine = mCstCodePrintLine2 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 24)
+                            If hintPrtLine = mCstCodePrintLine3 Then hobjGraphics.DrawString(hstrTargetStrings, gFnt8, gFntColorBlack, hintX, hsngY + 45)
+                        End If
+                    End If
+                End If
+
+            End If
             ''WIRE MARK, DESTは1行MAX10文字までは通常のフォントサイズ
             ''11文字以上はフォントサイズを小さくし、13文字以上で2行とする
             'If hstrTargetStrings.Length > hintLineLength Then

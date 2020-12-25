@@ -881,44 +881,88 @@
             Call gInitDigData()    '' ｸﾞﾛｰﾊﾞﾙ変数　初期化
 
             For wkI = 0 To gCstChannelIdMax - 1
-                With gudt.SetChInfo.udtChannel(wkI).udtChCommon
-                    If ChkDISetting(gudt.SetChInfo.udtChannel(wkI)) = False Then  '' DI基板使用CHならば設定
-                        Continue For
-                    End If
-
-                    digData.nCHNo = .shtChno   '' CHNo.
-                    digData.strItemName = .strChitem        '' CH名称
-
-                    digData.strStatus = GetStatus(gudt.SetChInfo.udtChannel(wkI))     '' ｽﾃｰﾀｽ
-
-                    digData.CHType = .shtChType     '' CH種別
-                    digData.DataType = .shtData     '' ﾃﾞｰﾀ種別
-                    digData.FCUNo = .shtFuno        '' FCUNo
-                    digData.PortNo = .shtPortno      '' 基板No
-                    digData.bSCFg = IIf(gBitCheck(.shtFlag1, 1), True, False)   '' 隠しCHﾌﾗｸﾞ
-                    digData.bWKFg = IIf(gBitCheck(.shtFlag1, 2), True, False)   '' ﾜｰｸCHﾌﾗｸﾞ
-                    digData.bDummyFg = IIf(gBitCheck(.shtFlag1, 4), True, False)   '' ﾀﾞﾐｰCHﾌﾗｸﾞ
-                    If digData.bDummyFg = False Then   '' FUｱﾄﾞﾚｽのﾀﾞﾐｰをﾁｪｯｸ
-                        digData.bDummyFg = gudt.SetChInfo.udtChannel(wkI).DummyCommonFuAddress
-                    End If
-
-                    ''Dim gDigStrSet() As gDigStrSet
-
-                    For j = 0 To .shtPinNo - 1
-                        digData.TermNo = .shtPin + j      '' 端子No
-
-                        If .shtChType = gCstCodeChTypeMotor Then    '' ﾓｰﾀｰならば端子ごとにｽﾃｰﾀｽを設定
-                            digData.strStatus = GetMotorStatus(.shtData, j)
+                If modFcuSelect.nFcuNo = 1 Then
+                    'FCU1が選択されている場合
+                    With gudt.SetChInfo.udtChannel(wkI).udtChCommon
+                        If ChkDISetting(gudt.SetChInfo.udtChannel(wkI)) = False Then  '' DI基板使用CHならば設定
+                            Continue For
                         End If
 
-                        nIndex = nIndex + 1
+                        digData.nCHNo = .shtChno   '' CHNo.
+                        digData.strItemName = .strChitem        '' CH名称
 
-                        Call DigSort(nIndex, digData)
-                    Next
+                        digData.strStatus = GetStatus(gudt.SetChInfo.udtChannel(wkI))     '' ｽﾃｰﾀｽ
+
+                        digData.CHType = .shtChType     '' CH種別
+                        digData.DataType = .shtData     '' ﾃﾞｰﾀ種別
+                        digData.FCUNo = .shtFuno        '' FCUNo
+                        digData.PortNo = .shtPortno      '' 基板No
+                        digData.bSCFg = IIf(gBitCheck(.shtFlag1, 1), True, False)   '' 隠しCHﾌﾗｸﾞ
+                        digData.bWKFg = IIf(gBitCheck(.shtFlag1, 2), True, False)   '' ﾜｰｸCHﾌﾗｸﾞ
+                        digData.bDummyFg = IIf(gBitCheck(.shtFlag1, 4), True, False)   '' ﾀﾞﾐｰCHﾌﾗｸﾞ
+                        If digData.bDummyFg = False Then   '' FUｱﾄﾞﾚｽのﾀﾞﾐｰをﾁｪｯｸ
+                            digData.bDummyFg = gudt.SetChInfo.udtChannel(wkI).DummyCommonFuAddress
+                        End If
+
+                        ''Dim gDigStrSet() As gDigStrSet
+
+                        For j = 0 To .shtPinNo - 1
+                            digData.TermNo = .shtPin + j      '' 端子No
+
+                            If .shtChType = gCstCodeChTypeMotor Then    '' ﾓｰﾀｰならば端子ごとにｽﾃｰﾀｽを設定
+                                digData.strStatus = GetMotorStatus(.shtData, j)
+                            End If
+
+                            nIndex = nIndex + 1
+
+                            Call DigSort(nIndex, digData)
+                        Next
 
 
 
-                End With
+                    End With
+                Else
+
+                    With gudt2.SetChInfo.udtChannel(wkI).udtChCommon
+                        If ChkDISetting(gudt2.SetChInfo.udtChannel(wkI)) = False Then  '' DI基板使用CHならば設定
+                            Continue For
+                        End If
+
+                        digData.nCHNo = .shtChno   '' CHNo.
+                        digData.strItemName = .strChitem        '' CH名称
+
+                        digData.strStatus = GetStatus(gudt2.SetChInfo.udtChannel(wkI))     '' ｽﾃｰﾀｽ
+
+                        digData.CHType = .shtChType     '' CH種別
+                        digData.DataType = .shtData     '' ﾃﾞｰﾀ種別
+                        digData.FCUNo = .shtFuno        '' FCUNo
+                        digData.PortNo = .shtPortno      '' 基板No
+                        digData.bSCFg = IIf(gBitCheck(.shtFlag1, 1), True, False)   '' 隠しCHﾌﾗｸﾞ
+                        digData.bWKFg = IIf(gBitCheck(.shtFlag1, 2), True, False)   '' ﾜｰｸCHﾌﾗｸﾞ
+                        digData.bDummyFg = IIf(gBitCheck(.shtFlag1, 4), True, False)   '' ﾀﾞﾐｰCHﾌﾗｸﾞ
+                        If digData.bDummyFg = False Then   '' FUｱﾄﾞﾚｽのﾀﾞﾐｰをﾁｪｯｸ
+                            digData.bDummyFg = gudt2.SetChInfo.udtChannel(wkI).DummyCommonFuAddress
+                        End If
+
+                        ''Dim gDigStrSet() As gDigStrSet
+
+                        For j = 0 To .shtPinNo - 1
+                            digData.TermNo = .shtPin + j      '' 端子No
+
+                            If .shtChType = gCstCodeChTypeMotor Then    '' ﾓｰﾀｰならば端子ごとにｽﾃｰﾀｽを設定
+                                digData.strStatus = GetMotorStatus(.shtData, j)
+                            End If
+
+                            nIndex = nIndex + 1
+
+                            Call DigSort(nIndex, digData)
+                        Next
+
+
+
+                    End With
+                End If
+
             Next
 
             If nIndex = 0 Then      '' ﾃﾞｼﾞﾀﾙﾃﾞｰﾀが存在しない場合は処理を抜ける

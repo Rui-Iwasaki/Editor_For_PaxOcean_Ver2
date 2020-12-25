@@ -14397,14 +14397,14 @@
             If iAns <> 1 Then
 
                 ''旧アドレスのスロット種別　GET
-                If modFcuSelect.nFcuNo = 1 Then
-                    'FCU1が選択されている場合
-                    intType = gudt.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
-                Else
-                    'FCU2が選択されている場合
-                    intType = gudt2.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
+                'If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                intType = gudt.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
+                ' Else
+                'FCU2が選択されている場合
+                intType = gudt2.SetFu.udtFu(hintFuno).udtSlotInfo(hintPortno - 1).shtType
 
-                End If
+                'End If
 
                 ''スロット種別により必要端子数が異なる
                 If intType = gCstCodeFuSlotTypeDO Or intType = gCstCodeFuSlotTypeDI Then
@@ -14423,74 +14423,74 @@
                     intLoopMax = 3 : intIdx = 3
                 End If
 
-                For i As Integer = 0 To intLoopMax - 1
+                ' For i As Integer = 0 To intLoopMax - 1
 
-                    ''旧アドレスの計測点情報　GET
-                    With mChDispRec(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
+                ''旧アドレスの計測点情報　GET
+                'With mChDispRec(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
 
-                        'T.Ueki 変更処理無し 2015/4/14
-                        'strWireMark(i) = .strWireMark
-                        'strWireMarkClass(i) = .strWireMarkClass
-                        'strDest(i) = .strDest
-                        'strCoreNoIn(i) = .strCoreNoIn
-                        'strCoreNoCom(i) = .strCoreNoCom
+                'T.Ueki 変更処理無し 2015/4/14
+                'strWireMark(i) = .strWireMark
+                'strWireMarkClass(i) = .strWireMarkClass
+                'strDest(i) = .strDest
+                'strCoreNoIn(i) = .strCoreNoIn
+                'strCoreNoCom(i) = .strCoreNoCom
 
-                    End With
+                'End With
 
-                    If hblnCopy = False Then
-                        If modFcuSelect.nFcuNo = 1 Then
-                            'FCU1が選択されている場合
-                            With gudt.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
+                ' If hblnCopy = False Then
+                'If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                'With gudt.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
 
-                                ''旧アドレスの計測点情報 クリア 'T.Ueki 変更処理無し 2015/4/14
-                                '.strWireMark = ""
-                                '.strWireMarkClass = ""
-                                '.strDest = ""
-                                '.strCoreNoIn = ""
-                                '.strCoreNoCom = ""
+                ''旧アドレスの計測点情報 クリア 'T.Ueki 変更処理無し 2015/4/14
+                '.strWireMark = ""
+                '.strWireMarkClass = ""
+                '.strDest = ""
+                '.strCoreNoIn = ""
+                '.strCoreNoCom = ""
 
-                            End With
-                        Else
-                            With gudt2.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
+                'End With
+                'Else
+                'With gudt2.SetChDisp.udtChDisp(hintFuno).udtSlotInfo(hintPortno - 1).udtPinInfo((hintPin - 1) * intIdx + i)
 
-                                ''旧アドレスの計測点情報 クリア 'T.Ueki 変更処理無し 2015/4/14
-                                '.strWireMark = ""
-                                '.strWireMarkClass = ""
-                                '.strDest = ""
-                                '.strCoreNoIn = ""
-                                '.strCoreNoCom = ""
+                ''旧アドレスの計測点情報 クリア 'T.Ueki 変更処理無し 2015/4/14
+                '.strWireMark = ""
+                '.strWireMarkClass = ""
+                '.strDest = ""
+                '.strCoreNoIn = ""
+                '.strCoreNoCom = ""
 
-                            End With
-                        End If
-                    End If
-                    If modFcuSelect.nFcuNo = 1 Then
-                        'FCU1が選択されている場合
-                        ''新アドレスの計測点情報　SET
-                        With gudt.SetChDisp.udtChDisp(hintFunoNew).udtSlotInfo(hintPortnoNew - 1).udtPinInfo((hintPinNew - 1) * intIdx + i)
+                'End With
+                'End If
+                'End If
+                '       If modFcuSelect.nFcuNo = 1 Then
+                'FCU1が選択されている場合
+                ''新アドレスの計測点情報　SET
+                '      With gudt.SetChDisp.udtChDisp(hintFunoNew).udtSlotInfo(hintPortnoNew - 1).udtPinInfo((hintPinNew - 1) * intIdx + i)
 
-                            'T.Ueki 変更処理無し 2015/4/14
-                            '.strWireMark = strWireMark(i)
-                            '.strWireMarkClass = strWireMarkClass(i)
-                            '.strDest = strDest(i)
-                            '.strCoreNoIn = strCoreNoIn(i)
-                            '.strCoreNoCom = strCoreNoCom(i)
+                'T.Ueki 変更処理無し 2015/4/14
+                '.strWireMark = strWireMark(i)
+                '.strWireMarkClass = strWireMarkClass(i)
+                '.strDest = strDest(i)
+                '.strCoreNoIn = strCoreNoIn(i)
+                '.strCoreNoCom = strCoreNoCom(i)
 
-                        End With
-                    Else
-                        ''新アドレスの計測点情報　SET
-                        With gudt2.SetChDisp.udtChDisp(hintFunoNew).udtSlotInfo(hintPortnoNew - 1).udtPinInfo((hintPinNew - 1) * intIdx + i)
+                'End With
+                'Else
+                ''新アドレスの計測点情報　SET
+                'With gudt2.SetChDisp.udtChDisp(hintFunoNew).udtSlotInfo(hintPortnoNew - 1).udtPinInfo((hintPinNew - 1) * intIdx + i)
 
-                            'T.Ueki 変更処理無し 2015/4/14
-                            '.strWireMark = strWireMark(i)
-                            '.strWireMarkClass = strWireMarkClass(i)
-                            '.strDest = strDest(i)
-                            '.strCoreNoIn = strCoreNoIn(i)
-                            '.strCoreNoCom = strCoreNoCom(i)
+                'T.Ueki 変更処理無し 2015/4/14
+                '.strWireMark = strWireMark(i)
+                '.strWireMarkClass = strWireMarkClass(i)
+                '.strDest = strDest(i)
+                '.strCoreNoIn = strCoreNoIn(i)
+                '.strCoreNoCom = strCoreNoCom(i)
 
-                        End With
-                    End If
+                'End With
+                'End If
 
-                Next
+                'Next
 
                 iAns = 0
 
