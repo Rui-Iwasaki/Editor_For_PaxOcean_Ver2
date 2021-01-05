@@ -116,8 +116,8 @@
             Call mSetStructure(mudtSetChDataForwardTableSet)
 
             ''データが変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChDataForwardTableSet, gudt.SetChDataForward)) Or
-               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChDataForwardTableSet, gudt2.SetChDataForward)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChDataForwardTableSet, gudt.SetChDataForward)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChDataForwardTableSet, gudt2.SetChDataForward)) Then
 
                 If modFcuSelect.nFcuNo = 1 Then
                     ''変更された場合は設定を更新する
@@ -182,7 +182,8 @@
             Call mSetStructure(mudtSetChDataForwardTableSet)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetChDataForwardTableSet, gudt.SetChDataForward) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChDataForwardTableSet, gudt.SetChDataForward)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChDataForwardTableSet, gudt2.SetChDataForward)) Then
 
                 ''変更されている場合はメッセージ表示
                 Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
@@ -195,14 +196,22 @@
                             e.Cancel = True
                             Return
                         End If
-
-                        ''変更された場合は設定を更新する
-                        Call mCopyStructure(mudtSetChDataForwardTableSet, gudt.SetChDataForward)
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更された場合は設定を更新する
+                            Call mCopyStructure(mudtSetChDataForwardTableSet, gudt.SetChDataForward)
+                        Else
+                            Call mCopyStructure(mudtSetChDataForwardTableSet, gudt2.SetChDataForward)
+                        End If
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytChDataForwardTableSet = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytChDataForwardTableSet = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            gudt.SetEditorUpdateInfo.udtSave.bytChDataForwardTableSet = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytChDataForwardTableSet = 1
+                        Else
+                            gudt2.SetEditorUpdateInfo.udtSave.bytChDataForwardTableSet = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytChDataForwardTableSet = 1
+                        End If
 
                     Case Windows.Forms.DialogResult.No
 

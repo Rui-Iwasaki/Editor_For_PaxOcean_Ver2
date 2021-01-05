@@ -68,8 +68,14 @@
             ''配列再定義
             Call mudtSetChDataForwardTableSet.InitArray()
 
-            ''画面設定
-            Call mSetDisplay(gudt.SetChDataForward)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''画面設定
+                Call mSetDisplay(gudt.SetChDataForward)
+            Else
+                Call mSetDisplay(gudt2.SetChDataForward)
+            End If
+
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
 
             ''初期化フラグ
             mblnInitFlg = False
@@ -110,18 +116,28 @@
             Call mSetStructure(mudtSetChDataForwardTableSet)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetChDataForwardTableSet, gudt.SetChDataForward) Then
+            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChDataForwardTableSet, gudt.SetChDataForward)) Or
+               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChDataForwardTableSet, gudt2.SetChDataForward)) Then
 
-                ''変更された場合は設定を更新する
-                Call mCopyStructure(mudtSetChDataForwardTableSet, gudt.SetChDataForward)
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructure(mudtSetChDataForwardTableSet, gudt.SetChDataForward)
+                Else
+                    Call mCopyStructure(mudtSetChDataForwardTableSet, gudt2.SetChDataForward)
+                End If
 
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytChDataForwardTableSet = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChDataForwardTableSet = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    gudt.SetEditorUpdateInfo.udtSave.bytChDataForwardTableSet = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChDataForwardTableSet = 1
+                Else
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChDataForwardTableSet = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChDataForwardTableSet = 1
+                End If
 
             End If
 
@@ -169,7 +185,7 @@
             If Not mChkStructureEquals(mudtSetChDataForwardTableSet, gudt.SetChDataForward) Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
                     Case Windows.Forms.DialogResult.Yes
@@ -338,7 +354,7 @@
     '           : ARG2 - (I ) グリッド KeyPressイベント
     ' 機能説明  : 数値の入力文字数をチェックする
     '--------------------------------------------------------------------
-    Private Function mCheckInputLengthNum(ByVal objGridText As Object, _
+    Private Function mCheckInputLengthNum(ByVal objGridText As Object,
                                           ByVal evt As System.Windows.Forms.KeyPressEventArgs) As Boolean
 
         Dim blnRtn As Boolean = False
@@ -397,7 +413,7 @@
     '           : ARG2 - (I ) グリッド KeyPressイベント
     ' 機能説明  : 文字の入力文字数をチェックする
     '--------------------------------------------------------------------
-    Private Function mCheckInputLengthValue(ByVal objGridText As Object, _
+    Private Function mCheckInputLengthValue(ByVal objGridText As Object,
                                             ByVal evt As System.Windows.Forms.KeyPressEventArgs) As Boolean
 
         Dim blnRtn As Boolean = False
@@ -456,7 +472,7 @@
     '           : ARG2 - (I ) グリッド KeyPressイベント
     ' 機能説明  : 入力文字数をチェックする
     '--------------------------------------------------------------------
-    Private Function mCheckInputLengthValueLimit(ByVal hintMaxLength As Integer, _
+    Private Function mCheckInputLengthValueLimit(ByVal hintMaxLength As Integer,
                                                  ByVal hobjGridText As Object) As Boolean
         Try
 
@@ -683,11 +699,11 @@
                 strOffsetToOPS = gGetString(grdData.Rows(i).Cells("txtOffsetToOPS").Value)
                 strSizeToOPS = gGetString(grdData.Rows(i).Cells("txtSizeToOPS").Value)
 
-                If strCode = gCstCodeChDataForwardCodeNone.ToString And _
-                   strSubCode = "0" And _
-                   strOffsetToFCU = "0" And _
-                   strSizeToFCU = "0" And _
-                   strOffsetToOPS = "0" And _
+                If strCode = gCstCodeChDataForwardCodeNone.ToString And
+                   strSubCode = "0" And
+                   strOffsetToFCU = "0" And
+                   strSizeToFCU = "0" And
+                   strOffsetToOPS = "0" And
                    strSizeToOPS = "0" Then
 
                     ''OK
@@ -858,7 +874,7 @@
     ' 　　　　  : ↑ = でやると配列部分が参照渡しになり（？）値更新時に両方更新されてしまう
     ' 　　　　  : 構造体メンバの中に構造体配列がいない場合は、この関数を使わずに = で処理しても良い
     '--------------------------------------------------------------------
-    Private Sub mCopyStructure(ByVal udtSource As gTypSetChDataForward, _
+    Private Sub mCopyStructure(ByVal udtSource As gTypSetChDataForward,
                                ByRef udtTarget As gTypSetChDataForward)
 
         Try
@@ -889,7 +905,7 @@
     ' 　　　　  : 構造体メンバの中に構造体配列がいない場合は、 Equals メソッドで処理しても良いが一応これを使うこと
     ' 　　　　  : String文字列の比較には gCompareString を使用すること（単純な = だとNULL文字の有り無しで結果が変わってしまう）
     '--------------------------------------------------------------------
-    Private Function mChkStructureEquals(ByVal udt1 As gTypSetChDataForward, _
+    Private Function mChkStructureEquals(ByVal udt1 As gTypSetChDataForward,
                                          ByVal udt2 As gTypSetChDataForward) As Boolean
 
         Try
@@ -926,7 +942,4 @@
 
 #End Region
 
-    Private Sub grdData_CellContentClick(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles grdData.CellContentClick
-
-    End Sub
 End Class

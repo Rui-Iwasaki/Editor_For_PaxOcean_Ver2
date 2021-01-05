@@ -1428,12 +1428,16 @@
 
     ''コントロール使用可／不可設定
     Public Const gCstPathCtrlUseNouse As String = "set\ops"
-    Public Const gCstFileCtrlUseNouseM As String = "ControlUse1.dat"
-    Public Const gCstFileCtrlUseNouseC As String = "ControlUse2.dat"
+    Public Const gCstFileCtrlUseNouseM As String = "ControlUse1_1.dat"
+    Public Const gCstFileCtrlUseNouseC As String = "ControlUse2_1.dat"
     Public Const gCstRecsCtrlUseNouse As Integer = 32
     Public Const gCstSizeCtrlUseNouse As Integer = 326
     Public Const gCstFnumCtrlUseNouseM As Integer = 1205
     Public Const gCstFnumCtrlUseNouseC As Integer = 1215
+
+    ''コントロール使用可／不可設定 FCU2用
+    Public Const gCstFileCtrlUseNouseM2 As String = "ControlUse1_2.dat"
+    Public Const gCstFileCtrlUseNouseC2 As String = "ControlUse2_2.dat"
 
     ''SIO設定 FCU1用
     Public Const gCstPathChSio As String = "set\ext"

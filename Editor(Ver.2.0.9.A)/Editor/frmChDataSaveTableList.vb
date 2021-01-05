@@ -93,8 +93,8 @@
             Call mSetStructure(mudtSetChDataSaveTable)
 
             ''データが変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChDataSaveTable, gudt.SetChDataSave)) Or
-               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChDataSaveTable, gudt2.SetChDataSave)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChDataSaveTable, gudt.SetChDataSave)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChDataSaveTable, gudt2.SetChDataSave)) Then
 
                 If modFcuSelect.nFcuNo = 1 Then
                     ''変更された場合は設定を更新する
@@ -159,8 +159,8 @@
             Call mSetStructure(mudtSetChDataSaveTable)
 
             ''データが変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChDataSaveTable, gudt.SetChDataSave)) Or
-               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChDataSaveTable, gudt2.SetChDataSave)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChDataSaveTable, gudt.SetChDataSave)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChDataSaveTable, gudt2.SetChDataSave)) Then
 
                 ''変更されている場合はメッセージ表示
                 Select Case MessageBox.Show("Setting has been changed." & vbNewLine &

@@ -295,8 +295,8 @@
             Call mSetStructure(mudtSetChRunHour)
 
             ''データが変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChRunHour, gudt.SetChRunHour)) Or
-               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChRunHour, gudt2.SetChRunHour)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChRunHour, gudt.SetChRunHour)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChRunHour, gudt2.SetChRunHour)) Then
 
                 If modFcuSelect.nFcuNo = 1 Then
                     ''変更された場合は設定を更新する
@@ -380,8 +380,8 @@
             Call mSetStructure(mudtSetChRunHour)
 
             ''データが変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChRunHour, gudt.SetChRunHour)) Or
-               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChRunHour, gudt2.SetChRunHour)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChRunHour, gudt.SetChRunHour)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChRunHour, gudt2.SetChRunHour)) Then
 
                 ''変更されている場合はメッセージ表示
                 Select Case MessageBox.Show("Setting has been changed." & vbNewLine &

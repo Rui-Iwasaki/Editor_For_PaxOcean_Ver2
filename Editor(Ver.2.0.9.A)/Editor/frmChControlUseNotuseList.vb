@@ -256,8 +256,14 @@
             '　→グリッドイベント実行時に情報保存済
 
             ''データが変更されているかチェック
-            blnMach = mChkStructureEquals(mudtSetCtrlUseNotuseNewMach, gudt.SetChCtrlUseM)
-            blnCarg = mChkStructureEquals(mudtSetCtrlUseNotuseNewCarg, gudt.SetChCtrlUseC)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''データが変更されているかチェック
+                blnMach = mChkStructureEquals(mudtSetCtrlUseNotuseNewMach, gudt.SetChCtrlUseM)
+                blnCarg = mChkStructureEquals(mudtSetCtrlUseNotuseNewCarg, gudt.SetChCtrlUseC)
+            Else
+                blnMach = mChkStructureEquals(mudtSetCtrlUseNotuseNewMach, gudt2.SetChCtrlUseM)
+                blnCarg = mChkStructureEquals(mudtSetCtrlUseNotuseNewCarg, gudt2.SetChCtrlUseC)
+            End If
 
             ''データが変更されている場合
             If (Not blnMach) Or (Not blnCarg) Then
@@ -274,16 +280,28 @@
                             Return
                         End If
 
-                        ''変更されている場合は設定を更新する
-                        If Not blnMach Then Call mCopyStructure(mudtSetCtrlUseNotuseNewMach, gudt.SetChCtrlUseM)
-                        If Not blnCarg Then Call mCopyStructure(mudtSetCtrlUseNotuseNewCarg, gudt.SetChCtrlUseC)
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更されている場合は設定を更新する
+                            If Not blnMach Then Call mCopyStructure(mudtSetCtrlUseNotuseNewMach, gudt.SetChCtrlUseM)
+                            If Not blnCarg Then Call mCopyStructure(mudtSetCtrlUseNotuseNewCarg, gudt.SetChCtrlUseC)
+                        Else
+                            If Not blnMach Then Call mCopyStructure(mudtSetCtrlUseNotuseNewMach, gudt2.SetChCtrlUseM)
+                            If Not blnCarg Then Call mCopyStructure(mudtSetCtrlUseNotuseNewCarg, gudt2.SetChCtrlUseC)
+                        End If
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        If Not blnMach Then gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM = 1
-                        If Not blnCarg Then gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC = 1
-                        If Not blnMach Then gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseM = 1
-                        If Not blnCarg Then gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseC = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            If Not blnMach Then gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM = 1
+                            If Not blnCarg Then gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC = 1
+                            If Not blnMach Then gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseM = 1
+                            If Not blnCarg Then gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseC = 1
+                        Else
+                            If Not blnMach Then gudt2.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM = 1
+                            If Not blnCarg Then gudt2.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC = 1
+                            If Not blnMach Then gudt2.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseM = 1
+                            If Not blnCarg Then gudt2.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseC = 1
+                        End If
 
                     Case Windows.Forms.DialogResult.No
 

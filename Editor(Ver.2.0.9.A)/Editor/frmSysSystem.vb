@@ -117,12 +117,17 @@ Public Class frmSysSystem
             'Ver2.0.6.4 FCU Set画面と統合
             Call mudtSetSysFcuNew.InitArray()
 
+            If modFcuSelect.nFcuNo = 1 Then
+                ''画面設定
+                Call mSetDisplay(gudt.SetSystem.udtSysSystem)
+                'Ver2.0.6.4 FCU Set画面と統合
+                Call mSetDisplay_FCU(gudt.SetSystem.udtSysFcu)
+            Else
+                Call mSetDisplay(gudt2.SetSystem.udtSysSystem)
+                Call mSetDisplay_FCU(gudt2.SetSystem.udtSysFcu)
+            End If
 
-            ''画面設定
-            Call mSetDisplay(gudt.SetSystem.udtSysSystem)
-            'Ver2.0.6.4 FCU Set画面と統合
-            Call mSetDisplay_FCU(gudt.SetSystem.udtSysFcu)
-
+            Me.Text = Me.Text & " --- " & "FCU No." & modFcuSelect.nFcuNo.ToString
 
             ''コントロール使用可/不可設定
             Call mSetControlEnable()
@@ -178,50 +183,93 @@ Public Class frmSysSystem
             Call mSetStructure_FCU(mudtSetSysFcuNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(gudt.SetSystem.udtSysSystem, mudtSetSysSystemNew) Then
-                
-                ''変更された場合は設定を更新する
-                gudt.SetSystem.udtSysSystem = mudtSetSysSystemNew
-                Call SaveSys()         '' Ver1.9.3  2016.01.21
-                'Ver2.0.6.4 FCU Set画面と統合
-                gudt.SetSystem.udtSysFcu = mudtSetSysFcuNew
-                'FCU 2台仕様追加  表示ﾊﾟｰﾄ名称設定追加
-                If cmbPart.SelectedIndex = 1 Then      '' 今回はMach/Hull
-                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, True)
-                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, False)
-                ElseIf cmbPart.SelectedIndex = 2 Then   'Stbd/Port hori
-                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, True)
-                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, False)
-                Else                                   '' 今回はMach/Cargo
-                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, False)
-                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, False)
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(gudt.SetSystem.udtSysSystem, mudtSetSysSystemNew)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(gudt2.SetSystem.udtSysSystem, mudtSetSysSystemNew)) Then
+
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''変更された場合は設定を更新する
+                    gudt.SetSystem.udtSysSystem = mudtSetSysSystemNew
+                    Call SaveSys()         '' Ver1.9.3  2016.01.21
+                    'Ver2.0.6.4 FCU Set画面と統合
+                    gudt.SetSystem.udtSysFcu = mudtSetSysFcuNew
+                    'FCU 2台仕様追加  表示ﾊﾟｰﾄ名称設定追加
+                    If cmbPart.SelectedIndex = 1 Then      '' 今回はMach/Hull
+                        gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, True)
+                        gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, False)
+                    ElseIf cmbPart.SelectedIndex = 2 Then   'Stbd/Port hori
+                        gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, True)
+                        gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, False)
+                    Else                                   '' 今回はMach/Cargo
+                        gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, False)
+                        gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, False)
+                    End If
+
+                    'Ver1.12.0.8 ﾌﾟﾘﾝﾀﾊﾟｰﾄ設定
+                    With gudt.SetSystem.udtSysSystem
+                        .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
+
+                        'Ver2.0.6.4 言語にともなって、PrinterTypeも更新
+                        Select Case .shtLanguage
+                            Case 0
+                                '英語
+                                gudt.SetSystem.udtSysPrinter.shtPrintType = 1
+                            Case 1, 2   '和文仕様 20200220 hori
+                                '日本語
+                                gudt.SetSystem.udtSysPrinter.shtPrintType = 3
+                            Case Else
+                                gudt.SetSystem.udtSysPrinter.shtPrintType = 0
+                        End Select
+
+                    End With
+                Else
+                    ''変更された場合は設定を更新する
+                    gudt2.SetSystem.udtSysSystem = mudtSetSysSystemNew
+                    Call SaveSys()         '' Ver1.9.3  2016.01.21
+                    'Ver2.0.6.4 FCU Set画面と統合
+                    gudt2.SetSystem.udtSysFcu = mudtSetSysFcuNew
+                    'FCU 2台仕様追加  表示ﾊﾟｰﾄ名称設定追加
+                    If cmbPart.SelectedIndex = 1 Then      '' 今回はMach/Hull
+                        gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 1, True)
+                        gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 4, False)
+                    ElseIf cmbPart.SelectedIndex = 2 Then   'Stbd/Port hori
+                        gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 4, True)
+                        gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 1, False)
+                    Else                                   '' 今回はMach/Cargo
+                        gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 1, False)
+                        gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 4, False)
+                    End If
+
+                    'Ver1.12.0.8 ﾌﾟﾘﾝﾀﾊﾟｰﾄ設定
+                    With gudt2.SetSystem.udtSysSystem
+                        .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
+
+                        'Ver2.0.6.4 言語にともなって、PrinterTypeも更新
+                        Select Case .shtLanguage
+                            Case 0
+                                '英語
+                                gudt2.SetSystem.udtSysPrinter.shtPrintType = 1
+                            Case 1, 2   '和文仕様 20200220 hori
+                                '日本語
+                                gudt2.SetSystem.udtSysPrinter.shtPrintType = 3
+                            Case Else
+                                gudt2.SetSystem.udtSysPrinter.shtPrintType = 0
+                        End Select
+
+                    End With
                 End If
-
-                'Ver1.12.0.8 ﾌﾟﾘﾝﾀﾊﾟｰﾄ設定
-                With gudt.SetSystem.udtSysSystem
-                    .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
-
-                    'Ver2.0.6.4 言語にともなって、PrinterTypeも更新
-                    Select Case .shtLanguage
-                        Case 0
-                            '英語
-                            gudt.SetSystem.udtSysPrinter.shtPrintType = 1
-                        Case 1, 2   '和文仕様 20200220 hori
-                            '日本語
-                            gudt.SetSystem.udtSysPrinter.shtPrintType = 3
-                        Case Else
-                            gudt.SetSystem.udtSysPrinter.shtPrintType = 0
-                    End Select
-
-                End With
 
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytSystem = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytSystem = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    gudt.SetEditorUpdateInfo.udtSave.bytSystem = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytSystem = 1
+                Else
+                    gudt2.SetEditorUpdateInfo.udtSave.bytSystem = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytSystem = 1
+                End If
             End If
 
         Catch ex As Exception
@@ -346,11 +394,12 @@ Public Class frmSysSystem
             Call mSetStructure_FCU(mudtSetSysFcuNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(gudt.SetSystem.udtSysSystem, mudtSetSysSystemNew) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(gudt.SetSystem.udtSysSystem, mudtSetSysSystemNew)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(gudt2.SetSystem.udtSysSystem, mudtSetSysSystemNew)) Then
 
-                
+
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?" & vbNewLine _
                                             , Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
@@ -362,46 +411,91 @@ Public Class frmSysSystem
                             Return
                         End If
 
-                        ''変更されている場合は設定を更新する
-                        gudt.SetSystem.udtSysSystem = mudtSetSysSystemNew
-                        Call SaveSys()         '' Ver1.9.3  2016.01.21
-                        'Ver2.0.6.4 FCU Set画面と統合
-                        gudt.SetSystem.udtSysFcu = mudtSetSysFcuNew
-                        'FCU 2台仕様追加  表示ﾊﾟｰﾄ名称設定追加
-                        If cmbPart.SelectedIndex = 2 Then   'Stbd/Port追加 hori
-                            gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, True)
-                            gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, False)
-                        Else
-                            If cmbPart.SelectedIndex = 1 Then      '' 今回はMach/Hull
-                                gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, True)
-                                gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, False)
-                            Else
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更されている場合は設定を更新する
+                            gudt.SetSystem.udtSysSystem = mudtSetSysSystemNew
+                            Call SaveSys()         '' Ver1.9.3  2016.01.21
+                            'Ver2.0.6.4 FCU Set画面と統合
+                            gudt.SetSystem.udtSysFcu = mudtSetSysFcuNew
+                            'FCU 2台仕様追加  表示ﾊﾟｰﾄ名称設定追加
+                            If cmbPart.SelectedIndex = 2 Then   'Stbd/Port追加 hori
+                                gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, True)
                                 gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, False)
-                                gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, False)
+                            Else
+                                If cmbPart.SelectedIndex = 1 Then      '' 今回はMach/Hull
+                                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, True)
+                                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, False)
+                                Else
+                                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 1, False)
+                                    gudt.SetSystem.udtSysOps.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 4, False)
+                                End If
                             End If
+
+                            'Ver1.12.0.8 ﾌﾟﾘﾝﾀﾊﾟｰﾄ設定
+                            With gudt.SetSystem.udtSysSystem
+                                .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
+
+                                'Ver2.0.6.4 言語にともなって、PrinterTypeも更新
+                                Select Case .shtLanguage
+                                    Case 0
+                                        '英語
+                                        gudt.SetSystem.udtSysPrinter.shtPrintType = 1
+                                    Case 1
+                                        '日本語
+                                        gudt.SetSystem.udtSysPrinter.shtPrintType = 3
+                                    Case Else
+                                        gudt.SetSystem.udtSysPrinter.shtPrintType = 0
+                                End Select
+                            End With
+                        Else
+                            ''変更されている場合は設定を更新する
+                            gudt2.SetSystem.udtSysSystem = mudtSetSysSystemNew
+                            Call SaveSys()         '' Ver1.9.3  2016.01.21
+                            'Ver2.0.6.4 FCU Set画面と統合
+                            gudt2.SetSystem.udtSysFcu = mudtSetSysFcuNew
+                            'FCU 2台仕様追加  表示ﾊﾟｰﾄ名称設定追加
+                            If cmbPart.SelectedIndex = 2 Then   'Stbd/Port追加 hori
+                                gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 4, True)
+                                gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 1, False)
+                            Else
+                                If cmbPart.SelectedIndex = 1 Then      '' 今回はMach/Hull
+                                    gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 1, True)
+                                    gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 4, False)
+                                Else
+                                    gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 1, False)
+                                    gudt2.SetSystem.udtSysOps.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 4, False)
+                                End If
+                            End If
+
+                            'Ver1.12.0.8 ﾌﾟﾘﾝﾀﾊﾟｰﾄ設定
+                            With gudt2.SetSystem.udtSysSystem
+                                .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
+
+                                'Ver2.0.6.4 言語にともなって、PrinterTypeも更新
+                                Select Case .shtLanguage
+                                    Case 0
+                                        '英語
+                                        gudt2.SetSystem.udtSysPrinter.shtPrintType = 1
+                                    Case 1
+                                        '日本語
+                                        gudt2.SetSystem.udtSysPrinter.shtPrintType = 3
+                                    Case Else
+                                        gudt2.SetSystem.udtSysPrinter.shtPrintType = 0
+                                End Select
+                            End With
                         End If
 
-                        'Ver1.12.0.8 ﾌﾟﾘﾝﾀﾊﾟｰﾄ設定
-                        With gudt.SetSystem.udtSysSystem
-                            .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
-
-                            'Ver2.0.6.4 言語にともなって、PrinterTypeも更新
-                            Select Case .shtLanguage
-                                Case 0
-                                    '英語
-                                    gudt.SetSystem.udtSysPrinter.shtPrintType = 1
-                                Case 1
-                                    '日本語
-                                    gudt.SetSystem.udtSysPrinter.shtPrintType = 3
-                                Case Else
-                                    gudt.SetSystem.udtSysPrinter.shtPrintType = 0
-                            End Select
-                        End With
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytSystem = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytSystem = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            gudt.SetEditorUpdateInfo.udtSave.bytSystem = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytSystem = 1
+                        Else
+                            gudt2.SetEditorUpdateInfo.udtSave.bytSystem = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytSystem = 1
+                        End If
+
 
                     Case Windows.Forms.DialogResult.No
 
@@ -575,7 +669,12 @@ Public Class frmSysSystem
                 'Ver2.0.4.1 Systemフラグは元を格納して、あらためてﾋｽﾄﾘﾌﾗｸﾞをON,OFFさす
                 'mudtOptionNew.shtSystem = 0
                 'mudtOptionNew.shtSystem = mudtOptionNew.shtSystem + IIf(chkHistoryAuto.Checked, 1, 0)
-                mudtOptionNew.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 0, chkHistoryAuto.Checked)
+                If modFcuSelect.nFcuNo = 1 Then
+                    mudtOptionNew.shtSystem = gBitSet(gudt.SetSystem.udtSysOps.shtSystem, 0, chkHistoryAuto.Checked)
+                Else
+                    mudtOptionNew.shtSystem = gBitSet(gudt2.SetSystem.udtSysOps.shtSystem, 0, chkHistoryAuto.Checked)
+                End If
+
                 '' BS OUT CHNo.
                 mudtOptionNew.shtBS_CHNo = CCUInt16(txtBSCHNo.Text)
                 '' FS OUT CHNo.
@@ -604,8 +703,14 @@ Public Class frmSysSystem
 
                 'Ver2.0.6.4 GWS1とGWS2はここでは操作しない
                 'Ver2.0.7.H GWS1とGWS2は、そのまま値を格納するだけ
-                .shtGWS1 = gudt.SetSystem.udtSysSystem.shtGWS1
-                .shtGWS2 = gudt.SetSystem.udtSysSystem.shtGWS2
+                If modFcuSelect.nFcuNo = 1 Then
+                    .shtGWS1 = gudt.SetSystem.udtSysSystem.shtGWS1
+                    .shtGWS2 = gudt.SetSystem.udtSysSystem.shtGWS2
+                Else
+                    .shtGWS1 = gudt2.SetSystem.udtSysSystem.shtGWS1
+                    .shtGWS2 = gudt2.SetSystem.udtSysSystem.shtGWS2
+                End If
+
 
 
                 ''GWS1
@@ -976,17 +1081,30 @@ Public Class frmSysSystem
             If Not gCompareString(udt1.strShipName, udt2.strShipName) Then Return False
             'If udt1.strSpare <> udt2.strSpare Then Return False
 
-            '’Ver1.9.3 2016.01.21 変更
-            '' ｼｽﾃﾑ設定
-            If gudt.SetSystem.udtSysOps.shtSystem <> mudtOptionNew.shtSystem Then Return False
-            '' BS OUT CHNo.
-            If gudt.SetSystem.udtSysOps.shtBS_CHNo <> mudtOptionNew.shtBS_CHNo Then Return False
-            '' FS OUT CHNo.
-            If gudt.SetSystem.udtSysOps.shtFS_CHNo <> mudtOptionNew.shtFS_CHNo Then Return False
-            ''//
+            If modFcuSelect.nFcuNo = 1 Then
+                '’Ver1.9.3 2016.01.21 変更
+                '' ｼｽﾃﾑ設定
+                If gudt.SetSystem.udtSysOps.shtSystem <> mudtOptionNew.shtSystem Then Return False
+                '' BS OUT CHNo.
+                If gudt.SetSystem.udtSysOps.shtBS_CHNo <> mudtOptionNew.shtBS_CHNo Then Return False
+                '' FS OUT CHNo.
+                If gudt.SetSystem.udtSysOps.shtFS_CHNo <> mudtOptionNew.shtFS_CHNo Then Return False
+                ''//
 
-            'Ver2.0.6.4 FCU Set画面と統合
-            If mChkStructureEquals_FCU(mudtSetSysFcuNew, gudt.SetSystem.udtSysFcu) = False Then Return False
+                'Ver2.0.6.4 FCU Set画面と統合
+                If mChkStructureEquals_FCU(mudtSetSysFcuNew, gudt.SetSystem.udtSysFcu) = False Then Return False
+            Else
+                If gudt2.SetSystem.udtSysOps.shtSystem <> mudtOptionNew.shtSystem Then Return False
+                '' BS OUT CHNo.
+                If gudt2.SetSystem.udtSysOps.shtBS_CHNo <> mudtOptionNew.shtBS_CHNo Then Return False
+                '' FS OUT CHNo.
+                If gudt2.SetSystem.udtSysOps.shtFS_CHNo <> mudtOptionNew.shtFS_CHNo Then Return False
+                ''//
+
+                'Ver2.0.6.4 FCU Set画面と統合
+                If mChkStructureEquals_FCU(mudtSetSysFcuNew, gudt2.SetSystem.udtSysFcu) = False Then Return False
+            End If
+
 
             Return True
 

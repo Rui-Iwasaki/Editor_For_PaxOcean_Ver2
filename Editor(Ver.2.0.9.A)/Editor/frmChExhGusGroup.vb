@@ -173,8 +173,8 @@
             Call mSetStructure(cmbNo.SelectedIndex, mudtSetExhGusNew)
 
             ''データが変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetExhGusNew, gudt.SetChExhGus)) Or
-                       Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetExhGusNew, gudt2.SetChExhGus)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetExhGusNew, gudt.SetChExhGus)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetExhGusNew, gudt2.SetChExhGus)) Then
 
                 ''変更された場合は設定を更新する
                 If modFcuSelect.nFcuNo = 1 Then
@@ -240,8 +240,8 @@
             Call mSetStructure(cmbNo.SelectedIndex, mudtSetExhGusNew)
 
             ''データが変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetExhGusNew, gudt.SetChExhGus)) Or
-               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetExhGusNew, gudt2.SetChExhGus)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetExhGusNew, gudt.SetChExhGus)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetExhGusNew, gudt2.SetChExhGus)) Then
 
                 ''変更されている場合はメッセージ表示
                 Select Case MessageBox.Show("Setting has been changed." & vbNewLine &

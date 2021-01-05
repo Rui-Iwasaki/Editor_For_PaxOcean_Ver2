@@ -77,12 +77,6 @@
             If modFcuSelect.nFcuNo = 1 Then
                 ''構造体コピー
                 Call mCopyStructure(gudt.SetChSio, mudtSetChSioNew)
-            Else
-                Call mCopyStructure(gudt2.SetChSio, mudtSetChSioNew)
-            End If
-
-
-            If modFcuSelect.nFcuNo = 1 Then
                 For i As Integer = 0 To UBound(mudtSetChSioChNew)
                     Call mCopyStructure(gudt.SetChSioCh(i), mudtSetChSioChNew(i))
                 Next
@@ -91,6 +85,7 @@
                 '構造体コピー SIO拡張
                 Call mCopyStructure(gudt.SetChSioExt, mudtSetChSioExtNew)
             Else
+                Call mCopyStructure(gudt2.SetChSio, mudtSetChSioNew)
                 For i As Integer = 0 To UBound(mudtSetChSioChNew)
                     Call mCopyStructure(gudt2.SetChSioCh(i), mudtSetChSioChNew(i))
                 Next

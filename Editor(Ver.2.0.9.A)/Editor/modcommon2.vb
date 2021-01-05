@@ -665,48 +665,26 @@
         Dim iFind As Integer
 
         strTagNo = ""
-        If modFcuSelect.nFcuNo = 1 Then
-            'FCU1が選択されている場合
 
-            For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
-                With gudt.SetChInfo.udtChannel(i)
-                    If .udtChCommon.shtChno = nCHNo Then
-                        '' Ver1.8.5.1 2015.12.02 ｽﾍﾟｰｽ削除処理追加
-                        ''   後ろ1ﾊﾞｲﾄのみｽﾍﾟｰｽの場合、Trim関数でも削除されていないので無理矢理処理を追加
-                        strTemp = GetTagNo(gudt.SetChInfo.udtChannel(i))
+        For i As Integer = LBound(gudt.SetChInfo.udtChannel) To UBound(gudt.SetChInfo.udtChannel)
+            With gudt.SetChInfo.udtChannel(i)
+                If .udtChCommon.shtChno = nCHNo Then
+                    '' Ver1.8.5.1 2015.12.02 ｽﾍﾟｰｽ削除処理追加
+                    ''   後ろ1ﾊﾞｲﾄのみｽﾍﾟｰｽの場合、Trim関数でも削除されていないので無理矢理処理を追加
+                    strTemp = GetTagNo(gudt.SetChInfo.udtChannel(i))
 
-                        iFind = strTemp.IndexOf(" "c)
-                        If iFind = -1 Then     '' ｽﾍﾟｰｽが存在しないので、そのまま代入
-                            strTagNo = strTemp
-                        Else
-                            strTagNo = strTemp.Substring(0, iFind)
-                        End If
-
-                        Exit For
+                    iFind = strTemp.IndexOf(" "c)
+                    If iFind = -1 Then     '' ｽﾍﾟｰｽが存在しないので、そのまま代入
+                        strTagNo = strTemp
+                    Else
+                        strTagNo = strTemp.Substring(0, iFind)
                     End If
-                End With
-            Next
 
-        Else
-            For i As Integer = LBound(gudt2.SetChInfo.udtChannel) To UBound(gudt2.SetChInfo.udtChannel)
-                With gudt2.SetChInfo.udtChannel(i)
-                    If .udtChCommon.shtChno = nCHNo Then
-                        '' Ver1.8.5.1 2015.12.02 ｽﾍﾟｰｽ削除処理追加
-                        ''   後ろ1ﾊﾞｲﾄのみｽﾍﾟｰｽの場合、Trim関数でも削除されていないので無理矢理処理を追加
-                        strTemp = GetTagNo(gudt2.SetChInfo.udtChannel(i))
+                    Exit For
+                End If
+            End With
+        Next
 
-                        iFind = strTemp.IndexOf(" "c)
-                        If iFind = -1 Then     '' ｽﾍﾟｰｽが存在しないので、そのまま代入
-                            strTagNo = strTemp
-                        Else
-                            strTagNo = strTemp.Substring(0, iFind)
-                        End If
-
-                        Exit For
-                    End If
-                End With
-            Next
-        End If
         Return strTagNo
 
     End Function
@@ -1525,6 +1503,10 @@
                 gudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC = 1
                 gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseM = 1
                 gudt.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseC = 1
+                gudt2.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM = 1
+                gudt2.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC = 1
+                gudt2.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseM = 1
+                gudt2.SetEditorUpdateInfo.udtCompile.bytCtrlUseNotuseC = 1
             End If
 
             strFullPath = strTemp

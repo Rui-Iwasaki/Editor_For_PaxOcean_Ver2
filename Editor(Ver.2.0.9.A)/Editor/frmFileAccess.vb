@@ -655,6 +655,9 @@
                 ''コントロール使用可／不可設定書き込み
                 intRtn += mSaveCtrlUseNotuse(mudt.SetChCtrlUseM, mudtFileInfo, strPathBase, True, mudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM) : .Value += 1 : Application.DoEvents()
                 intRtn += mSaveCtrlUseNotuse(mudt.SetChCtrlUseC, mudtFileInfo, strPathBase, False, mudt.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC) : .Value += 1 : Application.DoEvents()
+                FCU2LeadFlg = True
+                intRtn += mSaveCtrlUseNotuse(mudt2.SetChCtrlUseM, mudtFileInfo, strPathBase, True, mudt2.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseM) : .Value += 1 : Application.DoEvents()
+                intRtn += mSaveCtrlUseNotuse(mudt2.SetChCtrlUseC, mudtFileInfo, strPathBase, False, mudt2.SetEditorUpdateInfo.udtSave.bytCtrlUseNotuseC) : .Value += 1 : Application.DoEvents()
 
                 ''SIO設定書き込み
                 intRtn += mSaveChSio(mudt.SetChSio, mudtFileInfo, strPathBase, mudt.SetEditorUpdateInfo.udtSave.bytChSio) : .Value += 1 : Application.DoEvents()
@@ -669,15 +672,19 @@
                 ''FCU2SIO設定CH設定書き込み
                 FCU2LeadFlg = True
                 For i As Integer = 0 To UBound(mudt.SetChSioCh)
-                    intRtn += mSaveChSioCh(mudt2.SetChSioCh(i), mudtFileInfo, strPathBase, i + 1, mudt.SetEditorUpdateInfo.udtSave.bytChSioCh(i)) : .Value += 1 : Application.DoEvents()
+                    intRtn += mSaveChSioCh(mudt2.SetChSioCh(i), mudtFileInfo, strPathBase, i + 1, mudt2.SetEditorUpdateInfo.udtSave.bytChSioCh(i)) : .Value += 1 : Application.DoEvents()
                 Next
-
+                FCU2LeadFlg = False
                 'Ver2.0.5.8
                 'SIO設定拡張設定書き込み ※プログレスバーには加算しない
                 For i As Integer = 0 To UBound(mudt.SetChSioExt)
                     intRtn += mSaveChSioExt(mudt.SetChSioExt(i), mudtFileInfo, strPathBase, i + 1, mudt.SetEditorUpdateInfo.udtSave.bytChSioExt(i), mudt.SetChSio.udtVdr(i).shtKakuTbl) : .Value += 0 : Application.DoEvents()
                 Next
-
+                FCU2LeadFlg = True
+                For i As Integer = 0 To UBound(mudt2.SetChSioExt)
+                    intRtn += mSaveChSioExt(mudt2.SetChSioExt(i), mudtFileInfo, strPathBase, i + 1, mudt2.SetEditorUpdateInfo.udtSave.bytChSioExt(i), mudt2.SetChSio.udtVdr(i).shtKakuTbl) : .Value += 0 : Application.DoEvents()
+                Next
+                FCU2LeadFlg = False
 
                 ''排ガス処理演算設定書き込み
                 intRtn += mSaveExhGus(mudt.SetChExhGus, mudtFileInfo, strPathBase, mudt.SetEditorUpdateInfo.udtSave.bytExhGus) : .Value += 1 : Application.DoEvents()
@@ -1028,11 +1035,15 @@
                 intRtn += mLoadCtrlUseNotuse(mudt.SetChCtrlUseM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
                 intRtn += mLoadCtrlUseNotuse(mudt.SetChCtrlUseC, mudtFileInfo, strPathBase, False) : .Value += 1 : Application.DoEvents()
 
+                FCU2LeadFlg = True
+                intRtn += mLoadCtrlUseNotuse(mudt2.SetChCtrlUseM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
+                intRtn += mLoadCtrlUseNotuse(mudt2.SetChCtrlUseC, mudtFileInfo, strPathBase, False) : .Value += 1 : Application.DoEvents()
+
                 ''SIO設定読み込み
                 intRtn += mLoadChSio(mudt.SetChSio, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
                 ''FCU2SIO設定設定読み込み
                 FCU2LeadFlg = True
-                intRtn += mLoadChSio(mudt.SetChSio, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                intRtn += mLoadChSio(mudt2.SetChSio, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
 
                 ''SIO設定CH設定読み込み
@@ -1043,7 +1054,7 @@
                 ''FCU2SIO設定CH設定読み込み
                 FCU2LeadFlg = True
                 For i As Integer = 0 To UBound(mudt2.SetChSioCh)
-                    intRtn += mLoadChSioCh(mudt.SetChSioCh(i), mudtFileInfo, strPathBase, i + 1) : .Value += 1 : Application.DoEvents()
+                    intRtn += mLoadChSioCh(mudt2.SetChSioCh(i), mudtFileInfo, strPathBase, i + 1) : .Value += 1 : Application.DoEvents()
                 Next
                 ''FCU2LeadFlg = False
 
@@ -1054,6 +1065,11 @@
                 For i As Integer = 0 To UBound(mudt.SetChSioExt)
                     intRtn += mLoadChSioExt(mudt.SetChSioExt(i), mudtFileInfo, strPathBase, i + 1) : .Value += 0 : Application.DoEvents()
                 Next
+                FCU2LeadFlg = True
+                For i As Integer = 0 To UBound(mudt.SetChSioExt)
+                    intRtn += mLoadChSioExt(mudt2.SetChSioExt(i), mudtFileInfo, strPathBase, i + 1) : .Value += 0 : Application.DoEvents()
+                Next
+                FCU2LeadFlg = False
 
                 ''排ガス処理演算設定読み込み
                 intRtn += mLoadexhGus(mudt.SetChExhGus, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
@@ -3398,6 +3414,10 @@
             Dim strCurPathName As String = gCstPathCtrlUseNouse
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, IIf(blnMachinery, gCstFileCtrlUseNouseM, gCstFileCtrlUseNouseC), mblnReadCompile)
 
+            If FCU2LeadFlg = True Then
+                strCurFileName = mGetOutputFileName(udtFileInfo, IIf(blnMachinery, gCstFileCtrlUseNouseM2, gCstFileCtrlUseNouseC2), mblnReadCompile)
+            End If
+
             ''メッセージ更新
             lblMessage.Text = "saving " & strCurFileName : Call lblMessage.Refresh()
 
@@ -3405,9 +3425,19 @@
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
             strFullPath = System.IO.Path.Combine(strPathSave, strCurFileName)
 
-            'Ver2.0.7.B 無関係なファイルを削除する
-            Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileCtrlUseNouseM)
-            Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileCtrlUseNouseC)
+            If FCU2LeadFlg = True Then
+                'Ver2.0.7.B 無関係なファイルを削除する
+                Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileCtrlUseNouseM2)
+                Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileCtrlUseNouseC2)
+                If blnMachinery = False Then
+                    FCU2LeadFlg = False
+                End If
+            Else
+                'Ver2.0.7.B 無関係なファイルを削除する
+                Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileCtrlUseNouseM)
+                Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileCtrlUseNouseC)
+            End If
+
 
             ''更新されてなく、ファイルが存在する場合
             If bytOutputFlg = 0 And System.IO.File.Exists(strFullPath) Then
@@ -3485,6 +3515,13 @@
 
             ''システム設定のパスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
+
+            If FCU2LeadFlg = True Then
+                strCurFileName = mGetOutputFileName(udtFileInfo, IIf(blnMachinery, gCstFileCtrlUseNouseM2, gCstFileCtrlUseNouseC2), mblnReadCompile)
+                If blnMachinery = False Then
+                    FCU2LeadFlg = False
+                End If
+            End If
 
             ''フルパス作成
             strFullPath = System.IO.Path.Combine(strPathSave, strCurFileName)
@@ -3909,7 +3946,11 @@
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChSioExt
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSioExtName, mblnReadCompile) & Format(intPortNo, "00") & gCstFileChSioExtExt
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSioExtName, mblnReadCompile) & Format(intPortNo, "00") & "_1" & gCstFileChSioExtExt
+
+            If FCU2LeadFlg = True Then
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChSioExtName, mblnReadCompile) & Format(intPortNo, "00") & "_2" & gCstFileChSioExtExt
+            End If
 
             ''メッセージ更新
             lblMessage.Text = "saving " & strCurFileName : Call lblMessage.Refresh()
@@ -3918,8 +3959,12 @@
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
             strFullPath = System.IO.Path.Combine(strPathSave, strCurFileName)
 
-            'Ver2.0.7.B 無関係なファイルを削除する
-            Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileChSioExtName & Format(intPortNo, "00") & gCstFileChSioExtExt)
+            If FCU2LeadFlg = True Then
+                'Ver2.0.7.B 無関係なファイルを削除する
+                Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileChSioExtName & Format(intPortNo, "00") & "_2" & gCstFileChSioExtExt)
+            Else
+                Call subDelNoShipFile(udtFileInfo, strPathSave, gCstFileChSioExtName & Format(intPortNo, "00") & "_1" & gCstFileChSioExtExt)
+            End If
 
 
             ''更新されてなく、ファイルが存在する場合
@@ -3995,7 +4040,12 @@
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChSioExt
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSioExtName, mblnReadCompile) & Format(intPortNo, "00") & gCstFileChSioExtExt
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSioExtName, mblnReadCompile) & Format(intPortNo, "00") & "_1" & gCstFileChSioExtExt
+
+            If FCU2LeadFlg = True Then
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChSioExtName, mblnReadCompile) & Format(intPortNo, "00") & "_2" & gCstFileChSioExtExt
+            End If
+
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()

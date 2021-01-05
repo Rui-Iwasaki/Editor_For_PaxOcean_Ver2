@@ -150,6 +150,7 @@
 
                 ''変更された場合は設定を更新する
                 Call mCopyStructure(mudtSetReposeNew, gudt.SetChGroupRepose.udtRepose)
+                Call mCopyStructure(mudtSetReposeNew, gudt2.SetChGroupRepose.udtRepose)
 
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -158,6 +159,8 @@
                 gblnUpdateAll = True
                 gudt.SetEditorUpdateInfo.udtSave.bytRepose = 1
                 gudt.SetEditorUpdateInfo.udtCompile.bytRepose = 1
+                gudt2.SetEditorUpdateInfo.udtSave.bytRepose = 1
+                gudt2.SetEditorUpdateInfo.udtCompile.bytRepose = 1
 
             End If
 
@@ -218,11 +221,14 @@
 
                         ''変更されている場合は設定を更新する
                         Call mCopyStructure(mudtSetReposeNew, gudt.SetChGroupRepose.udtRepose)
+                        Call mCopyStructure(mudtSetReposeNew, gudt2.SetChGroupRepose.udtRepose)
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
                         gudt.SetEditorUpdateInfo.udtSave.bytRepose = 1
                         gudt.SetEditorUpdateInfo.udtCompile.bytRepose = 1
+                        gudt2.SetEditorUpdateInfo.udtSave.bytRepose = 1
+                        gudt2.SetEditorUpdateInfo.udtCompile.bytRepose = 1
 
                     Case Windows.Forms.DialogResult.No
 

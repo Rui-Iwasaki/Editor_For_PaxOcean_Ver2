@@ -70,11 +70,19 @@
                 Next
             Next
 
-            ''構造体コピー
-            Call mCopyStructure(gudt.SetSeqOpeExp, mudtSetSeqOpeExpNew)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''構造体コピー
+                Call mCopyStructure(gudt.SetSeqOpeExp, mudtSetSeqOpeExpNew)
+            Else
+                Call mCopyStructure(gudt2.SetSeqOpeExp, mudtSetSeqOpeExpNew)
+            End If
 
-            ''画面設定
-            Call mSetDisplay(cmbTableNo.SelectedIndex, gudt.SetSeqOpeExp)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''画面設定
+                Call mSetDisplay(cmbTableNo.SelectedIndex, gudt.SetSeqOpeExp)
+            Else
+                Call mSetDisplay(cmbTableNo.SelectedIndex, gudt2.SetSeqOpeExp)
+            End If
 
             ''初期化開始
             mblnInitFlg = False
@@ -146,18 +154,29 @@
             Call mSetStructure(cmbTableNo.SelectedIndex, mudtSetSeqOpeExpNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetSeqOpeExpNew, gudt.SetSeqOpeExp) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetSeqOpeExpNew, gudt.SetSeqOpeExp)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetSeqOpeExpNew, gudt2.SetSeqOpeExp)) Then
 
-                ''変更された場合は設定を更新する
-                Call mCopyStructure(mudtSetSeqOpeExpNew, gudt.SetSeqOpeExp)
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructure(mudtSetSeqOpeExpNew, gudt.SetSeqOpeExp)
+                Else
+                    Call mCopyStructure(mudtSetSeqOpeExpNew, gudt2.SetSeqOpeExp)
+                End If
 
                 ''メッセージ表示
                 Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+
+                If modFcuSelect.nFcuNo = 1 Then
+                    gudt.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+                Else
+                    gudt2.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+                End If
 
             End If
 
@@ -199,10 +218,11 @@
             Call mSetStructure(cmbTableNo.SelectedIndex, mudtSetSeqOpeExpNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetSeqOpeExpNew, gudt.SetSeqOpeExp) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetSeqOpeExpNew, gudt.SetSeqOpeExp)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetSeqOpeExpNew, gudt2.SetSeqOpeExp)) Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
                     Case Windows.Forms.DialogResult.Yes
@@ -213,13 +233,22 @@
                             Return
                         End If
 
-                        ''変更された場合は設定を更新する
-                        Call mCopyStructure(mudtSetSeqOpeExpNew, gudt.SetSeqOpeExp)
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更された場合は設定を更新する
+                            Call mCopyStructure(mudtSetSeqOpeExpNew, gudt.SetSeqOpeExp)
+                        Else
+                            Call mCopyStructure(mudtSetSeqOpeExpNew, gudt2.SetSeqOpeExp)
+                        End If
 
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            gudt.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+                        Else
+                            gudt2.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+                        End If
 
                     Case Windows.Forms.DialogResult.No
 

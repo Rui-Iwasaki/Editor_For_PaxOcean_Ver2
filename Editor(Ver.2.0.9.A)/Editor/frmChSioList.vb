@@ -77,19 +77,17 @@
             If modFcuSelect.nFcuNo = 1 Then
                 ''構造体コピー
                 Call mCopyStructure(gudt.SetChSio, mudtSetChSioNew)
-            Else
-                Call mCopyStructure(gudt2.SetChSio, mudtSetChSioNew)
-            End If
-
-            For i As Integer = 0 To UBound(mudtSetChSioChNew)
-                Call mCopyStructure(gudt.SetChSioCh(i), mudtSetChSioChNew(i))
-            Next
-
-            If modFcuSelect.nFcuNo = 1 Then
-                'Ver2.0.5.8
+                For i As Integer = 0 To UBound(mudtSetChSioChNew)
+                    Call mCopyStructure(gudt.SetChSioCh(i), mudtSetChSioChNew(i))
+                Next
                 '構造体コピー SIO拡張
                 Call mCopyStructure(gudt.SetChSioExt, mudtSetChSioExtNew)
             Else
+                Call mCopyStructure(gudt2.SetChSio, mudtSetChSioNew)
+                For i As Integer = 0 To UBound(mudtSetChSioChNew)
+                    Call mCopyStructure(gudt2.SetChSioCh(i), mudtSetChSioChNew(i))
+                Next
+                '構造体コピー SIO拡張
                 Call mCopyStructure(gudt2.SetChSioExt, mudtSetChSioExtNew)
             End If
 
@@ -202,8 +200,8 @@
             Call mSetStructure(mudtSetChSioNew)
 
             ''SIO設定が変更されている場合は設定を更新する
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio)) Or
-               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChSioNew, gudt2.SetChSio)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChSioNew, gudt2.SetChSio)) Then
                 Call mCopyStructure(mudtSetChSioNew, gudt.SetChSio)
                 blnFlgSio = True
                 gudt.SetEditorUpdateInfo.udtSave.bytChSio = 1
@@ -385,8 +383,8 @@
             Call mSetStructure(mudtSetChSioNew)
 
             ''SIO設定が変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio)) Or
-               Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(mudtSetChSioNew, gudt2.SetChSio)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChSioNew, gudt2.SetChSio)) Then
                 blnFlgSio = True
             End If
 

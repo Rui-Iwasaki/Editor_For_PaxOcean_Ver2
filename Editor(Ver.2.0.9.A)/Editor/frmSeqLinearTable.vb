@@ -62,11 +62,19 @@
                 Call mudtSetSeqLinearTableNew.udtTables(i).InitArray()
             Next
 
-            ''構造体コピー
-            Call mCopyStructure(gudt.SetSeqLinear, mudtSetSeqLinearTableNew)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''構造体コピー
+                Call mCopyStructure(gudt.SetSeqLinear, mudtSetSeqLinearTableNew)
+            Else
+                Call mCopyStructure(gudt2.SetSeqLinear, mudtSetSeqLinearTableNew)
+            End If
 
-            ''画面設定
-            Call mSetDisplay(cmbTableNo.SelectedIndex, gudt.SetSeqLinear)
+            If modFcuSelect.nFcuNo = 1 Then
+                ''画面設定
+                Call mSetDisplay(cmbTableNo.SelectedIndex, gudt.SetSeqLinear)
+            Else
+                Call mSetDisplay(cmbTableNo.SelectedIndex, gudt2.SetSeqLinear)
+            End If
 
             ''初期化開始
             mblnInitFlg = False
@@ -183,10 +191,15 @@
             Call mSetStructure(cmbTableNo.SelectedIndex, mudtSetSeqLinearTableNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetSeqLinearTableNew, gudt.SetSeqLinear) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetSeqLinearTableNew, gudt.SetSeqLinear)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetSeqLinearTableNew, gudt2.SetSeqLinear)) Then
 
-                ''変更された場合は設定を更新する
-                Call mCopyStructure(mudtSetSeqLinearTableNew, gudt.SetSeqLinear)
+                If modFcuSelect.nFcuNo = 1 Then
+                    ''変更された場合は設定を更新する
+                    Call mCopyStructure(mudtSetSeqLinearTableNew, gudt.SetSeqLinear)
+                Else
+                    Call mCopyStructure(mudtSetSeqLinearTableNew, gudt2.SetSeqLinear)
+                End If
 
                 ' ''ポイント数設定
                 'Call mSetPoints(gudt.SetSeqLinear)
@@ -196,8 +209,13 @@
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    gudt.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
+                Else
+                    gudt2.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
+                End If
 
             End If
 
@@ -239,10 +257,11 @@
             Call mSetStructure(cmbTableNo.SelectedIndex, mudtSetSeqLinearTableNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(mudtSetSeqLinearTableNew, gudt.SetSeqLinear) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetSeqLinearTableNew, gudt.SetSeqLinear)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetSeqLinearTableNew, gudt2.SetSeqLinear)) Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
                     Case Windows.Forms.DialogResult.Yes
@@ -256,13 +275,21 @@
                             Return
                         End If
 
-                        ''変更された場合は設定を更新する
-                        Call mCopyStructure(mudtSetSeqLinearTableNew, gudt.SetSeqLinear)
-
+                        If modFcuSelect.nFcuNo = 1 Then
+                            ''変更された場合は設定を更新する
+                            Call mCopyStructure(mudtSetSeqLinearTableNew, gudt.SetSeqLinear)
+                        Else
+                            Call mCopyStructure(mudtSetSeqLinearTableNew, gudt2.SetSeqLinear)
+                        End If
                         ''更新フラグ設定
                         gblnUpdateAll = True
-                        gudt.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
-                        gudt.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
+                        If modFcuSelect.nFcuNo = 1 Then
+                            gudt.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
+                            gudt.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
+                        Else
+                            gudt2.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
+                            gudt2.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
+                        End If
 
                     Case Windows.Forms.DialogResult.No
 
