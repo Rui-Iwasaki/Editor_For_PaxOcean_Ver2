@@ -16,7 +16,7 @@ Public Class frmChkFileCompare
     Private Const mCstStatusOpenError As String = "Open Error"
     Private Const mCstStatusCompareReady As String = "Ready"
 
-    Private Const mCstProgressValueMaxSave As Integer = 45 '44
+    Private Const mCstProgressValueMaxSave As Integer = 90 '44
 
     'Ver2.0.2.9 OUTとANDORのMASK処理比較にて使用
     Private mcstStsAnalog() As String = {"ALL ALARM", "HH-Set", "H-Set", "L-Set", "LL-Set", "UNDER", "OVER"}
@@ -47,8 +47,11 @@ Public Class frmChkFileCompare
 #Region "変数定義"
 
     ''出力構造体クラス
-    Private mudtSource As New clsStructure  ''比較元
-    Private mudtTarget As New clsStructure  ''比較先
+    Private mudtSource As New clsStructure  ''FCU1比較元
+    Private mudtTarget As New clsStructure  ''FCU1比較先
+
+    Private mudtSource2 As New clsStructure  ''FCU2比較元
+    Private mudtTarget2 As New clsStructure  ''FCU2比較先
 
     ''ファイル情報
     Private mudtFileSource As gTypCompareFileInfo = Nothing
@@ -145,7 +148,8 @@ Public Class frmChkFileCompare
             ''構造体初期化
             Call gInitOutputStructure(mudtSource)
             Call gInitOutputStructure(mudtTarget)
-
+            Call gInitOutputStructure(mudtSource2)
+            Call gInitOutputStructure(mudtTarget2)
             ''ファイル情報をコピー
             mudtFileSource = gudtCompareFileInfo
             mudtFileTarget = gudtCompareFileInfo
@@ -168,6 +172,8 @@ Public Class frmChkFileCompare
 
                 'Ver2.0.7.1 CHConvertファイルは、上記では読み込まないためここで読み込む
                 Call mLoadChConv(mudtTarget.SetChConvNow, mudtFileTarget.strFilePath, mudtFileTarget.strFileName)
+                FCU2LeadFlg = True
+                Call mLoadChConv(mudtTarget2.SetChConvNow, mudtFileTarget.strFilePath, mudtFileTarget.strFileName)
             Else
                 txtTargetPath.Text = ""                             '計測点ﾌｫﾙﾀﾞ
                 txtTargetFile.Text = ""                             'Ver
@@ -196,72 +202,99 @@ Public Class frmChkFileCompare
 
         ''システム設定
         mudtTarget.SetSystem = gudt.SetSystem
+        mudtTarget2.SetSystem = gudt2.SetSystem
 
         ''FU設定（チャンネル情報データ）
         mudtTarget.SetFu = gudt.SetFu
+        mudtTarget2.SetFu = gudt2.SetFu
 
         ''チャンネル情報データ（表示名設定データ）
         mudtTarget.SetChDisp = gudt.SetChDisp
+        mudtTarget2.SetChDisp = gudt2.SetChDisp
 
         ''チャンネル情報
         mudtTarget.SetChInfo = gudt.SetChInfo
+        mudtTarget2.SetChInfo = gudt2.SetChInfo
 
         ''コンポジット情報
         mudtTarget.SetChComposite = gudt.SetChComposite
+        mudtTarget2.SetChComposite = gudt2.SetChComposite
 
         ''グループ設定
         mudtTarget.SetChGroupSetM = gudt.SetChGroupSetM
         mudtTarget.SetChGroupSetC = gudt.SetChGroupSetC
+
 
         ''リポーズ入力設定
         mudtTarget.SetChGroupRepose = gudt.SetChGroupRepose
 
         ''出力チャンネル設定
         mudtTarget.SetChOutput = gudt.SetChOutput
+        mudtTarget2.SetChOutput = gudt2.SetChOutput
+
 
         ''論理出力設定
         mudtTarget.SetChAndOr = gudt.SetChAndOr
+        mudtTarget2.SetChAndOr = gudt2.SetChAndOr
+
 
         ''積算データ設定ファイル
         mudtTarget.SetChRunHour = gudt.SetChRunHour
+        mudtTarget2.SetChRunHour = gudt2.SetChRunHour
+
 
         ''コントロール使用可／不可設定
         mudtTarget.SetChCtrlUseM = gudt.SetChCtrlUseM
         mudtTarget.SetChCtrlUseC = gudt.SetChCtrlUseC
+        mudtTarget2.SetChCtrlUseM = gudt2.SetChCtrlUseM
+        mudtTarget2.SetChCtrlUseC = gudt2.SetChCtrlUseC
 
         ''排ガス演算処理設定
         mudtTarget.SetChExhGus = gudt.SetChExhGus
+        mudtTarget2.SetChExhGus = gudt2.SetChExhGus
+
 
         ''SIO設定（外部機器VDR情報設定）
         mudtTarget.SetChSio = gudt.SetChSio
+        mudtTarget2.SetChSio = gudt2.SetChSio
 
         ''SIO設定（外部機器VDR情報設定）CH設定データ
         mudtTarget.SetChSioCh = gudt.SetChSioCh
+        mudtTarget2.SetChSioCh = gudt2.SetChSioCh
 
         ''延長警報設定
         mudtTarget.SetExtAlarm = gudt.SetExtAlarm
+        mudtTarget2.SetExtAlarm = gudt2.SetExtAlarm
 
         ''タイマ設定
         mudtTarget.SetExtTimerSet = gudt.SetExtTimerSet
+        mudtTarget2.SetExtTimerSet = gudt2.SetExtTimerSet
 
         ''タイマ表示名称設定
         mudtTarget.SetExtTimerName = gudt.SetExtTimerName
+        mudtTarget2.SetExtTimerName = gudt2.SetExtTimerName
 
         ''シーケンス設定
         mudtTarget.SetSeqID = gudt.SetSeqID
         mudtTarget.SetSeqSet = gudt.SetSeqSet
+        mudtTarget2.SetSeqID = gudt2.SetSeqID
+        mudtTarget2.SetSeqSet = gudt2.SetSeqSet
 
         ''リニアライズテーブル
         mudtTarget.SetSeqLinear = gudt.SetSeqLinear
+        mudtTarget2.SetSeqLinear = gudt2.SetSeqLinear
 
         ''演算式テーブル
         mudtTarget.SetSeqOpeExp = gudt.SetSeqOpeExp
+        mudtTarget2.SetSeqOpeExp = gudt2.SetSeqOpeExp
 
         ''データ保存テーブル設定
         mudtTarget.SetChDataSave = gudt.SetChDataSave
+        mudtTarget2.SetChDataSave = gudt2.SetChDataSave
 
         ''データ保存テーブル設定
         mudtTarget.SetChDataForward = gudt.SetChDataForward
+        mudtTarget2.SetChDataForward = gudt2.SetChDataForward
 
         ''OPS画面タイトル
         mudtTarget.SetOpsScreenTitleM = gudt.SetOpsScreenTitleM
@@ -300,6 +333,7 @@ Public Class frmChkFileCompare
 
         ''CH変換テーブル
         mudtTarget.SetChConvNow = gudt.SetChConvNow
+        mudtTarget2.SetChConvNow = gudt2.SetChConvNow
 
     End Sub
 
@@ -326,7 +360,9 @@ Public Class frmChkFileCompare
             CompileFolderRead = Compile_Read.Checked
 
             ''ファイルセレクト画面表示
-            Select Case frmCompareFileSelect.gShow(gEnmFileMode.fmEdit, mudtFileSource, mudtSource, mudtTarget, CFCardRead, SaveFolderRead, CompileFolderRead)
+            'Select Case frmCompareFileSelect.gShow(gEnmFileMode.fmEdit, mudtFileSource, mudtSource, mudtTarget, mudtSource2, mudtTarget2, CFCardRead, SaveFolderRead, CompileFolderRead)
+            Select Case frmCompareFileSelect.gShow(gEnmFileMode.fmEdit, mudtFileSource, mudtSource, mudtSource, mudtSource2, mudtSource2, CFCardRead, SaveFolderRead, CompileFolderRead)
+
 
                 Case 0
 
@@ -337,7 +373,8 @@ Public Class frmChkFileCompare
                     '読込成功
                     'Ver2.0.6.5 CHConvertファイルは、上記では読み込まないためここで読み込む
                     Call mLoadChConv(mudtSource.SetChConvNow, mudtFileSource.strFilePath, mudtFileSource.strFileName)
-
+                    FCU2LeadFlg = True
+                    Call mLoadChConv(mudtSource2.SetChConvNow, mudtFileSource.strFilePath, mudtFileSource.strFileName)
                     'CFカード時はターゲット側も表示
                     If CFCardRead Then
                         txtSourcePath.Text = mudtFileSource.strFileOrgPath
@@ -362,6 +399,8 @@ Public Class frmChkFileCompare
 
             End Select
 
+
+
             ''Compareボタン使用可/不可設定
             Call mSetCompareButtonEnable()
 
@@ -382,6 +421,13 @@ Public Class frmChkFileCompare
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChConv
             Dim strCurFileName As String = gCstFileChConv
+
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathChConv2
+                strCurFileName = gCstFileChConv2
+                FCU2LeadFlg = False
+            End If
 
             'システム設定のパスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strFileName)
@@ -442,7 +488,7 @@ Public Class frmChkFileCompare
             CompileFolderTargetRead = Compile_Read.Checked
 
             ''ファイルセレクト画面表示
-            Select Case frmCompareFileSelect.gShow(gEnmFileMode.fmEdit, mudtFileTarget, mudtTarget, mudtTarget, CFCardTargetRead, SaveFolderTargetRead, CompileFolderTargetRead)
+            Select Case frmCompareFileSelect.gShow(gEnmFileMode.fmEdit, mudtFileTarget, mudtTarget, mudtTarget, mudtTarget2, mudtTarget2, CFCardTargetRead, SaveFolderTargetRead, CompileFolderTargetRead)
 
                 Case 0
 
@@ -452,7 +498,7 @@ Public Class frmChkFileCompare
 
                     'Ver2.0.6.5 CHConvertファイルは、上記では読み込まないためここで読み込む
                     Call mLoadChConv(mudtTarget.SetChConvNow, mudtFileTarget.strFilePath, mudtFileTarget.strFileName)
-
+                    Call mLoadChConv(mudtTarget2.SetChConvNow, mudtFileTarget.strFilePath, mudtFileTarget.strFileName)
                     ''読込成功
                     txtTargetPath.Text = mudtFileTarget.strFilePath
                     txtTargetFile.Text = mudtFileTarget.strFileName
@@ -469,6 +515,8 @@ Public Class frmChkFileCompare
 
             ''Compareボタン使用可/不可設定
             Call mSetCompareButtonEnable()
+
+
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
@@ -535,47 +583,81 @@ Public Class frmChkFileCompare
                     'Ver2.0.0.2 MC比較と処理分岐 完全に分岐さす
                     If chkMC.Checked = True Then
                         '■MC比較
-                        ''チャンネル情報
+                        ''チャンネル情報 FCU1
                         If gCompareChk(gConmCompareSetChannelDisp) = True Then
                             Call mCompareSetChannelDisp_MC(mudtSource.SetChInfo, mudtTarget.SetChInfo) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''チャンネル情報 FCU2
+                        If gCompareChk(gConmCompareSetChannelDisp) = True Then
+                            Call mCompareSetChannelDisp_MC(mudtSource2.SetChInfo, mudtTarget2.SetChInfo) : .Value += 1 : Application.DoEvents()
+                        End If
 
-
-                        ''システム設定(通常比較と同じ)
+                        ''システム設定(通常比較と同じ)FCU1
                         If gCompareChk(gConmCompareSetSystem) = True Then
                             Call mCompareSetSystem(mudtSource.SetSystem, mudtTarget.SetSystem) : .Value += 1 : Application.DoEvents()
                         End If
-                        ''リポーズ入力設定(通常比較と同じ)
+                        ''システム設定(通常比較と同じ)FCU2
+                        If gCompareChk(gConmCompareSetSystem) = True Then
+                            Call mCompareSetSystem(mudtSource2.SetSystem, mudtTarget2.SetSystem) : .Value += 1 : Application.DoEvents()
+                        End If
+
+                        ''リポーズ入力設定(通常比較と同じ)FCU1
                         If gCompareChk(gConmCompareSetRepose) = True Then
                             Call mCompareSetRepose(mudtSource.SetChGroupRepose, mudtTarget.SetChGroupRepose) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''リポーズ入力設定(通常比較と同じ)FCU2
+                        If gCompareChk(gConmCompareSetRepose) = True Then
+                            Call mCompareSetRepose(mudtSource2.SetChGroupRepose, mudtTarget2.SetChGroupRepose) : .Value += 1 : Application.DoEvents()
+                        End If
+
                     Else
                         '■通常比較
 
-                        ''チャンネル追加/削除
+                        ''チャンネル追加/削除FCU1
                         If gCompareChk(gConmCompareSetChannelAddDel) = True Then
                             Call mCompareSetChannelAddDel(mudtSource.SetChInfo, mudtTarget.SetChInfo) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''チャンネル追加/削除FCU2
+                        If gCompareChk(gConmCompareSetChannelAddDel) = True Then
+                            Call mCompareSetChannelAddDel(mudtSource2.SetChInfo, mudtTarget2.SetChInfo) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''チャンネル情報
+                        ''チャンネル情報FCU1
                         If gCompareChk(gConmCompareSetChannelDisp) = True Then
                             Call mCompareSetChannelDisp(mudtSource.SetChInfo, mudtTarget.SetChInfo) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''チャンネル情報FCU2
+                        If gCompareChk(gConmCompareSetChannelDisp) = True Then
+                            Call mCompareSetChannelDisp(mudtSource2.SetChInfo, mudtTarget2.SetChInfo) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''システム設定
+                        ''システム設定FCU1
                         If gCompareChk(gConmCompareSetSystem) = True Then
                             Call mCompareSetSystem(mudtSource.SetSystem, mudtTarget.SetSystem) : .Value += 1 : Application.DoEvents()
+                        End If
+                        ''システム設定FCU2
+                        If gCompareChk(gConmCompareSetSystem) = True Then
+                            Call mCompareSetSystem(mudtSource2.SetSystem, mudtTarget2.SetSystem) : .Value += 1 : Application.DoEvents()
                         End If
 
                         'Ver2.0.0.1 2016.12.8 端子表比較追加
                         If gCompareChk(gConmCompareTerminalInfo) = True Then
-                            ''端子表比較
+                            ''端子表比較FCU1
                             Call mCompareTerminalInfo(mudtSource.SetFu, mudtSource.SetChDisp, mudtTarget.SetFu, mudtTarget.SetChDisp)
                         End If
 
-                        ''コンポジット情報
+                        If gCompareChk(gConmCompareTerminalInfo) = True Then
+                            ''端子表比較FCU2
+                            Call mCompareTerminalInfo(mudtSource2.SetFu, mudtSource2.SetChDisp, mudtTarget2.SetFu, mudtTarget2.SetChDisp)
+                        End If
+
+                        ''コンポジット情報FCU1
                         If gCompareChk(gConmCompareSetCompositeDisp) = True Then
                             Call mCompareSetCompositeDisp(mudtSource.SetChComposite, mudtTarget.SetChComposite) : .Value += 1 : Application.DoEvents()
+                        End If
+                        ''コンポジット情報FCU2
+                        If gCompareChk(gConmCompareSetCompositeDisp) = True Then
+                            Call mCompareSetCompositeDisp(mudtSource2.SetChComposite, mudtTarget2.SetChComposite) : .Value += 1 : Application.DoEvents()
                         End If
 
                         ''リポーズ入力設定
@@ -583,86 +665,144 @@ Public Class frmChkFileCompare
                             Call mCompareSetRepose(mudtSource.SetChGroupRepose, mudtTarget.SetChGroupRepose) : .Value += 1 : Application.DoEvents()
                         End If
 
-                        ''出力チャンネル設定
+                        ''出力チャンネル設定FCU1
                         If gCompareChk(gConmCompareSetCHOutPut_FU) = True Then
-                            'Call mCompareSetCHOutPut(mudtSource.SetChOutput, mudtTarget.SetChOutput) : .Value += 1 : Application.DoEvents()
-                            'Ver2.0.2.8 CH追加削除を検出
-                            'Ver2.0.3.1 OUTPUT検出にまぜる
-                            'Call mCompareSetCHOutPut_FU_DELADD(mudtSource.SetChOutput, mudtTarget.SetChOutput) : .Value += 1 : Application.DoEvents()
-
                             Call mCompareSetCHOutPut_FU(mudtSource.SetChOutput, mudtTarget.SetChOutput) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''出力チャンネル設定FCU2
+                        If gCompareChk(gConmCompareSetCHOutPut_FU) = True Then
+                            Call mCompareSetCHOutPut_FU(mudtSource2.SetChOutput, mudtTarget2.SetChOutput) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''論理出力設定
+                        ''論理出力設定FCU1
                         If gCompareChk(gConmCompareSetCHAndOr) = True Then
                             Call mCompareSetCHAndOr(mudtSource.SetChAndOr, mudtTarget.SetChAndOr) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''論理出力設定FCU2
+                        If gCompareChk(gConmCompareSetCHAndOr) = True Then
+                            Call mCompareSetCHAndOr(mudtSource2.SetChAndOr, mudtTarget2.SetChAndOr) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''積算データ設定ファイル
+                        ''積算データ設定ファイルFCU1
                         If gCompareChk(gConmCompareSetChRunHour) = True Then
                             Call mCompareSetChRunHour(mudtSource.SetChRunHour, mudtTarget.SetChRunHour) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''積算データ設定ファイルFCU2
+                        If gCompareChk(gConmCompareSetChRunHour) = True Then
+                            Call mCompareSetChRunHour(mudtSource2.SetChRunHour, mudtTarget2.SetChRunHour) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''コントロール使用可／不可設定
+                        ''コントロール使用可／不可設定FCU1
                         If gCompareChk(gConmCompareSetCtrlUseNotuse) = True Then
                             Call mCompareSetCtrlUseNotuse(mudtSource.SetChCtrlUseM, mudtTarget.SetChCtrlUseM, gEnmMachineryCargo.mcMachinery) : .Value += 1 : Application.DoEvents()
                             Call mCompareSetCtrlUseNotuse(mudtSource.SetChCtrlUseC, mudtTarget.SetChCtrlUseC, gEnmMachineryCargo.mcCargo) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''コントロール使用可／不可設定FCU2
+                        If gCompareChk(gConmCompareSetCtrlUseNotuse) = True Then
+                            Call mCompareSetCtrlUseNotuse(mudtSource2.SetChCtrlUseM, mudtTarget2.SetChCtrlUseM, gEnmMachineryCargo.mcMachinery) : .Value += 1 : Application.DoEvents()
+                            Call mCompareSetCtrlUseNotuse(mudtSource2.SetChCtrlUseC, mudtTarget2.SetChCtrlUseC, gEnmMachineryCargo.mcCargo) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''排ガス演算処理設定
+                        ''排ガス演算処理設定FCU1
                         If gCompareChk(gConmCompareSetExhGus) = True Then
                             Call mCompareSetExhGus(mudtSource.SetChExhGus, mudtTarget.SetChExhGus) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''排ガス演算処理設定FCU2
+                        If gCompareChk(gConmCompareSetExhGus) = True Then
+                            Call mCompareSetExhGus(mudtSource2.SetChExhGus, mudtTarget2.SetChExhGus) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''SIO設定（外部機器VDR情報設定）
+                        ''SIO設定（外部機器VDR情報設定）FCU1
                         If gCompareChk(gConmCompareSetChSio) = True Then
                             Call mCompareSetChSio(mudtSource.SetChSio, mudtTarget.SetChSio) : .Value += 1 : Application.DoEvents()
                         End If
 
-                        ''SIO設定（外部機器VDR情報設定）CH設定データ
+                        ''SIO設定（外部機器VDR情報設定）FCU2
+                        If gCompareChk(gConmCompareSetChSio) = True Then
+                            Call mCompareSetChSio(mudtSource2.SetChSio, mudtTarget2.SetChSio) : .Value += 1 : Application.DoEvents()
+                        End If
+
+                        ''SIO設定（外部機器VDR情報設定）CH設定データ FCU1
                         If gCompareChk(gConmCompareSetChSioCh) = True Then
                             Call mCompareSetChSioCh(mudtSource.SetChSioCh, mudtTarget.SetChSioCh) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''SIO設定（外部機器VDR情報設定）CH設定データFCU2
+                        If gCompareChk(gConmCompareSetChSioCh) = True Then
+                            Call mCompareSetChSioCh(mudtSource2.SetChSioCh, mudtTarget2.SetChSioCh) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''延長警報設定
+                        ''延長警報設定FCU1
                         If gCompareChk(gConmCompareSetExtAlarm) = True Then
                             Call mCompareSetExtAlarm(mudtSource.SetExtAlarm, mudtTarget.SetExtAlarm) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''延長警報設定FCU2
+                        If gCompareChk(gConmCompareSetExtAlarm) = True Then
+                            Call mCompareSetExtAlarm(mudtSource2.SetExtAlarm, mudtTarget2.SetExtAlarm) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''タイマ設定
+                        ''タイマ設定FCU1
                         If gCompareChk(gConmCompareSetTimer) = True Then
                             Call mCompareSetTimer(mudtSource.SetExtTimerSet, mudtTarget.SetExtTimerSet) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''タイマ設定FCU2
+                        If gCompareChk(gConmCompareSetTimer) = True Then
+                            Call mCompareSetTimer(mudtSource2.SetExtTimerSet, mudtTarget2.SetExtTimerSet) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''タイマ表示名称設定
+                        ''タイマ表示名称設定FCU1
                         If gCompareChk(gConmCompareSetTimerName) = True Then
                             Call mCompareSetTimerName(mudtSource.SetExtTimerName, mudtTarget.SetExtTimerName) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''タイマ表示名称設定FCU2
+                        If gCompareChk(gConmCompareSetTimerName) = True Then
+                            Call mCompareSetTimerName(mudtSource2.SetExtTimerName, mudtTarget2.SetExtTimerName) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''シーケンス設定
+                        ''シーケンス設定FCU1
                         If gCompareChk(gConmCompareSetSeqSequence) = True Then
                             Call mCompareSetSeqSequence(mudtSource.SetSeqID, mudtSource.SetSeqSet, mudtTarget.SetSeqID, mudtTarget.SetSeqSet) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''シーケンス設定FCU2
+                        If gCompareChk(gConmCompareSetSeqSequence) = True Then
+                            Call mCompareSetSeqSequence(mudtSource2.SetSeqID, mudtSource2.SetSeqSet, mudtTarget2.SetSeqID, mudtTarget2.SetSeqSet) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''リニアライズテーブル
+                        ''リニアライズテーブルFCU1
                         If gCompareChk(gConmCompareSetSeqLinearTable) = True Then
                             Call mCompareSetSeqLinearTable(mudtSource.SetSeqLinear, mudtTarget.SetSeqLinear) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''リニアライズテーブルFCU2
+                        If gCompareChk(gConmCompareSetSeqLinearTable) = True Then
+                            Call mCompareSetSeqLinearTable(mudtSource2.SetSeqLinear, mudtTarget2.SetSeqLinear) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''演算式テーブル
+                        ''演算式テーブルFCU1
                         If gCompareChk(gConmCompareSetSeqOperationExpression) = True Then
                             Call mCompareSetSeqOperationExpression(mudtSource.SetSeqOpeExp, mudtTarget.SetSeqOpeExp) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''演算式テーブルFCU2
+                        If gCompareChk(gConmCompareSetSeqOperationExpression) = True Then
+                            Call mCompareSetSeqOperationExpression(mudtSource2.SetSeqOpeExp, mudtTarget2.SetSeqOpeExp) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''データ保存テーブル設定
+                        ''データ保存テーブル設定FCU1
                         If gCompareChk(gConmCompareSetChDataSaveTable) = True Then
                             Call mCompareSetChDataSaveTable(mudtSource.SetChDataSave, mudtTarget.SetChDataSave) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''データ保存テーブル設定FCU2
+                        If gCompareChk(gConmCompareSetChDataSaveTable) = True Then
+                            Call mCompareSetChDataSaveTable(mudtSource2.SetChDataSave, mudtTarget2.SetChDataSave) : .Value += 1 : Application.DoEvents()
+                        End If
 
-                        ''データ保存テーブル設定
+                        ''データ保存テーブル設定FCU1
                         If gCompareChk(gConmCompareSetChDataForwardTableSet) = True Then
                             Call mCompareSetChDataForwardTableSet(mudtSource.SetChDataForward, mudtTarget.SetChDataForward) : .Value += 1 : Application.DoEvents()
                         End If
+                        ''データ保存テーブル設定FCU2
+                        If gCompareChk(gConmCompareSetChDataForwardTableSet) = True Then
+                            Call mCompareSetChDataForwardTableSet(mudtSource2.SetChDataForward, mudtTarget2.SetChDataForward) : .Value += 1 : Application.DoEvents()
+                        End If
+
 
                         ''OPS画面タイトル
                         If gCompareChk(gConmCompareSetOpsDisp) = True Then
@@ -724,9 +864,13 @@ Public Class frmChkFileCompare
                             Call mCompareSetOpsGwsCh(mudtSource.SetOpsGwsCh, mudtTarget.SetOpsGwsCh) : .Value += 1 : Application.DoEvents()
                         End If
 
-                        ''CH変換テーブル
+                        ''CH変換テーブルFCU1
                         If gCompareChk(gConmCompareSetChConv) = True Then
                             Call mCompareSetChConv(mudtSource.SetChConvNow, mudtTarget.SetChConvNow) : .Value += 1 : Application.DoEvents()
+                        End If
+                        ''CH変換テーブルFCU2
+                        If gCompareChk(gConmCompareSetChConv) = True Then
+                            Call mCompareSetChConv(mudtSource2.SetChConvNow, mudtTarget2.SetChConvNow) : .Value += 1 : Application.DoEvents()
                         End If
 
                         'Ver2.0.0.2 2016.12.09 MIMICﾌｧｲﾙレベル比較機能
@@ -1293,6 +1437,19 @@ Public Class frmChkFileCompare
             End With
         Next i
 
+        For j As Integer = 0 To UBound(mudtTarget2.SetChInfo.udtChannel) Step 1
+            With mudtTarget2.SetChInfo.udtChannel(j)
+                If .udtChCommon.shtChno = pintCHno Then
+                    Dim strFUAdd As String = GetFUAddress(.udtChCommon.shtFuno, 1)
+                    Dim strPortAdd As String = GetFUAddress(.udtChCommon.shtPortno, 2)
+                    Dim strPinAdd As String = GetFUAddress(.udtChCommon.shtPin, 3)
+                    strRet = strFUAdd & "-" & strPortAdd & "-" & strPinAdd
+
+                    Exit For
+                End If
+            End With
+        Next j
+
         Return strRet
     End Function
     Private Function fnGetFUadr_DEL(pintCHno As Integer) As String
@@ -1311,6 +1468,19 @@ Public Class frmChkFileCompare
                 End If
             End With
         Next i
+
+        For j As Integer = 0 To UBound(mudtSource2.SetChInfo.udtChannel) Step 1
+            With mudtSource2.SetChInfo.udtChannel(j)
+                If .udtChCommon.shtChno = pintCHno Then
+                    Dim strFUAdd As String = GetFUAddress(.udtChCommon.shtFuno, 1)
+                    Dim strPortAdd As String = GetFUAddress(.udtChCommon.shtPortno, 2)
+                    Dim strPinAdd As String = GetFUAddress(.udtChCommon.shtPin, 3)
+                    strRet = strFUAdd & "-" & strPortAdd & "-" & strPinAdd
+
+                    Exit For
+                End If
+            End With
+        Next j
 
         Return strRet
     End Function
@@ -1359,6 +1529,19 @@ Public Class frmChkFileCompare
                 Next
             End If
 
+            If iCHNo <> 0 Then
+                'CHNOが一致するところを検索(For)
+                For j = 0 To 2999
+                    If mudtTarget2.SetChInfo.udtChannel(j).udtChCommon._shtChno = iCHNo Then
+                        'DummyCommonFuAddressがTrueか確認(if)
+                        If mudtTarget2.SetChInfo.udtChannel(j).DummyCommonFuAddress = True Then
+                            'TrueだったらフラグON
+                            DummyFlg = True
+                            Exit For
+                        End If
+                    End If
+                Next
+            End If
             'Ver2.0.0.7 FUつけるつけないｵﾌﾟｼｮﾝ
             If gCompareChkBIG(3) = True Then
                 'FUつける＝通常
@@ -1527,7 +1710,7 @@ Public Class frmChkFileCompare
                             'ｺﾝﾎﾟｼﾞｯﾄ
                             strTag = .CompositeTagNo
                         Case gCstCodeChTypePulse
-                            If .udtChCommon.shtData < gCstCodeChDataTypePulseRevoTotalHour Or _
+                            If .udtChCommon.shtData < gCstCodeChDataTypePulseRevoTotalHour Or
                                 .udtChCommon.shtData = gCstCodeChDataTypePulseExtDev Then
                                 'ﾊﾟﾙｽ
                                 strTag = .PulseTagNo
@@ -1539,6 +1722,50 @@ Public Class frmChkFileCompare
                             strTag = ""
                     End Select
                 End With
+
+                With gudt2.SetChInfo.udtChannel(intIndex)
+                    Select Case .udtChCommon.shtChType
+                        Case gCstCodeChTypeAnalog
+                            'ｱﾅﾛｸﾞ
+                            strTag = .AnalogTagNo
+                        Case gCstCodeChTypeDigital
+                            If .udtChCommon.shtData = gCstCodeChDataTypeDigitalDeviceStatus Then
+                                'ｼｽﾃﾑ
+                                strTag = .SystemTagNo
+                            Else
+                                'ﾃﾞｼﾞﾀﾙ
+                                strTag = .DigitalTagNo
+                            End If
+                        Case gCstCodeChTypeMotor
+                            'ﾓｰﾀｰ
+                            strTag = .MotorTagNo
+                        Case gCstCodeChTypeValve
+                            'ﾊﾞﾙﾌﾞ
+                            Select Case .udtChCommon.shtData
+                                Case gCstCodeChDataTypeValveAI_DO1, gCstCodeChDataTypeValveAI_DO2, gCstCodeChDataTypeValvePT_DO2
+                                    strTag = .ValveAiDoTagNo
+                                Case gCstCodeChDataTypeValveAI_AO1, gCstCodeChDataTypeValveAI_AO2, gCstCodeChDataTypeValvePT_AO2, gCstCodeChDataTypeValveAO_4_20
+                                    strTag = .ValveAiAoTagNo
+                                Case Else
+                                    strTag = .ValveDiDoTagNo
+                            End Select
+                        Case gCstCodeChTypeComposite
+                            'ｺﾝﾎﾟｼﾞｯﾄ
+                            strTag = .CompositeTagNo
+                        Case gCstCodeChTypePulse
+                            If .udtChCommon.shtData < gCstCodeChDataTypePulseRevoTotalHour Or
+                                .udtChCommon.shtData = gCstCodeChDataTypePulseExtDev Then
+                                'ﾊﾟﾙｽ
+                                strTag = .PulseTagNo
+                            Else
+                                '積算
+                                strTag = .RevoTagNo
+                            End If
+                        Case Else
+                            strTag = ""
+                    End Select
+                End With
+
             Else
                 'CHnoがChInfoに無いなら""を戻す
                 Return ""
@@ -5338,55 +5565,7 @@ Public Class frmChkFileCompare
 
             '>>>ﾙｰﾌﾟ２
             For i As Integer = LBound(udt1Fu.udtFu) To UBound(udt1Fu.udtFu)
-                ''FU使用/未使用フラグ
-                'If udt1Fu.udtFu(i).shtUse <> udt2Fu.udtFu(i).shtUse Then
-                '    'msgSYStemp(ix) = mMsgCreateSys1("USE", udt1Fu.udtFu(i).shtUse, udt2Fu.udtFu(i).shtUse, "FU", Str(i), "", "")
-                '    strFUadr = GetFUAdrTer(i, -1, -1)
-                '    msgSYStemp(ix) = mMsgCreateSysTer("USE", udt1Fu.udtFu(i).shtUse, udt2Fu.udtFu(i).shtUse, strFUadr)
-                '    ix = ix + 1
-                '    'FU使用、未使用ﾌﾗｸﾞが異なる場合、以降を比較してもアレなので、次のデータへ
-                '    Continue For
-                'End If
 
-                ''CanBus
-                'If udt1Fu.udtFu(i).shtCanBus <> udt2Fu.udtFu(i).shtCanBus Then
-                '    'msgSYStemp(ix) = mMsgCreateSys1("CANBUS", udt1Fu.udtFu(i).shtCanBus, udt2Fu.udtFu(i).shtCanBus, "FU", Str(i), "", "")
-                '    strFUadr = GetFUAdrTer(i, -1, -1)
-                '    msgSYStemp(ix) = mMsgCreateSysTer("CANBUS", udt1Fu.udtFu(i).shtCanBus, udt2Fu.udtFu(i).shtCanBus, strFUadr)
-                '    ix = ix + 1
-                'End If
-
-                ''FCU/FU名称
-                'If Not gCompareString(udt1Disp.udtChDisp(i).strFuName, udt2Disp.udtChDisp(i).strFuName) Then
-                '    'msgSYStemp(ix) = mMsgCreateSys1("FU_NAME", gGetString(udt1Disp.udtChDisp(i).strFuName), gGetString(udt2Disp.udtChDisp(i).strFuName), "FU", Str(i), "", "")
-                '    strFUadr = GetFUAdrTer(i, -1, -1)
-                '    msgSYStemp(ix) = mMsgCreateSysTer("FCU/FU NAME", gGetString(udt1Disp.udtChDisp(i).strFuName), gGetString(udt2Disp.udtChDisp(i).strFuName), strFUadr)
-                '    ix = ix + 1
-                'End If
-
-                ''FCU/FU種類
-                'If Not gCompareString(udt1Disp.udtChDisp(i).strFuType, udt2Disp.udtChDisp(i).strFuType) Then
-                '    'msgSYStemp(ix) = mMsgCreateSys1("FU_TYPE", gGetString(udt1Disp.udtChDisp(i).strFuType), gGetString(udt2Disp.udtChDisp(i).strFuType), "FU", Str(i), "", "")
-                '    strFUadr = GetFUAdrTer(i, -1, -1)
-                '    msgSYStemp(ix) = mMsgCreateSysTer("FCU/FU TYPE", gGetString(udt1Disp.udtChDisp(i).strFuType), gGetString(udt2Disp.udtChDisp(i).strFuType), strFUadr)
-                '    ix = ix + 1
-                'End If
-
-                ''FCU/FU盤名
-                'If Not gCompareString(udt1Disp.udtChDisp(i).strNamePlate, udt2Disp.udtChDisp(i).strNamePlate) Then
-                '    'msgSYStemp(ix) = mMsgCreateSys1("FU_NAME_PLATE", gGetString(udt1Disp.udtChDisp(i).strNamePlate), gGetString(udt2Disp.udtChDisp(i).strNamePlate), "FU", Str(i), "", "")
-                '    strFUadr = GetFUAdrTer(i, -1, -1)
-                '    msgSYStemp(ix) = mMsgCreateSysTer("NAME PLATE", gGetString(udt1Disp.udtChDisp(i).strNamePlate), gGetString(udt2Disp.udtChDisp(i).strNamePlate), strFUadr)
-                '    ix = ix + 1
-                'End If
-
-                ''コメント
-                'If Not gCompareString(udt1Disp.udtChDisp(i).strRemarks, udt2Disp.udtChDisp(i).strRemarks) Then
-                '    'msgSYStemp(ix) = mMsgCreateSys1("REMARKS", gGetString(udt1Disp.udtChDisp(i).strRemarks), gGetString(udt2Disp.udtChDisp(i).strRemarks), "FU", Str(i), "", "")
-                '    strFUadr = GetFUAdrTer(i, -1, -1)
-                '    msgSYStemp(ix) = mMsgCreateSysTer("REMARKS", gGetString(udt1Disp.udtChDisp(i).strRemarks), gGetString(udt2Disp.udtChDisp(i).strRemarks), strFUadr)
-                '    ix = ix + 1
-                'End If
                 For j As Integer = LBound(udt1Fu.udtFu(i).udtSlotInfo) To UBound(udt1Fu.udtFu(i).udtSlotInfo)
 
                     'スロット種別
@@ -5413,101 +5592,6 @@ Public Class frmChkFileCompare
                         'Continue For
                     End If
 
-                    'Ver2.0.2.9 スロット種別で検知するため削除
-                    '端子台設定
-                    'If udt1Fu.udtFu(i).udtSlotInfo(j).shtTerinf <> udt2Fu.udtFu(i).udtSlotInfo(j).shtTerinf Then
-                    '    'msgSYStemp(ix) = mMsgCreateSys1("TERMINAL", "0x" & Hex(udt1Fu.udtFu(i).udtSlotInfo(j).shtTerinf).PadLeft(2, "0"), "0x" & Hex(udt2Fu.udtFu(i).udtSlotInfo(j).shtTerinf).PadLeft(2, "0"), "FU", Str(i), "SLOT", Str(j + 1))
-                    '    strFUadr = GetFUAdrTer(i, j + 1, -1)
-                    '    'Ver2.0.1.9 端子台設定もｺｰﾄﾞではなく型式へ変更
-                    '    'msgSYStemp(ix) = mMsgCreateSysTer("TERMINAL", "0x" & Hex(udt1Fu.udtFu(i).udtSlotInfo(j).shtTerinf).PadLeft(2, "0"), "0x" & Hex(udt2Fu.udtFu(i).udtSlotInfo(j).shtTerinf).PadLeft(2, "0"), strFUadr)
-                    '    Dim strOldTer As String = ""
-                    '    Dim strNewTer As String = ""
-                    '    Select Case udt1Fu.udtFu(i).udtSlotInfo(j).shtTerinf
-                    '        Case 1
-                    '            strOldTer = "TMDO"
-                    '        Case 2
-                    '            strOldTer = "TMRY"
-                    '        Case Else
-                    '            strOldTer = "Other"
-                    '    End Select
-                    '    Select Case udt2Fu.udtFu(i).udtSlotInfo(j).shtTerinf
-                    '        Case 1
-                    '            strNewTer = "TMDO"
-                    '        Case 2
-                    '            strNewTer = "TMRY"
-                    '        Case Else
-                    '            strNewTer = "Other"
-                    '    End Select
-                    '    msgSYStemp(ix) = mMsgCreateSysTer("TERMINAL", strOldTer, strNewTer, strFUadr)
-                    '    ix = ix + 1
-                    'End If
-
-                    'Ver2.0.2.1 AI3線式の場合、Pinは、３つでワンセット
-                    'Dim blAI3 As Boolean = False
-                    'If udt1Fu.udtFu(i).udtSlotInfo(j).shtType = gCstCodeFuSlotTypeAI_3 Then
-                    '    blAI3 = True
-                    'End If
-                    'Dim intPin As Integer = 0
-
-                    'For ii As Integer = LBound(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo) To UBound(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo)
-                    '    If blAI3 = True Then
-                    '        '3線式の場合３で割った整数商+1
-                    '        intPin = (ii \ 3) + 1
-                    '    Else
-                    '        intPin = ii + 1
-                    '    End If
-
-
-                    '    'CoreNoIn
-                    '    If Not gCompareString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoIn, udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoIn) Then
-                    '        'msgSYStemp(ix) = mMsgCreateSys2("CORE_ No.1(IN)", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoIn), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoIn), "FU", Str(i), "SLOT", Str(j + 1), "PIN", Str(ii + 1))
-
-                    '        strFUadr = GetFUAdrTer(i, j + 1, intPin)
-                    '        msgSYStemp(ix) = mMsgCreateSysTer("TERM NO(IN)", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoIn), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoIn), strFUadr)
-                    '        ix = ix + 1
-                    '    End If
-
-                    '    'CoreNoCom
-                    '    If Not gCompareString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoCom, udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoCom) Then
-                    '        'msgSYStemp(ix) = mMsgCreateSys2("CORE_ No.2(COM)", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoCom), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoCom), "FU", Str(i), "SLOT", Str(j + 1), "PIN", Str(ii + 1))
-                    '        strFUadr = GetFUAdrTer(i, j + 1, intPin)
-                    '        msgSYStemp(ix) = mMsgCreateSysTer("TERM NO(COM)", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoCom), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strCoreNoCom), strFUadr)
-                    '        ix = ix + 1
-                    '    End If
-
-                    '    'WireMark
-                    '    If Not gCompareString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMark, udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMark) Then
-                    '        'msgSYStemp(ix) = mMsgCreateSys2("CABLE_MARK1", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMark), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMark), "FU", Str(i), "SLOT", Str(j + 1), "PIN", Str(ii + 1))
-                    '        strFUadr = GetFUAdrTer(i, j + 1, intPin)
-                    '        msgSYStemp(ix) = mMsgCreateSysTer("CABLE MARK(IN)", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMark), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMark), strFUadr)
-                    '        ix = ix + 1
-                    '    End If
-
-                    '    'WireMarkClass
-                    '    If Not gCompareString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMarkClass, udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMarkClass) Then
-                    '        'msgSYStemp(ix) = mMsgCreateSys2("CABLE_MARK2(CLASS)", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMarkClass), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMarkClass), "FU", Str(i), "SLOT", Str(j + 1), "PIN", Str(ii + 1))
-                    '        strFUadr = GetFUAdrTer(i, j + 1, intPin)
-                    '        msgSYStemp(ix) = mMsgCreateSysTer("CABLE CLASS(COM)", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMarkClass), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strWireMarkClass), strFUadr)
-                    '        ix = ix + 1
-                    '    End If
-
-                    '    'Dest
-                    '    If Not gCompareString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strDest, udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strDest) Then
-                    '        'msgSYStemp(ix) = mMsgCreateSys2("CABLE_DEST", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strDest), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strDest), "FU", Str(i), "SLOT", Str(j + 1), "PIN", Str(ii + 1))
-                    '        strFUadr = GetFUAdrTer(i, j + 1, intPin)
-                    '        msgSYStemp(ix) = mMsgCreateSysTer("DIST", gGetString(udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strDest), gGetString(udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).strDest), strFUadr)
-                    '        ix = ix + 1
-                    '    End If
-
-                    '    '端子台番号
-                    '    If udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).shtTerminalNo <> udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).shtTerminalNo Then
-                    '        'msgSYStemp(ix) = mMsgCreateSys2("TERMINAL_No", udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).shtTerminalNo, udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).shtTerminalNo, "FU", Str(i), "SLOT", Str(j + 1), "PIN", Str(ii + 1))
-                    '        strFUadr = GetFUAdrTer(i, j + 1, intPin)
-                    '        msgSYStemp(ix) = mMsgCreateSysTer("TERMINAL NO", udt1Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).shtTerminalNo, udt2Disp.udtChDisp(i).udtSlotInfo(j).udtPinInfo(ii).shtTerminalNo, strFUadr)
-                    '        ix = ix + 1
-                    '    End If
-
-                    'Next ii
 
                 Next j
 
@@ -12148,7 +12232,19 @@ Public Class frmChkFileCompare
                 Next i
             End With
 
+            With mudtTarget2.SetChInfo
+                'チャンネル番号を配列化
+                For i As Integer = 0 To UBound(.udtChannel)
+                    aryCHLISTall.Add(.udtChannel(i).udtChCommon.shtChno.ToString)
+                Next i
+            End With
 
+            With mudtSource2.SetChInfo
+                'チャンネル番号を配列化
+                For i As Integer = 0 To UBound(.udtChannel)
+                    aryCHLISTallold.Add(.udtChannel(i).udtChCommon.shtChno.ToString)
+                Next i
+            End With
 
             msgSYStemp(0) = "■■■■　CH OUTPUT SETTING　■■■■"
 
@@ -12442,15 +12538,39 @@ Public Class frmChkFileCompare
                                     Dim strStatus2 As String = mudtTarget.SetChInfo.udtChannel(intS2).udtChCommon.strStatus
                                     Dim intPinNo2 As Integer = mudtTarget.SetChInfo.udtChannel(intS2).udtChCommon.shtPinNo
 
-                                    Dim strOld As String = fnMaskStringFull(intChType1, intDataType1, intStatus1, strStatus1, intPinNo1, _
+                                    Dim intChType1_2 As Integer = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.shtChType
+                                    Dim intDataType1_2 As Integer = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.shtData
+                                    Dim intStatus1_2 As Integer = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.shtStatus
+                                    Dim strStatus1_2 As String = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.strStatus
+                                    Dim intPinNo1_2 As Integer = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.shtPinNo
+                                    Dim intChType2_2 As Integer = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.shtChType
+                                    Dim intDataType2_2 As Integer = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.shtData
+                                    Dim intStatus2_2 As Integer = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.shtStatus
+                                    Dim strStatus2_2 As String = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.strStatus
+                                    Dim intPinNo2_2 As Integer = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.shtPinNo
+
+
+                                    Dim strOld As String = fnMaskStringFull(intChType1, intDataType1, intStatus1, strStatus1, intPinNo1,
                                                                             udt1.udtCHOutPut(sNo).bytStatus, udt1.udtCHOutPut(sNo).shtMask)
                                     Dim strNew As String = fnMaskStringFull(intChType2, intDataType2, intStatus2, strStatus2, intPinNo2, _
                                                                             udt2.udtCHOutPut(i).bytStatus, udt2.udtCHOutPut(i).shtMask)
 
-                                    msgSYStemp(ix) = mMsgCreateTbl_OUT(bytFuno_B.ToString, _
-                                                                       bytPortno_B.ToString, _
-                                                                       bytPin_B.ToString, _
+
+                                    Dim strOld2 As String = fnMaskStringFull(intChType1_2, intDataType1_2, intStatus1_2, strStatus1_2, intPinNo1_2,
+                                                                            udt1.udtCHOutPut(sNo).bytStatus, udt1.udtCHOutPut(sNo).shtMask)
+                                    Dim strNew2 As String = fnMaskStringFull(intChType2_2, intDataType2_2, intStatus2_2, strStatus2_2, intPinNo2_2,
+                                                                            udt2.udtCHOutPut(i).bytStatus, udt2.udtCHOutPut(i).shtMask)
+
+                                    msgSYStemp(ix) = mMsgCreateTbl_OUT(bytFuno_B.ToString,
+                                                                       bytPortno_B.ToString,
+                                                                       bytPin_B.ToString,
                                                                        "MASK", strOld, strNew, "(" & CHIDChange & ")" & "FU.", "TBL", i + 1, CHViewFlg)
+
+                                    msgSYStemp(ix) = mMsgCreateTbl_OUT(bytFuno_B.ToString,
+                                                                       bytPortno_B.ToString,
+                                                                       bytPin_B.ToString,
+                                                                       "MASK", strOld2, strNew2, "(" & CHIDChange & ")" & "FU.", "TBL", i + 1, CHViewFlg)
+
                                     ix = ix + 1
                                     CHViewFlg = False
                                 End If
@@ -12667,6 +12787,8 @@ Public Class frmChkFileCompare
                     aryCHLIST.Add(.udtCHOutPut(i).shtChid.ToString)
                 Next i
             End With
+
+
             '配列の番号とaryCHLISTの番号は一致しているため、CHnoを指定すれば
             '配列の番号がわかり、そこから各種値が取得できる。
             '例）Dim intA As Integer = aryCHLIST.IndexOf("207")
@@ -12688,6 +12810,14 @@ Public Class frmChkFileCompare
                     aryCHLISTold.Add(.udtCHOutPut(i).shtChid.ToString)
                 Next i
             End With
+
+            With mudtSource2.SetChOutput
+                'チャンネル番号を配列化
+                For i As Integer = 0 To UBound(.udtCHOutPut)
+                    aryCHLISTold.Add(.udtCHOutPut(i).shtChid.ToString)
+                Next i
+            End With
+
             '配列の番号とaryCHLISTの番号は一致しているため、CHnoを指定すれば
             '配列の番号がわかり、そこから各種値が取得できる。
             '例）Dim intA As Integer = aryCHLIST.IndexOf("207")
@@ -12701,6 +12831,12 @@ Public Class frmChkFileCompare
                 Next i
             End With
 
+            With mudtSource2.SetChInfo
+                'チャンネル番号を配列化
+                For i As Integer = 0 To UBound(.udtChannel)
+                    aryCHLISTallold.Add(.udtChannel(i).udtChCommon.shtChno.ToString)
+                Next i
+            End With
 
 
             msgSYStemp(0) = "■■■■　CH AND OR SETTING　■■■■"
@@ -12804,16 +12940,39 @@ Public Class frmChkFileCompare
                             Dim strStatus2 As String = mudtTarget.SetChInfo.udtChannel(intS2).udtChCommon.strStatus
                             Dim intPinNo2 As Integer = mudtTarget.SetChInfo.udtChannel(intS2).udtChCommon.shtPinNo
 
+                            Dim intChType1_2 As Integer = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.shtChType
+                            Dim intDataType1_2 As Integer = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.shtData
+                            Dim intStatus1_2 As Integer = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.shtStatus
+                            Dim strStatus1_2 As String = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.strStatus
+                            Dim intPinNo1_2 As Integer = mudtSource2.SetChInfo.udtChannel(intS1).udtChCommon.shtPinNo
+                            '
+                            Dim intChType2_2 As Integer = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.shtChType
+                            Dim intDataType2_2 As Integer = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.shtData
+                            Dim intStatus2_2 As Integer = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.shtStatus
+                            Dim strStatus2_2 As String = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.strStatus
+                            Dim intPinNo2_2 As Integer = mudtTarget2.SetChInfo.udtChannel(intS2).udtChCommon.shtPinNo
+
+
 
                             Dim strOld As String = fnMaskStringFull(intChType1, intDataType1, intStatus1, strStatus1, intPinNo1, _
                                             udt1.udtCHOut(i).udtCHAndOr(j).bytStatus, udt1.udtCHOut(i).udtCHAndOr(j).shtMask)
                             Dim strnew As String = fnMaskStringFull(intChType2, intDataType2, intStatus2, strStatus2, intPinNo2, _
                                             udt2.udtCHOut(i).udtCHAndOr(j).bytStatus, udt2.udtCHOut(i).udtCHAndOr(j).shtMask)
 
-                            msgSYStemp(ix) = mMsgCreateTbl_OUT(bytFuno_B.ToString, _
-                                                                       bytPortno_B.ToString, _
-                                                                       bytPin_B.ToString, _
+                            Dim strOld2 As String = fnMaskStringFull(intChType1_2, intDataType1_2, intStatus1_2, strStatus1_2, intPinNo1_2,
+                                            udt1.udtCHOut(i).udtCHAndOr(j).bytStatus, udt1.udtCHOut(i).udtCHAndOr(j).shtMask)
+                            Dim strnew2 As String = fnMaskStringFull(intChType2_2, intDataType2_2, intStatus2_2, strStatus2_2, intPinNo2_2,
+                                            udt2.udtCHOut(i).udtCHAndOr(j).bytStatus, udt2.udtCHOut(i).udtCHAndOr(j).shtMask)
+
+                            msgSYStemp(ix) = mMsgCreateTbl_OUT(bytFuno_B.ToString,
+                                                                       bytPortno_B.ToString,
+                                                                       bytPin_B.ToString,
                                                                        "MASK", strOld, strnew, "" & "FU.", "TBL", i + 1, CHViewFlg)
+                            msgSYStemp(ix) = mMsgCreateTbl_OUT(bytFuno_B.ToString,
+                                                                       bytPortno_B.ToString,
+                                                                       bytPin_B.ToString,
+                                                                       "MASK", strOld2, strnew2, "" & "FU.", "TBL", i + 1, CHViewFlg)
+
                             ix = ix + 1
                             CHViewFlg = False
 
@@ -14031,6 +14190,22 @@ Public Class frmChkFileCompare
 
             Next
 
+            For j As Integer = LBound(mudtSource2.SetChInfo.udtChannel) To UBound(mudtSource2.SetChInfo.udtChannel)
+
+                With mudtSource2.SetChInfo.udtChannel(j).udtChCommon
+
+                    If .shtChno = intChId Then
+
+                        intChNo = .shtChno
+
+                        Exit For
+
+                    End If
+
+                End With
+
+            Next
+
             Return intChNo
 
         Catch ex As Exception
@@ -14051,6 +14226,24 @@ Public Class frmChkFileCompare
             For i As Integer = LBound(mudtTarget.SetChInfo.udtChannel) To UBound(mudtTarget.SetChInfo.udtChannel)
 
                 With mudtTarget.SetChInfo.udtChannel(i).udtChCommon
+
+                    If .shtChno = intChId Then
+
+                        intChNo = .shtChno
+
+                        Exit For
+
+                    End If
+
+                End With
+
+            Next
+
+            Return intChNo
+
+            For j As Integer = LBound(mudtTarget2.SetChInfo.udtChannel) To UBound(mudtTarget2.SetChInfo.udtChannel)
+
+                With mudtTarget2.SetChInfo.udtChannel(j).udtChCommon
 
                     If .shtChno = intChId Then
 
@@ -14607,6 +14800,18 @@ Public Class frmChkFileCompare
                     End If
                 Next
             End With
+
+            With mudtSource2.SetChSioCh(intPort - 1)
+                For i As Integer = 0 To UBound(.udtSioChRec)
+
+                    If .udtSioChRec(i).shtChNo = ch_no Then
+                        strMsg = "    (*) SIO" & intPort & "　送信設定あり"
+                        msgtemp(intLogGyo) = strMsg
+                        intLogGyo = intLogGyo + 1
+                        Exit For
+                    End If
+                Next
+            End With
         Next
     End Sub
 
@@ -14626,6 +14831,17 @@ Public Class frmChkFileCompare
             For j As Integer = 0 To UBound(mudtSource.SetChAndOr.udtCHOut(i).udtCHAndOr)
                 If ch_no = mudtSource.SetChAndOr.udtCHOut(i).udtCHAndOr(j).shtChid Then
                     strMsg = "    (*) OR AND TBL" & (i + 1) & " - " & (j + 1) & "　設定あり"
+                    msgtemp(intLogGyo) = strMsg
+                    intLogGyo = intLogGyo + 1
+                End If
+            Next
+        Next
+
+        For k As Integer = 0 To UBound(mudtSource2.SetChAndOr.udtCHOut)
+
+            For l As Integer = 0 To UBound(mudtSource2.SetChAndOr.udtCHOut(k).udtCHAndOr)
+                If ch_no = mudtSource2.SetChAndOr.udtCHOut(k).udtCHAndOr(l).shtChid Then
+                    strMsg = "    (*) OR AND TBL" & (k + 1) & " - " & (l + 1) & "　設定あり"
                     msgtemp(intLogGyo) = strMsg
                     intLogGyo = intLogGyo + 1
                 End If
@@ -14710,6 +14926,32 @@ Public Class frmChkFileCompare
             End If
         Next
 
+        For j As Integer = 0 To UBound(mudtSource2.SetChOutput.udtCHOutPut)
+            If ch_no = mudtSource2.SetChOutput.udtCHOutPut(j).shtChid Then
+                Dim strFUadr As String = ""
+                If mudtSource2.SetChOutput.udtCHOutPut(j).bytFuno = 255 Then
+                    strFUno = ""
+                Else
+                    strFUno = strFUadr & mudtSource2.SetChOutput.udtCHOutPut(j).bytFuno
+                End If
+                If mudtSource2.SetChOutput.udtCHOutPut(j).bytPortno = 255 Then
+                    strFUport = ""
+                Else
+                    strFUport = strFUadr & mudtSource2.SetChOutput.udtCHOutPut(j).bytPortno
+                End If
+                If mudtSource2.SetChOutput.udtCHOutPut(j).bytPin = 255 Then
+                    strFUpin = ""
+                Else
+                    strFUpin = strFUadr & mudtSource2.SetChOutput.udtCHOutPut(j).bytPin
+                End If
+
+                strFUadr = strFUno & "-" & strFUport & "-" & strFUpin
+                strMsg = "    (*) DO TBL" & (j + 1) & "(" & strFUadr & ")" & "　設定あり"
+                msgtemp(intLogGyo) = strMsg
+                intLogGyo = intLogGyo + 1
+
+            End If
+        Next
     End Sub
 
 
@@ -14739,6 +14981,24 @@ Public Class frmChkFileCompare
                 End If
             Next
         End With
+
+        With mudtSource2.SetChRunHour
+
+            For j As Integer = 0 To UBound(.udtDetail)
+                If ch_no = .udtDetail(j).shtChid Then
+                    strMsg = "    (*) RUN HOUR TBL" & (j + 1) & "　設定あり"
+                    msgtemp(intLogGyo) = strMsg
+                    intLogGyo = intLogGyo + 1
+
+                ElseIf ch_no = .udtDetail(j).shtTrgChid Then
+                    strMsg = "    (*) RUN HOUR TBL" & (j + 1) & "　ﾄﾘｶﾞ設定あり"
+                    msgtemp(intLogGyo) = strMsg
+                    intLogGyo = intLogGyo + 1
+
+                End If
+            Next
+        End With
+
     End Sub
 
     '--------------------------------------------------------------------
@@ -14784,6 +15044,41 @@ Public Class frmChkFileCompare
                 Next
             Next
         End With
+
+        With mudtSource2.SetChExhGus
+            For i As Integer = 0 To UBound(.udtExhGusRec)
+                If ch_no = .udtExhGusRec(i).shtAveChid Then
+                    strMsg = "    (*) ExhGas TBL" & (i + 1) & "　Ave設定あり"
+                    msgtemp(intLogGyo) = strMsg
+                    intLogGyo = intLogGyo + 1
+
+                ElseIf ch_no = .udtExhGusRec(i).shtRepChid Then
+                    strMsg = "    (*) ExhGas TBL" & (i + 1) & "　Rep設定あり"
+                    msgtemp(intLogGyo) = strMsg
+                    intLogGyo = intLogGyo + 1
+
+                End If
+
+                For j As Integer = 0 To UBound(.udtExhGusRec(i).udtExhGusCyl)       '' ｼﾘﾝﾀﾞ設定
+                    If ch_no = .udtExhGusRec(i).udtExhGusCyl(j).shtChid Then
+                        strMsg = "    (*) ExhGas TBL" & (i + 1) & "　Cyl " & (j + 1) & " 設定あり"
+                        msgtemp(intLogGyo) = strMsg
+                        intLogGyo = intLogGyo + 1
+
+                    End If
+                Next
+
+                For k As Integer = 0 To UBound(.udtExhGusRec(i).udtExhGusDev)       '' 偏差CH設定
+                    If ch_no = .udtExhGusRec(i).udtExhGusDev(k).shtChid Then
+                        strMsg = "    (*) ExhGas TBL" & (i + 1) & "　Dev " & (k + 1) & " 設定あり"
+                        msgtemp(intLogGyo) = strMsg
+                        intLogGyo = intLogGyo + 1
+
+                    End If
+                Next
+            Next
+        End With
+
     End Sub
 
     '--------------------------------------------------------------------
@@ -14968,6 +15263,49 @@ Public Class frmChkFileCompare
 
         End With
 
+        With mudtSource2.SetSeqSet
+            For i As Integer = 0 To UBound(.udtDetail)
+                If ch_no = .udtDetail(i).shtOutChid Then
+                    strMsg = "    (*) Seq TBL" & (i + 1) & "　OUT 設定あり"
+                    msgtemp(intLogGyo) = strMsg
+                    intLogGyo = intLogGyo + 1
+
+                    'Ver2.0.6.5 CHno表示対応
+                    'CHno表示対応
+                    strInOutCHNO = .udtDetail(i).shtOutChid.ToString("0000")
+                    strMsg = "        " & strInOutCHNO
+                    msgtemp(intLogGyo) = strMsg
+                    intLogGyo = intLogGyo + 1
+                Else
+                    For j As Integer = 0 To UBound(.udtDetail(i).udtInput)
+                        If ch_no = .udtDetail(i).udtInput(j).shtChid Then
+                            strMsg = "    (*) Seq TBL" & (i + 1) & "　IN 設定あり"
+                            msgtemp(intLogGyo) = strMsg
+                            intLogGyo = intLogGyo + 1
+
+                            'Ver2.0.6.5 CHno表示対応
+                            'CHno表示対応
+                            strInOutCHNO = ""
+                            For z As Integer = 0 To UBound(.udtDetail(i).udtInput) Step 1
+                                If .udtDetail(i).udtInput(z).shtChid <= 0 Then
+                                    strInOutCHNO = strInOutCHNO & "----" & ","
+                                Else
+                                    strInOutCHNO = strInOutCHNO & .udtDetail(i).udtInput(z).shtChid.ToString("0000") & ","
+                                End If
+                            Next z
+                            strInOutCHNO = strInOutCHNO.TrimEnd(CType(",", Char))
+                            strMsg = "        " & strInOutCHNO
+                            msgtemp(intLogGyo) = strMsg
+                            intLogGyo = intLogGyo + 1
+                        End If
+                    Next
+                End If
+
+                'Ver2.0.7.W ロジック内の演算式テーブル等もCHNo検索
+                Call ChkSeqSetProc(ch_no, i, intLogGyo)
+            Next i
+
+        End With
     End Sub
 
     '--------------------------------------------------------------------
@@ -14981,6 +15319,18 @@ Public Class frmChkFileCompare
         Dim strMsg As String
 
         With mudtSource.SetChDataSave
+            For i As Integer = 0 To UBound(.udtDetail)
+                If ch_no = .udtDetail(i).shtChid Then
+                    strMsg = "    (*) DataSave TBL" & (i + 1) & "　設定あり"
+                    msgtemp(intLogGyo) = strMsg
+                    intLogGyo = intLogGyo + 1
+
+                End If
+            Next
+
+        End With
+
+        With mudtSource2.SetChDataSave
             For i As Integer = 0 To UBound(.udtDetail)
                 If ch_no = .udtDetail(i).shtChid Then
                     strMsg = "    (*) DataSave TBL" & (i + 1) & "　設定あり"
@@ -15018,6 +15368,19 @@ Public Class frmChkFileCompare
 
         End With
 
+        With mudtSource2.SetChCtrlUseM
+            For i As Integer = 0 To UBound(.udtCtrlUseNotuseRec)
+                For j As Integer = 0 To UBound(.udtCtrlUseNotuseRec(i).udtUseNotuseDetails)
+                    If ch_no = .udtCtrlUseNotuseRec(i).udtUseNotuseDetails(j).shtChno Then
+                        strMsg = "    (*) Control USE/NOT USE TBL" & (i + 1) & "　設定あり"
+                        msgtemp(intLogGyo) = strMsg
+                        intLogGyo = intLogGyo + 1
+
+                    End If
+                Next
+            Next
+
+        End With
     End Sub
 
     '--------------------------------------------------------------------
@@ -15152,6 +15515,24 @@ Public Class frmChkFileCompare
 
         For j As Integer = 0 To UBound(mudtSource.SetSeqOpeExp.udtTables(pintI - 1).udtAryInf)
             With mudtSource.SetSeqOpeExp.udtTables(pintI - 1).udtAryInf(j)
+                Select Case .shtType
+                    'タイプが、CHNoを含む物だけ
+                    Case gCstCodeSeqFixTypeChData _
+                        , gCstCodeSeqFixTypeLowSet, gCstCodeSeqFixTypeHighSet _
+                        , gCstCodeSeqFixTypeLLSet, gCstCodeSeqFixTypeHHSet
+
+                        'ChNo格納
+                        intValue = gConnect2Byte(.bytInfo(2), .bytInfo(3))
+                        '比較
+                        If ch_no = intValue Then
+                            Return j
+                        End If
+                End Select
+            End With
+        Next
+
+        For j As Integer = 0 To UBound(mudtSource2.SetSeqOpeExp.udtTables(pintI - 1).udtAryInf)
+            With mudtSource2.SetSeqOpeExp.udtTables(pintI - 1).udtAryInf(j)
                 Select Case .shtType
                     'タイプが、CHNoを含む物だけ
                     Case gCstCodeSeqFixTypeChData _

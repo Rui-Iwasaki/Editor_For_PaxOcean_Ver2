@@ -1,0 +1,7 @@
+2021/01/05 13:36:44 (FileName=modCommon)(FuncName=gMakeChannelGroupData)(ErrorMsg=オブジェクト参照がオブジェクト インスタンスに設定されていません。)
+2021/01/05 13:36:46 (FileName=modCommon)(FuncName=gMakeChannelGroupData)(ErrorMsg=オブジェクト参照がオブジェクト インスタンスに設定されていません。)
+2021/01/05 13:36:46 (FileName=frmOpsLogFormatList)(FuncName=mMakeChannelGroupName)(ErrorMsg=オブジェクト参照がオブジェクト インスタンスに設定されていません。)
+2021/01/05 13:36:47 (FileName=frmOpsLogFormatList)(FuncName=mCopyStructure)(ErrorMsg=値を Null にすることはできません。
+パラメータ名: 引数 'Array' は Nothing です。)
+2021/01/05 17:27:06 (FileName=frmChkFileCompare)(FuncName=cmdComapre_Click)(ErrorMsg='46' の値は 'Value' に対して有効ではありません。'Value' は 'minimum' と 'maximum' の間でなければなりません。
+パラメータ名: Value)

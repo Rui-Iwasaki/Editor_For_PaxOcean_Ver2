@@ -111,7 +111,7 @@
         Try
 
             ''処理を抜ける条件
-            If grdGroupRepose.CurrentCell.RowIndex < 0 Or _
+            If grdGroupRepose.CurrentCell.RowIndex < 0 Or
                grdGroupRepose.CurrentCell.RowIndex > grdGroupRepose.RowCount - 1 Then Return ''行数が0より小さい、もしくは最大行数より大きい場合
 
             ''カーソルのある行Indexの取得
@@ -208,7 +208,7 @@
             If Not mChkStructureEquals(gudt.SetChGroupRepose.udtRepose, mudtSetReposeNew) Then
 
                 ''変更されている場合はメッセージ表示
-                Select Case MessageBox.Show("Setting has been changed." & vbNewLine & _
+                Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
 
                     Case Windows.Forms.DialogResult.Yes
@@ -699,7 +699,7 @@
     ' 　　　　  : ↑ = でやると配列部分が参照渡しになり（？）値更新時に両方更新されてしまう
     ' 　　　　  : 構造体メンバの中に構造体配列がいない場合は、この関数を使わずに = で処理しても良い
     '--------------------------------------------------------------------
-    Private Sub mCopyStructure(ByVal udtSource() As gTypSetChGroupReposeRec, _
+    Private Sub mCopyStructure(ByVal udtSource() As gTypSetChGroupReposeRec,
                                ByRef udtTarget() As gTypSetChGroupReposeRec)
 
         Try
@@ -749,7 +749,7 @@
     ' 　　　　  : 構造体メンバの中に構造体配列がいない場合は、 Equals メソッドで処理しても良いが一応これを使うこと
     ' 　　　　  : String文字列の比較には gCompareString を使用すること（単純な = だとNULL文字の有り無しで結果が変わってしまう）
     '--------------------------------------------------------------------
-    Private Function mChkStructureEquals(ByVal udt1() As gTypSetChGroupReposeRec, _
+    Private Function mChkStructureEquals(ByVal udt1() As gTypSetChGroupReposeRec,
                                          ByVal udt2() As gTypSetChGroupReposeRec) As Boolean
 
         Try
@@ -861,7 +861,7 @@
             .Columns(1).HeaderText = "Type" : .Columns(1).Width = 120
 
             '行
-            If chkAddgrep.Checked = True Then
+            If ChkAddgrep.Checked = True Then
                 .RowCount = 72
             Else
                 .RowCount = 48
@@ -883,7 +883,7 @@
         End With
 
         ''iniファイルの中身をチェックボックスの状態に変更する
-        If chkAddgrep.Checked = True Then
+        If ChkAddgrep.Checked = True Then
             g_bytGREPNUM = 1
         Else
             g_bytGREPNUM = 0

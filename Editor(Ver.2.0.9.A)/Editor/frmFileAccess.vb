@@ -178,6 +178,9 @@
                                 strCurFileName = .strFileName & "_" & gCstFileChannel
                                 strOutData = System.IO.Path.Combine(strDataPath, strCurFileName)
                                 sw.WriteLine(strOutData)
+                                strCurFileName = .strFileName & "_" & gCstFileChannel2
+                                strOutData = System.IO.Path.Combine(strDataPath, strCurFileName)
+                                sw.WriteLine(strOutData)
                                 'ファイル名
                                 sw.WriteLine(.strFileName)
                                 'ｸﾞﾙｰﾌﾟﾌｧｲﾙ名
@@ -2121,13 +2124,20 @@
             If FCU2LeadFlg = True Then
                 strCurPathName = gCstPathChannel2
                 strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChannel2, mblnReadCompile)
-                FCU2LeadFlg = False
             End If
 
 
             'Ver2.0.3.6 Excel取込の場合、読み込むファイルを変更
             If gblExcelInDo = True Then
-                strCurFileName = mGetOutputFileName(udtFileInfo, "ex_" & gCstFileChannel, mblnReadCompile)
+                If FCU2LeadFlg = True Then
+                    strCurFileName = mGetOutputFileName(udtFileInfo, "ex_" & gCstFileChannel2, mblnReadCompile)
+                Else
+                    strCurFileName = mGetOutputFileName(udtFileInfo, "ex_" & gCstFileChannel, mblnReadCompile)
+                End If
+            End If
+
+            If FCU2LeadFlg = True Then
+                FCU2LeadFlg = False
             End If
 
             ''メッセージ更新

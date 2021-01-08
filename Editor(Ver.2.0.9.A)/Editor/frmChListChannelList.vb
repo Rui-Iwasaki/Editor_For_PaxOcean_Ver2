@@ -1102,10 +1102,10 @@
             'If modFcuSelect.nFcuNo = 1 Then
             ''FCU1が選択されている場合
 
-            Call mGetChannelMax(gudt.SetChInfo.udtChannel)
+            Call mGetChannelMax(gudt.SetChInfo.udtChannel, 0)
             ' Else
 
-            Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
+            Call mGetChannelMax(gudt2.SetChInfo.udtChannel, 1)
             '  End If
 
             ''選択済みグループの情報をGET
@@ -3852,9 +3852,9 @@
             If modFcuSelect.nFcuNo = 1 Then
                 ''FCU1が選択されている場合
                 ''チャネルの最大数を確認する
-                Call mGetChannelMax(gudt.SetChInfo.udtChannel)
+                Call mGetChannelMax(gudt.SetChInfo.udtChannel, 0)
             Else
-                Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
+                Call mGetChannelMax(gudt2.SetChInfo.udtChannel, 1)
             End If
 
             mFlagFirst = True
@@ -8519,12 +8519,11 @@
                             If wkChDataGroup(j).udtChCommon.shtChType <> gCstCodeChTypeNothing Then
 
                             ''======================================================================================
-                            'If modFcuSelect.nFcuNo = 1 Then
-                            ''FCU1が選択されている場合
-                            gudt.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
-                            'Else
-                            gudt2.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
-                            'End If
+                            If wkChDataGroup(j).udtChCommon.shtSysno >= 10 And wkChDataGroup(j).udtChCommon.shtSysno < 20 Then
+                                gudt.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
+                            ElseIf wkChDataGroup(j).udtChCommon.shtSysno >= 20 Then
+                                gudt2.SetChInfo.udtChannel(icnt) = wkChDataGroup(j)              ''チャンネル情報セット
+                            End If
 
                             ''======================================================================================
 
@@ -8539,13 +8538,13 @@
                     ''現状のメモリ更新 -------------------------------------------
                     mFlagFirst = True
 
-                    ''チャンネルグループ情報取得
-                    Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
-                    Call gMakeChannelGroupData(gudt2.SetChInfo, mudtChannelGroup)
+                ''チャンネルグループ情報取得
+                Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
+                Call gMakeChannelGroupData(gudt2.SetChInfo, mudtChannelGroup)
                     read_flg = False ''保存後再読み込みをした場合の為にフラグリセット
-                    ''チャネルの最大数を確認する
-                    Call mGetChannelMax(gudt.SetChInfo.udtChannel)
-                Call mGetChannelMax(gudt2.SetChInfo.udtChannel)
+                ''チャネルの最大数を確認する
+                Call mGetChannelMax(gudt.SetChInfo.udtChannel, 0)
+                Call mGetChannelMax(gudt2.SetChInfo.udtChannel, 1)
                 ''選択済みグループの情報をGET
                 mChDataGroup = mudtChannelGroup.udtGroup(mSelectGroupIndex).udtChannelData
 
@@ -14071,7 +14070,7 @@
     ' 引き数    : ARG1 - (I ) チャンネル設定構造体
     ' 機能説明  : 3000件を超えないために
     '--------------------------------------------------------------------
-    Private Sub mGetChannelMax(ByVal udtSet() As gTypSetChRec)
+    Private Sub mGetChannelMax(ByVal udtSet() As gTypSetChRec, intFcuNo As Integer)
 
         Try
 
@@ -14096,7 +14095,11 @@
 
             Next
 
-            gMaxChannel = intCnt
+            If intFcuNo = 0 Then
+                gMaxChannel = intCnt
+            Else
+                gMaxChannel2 = intCnt
+            End If
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))

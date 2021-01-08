@@ -290,6 +290,7 @@ Module modCommon
 
     ''登録済チャネル数(現グループ以外)
     Public gMaxChannel As Integer
+    Public gMaxChannel2 As Integer
 
 
     Public cmbDataNow As String
@@ -3216,7 +3217,7 @@ Module modCommon
     ' 　　　    : ARG2 - ( O) チャンネルグループ構造体
     ' 機能説明  : チャンネル設定構造体からチャンネルグループ構造体を作成する
     '--------------------------------------------------------------------
-    Public Sub gMakeChannelData(ByVal udtSetChannel As gTypSetChInfo, _
+    Public Sub gMakeChannelData(ByVal udtSetChannel As gTypSetChInfo,
                                 ByRef udtChannelGroup As gTypChannelGroup)
 
         Try
@@ -3271,6 +3272,73 @@ Module modCommon
         End Try
 
     End Sub
+
+    '--------------------------------------------------------------------
+    ' 機能      : FCU1,2混在 チャンネルグループデータ作成
+    ' 返り値    : なし
+    ' 引き数    : ARG1 - (I ) チャンネル設定構造体
+    ' 　　　    : ARG2 - ( O) チャンネルグループ構造体
+    '           : 
+    ' 機能説明  : チャンネル設定構造体からチャンネルグループ構造体を作成する
+    '--------------------------------------------------------------------
+    Public Sub gMakeChannelDataForFcu2dai(ByVal udtSetChannel As gTypSetChInfo,
+                                ByRef udtChannelGroup As gTypChannelGroup,
+                                ByVal fcuno As Integer)
+
+        Try
+
+            Dim intCurGroupNo As Integer
+            Dim intCHDispPos As Integer
+
+            If fcuno = 0 Then
+                ''配列初期化
+                Erase udtChannelGroup.udtGroup
+                ''配列再定義
+                ReDim udtChannelGroup.udtGroup(gCstChannelGroupMax - 1)
+                For i As Integer = 0 To UBound(udtChannelGroup.udtGroup)
+
+                    ReDim udtChannelGroup.udtGroup(i).udtChannelData(gCstOneGroupChannelMax - 1)
+
+
+                    For j As Integer = 0 To gCstOneGroupChannelMax - 1
+                        ReDim udtChannelGroup.udtGroup(i).udtChannelData(j).udtChTypeData(gCstByteCntChannelType - 1)
+                    Next
+
+                Next
+            End If
+
+            For i As Integer = 0 To UBound(udtSetChannel.udtChannel)
+
+                With udtSetChannel.udtChannel(i)
+
+                    ''対象グループ番号取得
+                    intCurGroupNo = .udtChCommon.shtGroupNo
+
+
+                    ''グループ番号が設定されている場合
+                    If intCurGroupNo > 0 Then
+                        ''データ表示位置を取得
+                        intCHDispPos = udtSetChannel.udtChannel(i).udtChCommon.shtDispPos
+
+                        ''If intCHDispPos < gCstOneGroupChannelMax Then
+                        If intCHDispPos <= gCstOneGroupChannelMax Then      '' Ver1.8.9 2015.12.11 表示位置が100は有り得るので含める
+
+                            ''対象位置にチャンネルデータを設定
+                            udtChannelGroup.udtGroup(intCurGroupNo - 1).udtChannelData(intCHDispPos - 1) = udtSetChannel.udtChannel(i)
+
+                        End If
+                    End If
+
+                End With
+
+            Next
+
+        Catch ex As Exception
+            Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
+        End Try
+
+    End Sub
+
 
 #End Region
 

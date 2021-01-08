@@ -522,19 +522,35 @@
             If MessageBox.Show("Do you Clear the sequence details?", _
                                Me.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                 Call ClearSeqSetting()
-                '保存
-                Call mCopyStructure(mudtSetSequenceIDNew, gudt.SetSeqID)
-                Call mCopyStructure(mudtSetSequenceSetNew, gudt.SetSeqSet)
-                ''更新フラグ設定
-                gblnUpdateAll = True
-                gudt.SetEditorUpdateInfo.udtSave.bytSeqSequenceID = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytSeqSequenceSet = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
-                gudt.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytSeqSequenceID = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytSeqSequenceSet = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+
+                If modFcuSelect.nFcuNo = 1 Then
+                    '保存
+                    Call mCopyStructure(mudtSetSequenceIDNew, gudt.SetSeqID)
+                    Call mCopyStructure(mudtSetSequenceSetNew, gudt.SetSeqSet)
+                    ''更新フラグ設定
+                    gblnUpdateAll = True
+                    gudt.SetEditorUpdateInfo.udtSave.bytSeqSequenceID = 1
+                    gudt.SetEditorUpdateInfo.udtSave.bytSeqSequenceSet = 1
+                    gudt.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
+                    gudt.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytSeqSequenceID = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytSeqSequenceSet = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+                Else
+                    Call mCopyStructure(mudtSetSequenceIDNew, gudt2.SetSeqID)
+                    Call mCopyStructure(mudtSetSequenceSetNew, gudt2.SetSeqSet)
+                    ''更新フラグ設定
+                    gblnUpdateAll = True
+                    gudt2.SetEditorUpdateInfo.udtSave.bytSeqSequenceID = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytSeqSequenceSet = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytSeqLinear = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytSeqOperationExpression = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytSeqSequenceID = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytSeqSequenceSet = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytSeqLinear = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytSeqOperationExpression = 1
+                End If
                 '再表示
                 Call mInitialDataGrid()
                 Call mSetDisplay(mudtSetSequenceIDNew)
@@ -606,41 +622,77 @@
             mudtSetSequenceIDNew.shtID(i) = 0
         Next
 
-        'Ver2.0.2.8 リニアライズテーブル削除
-        'リニアライズテーブル削除
-        For i = LBound(gudt.SetSeqLinear.udtPoints) To UBound(gudt.SetSeqLinear.udtPoints)
-            With gudt.SetSeqLinear.udtPoints(i)
-                .shtPoint = 0
-            End With
-        Next i
-        For i = LBound(gudt.SetSeqLinear.udtTables) To UBound(gudt.SetSeqLinear.udtTables)
-            With gudt.SetSeqLinear.udtTables(i)
-                For j = LBound(.udtRow) To UBound(.udtRow)
-                    .udtRow(j).sngPtX = 0
-                    .udtRow(j).sngPtY = 0
-                Next j
-            End With
-        Next i
+        If modFcuSelect.nFcuNo = 1 Then
+            'Ver2.0.2.8 リニアライズテーブル削除
+            'リニアライズテーブル削除
+            For i = LBound(gudt.SetSeqLinear.udtPoints) To UBound(gudt.SetSeqLinear.udtPoints)
+                With gudt.SetSeqLinear.udtPoints(i)
+                    .shtPoint = 0
+                End With
+            Next i
+            For i = LBound(gudt.SetSeqLinear.udtTables) To UBound(gudt.SetSeqLinear.udtTables)
+                With gudt.SetSeqLinear.udtTables(i)
+                    For j = LBound(.udtRow) To UBound(.udtRow)
+                        .udtRow(j).sngPtX = 0
+                        .udtRow(j).sngPtY = 0
+                    Next j
+                End With
+            Next i
 
-        'Ver2.0.2.8 演算式テーブル削除
-        '演算式ﾃｰﾌﾞﾙ削除
-        For i = LBound(gudt.SetSeqOpeExp.udtTables) To UBound(gudt.SetSeqOpeExp.udtTables)
-            With gudt.SetSeqOpeExp.udtTables(i)
-                .strExp = ""
-                For j = LBound(.strVariavleName) To UBound(.strVariavleName)
-                    .strVariavleName(j) = ""
-                Next j
-                For j = LBound(.udtAryInf) To UBound(.udtAryInf)
-                    .udtAryInf(j).shtType = 0
-                    .udtAryInf(j).bytInfo(0) = 0
-                    .udtAryInf(j).bytInfo(1) = 0
-                    .udtAryInf(j).bytInfo(2) = 0
-                    .udtAryInf(j).bytInfo(3) = 0
-                    .udtAryInf(j).strFixNum = ""
-                Next j
-            End With
-        Next i
+            'Ver2.0.2.8 演算式テーブル削除
+            '演算式ﾃｰﾌﾞﾙ削除
+            For i = LBound(gudt.SetSeqOpeExp.udtTables) To UBound(gudt.SetSeqOpeExp.udtTables)
+                With gudt.SetSeqOpeExp.udtTables(i)
+                    .strExp = ""
+                    For j = LBound(.strVariavleName) To UBound(.strVariavleName)
+                        .strVariavleName(j) = ""
+                    Next j
+                    For j = LBound(.udtAryInf) To UBound(.udtAryInf)
+                        .udtAryInf(j).shtType = 0
+                        .udtAryInf(j).bytInfo(0) = 0
+                        .udtAryInf(j).bytInfo(1) = 0
+                        .udtAryInf(j).bytInfo(2) = 0
+                        .udtAryInf(j).bytInfo(3) = 0
+                        .udtAryInf(j).strFixNum = ""
+                    Next j
+                End With
+            Next i
+        Else
+            'Ver2.0.2.8 リニアライズテーブル削除
+            'リニアライズテーブル削除
+            For i = LBound(gudt2.SetSeqLinear.udtPoints) To UBound(gudt2.SetSeqLinear.udtPoints)
+                With gudt2.SetSeqLinear.udtPoints(i)
+                    .shtPoint = 0
+                End With
+            Next i
+            For i = LBound(gudt2.SetSeqLinear.udtTables) To UBound(gudt2.SetSeqLinear.udtTables)
+                With gudt2.SetSeqLinear.udtTables(i)
+                    For j = LBound(.udtRow) To UBound(.udtRow)
+                        .udtRow(j).sngPtX = 0
+                        .udtRow(j).sngPtY = 0
+                    Next j
+                End With
+            Next i
 
+            'Ver2.0.2.8 演算式テーブル削除
+            '演算式ﾃｰﾌﾞﾙ削除
+            For i = LBound(gudt2.SetSeqOpeExp.udtTables) To UBound(gudt2.SetSeqOpeExp.udtTables)
+                With gudt2.SetSeqOpeExp.udtTables(i)
+                    .strExp = ""
+                    For j = LBound(.strVariavleName) To UBound(.strVariavleName)
+                        .strVariavleName(j) = ""
+                    Next j
+                    For j = LBound(.udtAryInf) To UBound(.udtAryInf)
+                        .udtAryInf(j).shtType = 0
+                        .udtAryInf(j).bytInfo(0) = 0
+                        .udtAryInf(j).bytInfo(1) = 0
+                        .udtAryInf(j).bytInfo(2) = 0
+                        .udtAryInf(j).bytInfo(3) = 0
+                        .udtAryInf(j).strFixNum = ""
+                    Next j
+                End With
+            Next i
+        End If
 
         'Grid Clear
         For i = 0 To grdSEQ.RowCount - 1 Step 1

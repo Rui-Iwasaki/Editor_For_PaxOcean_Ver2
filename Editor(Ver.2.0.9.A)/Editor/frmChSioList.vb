@@ -202,14 +202,21 @@
             ''SIO設定が変更されている場合は設定を更新する
             If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(mudtSetChSioNew, gudt.SetChSio)) Or
                (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(mudtSetChSioNew, gudt2.SetChSio)) Then
-                Call mCopyStructure(mudtSetChSioNew, gudt.SetChSio)
-                blnFlgSio = True
-                gudt.SetEditorUpdateInfo.udtSave.bytChSio = 1
-                gudt.SetEditorUpdateInfo.udtCompile.bytChSio = 1
+                If modFcuSelect.nFcuNo = 1 Then
+                    Call mCopyStructure(mudtSetChSioNew, gudt.SetChSio)
+                    blnFlgSio = True
+                    gudt.SetEditorUpdateInfo.udtSave.bytChSio = 1
+                    gudt.SetEditorUpdateInfo.udtCompile.bytChSio = 1
+                Else
+                    Call mCopyStructure(mudtSetChSioNew, gudt2.SetChSio)
+                    blnFlgSio = True
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChSio = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChSio = 1
+                End If
             End If
 
-            ''SIO設定Ch設定が変更されている場合は設定を更新する
-            If modFcuSelect.nFcuNo = 1 Then
+                ''SIO設定Ch設定が変更されている場合は設定を更新する
+                If modFcuSelect.nFcuNo = 1 Then
                 For i As Integer = 0 To UBound(gudt.SetChSioCh)
                     If Not mChkStructureEquals(mudtSetChSioChNew(i), gudt.SetChSioCh(i)) Then
                         Call mCopyStructure(mudtSetChSioChNew(i), gudt.SetChSioCh(i))

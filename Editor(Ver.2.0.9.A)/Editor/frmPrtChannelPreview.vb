@@ -203,7 +203,8 @@
 
             ''チャンネルグループ情報取得
 
-            Call gMakeChannelData(gudt.SetChInfo, mudtChannelGroup)
+            Call gMakeChannelDataForFcu2dai(gudt.SetChInfo, mudtChannelGroup, 0)
+            Call gMakeChannelDataForFcu2dai(gudt2.SetChInfo, mudtChannelGroup, 1)
             'Call gMakeChannelGroupData(gudt.SetChInfo, mudtChannelGroup)
 
 

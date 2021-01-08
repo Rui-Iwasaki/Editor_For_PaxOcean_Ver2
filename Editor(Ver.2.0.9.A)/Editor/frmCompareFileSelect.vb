@@ -8,6 +8,8 @@
     Private mudtFileInfoTemp As gTypCompareFileInfo
     Private mudtSource As clsStructure
     Private mudtTarget As clsStructure
+    Private mudtSource2 As New clsStructure  ''FCU2比較元
+    Private mudtTarget2 As New clsStructure  ''FCU2比較先
 
     Private blnCFRead As Boolean
     Private blnSaveRead As Boolean
@@ -26,12 +28,14 @@
     ' 　　　    : ARG1 - ( O) ファイル情報構造体
     ' 機能説明  : 画面表示を行い戻り値を返す
     '--------------------------------------------------------------------
-    Friend Function gShow(ByVal udtFileMode As gEnmFileMode, _
-                          ByRef udtFileInfo As gTypCompareFileInfo, _
-                          ByRef udtSource As clsStructure, _
-                          ByRef udtTarget As clsStructure, _
-                          ByVal CFRead As Boolean, _
-                          ByVal SaveRead As Boolean, _
+    Friend Function gShow(ByVal udtFileMode As gEnmFileMode,
+                          ByRef udtFileInfo As gTypCompareFileInfo,
+                          ByRef udtSource As clsStructure,
+                          ByRef udtTarget As clsStructure,
+                          ByRef udtSource2 As clsStructure,
+                          ByRef udtTarget2 As clsStructure,
+                          ByVal CFRead As Boolean,
+                          ByVal SaveRead As Boolean,
                           ByVal CompileRead As Boolean) As Integer
 
         Try
@@ -45,6 +49,8 @@
             mudtFileInfoTemp = udtFileInfo
             mudtSource = udtSource
             mudtTarget = udtTarget
+            mudtSource2 = udtSource2
+            mudtTarget2 = udtTarget2
             blnCFRead = CFRead
             blnSaveRead = SaveRead
             blnCompileRead = CompileRead
@@ -61,6 +67,8 @@
                 If udtFileMode = gEnmFileMode.fmEdit Then
                     udtSource = mudtSource
                     udtTarget = mudtTarget
+                    udtSource2 = mudtSource2
+                    udtTarget2 = mudtTarget2
                 End If
 
             Else
@@ -202,7 +210,7 @@
                     Case gEnmFileMode.fmEdit
 
                         ''各設定ファイルから設定値を読み込み構造体に設定
-                        intRtn = frmCompareFileAccess.gShow(mudtFileInfoTemp, blnCFRead, blnSaveRead, blnCompileRead, False, mudtSource)
+                        intRtn = frmCompareFileAccess.gShow(mudtFileInfoTemp, blnCFRead, blnSaveRead, blnCompileRead, False, mudtSource, mudtSource2)
 
                         ''読み込み成功の場合は 1 、読み込み失敗の場合は -1 を戻り値に設定する
                         intRtn = IIf(intRtn = 0, 1, -1)
@@ -211,7 +219,7 @@
                             'CFカードの場合はorg内も読込み
                             If blnCFRead = True Then
                                 ''各設定ファイルから設定値を読み込み構造体に設定
-                                intRtn = frmCompareFileAccess.gShow(mudtFileInfoTemp, blnCFRead, blnSaveRead, blnCompileRead, True, mudtTarget)
+                                intRtn = frmCompareFileAccess.gShow(mudtFileInfoTemp, blnCFRead, blnSaveRead, blnCompileRead, True, mudtTarget, mudtTarget2)
 
                                 ''読み込み成功の場合は 1 、読み込み失敗の場合は -1 を戻り値に設定する
                                 intRtn = IIf(intRtn = 0, 1, -1)
@@ -219,6 +227,9 @@
                         End If
 
                 End Select
+
+
+
 
             End With
 

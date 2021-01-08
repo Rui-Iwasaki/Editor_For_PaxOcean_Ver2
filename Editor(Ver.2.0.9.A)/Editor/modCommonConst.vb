@@ -304,7 +304,8 @@
     Public Const gCstFolderNameSave As String = "Save"
 
     ''コンパイルフォルダ名
-    Public Const gCstFolderNameCompile As String = "Compile"
+    Public Const gCstFolderNameCompile As String = "Compile\FCU1"
+    Public Const gCstFolderNameCompile2 As String = "Compile\FCU2"
 
     ''エディタ用情報保存フォルダ名
     Public Const gCstFolderNameEditorInfo As String = "EditorInfo"
@@ -1293,6 +1294,8 @@
     Public Const gCstSizeSystem2 As Integer = 56
     Public Const gCstFnumSystem2 As Integer = 1100
 
+    Public Const gCstOutputFileSystem As String = "system.cfg"
+
     ''FU設定データ（チャンネル情報）FCU1用
     Public Const gCstPathFuChannel As String = "set\fu"
     Public Const gCstFileFuChannel As String = "channel_1.inf"
@@ -1306,6 +1309,8 @@
     Public Const gCstRecsFuChannel2 As Integer = 21
     Public Const gCstSizeFuChannel2 As Integer = 36
     Public Const gCstFnumFuChannel2 As Integer = 1300
+
+    Public Const gCstOutputFileFuChannel As String = "channel.inf"
 
     ''チャンネル情報データ（表示名設定データ）
     Public Const gCstPathChDisp As String = "set\fu"
@@ -1321,6 +1326,8 @@
     Public Const gCstSizeChDisp2 As Integer = 43072
     Public Const gCstFnumChDisp2 As Integer = 1301
 
+    Public Const gCstOutputFileChDisp As String = "channel_name.tbl"
+
     ''チャンネル情報 FCU1用
     Public Const gCstPathChannel As String = "meas"
     Public Const gCstFileChannel As String = "channel_1.cfg"
@@ -1334,6 +1341,8 @@
     'Public Const gCstRecsChannel As Integer = 0
     Public Const gCstSizeChannel2 As Integer = 512
     Public Const gCstFnumChannel2 As Integer = 2000
+
+    Public Const gCstOutputFileChannel As String = "channel.cfg"
 
     ''コンポジット情報 FCU1用
     Public Const gCstPathComposite As String = "meas"
@@ -1349,6 +1358,8 @@
     'Public Const gCstRecsComposite As Integer = 0
     Public Const gCstSizeComposite2 As Integer = 148
     Public Const gCstFnumComposite2 As Integer = 2103
+
+    Public Const gCstOutputFileComposite As String = "ch_composite.cfg"
 
 
     ''グループ設定
@@ -1381,6 +1392,8 @@
     Public Const gCstSizeOutPut2 As Integer = 16
     Public Const gCstFnumOutPut2 As Integer = 2101
 
+    Public Const gCstOutputFileOutPut As String = "ch_output.cfg"
+
     ''論理出力設定 FCU1用
     Public Const gCstPathOrAnd As String = "meas"
     Public Const gCstFileOrAnd As String = "ch_orand_1.cfg"
@@ -1394,6 +1407,8 @@
     Public Const gCstRecsOrAnd2 As Integer = 64
     Public Const gCstSizeOrAnd2 As Integer = 192
     Public Const gCstFnumOrAnd2 As Integer = 2102
+
+    Public Const gCstOutputFileOrAnd As String = "ch_orand.cfg"
 
 
     ''積算データ設定 FCU1用
@@ -1410,6 +1425,7 @@
     Public Const gCstSizeChAdd2 As Integer = 16
     Public Const gCstFnumChAdd2 As Integer = 2200
 
+    Public Const gCstOutputFileChAdd As String = "ch_add.cfg"
 
     ''排ガス処理演算設定 FCU1用
     Public Const gCstPathExhGus As String = "meas"
@@ -1425,6 +1441,7 @@
     Public Const gCstSizeExhGus2 As Integer = 204
     Public Const gCstFnumExhGus2 As Integer = 2302
 
+    Public Const gCstOutputFileExhGus As String = "cal_exhaust.tbl"
 
     ''コントロール使用可／不可設定
     Public Const gCstPathCtrlUseNouse As String = "set\ops"
@@ -1438,6 +1455,9 @@
     ''コントロール使用可／不可設定 FCU2用
     Public Const gCstFileCtrlUseNouseM2 As String = "ControlUse1_2.dat"
     Public Const gCstFileCtrlUseNouseC2 As String = "ControlUse2_2.dat"
+
+    Public Const gCstOutputFileCtrlUseNouseM As String = "ControlUse1.dat"
+    Public Const gCstOutputFileCtrlUseNouseC As String = "ControlUse2.dat"
 
     ''SIO設定 FCU1用
     Public Const gCstPathChSio As String = "set\ext"
@@ -1454,6 +1474,8 @@
     Public Const gCstSizeChSio1_2 As Integer = 32
     Public Const gCstSizeChSio2_2 As Integer = 588
     Public Const gCstFnumChSio2 As Integer = 1440
+
+    Public Const gCstOutputFileChSio As String = "ExtDev.inf"
 
     ''SIO設定CH設定 FCU1用
     Public Const gCstPathChSioCh As String = "set\ext"
@@ -1493,6 +1515,8 @@
     Public Const gCstSizeChDataForwardTableSet2 As Integer = 24
     Public Const gCstFnumChDataForwardTableSet2 As Integer = 1140
 
+    Public Const gCstOutputFileChDataForwardTableSet As String = "trans_table.cfg"
+
     ''データ保存テーブル設定 FCU1用
     Public Const gCstPathChDataSaveTable As String = "set\sys"
     Public Const gCstFileChDataSaveTable As String = "save_table_1.cfg"
@@ -1506,6 +1530,8 @@
     Public Const gCstRecsChDataSaveTable2 As Integer = 64
     Public Const gCstSizeChDataSaveTable2 As Integer = 12
     Public Const gCstFnumChDataSaveTable2 As Integer = 1150
+
+    Public Const gCstOutputFileChDataSaveTable As String = "save_table.cfg"
 
 
     ''延長警報設定 FCU1用
@@ -1524,6 +1550,8 @@
     Public Const gCstSizeExtAlarm2_2 As Integer = 80
     Public Const gCstFnumExtAlarm2 As Integer = 1430
 
+    Public Const gCstOutputFileExtAlarm As String = "EXT.inf"
+
 
 
     ''タイマ設定 FCU1用
@@ -1540,6 +1568,7 @@
     Public Const gCstSizeTimer2 As Integer = 12
     Public Const gCstFnumTimer2 As Integer = 2500
 
+    Public Const gCstOutputFileTimer As String = "delay_time.tbl"
 
     ''タイマ表示名称設定 FCU1用
     Public Const gCstPathTimerName As String = "meas"
@@ -1555,6 +1584,7 @@
     Public Const gCstSizeTimerName2 As Integer = 32
     Public Const gCstFnumTimerName2 As Integer = 2501
 
+    Public Const gCstOutputFileTimerName As String = "timer_name.tbl"
 
     ''シーケンスID FCU1用
     Public Const gCstPathSeqSequenceID As String = "meas"
@@ -1570,6 +1600,7 @@
     Public Const gCstSizeSeqSequenceID2 As Integer = 2048
     Public Const gCstFnumSeqSequenceID2 As Integer = 2400
 
+    Public Const gCstOutputFileSeqSequenceID As String = "seq_id.tbl"
 
     ''シーケンス設定 FCU1用
     Public Const gCstPathSeqSequenceSet As String = "meas"
@@ -1585,6 +1616,7 @@
     Public Const gCstSizeSeqSequenceSet2 As Integer = 192
     Public Const gCstFnumSeqSequenceSet2 As Integer = 2401
 
+    Public Const gCstOutputFileSeqSequenceSet As String = "seq_data.tbl"
 
     ''リニアライズテーブル FCU1用
     Public Const gCstPathSeqLinear As String = "meas"
@@ -1602,6 +1634,7 @@
     Public Const gCstSizeSeqLinear2_2 As Integer = 8192
     Public Const gCstFnumSeqLinear2 As Integer = 2301
 
+    Public Const gCstOutputFileSeqLinear As String = "cal_linear.tbl"
 
     ''演算式テーブル FCU1用
     Public Const gCstPathSeqOperationExpression As String = "meas"
@@ -1617,6 +1650,7 @@
     Public Const gCstSizeSeqOperationExpression2 As Integer = 320
     Public Const gCstFnumSeqOperationExpression2 As Integer = 2300
 
+    Public Const gCstOutputFileSeqOperationExpression As String = "cal_formula.tbl"
 
     ''OPSスクリーンタイトルデータ 
     Public Const gCstPathOpsScreenTitle As String = "set\ops"
@@ -1746,6 +1780,7 @@
     Public Const gCstSizeChConv2 As Integer = 2
     Public Const gCstFnumChConv2 As Integer = 2020
 
+    Public Const gCstOutputFileChConv As String = "CHConv.tbl"
 
     ''ログ印字時刻
     Public Const gCstPathOtherLogTime As String = "log"

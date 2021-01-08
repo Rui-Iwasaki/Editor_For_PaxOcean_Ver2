@@ -36,35 +36,17 @@
             dstTbl.Tables(0).Columns.Add("Group")
 
             For i As Integer = 0 To gCstChannelGroupMax - 1
-                'FCU1が選択されている場合
-                If modFcuSelect.nFcuNo = 1 Then
-                    strWk(0) = i + 1
-                    With gudt.SetChGroupSetM.udtGroup.udtGroupInfo(i)
-                        Dim strName As String = ""
-                        strName = strName & .strName1.Trim & " "
-                        strName = strName & .strName2.Trim & " "
-                        strName = strName & .strName3.Trim & " "
-                        strWk(1) = .shtGroupNo.ToString("00") & ":" & strName
-                    End With
+                strWk(0) = i + 1
+                With gudt.SetChGroupSetM.udtGroup.udtGroupInfo(i)
+                    Dim strName As String = ""
+                    strName = strName & .strName1.Trim & " "
+                    strName = strName & .strName2.Trim & " "
+                    strName = strName & .strName3.Trim & " "
+                    strWk(1) = .shtGroupNo.ToString("00") & ":" & strName
+                End With
 
 
-                    Call dstTbl.Tables(0).Rows.Add(strWk)
-                Else
-                    'FCU2が選択されている場合
-                    strWk(0) = i + 1
-                    With gudt2.SetChGroupSetM.udtGroup.udtGroupInfo(i)
-                        Dim strName As String = ""
-                        strName = strName & .strName1.Trim & " "
-                        strName = strName & .strName2.Trim & " "
-                        strName = strName & .strName3.Trim & " "
-                        strWk(1) = .shtGroupNo.ToString("00") & ":" & strName
-                    End With
-
-
-                    Call dstTbl.Tables(0).Rows.Add(strWk)
-
-                End If
-
+                Call dstTbl.Tables(0).Rows.Add(strWk)
             Next i
 
             cmbGroup.DataSource = Nothing
@@ -77,13 +59,8 @@
 
 
             ''チャンネルグループ情報取得
-            If modFcuSelect.nFcuNo = 1 Then
-                'FCU1が選択されている場合
-                Call gMakeChannelData(gudt.SetChInfo, mudtChannelGroup)
-            Else
-                 'FCU2が選択されている場合
-                Call gMakeChannelData(gudt2.SetChInfo, mudtChannelGroup)
-            End If
+            Call gMakeChannelDataForFcu2dai(gudt.SetChInfo, mudtChannelGroup, 0)
+            Call gMakeChannelDataForFcu2dai(gudt2.SetChInfo, mudtChannelGroup, 1)
 
             ''ページ設定　関数に変更   2015.11.13 Ver1.7.8
             Call SetPageData()
@@ -489,7 +466,7 @@
                 With mudtChannelGroup.udtGroup(i)
 
                     ''20CH区切りでチェック
-                    For j = 0 To 4
+                    For j = 0 To 9
                         stval = 0 + (20 * j)
                         endval = 19 + (20 * j)
                         intType = 0
@@ -503,7 +480,7 @@
                                 If chkSecretChannel.Checked = False And flgSC = True Then
                                     ''隠しCH表示無しの設定で、当該CHが隠しCHであった
                                 Else
-                                    If .udtChannelData(k).udtChCommon.shtChType = gCstCodeChTypeValve And .udtChannelData(k).udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or _
+                                    If .udtChannelData(k).udtChCommon.shtChType = gCstCodeChTypeValve And .udtChannelData(k).udtChCommon.shtData = gCstCodeChDataTypeValveDI_DO Or
                                        .udtChannelData(k).udtChCommon.shtChType = gCstCodeChTypeComposite Then
                                         intType = 1
                                     End If
@@ -577,16 +554,12 @@
         Dim bRet As Boolean = False
 
         '保存対象がなければ保存せずに印刷処理続行
-        If modFcuSelect.nFcuNo = 1 Then
-            'FCU1が選択されている場合
-            If gudt.SetEditorUpdateInfo.udtSave.bytChannel <> 1 Then
-                Return True
-            End If
-        Else
-            'FCU2が選択されている場合
-            If gudt2.SetEditorUpdateInfo.udtSave.bytChannel <> 1 Then
-                Return True
-            End If
+        If gudt.SetEditorUpdateInfo.udtSave.bytChannel <> 1 Then
+            Return True
+        End If
+
+        If gudt2.SetEditorUpdateInfo.udtSave.bytChannel <> 1 Then
+            Return True
         End If
 
         '保存ダイアログ表示
@@ -603,6 +576,8 @@
 
             '>>>印刷処理用変数の再読み込み(FormLoadの処理を抜粋)
             ''チャンネルグループ情報取得
+            Call gMakeChannelDataForFcu2dai(gudt.SetChInfo, mudtChannelGroup, 0)
+            Call gMakeChannelDataForFcu2dai(gudt2.SetChInfo, mudtChannelGroup, 1)
             If modFcuSelect.nFcuNo = 1 Then
                 'FCU1が選択されている場合
                 Call gMakeChannelData(gudt.SetChInfo, mudtChannelGroup)

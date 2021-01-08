@@ -569,8 +569,6 @@ Public Class frmMenuMain
     Private Sub cmdChannel4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdChannel4.Click
 
         Try
-            modFcuSelect.EditMenuCodeSet(modFcuSelect.MenuCode.GROUP_REPOSE)
-            frmFcuSelect.gShow()
             Call mSetShowDispButtonEnable(False, False)
             Call frmChGroupReposeList.gShow()
             Call mSetShowDispButtonEnable(True, False)

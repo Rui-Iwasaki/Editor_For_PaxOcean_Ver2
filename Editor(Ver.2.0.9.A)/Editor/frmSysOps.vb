@@ -112,8 +112,14 @@
 
                 ''変更された場合は設定を更新する
                 Call mCopyStructure(mudtSetSysOpsNew, gudt.SetSystem.udtSysOps)
+                Call mCopyStructure(mudtSetSysOpsNew, gudt2.SetSystem.udtSysOps)
+
                 'Ver1.12.0.8 ﾌﾟﾘﾝﾀﾊﾟｰﾄ設定
                 With gudt.SetSystem.udtSysSystem
+                    .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
+                End With
+
+                With gudt2.SetSystem.udtSysSystem
                     .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
                 End With
 
@@ -124,6 +130,8 @@
                 gblnUpdateAll = True
                 gudt.SetEditorUpdateInfo.udtSave.bytSystem = 1
                 gudt.SetEditorUpdateInfo.udtCompile.bytSystem = 1
+                gudt2.SetEditorUpdateInfo.udtSave.bytSystem = 1
+                gudt2.SetEditorUpdateInfo.udtCompile.bytSystem = 1
 
             End If
 
@@ -181,8 +189,13 @@
 
                         ''変更された場合は設定を更新する
                         Call mCopyStructure(mudtSetSysOpsNew, gudt.SetSystem.udtSysOps)
+                        Call mCopyStructure(mudtSetSysOpsNew, gudt2.SetSystem.udtSysOps)
+
                         'Ver1.12.0.8 ﾌﾟﾘﾝﾀﾊﾟｰﾄ設定
                         With gudt.SetSystem.udtSysSystem
+                            .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
+                        End With
+                        With gudt2.SetSystem.udtSysSystem
                             .shtCombineSeparate = gBitSet(.shtCombineSeparate, 1, fnSetCombinePrinter())
                         End With
 
@@ -190,6 +203,8 @@
                         gblnUpdateAll = True
                         gudt.SetEditorUpdateInfo.udtSave.bytSystem = 1
                         gudt.SetEditorUpdateInfo.udtCompile.bytSystem = 1
+                        gudt2.SetEditorUpdateInfo.udtSave.bytSystem = 1
+                        gudt2.SetEditorUpdateInfo.udtCompile.bytSystem = 1
 
                     Case Windows.Forms.DialogResult.No
 

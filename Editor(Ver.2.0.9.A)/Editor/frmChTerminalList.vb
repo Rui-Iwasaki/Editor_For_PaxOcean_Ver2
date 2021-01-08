@@ -133,8 +133,8 @@
             Call mSetStructure(mudtSetFuNew, mudtSetChDispNew)
 
             ''データが変更されているかチェック
-            If Not (modFcuSelect.nFcuNo = 1 And mChkStructureEquals(gudt.SetFu, mudtSetFuNew, gudt.SetChDisp, mudtSetChDispNew)) Or
-                Not (modFcuSelect.nFcuNo = 2 And mChkStructureEquals(gudt2.SetFu, mudtSetFuNew, gudt2.SetChDisp, mudtSetChDispNew)) Then
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(gudt.SetFu, mudtSetFuNew, gudt.SetChDisp, mudtSetChDispNew)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(gudt2.SetFu, mudtSetFuNew, gudt2.SetChDisp, mudtSetChDispNew)) Then
 
                 ''変更された場合は設定を更新する
                 If modFcuSelect.nFcuNo = 1 Then
@@ -148,8 +148,8 @@
 
                 Call subSetFUadrOUT()
 
-                    ''メッセージ表示
-                    Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ''メッセージ表示
+                Call MessageBox.Show("It saved.", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ''更新フラグ設定
                 gblnUpdateAll = True
@@ -168,8 +168,8 @@
                 End If
 
             Else
-                    'Ver2.0.5.9 OUT FUアドレスの更新は強制
-                    Call subSetFUadrOUT()
+                'Ver2.0.5.9 OUT FUアドレスの更新は強制
+                Call subSetFUadrOUT()
                 gblnUpdateAll = True
             End If
 
@@ -193,8 +193,8 @@
             Call mSetStructure(mudtSetFuNew, mudtSetChDispNew)
 
             ''データが変更されているかチェック
-            If Not mChkStructureEquals(gudt.SetFu, mudtSetFuNew, gudt.SetChDisp, mudtSetChDispNew) Or Not mChkStructureEquals(gudt2.SetFu, mudtSetFuNew, gudt2.SetChDisp, mudtSetChDispNew) Then
-
+            If (modFcuSelect.nFcuNo = 1 And Not mChkStructureEquals(gudt.SetFu, mudtSetFuNew, gudt.SetChDisp, mudtSetChDispNew)) Or
+               (modFcuSelect.nFcuNo = 2 And Not mChkStructureEquals(gudt2.SetFu, mudtSetFuNew, gudt2.SetChDisp, mudtSetChDispNew)) Then
                 ''変更されている場合はメッセージ表示
                 Select Case MessageBox.Show("Setting has been changed." & vbNewLine &
                                             "Do you save the changes?", Me.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
@@ -212,15 +212,14 @@
                             'FCU1が選択されている場合
                             Call mCopyStructure1(mudtSetFuNew, gudt.SetFu)
                             Call mCopyStructure2(mudtSetChDispNew, gudt.SetChDisp)
-                            'Ver2.0.5.2 OUT_FUｱﾄﾞﾚｽの更新
-                            Call subSetFUadrOUT()
                         Else
                             'FCU2が選択されている場合
                             Call mCopyStructure1(mudtSetFuNew, gudt2.SetFu)
                             Call mCopyStructure2(mudtSetChDispNew, gudt2.SetChDisp)
-                            'Ver2.0.5.2 OUT_FUｱﾄﾞﾚｽの更新
-                            Call subSetFUadrOUT()
                         End If
+
+                        'Ver2.0.5.2 OUT_FUｱﾄﾞﾚｽの更新
+                        Call subSetFUadrOUT()
 
                         ''更新フラグ設定
                         gblnUpdateAll = True

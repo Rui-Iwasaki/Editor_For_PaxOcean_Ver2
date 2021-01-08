@@ -49,6 +49,11 @@ Public Class frmCmpCompier
     'Ver2.0.3.1 システムチェック高速化
     Private prListSysCH As ArrayList
     Private prListAllCH As ArrayList
+
+    Private mintProcFcuNo As Integer
+
+    Private gudtTemp As New clsStructure
+
 #Region "保存用出力構造体"
 
     Private mudtSetSystem As gTypSetSystem                                  ''システム設定
@@ -182,6 +187,13 @@ Public Class frmCmpCompier
                     'NotCopyへ
                     optDefaultNotCopy.Checked = True
                 End If
+
+                strPathBase = System.IO.Path.Combine(strPathBase, gCstFolderNameCompile2)
+                strPathBase = System.IO.Path.Combine(strPathBase, gCstFolderNameLog)
+                If (System.IO.File.Exists(strLoging1) = True) And (System.IO.File.Exists(strLoging2) = True) Then
+                    'NotCopyへ
+                    optDefaultNotCopy.Checked = True
+                End If
             End With
 
 
@@ -243,6 +255,7 @@ Public Class frmCmpCompier
             Dim udtMsgResult As DialogResult
             'Dim udtMimicMsgResult As DialogResult
 
+
             If cmdCompile.Text = mCstButtonTextCmpCancel _
             Or cmdCompile.Text = mCstButtonTextErrCancel Then
                 mblnCancelFlg = True
@@ -297,6 +310,8 @@ Public Class frmCmpCompier
 
             If udtMsgResult = Windows.Forms.DialogResult.Yes Then
 
+                mintProcFcuNo = 1
+
                 ''画面設定
                 Call mSetDisplayEnable(False, strWaitMsg1, strWaitMsg2)
 
@@ -341,291 +356,441 @@ Public Class frmCmpCompier
                 Call mChkCombine()
                 If mblnCancelFlg Then Return
 
-                ''チャンネル情報チェック
-                Call mChkChannelInfo()
-                If mblnCancelFlg Then Return
+                modFcuSelect.SetFcuNumber(1)
 
-                ''ターミナル情報チェック
-                Call mChkTerminalInfo()
-                If mblnCancelFlg Then Return
+                For i = 0 To 1 'FCU1とFCU2の2回回す
 
-                '' 2019.03.12 計測点チェックのみの場合は飛ばす
-                If mudtCompileType <> gEnmCompileType.cpMeasuringCheck Then
-                    ''その他チャンネル情報チェック
-                    Call mChkOtherChannelInfo()
-                    If mblnCancelFlg Then Return
-
-                    ''シーケンス設定チェック
-                    Call mChkSequenceInfo()
-                    If mblnCancelFlg Then Return
-
-                    ''OPS設定チェック
-                    Call mChkOPSInfo()
-                    If mblnCancelFlg Then Return
-
-                    ''仮設定チェック
-                    Call mChkDummyInfo()
-                    If mblnCancelFlg Then Return
-
-                    'Ver2.0.7.E メニューのHC印刷設定と、プリンタの設定の矛盾チェック
-                    Call mChkPrinterSetting()
-                    If mblnCancelFlg Then Return
-
-                    'Ver2.0.8.2 ログタイムセッティングと、プリンタ設定等の矛盾チェック
-                    Call mChkLogTimePrinterSetting()
-                    If mblnCancelFlg Then Return
-
-                    'Ver2.0.8.4 デマンドCSV保存があった場合のチェック
-                    Call mChkDemandCSVSetting()
-                    If mblnCancelFlg Then Return
-
-                End If
-                '' 2019.03.12 計測点チェックのみの場合は飛ばす(END)
-
-                ''ここからはキャンセル禁止
-                cmdCompile.Enabled = False
-
-                '' 2019.03.12 計測点チェックのみの場合は飛ばす
-                If mudtCompileType <> gEnmCompileType.cpMeasuringCheck Then
-
-                    'Ver2.0.0.7
-                    'デジタルCHのDataType=Device Statusの場合の詳細ﾌﾗｸﾞ自動設定
-                    Call subSetDeviceStatusFLG()
-
-
-                    'Ver2.0.0.7
-                    'システム設定チェック
-                    Call mChkChSystem()
-
-                    '■外販
-                    '外販の場合、延長警報パネル設定の一部ﾃﾞｰﾀに自動設定
-                    If gintNaiGai = 1 Then
-                        Call subSetExtPnlAuto()
-                        gudt.SetEditorUpdateInfo.udtSave.bytExtAlarm = 1
+                    'コンパイル処理ではgudtを参照している。FCU1用がgudt、FCU2用がgudt2なので、FCU2のコンパイル時は
+                    '一旦gudt2をgudtに移し替える。処理完了後に元に戻す。
+                    If i = 1 Then
+                        mintProcFcuNo = 2
+                        gudtTemp = gudt
+                        gudt = gudt2
+                        mintErrCnt = 0
+                        mintDummyCnt = 0
                     End If
 
-
-                    '■一旦ｺﾒﾝﾄ
-                    ''Ver2.0.0.2 南日本M761対応 2017.02.27追加
-                    ''Fire Alarm Mimic のチェック
-                    'Call mAddMsgText("[Check Alarm Mimic Setting]", "[火災警報設定]")
-                    'mblFireAlmMimic = False
-                    'Call mChkFireAlmMimic()
-                    'Call mAddMsgText("", "")
-                    'If mblnCancelFlg Then Return
-
-
-
-                    '■Share対応       '' Ver1.11.8.4 2016.11.09 一旦ｺﾒﾝﾄ
-                    ''Call subShareAITE()
-                    ''If mblnCancelFlg Then
-                    ''    '処理途中終了となる
-                    ''    Call mSetDisplayEnable(True)
-                    ''    Call SaveErrLog()
-                    ''    cmdCompile.Enabled = True
-                    ''    Return
-                    ''End If
-
-                    '■ｽﾃｰﾀｽ名の末尾0x00対応 Ver1.11.9.0 2016.11.21
-                    Call subPatchData()
-
-
-
-
-                    ''チャンネル情報データ（表示名称設定データ）のCHID(CHNO)を設定
-                    Call mAddMsgText("[CH NO Re-setting]", "[チャンネルNO再設定]")
-                    Call mSetChDispChId()
-
-                    ''ID変更前に現在の構造体を保存
-                    Call mAddMsgText("[Save Structure Info]", "[構造体情報保存]")
-                    Call mSaveStructure()
-                    If mblnCancelFlg Then Return
-
-
-                    'ID振り直し前にIDを取得　T.Ueki
-                    ''チャンネルID、チャンネルNo.、システムNo変換  
-                    Call mSetChannelInfo(1)
-                    If mblnCancelFlg Then Return
-
-                    'ID変換場所
-                    ''チャンネルID振りなおし
-                    Call mAddMsgText("[CH ID Renumber]", "[チャンネルID再付番]")
-                    Call mSetChidRenumber()
-                    If mblnCancelFlg Then Return
-
-                    'チャンネルID、チャンネルNo.、システムNo変換  
-                    Call mAddMsgText("[Set CH ID and SYSTEM NO]", "[チャンネルID、システムNo設定]")
-                    Call mSetChannelInfo(0)          ''　☆ 2012/10/26 K.Tanigawa Log CHID 変換を追加
-                    If mblnCancelFlg Then Return
-
-                    'ID比較
-                    Call mSetChannelInfoCompair()
-
-                    'Ver2.0.4.9
-                    'ShipNoに入っている「^」を削除
-                    gudt.SetChGroupSetM.udtGroup.strShipNo = gudt.SetChGroupSetM.udtGroup.strShipNo.Replace("^", "")
-                    gudt.SetChGroupSetC.udtGroup.strShipNo = gudt.SetChGroupSetC.udtGroup.strShipNo.Replace("^", "")
-
-
-                    ''コンパイルファイル出力
-                    If mudtCompileType = gEnmCompileType.cpCompile Then
-
-                        Call mAddMsgText("[Complie File Output]", "[コンパイルファイル出力]")
-                        Call mOutputCompileFile()
-
-                        ''バージョンアップだった場合はバージョンアップフラグを落とす
-                        ''gudtFileInfo.blnVersionUP = False     2013.11.29 コメント
-                        ''gudtFileInfo.strFileVersionPrev = 0   2013.12.18
-
-                        ''更新フラグ設定　ver.1.4.0 2011.09.29
-                        ''CH変換テーブルはコンパイル時に設定されるのでコンパイル後に保存必要
-                        gblnUpdateAll = True
-                        'gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1    '2015.10.23 ｺﾒﾝﾄ
-                        gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
-                        gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
-
-                        'Ver2.0.2.0
-                        gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
-
-                    End If
-                    If mblnCancelFlg Then Return
-
-                    ''保存した構造体を元に戻す
-                    Call mLoadStructure()
-                    If mblnCancelFlg Then Return
-
-                End If
-                '' 2019.03.12 計測点チェックのみの場合は飛ばす(END)
-
-                Select Case mudtCompileType
-                    Case gEnmCompileType.cpCompile
-                        Call mAddMsgText("Finished compiling.", "コンパイルが終了しました。")
-                        Call mAddMsgText("Error count : " & mintErrCnt, "エラー数 : " & mintErrCnt)
-                        Call mAddMsgText("Dummy count : " & mintDummyCnt, "仮設定数 : " & mintDummyCnt)
-                        Call mAddMsgText("", "")
-                    Case gEnmCompileType.cpErrorCheck
-                        Call mAddMsgText("Finished checking.", "エラーチェックが終了しました。")
-                        Call mAddMsgText("Error count : " & mintErrCnt, "エラー数 : " & mintErrCnt)
-                        Call mAddMsgText("Dummy count : " & mintDummyCnt, "仮設定数 : " & mintDummyCnt)
-                        Call mAddMsgText("", "")
-                    Case gEnmCompileType.cpMeasuringCheck
-                        ''2019.03.12 追加
-                        Call mAddMsgText("Finished checking.", "エラーチェックが終了しました。")
-                        Call mAddMsgText("Error count : " & mintErrCnt, "エラー数 : " & mintErrCnt)
-                        Call mAddMsgText("Dummy count : " & mintDummyCnt, "仮設定数 : " & mintDummyCnt)
-                        Call mAddMsgText("", "")
-                End Select
-
-                '' 2019.03.12 計測点チェックのみの場合は飛ばす
-                If mudtCompileType <> gEnmCompileType.cpMeasuringCheck Then
-
-                    'Ver2.0.5.9 Mimicﾌｧｲﾙが存在しない場合は、ミミックｺﾝﾊﾟｲﾗ起動させない
-                    Dim blMimic As Boolean = False
-                    Dim strPathBaseMimic As String = ""
-                    strPathBaseMimic = System.IO.Path.Combine(mudtFileInfo.strFilePath, mudtFileInfo.strFileName)
-                    strPathBaseMimic = System.IO.Path.Combine(strPathBaseMimic, gCstFolderNameSave)
-                    strPathBaseMimic = System.IO.Path.Combine(strPathBaseMimic, gCstFolderNameMimic)
-                    strPathBaseMimic = System.IO.Path.Combine(strPathBaseMimic, "Mimic1")
-                    If System.IO.Directory.Exists(strPathBaseMimic) = True Then
-                        Dim strMimicFiles As String() = System.IO.Directory.GetFiles(strPathBaseMimic, "*.mim", System.IO.SearchOption.AllDirectories)
-                        If strMimicFiles.Length > 0 Then
-                            blMimic = True
+                    ''チャンネル情報チェック
+                    Call mChkChannelInfo()
+                    If mblnCancelFlg Then
+                        If mintProcFcuNo = 2 Then
+                            gudt2 = gudt
+                            gudt = gudtTemp
                         End If
+                        Return
                     End If
 
-                    If blMimic = True Then
-                        'Ver2.0.7.T
-                        'カラーパレットファイル(T151.com)を標準か新デザインか判断し
-                        'Mimicのフォルダへ上書き格納する。
-                        'コピー元は、INIﾌｫﾙﾀﾞへ格納しておくこと。
-                        Dim strMotoPath As String = ""
-                        Dim strSakiPath As String = ""
-                        '>>>コピー元パス作成
-                        strMotoPath = gGetAppPath()
-                        strMotoPath = strMotoPath & "\iniFile"
-                        If g_bytNEWDES = 0 Then
-                            '標準
-                            strMotoPath = strMotoPath & "\T151\BASE\T151.com"
-                        Else
-                            '新デザイン
-                            strMotoPath = strMotoPath & "\T151\NEW\T151.com"
+                    ''ターミナル情報チェック
+                    Call mChkTerminalInfo()
+                    If mblnCancelFlg Then
+                        If mintProcFcuNo = 2 Then
+                            gudt2 = gudt
+                            gudt = gudtTemp
                         End If
-                        '>>>コピー先パス作成
-                        strSakiPath = System.IO.Path.Combine(mudtFileInfo.strFilePath, mudtFileInfo.strFileName)
-                        strSakiPath = System.IO.Path.Combine(strSakiPath, gCstFolderNameSave)
-                        strSakiPath = System.IO.Path.Combine(strSakiPath, gCstFolderNameMimic)
-                        strSakiPath = strSakiPath & "\T151.com"
-                        'コピー元が存在しないならコピー処理しない
-                        If System.IO.File.Exists(strMotoPath) = True Then
-                            System.IO.File.Copy(strMotoPath, strSakiPath, True)
+                        Return
+                    End If
+
+                    '' 2019.03.12 計測点チェックのみの場合は飛ばす
+                    If mudtCompileType <> gEnmCompileType.cpMeasuringCheck Then
+                        ''その他チャンネル情報チェック
+                        Call mChkOtherChannelInfo()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
                         End If
 
-                        'Ver2.0.2.0 ミミックコンパイラ強制起動へ変更
-                        ''ミミックコンパイラー起動確認
-                        'If mblnEnglish Then
-                        '    udtMimicMsgResult = MessageBox.Show("Do you start Mimic compiling?", "Mimic Compiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                        'Else
-                        '    udtMimicMsgResult = MessageBox.Show("ミミックのコンパイルを開始します。よろしいですか？", "コンパイラ", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                        'End If
-
-                        'If udtMimicMsgResult = Windows.Forms.DialogResult.Yes Then
-                        '    Dim Ret As Long
-                        '    Ret = Shell(AppPass + "\CompileMimic.exe", vbNormalFocus)
-                        'End If
-
-                        'Ver2.0.3.6 ｺﾝﾊﾟｲﾗは終了まで待つように変更
-                        'Dim Ret As Long
-                        'Ret = Shell(AppPass + "\CompileMimic.exe", vbNormalFocus)
-                        Dim p As System.Diagnostics.Process = System.Diagnostics.Process.Start(AppPass + "\CompileMimic.exe")
-                        p.WaitForExit()
-
-                        'T311.com 負荷曲線 hori 20200317
-                        Dim strSourcePath As String = ""
-                        Dim strTargetPath As String = ""
-                        '>>>コピー元パス作成
-                        strSourcePath = System.IO.Path.Combine(gudtFileInfo.strFilePath, gudtFileInfo.strFileVersion)   '選択中のファイル情報
-                        strSourcePath = System.IO.Path.Combine(strSourcePath, gCstFolderNameSave)                       'Saveパス
-                        strSourcePath = System.IO.Path.Combine(strSourcePath, gCstFolderNameMimic)                      'mimicパス
-                        strSourcePath = System.IO.Path.Combine(strSourcePath, "Mimic1\")                                'Mimic1パス
-                        strSourcePath = strSourcePath & "T311.com"
-
-                        '>>>コピー先パス作成
-                        strTargetPath = System.IO.Path.Combine(gudtFileInfo.strFilePath, gudtFileInfo.strFileVersion)   '選択中のファイル情報
-                        strTargetPath = System.IO.Path.Combine(strTargetPath, gCstFolderNameCompile)                    'Compileパス
-                        strTargetPath = System.IO.Path.Combine(strTargetPath, gCstFolderNameMimic)                      'mimicパス
-                        strTargetPath = System.IO.Path.Combine(strTargetPath, "Mimic1\")                                'Mimic1パス
-                        strTargetPath = strTargetPath & "T311.com"
-                        'コピー元が存在しないならコピー処理しない
-                        If System.IO.File.Exists(strSourcePath) = True Then
-                            System.IO.File.Copy(strSourcePath, strTargetPath, True)
+                        ''シーケンス設定チェック
+                        Call mChkSequenceInfo()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
                         End If
 
-                        'Mimicｺﾝﾊﾟｲﾙ結果パス
-                        Dim strFileLine() As String = Nothing
-                        Dim strCompileErrLogPath As String = mudtFileInfo.strFilePath & "\" & mudtFileInfo.strFileName & "\Temp\MimicErr.log"
-                        If System.IO.File.Exists(strCompileErrLogPath) = True Then
+                        ''OPS設定チェック
+                        Call mChkOPSInfo()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                        ''仮設定チェック
+                        Call mChkDummyInfo()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                        'Ver2.0.7.E メニューのHC印刷設定と、プリンタの設定の矛盾チェック
+                        Call mChkPrinterSetting()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                        'Ver2.0.8.2 ログタイムセッティングと、プリンタ設定等の矛盾チェック
+                        Call mChkLogTimePrinterSetting()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                        'Ver2.0.8.4 デマンドCSV保存があった場合のチェック
+                        Call mChkDemandCSVSetting()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                    End If
+                    '' 2019.03.12 計測点チェックのみの場合は飛ばす(END)
+
+                    ''ここからはキャンセル禁止
+                    cmdCompile.Enabled = False
+
+                    '' 2019.03.12 計測点チェックのみの場合は飛ばす
+                    If mudtCompileType <> gEnmCompileType.cpMeasuringCheck Then
+
+                        'Ver2.0.0.7
+                        'デジタルCHのDataType=Device Statusの場合の詳細ﾌﾗｸﾞ自動設定
+                        Call subSetDeviceStatusFLG()
+
+
+                        'Ver2.0.0.7
+                        'システム設定チェック
+                        Call mChkChSystem()
+
+                        '■外販
+                        '外販の場合、延長警報パネル設定の一部ﾃﾞｰﾀに自動設定
+                        If gintNaiGai = 1 Then
+                            Call subSetExtPnlAuto()
+                            gudt.SetEditorUpdateInfo.udtSave.bytExtAlarm = 1
+                        End If
+
+
+                        '■一旦ｺﾒﾝﾄ
+                        ''Ver2.0.0.2 南日本M761対応 2017.02.27追加
+                        ''Fire Alarm Mimic のチェック
+                        'Call mAddMsgText("[Check Alarm Mimic Setting]", "[火災警報設定]")
+                        'mblFireAlmMimic = False
+                        'Call mChkFireAlmMimic()
+                        'Call mAddMsgText("", "")
+                        'If mblnCancelFlg Then Return
+
+
+
+                        '■Share対応       '' Ver1.11.8.4 2016.11.09 一旦ｺﾒﾝﾄ
+                        ''Call subShareAITE()
+                        ''If mblnCancelFlg Then
+                        ''    '処理途中終了となる
+                        ''    Call mSetDisplayEnable(True)
+                        ''    Call SaveErrLog()
+                        ''    cmdCompile.Enabled = True
+                        ''    Return
+                        ''End If
+
+                        '■ｽﾃｰﾀｽ名の末尾0x00対応 Ver1.11.9.0 2016.11.21
+                        Call subPatchData()
+
+
+
+
+                        ''チャンネル情報データ（表示名称設定データ）のCHID(CHNO)を設定
+                        Call mAddMsgText("[CH NO Re-setting]", "[チャンネルNO再設定]")
+                        Call mSetChDispChId()
+
+                        ''ID変更前に現在の構造体を保存
+                        Call mAddMsgText("[Save Structure Info]", "[構造体情報保存]")
+                        Call mSaveStructure()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+
+                        'ID振り直し前にIDを取得　T.Ueki
+                        ''チャンネルID、チャンネルNo.、システムNo変換  
+                        Call mSetChannelInfo(1)
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                        'ID変換場所
+                        ''チャンネルID振りなおし
+                        Call mAddMsgText("[CH ID Renumber]", "[チャンネルID再付番]")
+                        Call mSetChidRenumber()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                        'チャンネルID、チャンネルNo.、システムNo変換  
+                        Call mAddMsgText("[Set CH ID and SYSTEM NO]", "[チャンネルID、システムNo設定]")
+                        Call mSetChannelInfo(0)          ''　☆ 2012/10/26 K.Tanigawa Log CHID 変換を追加
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                        'ID比較
+                        Call mSetChannelInfoCompair()
+
+                        'Ver2.0.4.9
+                        'ShipNoに入っている「^」を削除
+                        gudt.SetChGroupSetM.udtGroup.strShipNo = gudt.SetChGroupSetM.udtGroup.strShipNo.Replace("^", "")
+                        gudt.SetChGroupSetC.udtGroup.strShipNo = gudt.SetChGroupSetC.udtGroup.strShipNo.Replace("^", "")
+
+
+                        ''コンパイルファイル出力
+                        If mudtCompileType = gEnmCompileType.cpCompile Then
+
+                            Call mAddMsgText("[Complie File Output]", "[コンパイルファイル出力]")
+                            Call mOutputCompileFile()
+
+                            ''バージョンアップだった場合はバージョンアップフラグを落とす
+                            ''gudtFileInfo.blnVersionUP = False     2013.11.29 コメント
+                            ''gudtFileInfo.strFileVersionPrev = 0   2013.12.18
+
+                            ''更新フラグ設定　ver.1.4.0 2011.09.29
+                            ''CH変換テーブルはコンパイル時に設定されるのでコンパイル後に保存必要
+                            gblnUpdateAll = True
+                            'gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1    '2015.10.23 ｺﾒﾝﾄ
+                            gudt.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                            gudt.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+
+                            'Ver2.0.2.0
+                            gudt.SetEditorUpdateInfo.udtSave.bytChannel = 1
+
+                        End If
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                        ''保存した構造体を元に戻す
+                        Call mLoadStructure()
+                        If mblnCancelFlg Then
+                            If mintProcFcuNo = 2 Then
+                                gudt2 = gudt
+                                gudt = gudtTemp
+                            End If
+                            Return
+                        End If
+
+                    End If
+                    '' 2019.03.12 計測点チェックのみの場合は飛ばす(END)
+
+                    Select Case mudtCompileType
+                        Case gEnmCompileType.cpCompile
+                            Call mAddMsgText("Finished compiling.", "コンパイルが終了しました。")
+                            Call mAddMsgText("Error count : " & mintErrCnt, "エラー数 : " & mintErrCnt)
+                            Call mAddMsgText("Dummy count : " & mintDummyCnt, "仮設定数 : " & mintDummyCnt)
                             Call mAddMsgText("", "")
-                            'ｺﾝﾊﾟｲﾙ結果ﾌｧｲﾙが存在すれば読み込んでｴﾃﾞｨﾀのﾛｸﾞへ書き出し
-                            Dim sr As IO.StreamReader
-                            sr = New IO.StreamReader(strCompileErrLogPath)
-                            Dim strFileData As String = sr.ReadToEnd()
-                            strFileLine = Split(strFileData, vbCrLf)
-                            sr.Close()
-                            For z As Integer = LBound(strFileLine) To UBound(strFileLine) Step 1
-                                Call mAddMsgText(strFileLine(z), strFileLine(z))
-                            Next z
-                            'Mimicｺﾝﾊﾟｲﾗが吐き出したエラーﾛｸﾞﾌｧｲﾙは削除する
-                            'System.IO.File.Delete(strCompileErrLogPath)
-                        End If
-                    End If
+                        Case gEnmCompileType.cpErrorCheck
+                            Call mAddMsgText("Finished checking.", "エラーチェックが終了しました。")
+                            Call mAddMsgText("Error count : " & mintErrCnt, "エラー数 : " & mintErrCnt)
+                            Call mAddMsgText("Dummy count : " & mintDummyCnt, "仮設定数 : " & mintDummyCnt)
+                            Call mAddMsgText("", "")
+                        Case gEnmCompileType.cpMeasuringCheck
+                            ''2019.03.12 追加
+                            Call mAddMsgText("Finished checking.", "エラーチェックが終了しました。")
+                            Call mAddMsgText("Error count : " & mintErrCnt, "エラー数 : " & mintErrCnt)
+                            Call mAddMsgText("Dummy count : " & mintDummyCnt, "仮設定数 : " & mintDummyCnt)
+                            Call mAddMsgText("", "")
+                    End Select
 
-                End If
-                '' 2019.03.12 計測点チェックのみの場合は飛ばす(END)
+                    '' 2019.03.12 計測点チェックのみの場合は飛ばす
+                    If mudtCompileType <> gEnmCompileType.cpMeasuringCheck Then
+
+                        'Ver2.0.5.9 Mimicﾌｧｲﾙが存在しない場合は、ミミックｺﾝﾊﾟｲﾗ起動させない
+                        Dim blMimic As Boolean = False
+                        Dim strPathBaseMimic As String = ""
+                        strPathBaseMimic = System.IO.Path.Combine(mudtFileInfo.strFilePath, mudtFileInfo.strFileName)
+                        strPathBaseMimic = System.IO.Path.Combine(strPathBaseMimic, gCstFolderNameSave)
+                        strPathBaseMimic = System.IO.Path.Combine(strPathBaseMimic, gCstFolderNameMimic)
+                        strPathBaseMimic = System.IO.Path.Combine(strPathBaseMimic, "Mimic1")
+                        If System.IO.Directory.Exists(strPathBaseMimic) = True Then
+                            Dim strMimicFiles As String() = System.IO.Directory.GetFiles(strPathBaseMimic, "*.mim", System.IO.SearchOption.AllDirectories)
+                            If strMimicFiles.Length > 0 Then
+                                blMimic = True
+                            End If
+                        End If
+
+                        If mintProcFcuNo = 2 Then
+                            blMimic = False
+                        End If
+
+                        If blMimic = True Then
+                            'Ver2.0.7.T
+                            'カラーパレットファイル(T151.com)を標準か新デザインか判断し
+                            'Mimicのフォルダへ上書き格納する。
+                            'コピー元は、INIﾌｫﾙﾀﾞへ格納しておくこと。
+                            Dim strMotoPath As String = ""
+                            Dim strSakiPath As String = ""
+                            '>>>コピー元パス作成
+                            strMotoPath = gGetAppPath()
+                            strMotoPath = strMotoPath & "\iniFile"
+                            If g_bytNEWDES = 0 Then
+                                '標準
+                                strMotoPath = strMotoPath & "\T151\BASE\T151.com"
+                            Else
+                                '新デザイン
+                                strMotoPath = strMotoPath & "\T151\NEW\T151.com"
+                            End If
+                            '>>>コピー先パス作成
+                            strSakiPath = System.IO.Path.Combine(mudtFileInfo.strFilePath, mudtFileInfo.strFileName)
+                            strSakiPath = System.IO.Path.Combine(strSakiPath, gCstFolderNameSave)
+                            strSakiPath = System.IO.Path.Combine(strSakiPath, gCstFolderNameMimic)
+                            strSakiPath = strSakiPath & "\T151.com"
+                            'コピー元が存在しないならコピー処理しない
+                            If System.IO.File.Exists(strMotoPath) = True Then
+                                System.IO.File.Copy(strMotoPath, strSakiPath, True)
+                            End If
+
+                            'Ver2.0.2.0 ミミックコンパイラ強制起動へ変更
+                            ''ミミックコンパイラー起動確認
+                            'If mblnEnglish Then
+                            '    udtMimicMsgResult = MessageBox.Show("Do you start Mimic compiling?", "Mimic Compiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                            'Else
+                            '    udtMimicMsgResult = MessageBox.Show("ミミックのコンパイルを開始します。よろしいですか？", "コンパイラ", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                            'End If
+
+                            'If udtMimicMsgResult = Windows.Forms.DialogResult.Yes Then
+                            '    Dim Ret As Long
+                            '    Ret = Shell(AppPass + "\CompileMimic.exe", vbNormalFocus)
+                            'End If
+
+                            'Ver2.0.3.6 ｺﾝﾊﾟｲﾗは終了まで待つように変更
+                            'Dim Ret As Long
+                            'Ret = Shell(AppPass + "\CompileMimic.exe", vbNormalFocus)
+                            Dim p As System.Diagnostics.Process = System.Diagnostics.Process.Start(AppPass + "\CompileMimic.exe")
+                            p.WaitForExit()
+
+                            Dim strSourcePath As String = ""
+                            Dim strTargetPath As String = ""
+
+                            '>>>コピー元パス作成
+                            strSourcePath = System.IO.Path.Combine(gudtFileInfo.strFilePath, gudtFileInfo.strFileVersion)   '選択中のファイル情報
+                            strSourcePath = System.IO.Path.Combine(strSourcePath, "Temp\Compile\Mimic")
+
+                            '>>>コピー先パス作成
+                            strTargetPath = System.IO.Path.Combine(gudtFileInfo.strFilePath, gudtFileInfo.strFileVersion)   '選択中のファイル情報
+                            If mintProcFcuNo = 1 Then
+                                strTargetPath = System.IO.Path.Combine(strTargetPath, "Temp\" + gCstFolderNameCompile + "\mimic")                    'Compileパス
+                            Else
+                                strTargetPath = System.IO.Path.Combine(strTargetPath, "Temp\" + gCstFolderNameCompile2 + "\mimic")                    'Compileパス
+                            End If
+
+                            If System.IO.Directory.Exists(strTargetPath) = True Then
+                                System.IO.Directory.Delete(strTargetPath, True)
+                            End If
+
+                            If System.IO.Directory.Exists(strSourcePath) = True Then
+                                System.IO.Directory.Move(strSourcePath, strTargetPath)
+                                'System.IO.Directory.Delete(strSourcePath, True)
+                            End If
+
+                            'T311.com 負荷曲線 hori 20200317
+                            strSourcePath = ""
+                            strTargetPath = ""
+                            '>>>コピー元パス作成
+                            strSourcePath = System.IO.Path.Combine(gudtFileInfo.strFilePath, gudtFileInfo.strFileVersion)   '選択中のファイル情報
+                            strSourcePath = System.IO.Path.Combine(strSourcePath, gCstFolderNameSave)                       'Saveパス
+                            strSourcePath = System.IO.Path.Combine(strSourcePath, gCstFolderNameMimic)                      'mimicパス
+                            strSourcePath = System.IO.Path.Combine(strSourcePath, "Mimic1\")                                'Mimic1パス
+                            strSourcePath = strSourcePath & "T311.com"
+
+                            '>>>コピー先パス作成
+                            strTargetPath = System.IO.Path.Combine(gudtFileInfo.strFilePath, gudtFileInfo.strFileVersion)   '選択中のファイル情報
+                            If mintProcFcuNo = 1 Then
+                                strTargetPath = System.IO.Path.Combine(strTargetPath, gCstFolderNameCompile)                    'Compileパス
+                            Else
+                                strTargetPath = System.IO.Path.Combine(strTargetPath, gCstFolderNameCompile2)                    'Compileパス
+                            End If
+                            strTargetPath = System.IO.Path.Combine(strTargetPath, gCstFolderNameMimic)                      'mimicパス
+                            strTargetPath = System.IO.Path.Combine(strTargetPath, "Mimic1\")                                'Mimic1パス
+                            strTargetPath = strTargetPath & "T311.com"
+                            'コピー元が存在しないならコピー処理しない
+                            If System.IO.File.Exists(strSourcePath) = True Then
+                                System.IO.File.Copy(strSourcePath, strTargetPath, True)
+                            End If
+
+                            'Mimicｺﾝﾊﾟｲﾙ結果パス
+                            Dim strFileLine() As String = Nothing
+                            Dim strCompileErrLogPath As String = mudtFileInfo.strFilePath & "\" & mudtFileInfo.strFileName & "\Temp\MimicErr.log"
+                            If System.IO.File.Exists(strCompileErrLogPath) = True Then
+                                Call mAddMsgText("", "")
+                                'ｺﾝﾊﾟｲﾙ結果ﾌｧｲﾙが存在すれば読み込んでｴﾃﾞｨﾀのﾛｸﾞへ書き出し
+                                Dim sr As IO.StreamReader
+                                sr = New IO.StreamReader(strCompileErrLogPath)
+                                Dim strFileData As String = sr.ReadToEnd()
+                                strFileLine = Split(strFileData, vbCrLf)
+                                sr.Close()
+                                For z As Integer = LBound(strFileLine) To UBound(strFileLine) Step 1
+                                    Call mAddMsgText(strFileLine(z), strFileLine(z))
+                                Next z
+                                'Mimicｺﾝﾊﾟｲﾗが吐き出したエラーﾛｸﾞﾌｧｲﾙは削除する
+                                'System.IO.File.Delete(strCompileErrLogPath)
+                                If mintProcFcuNo = 1 Then
+                                    System.IO.File.Copy(strCompileErrLogPath, mudtFileInfo.strFilePath & "\" & mudtFileInfo.strFileName & "\Temp\FCU1_MimicErr.log", True)
+                                Else
+                                    System.IO.File.Copy(strCompileErrLogPath, mudtFileInfo.strFilePath & "\" & mudtFileInfo.strFileName & "\Temp\FCU2_MimicErr.log", True)
+                                End If
+                                System.IO.File.Delete(strCompileErrLogPath)
+
+                            End If
+                        End If
+
+                    End If
+                    '' 2019.03.12 計測点チェックのみの場合は飛ばす(END)
+                Next
+
+                Call SaveErrLog()       ' 2015.10.23 Ver1.7.5 ｴﾗｰﾛｸﾞは自動保存とする
 
                 ''画面設定
                 Call mSetDisplayEnable(True)
 
-                Call SaveErrLog()       ' 2015.10.23 Ver1.7.5 ｴﾗｰﾛｸﾞは自動保存とする
+                '移し替えていたデータを元に戻す
+                If mintProcFcuNo = 2 Then
+                    gudt2 = gudt
+                    gudt = gudtTemp
+                End If
 
                 ''コンパイルボタン使用可
                 cmdCompile.Enabled = True
@@ -634,6 +799,10 @@ Public Class frmCmpCompier
 
         Catch ex As Exception
             Call gOutputErrorLog(gMakeExceptionInfo(System.Reflection.MethodBase.GetCurrentMethod, ex.Message))
+            If mintProcFcuNo = 2 Then
+                gudt2 = gudt
+                gudt = gudtTemp
+            End If
         End Try
 
     End Sub
@@ -2516,6 +2685,25 @@ Public Class frmCmpCompier
     Private Sub mChkChannelInfo()
 
         Try
+            Dim strFcuNo As String = "                                FCU " + mintProcFcuNo.ToString() + "  Processing."
+
+            Call mAddMsgText("---------------------------------------------------------------------------------------------------------------------------",
+                             "---------------------------------------------------------------------------------------------------------------------------")
+            Call mAddMsgText("---------------------------------------------------------------------------------------------------------------------------",
+                             "---------------------------------------------------------------------------------------------------------------------------")
+            Call mAddMsgText("---------------------------------------------------------------------------------------------------------------------------",
+                             "---------------------------------------------------------------------------------------------------------------------------")
+            Call mAddMsgText("", "")
+            Call mAddMsgText(strFcuNo, strFcuNo)
+            Call mAddMsgText("", "")
+            Call mAddMsgText("---------------------------------------------------------------------------------------------------------------------------",
+                             "---------------------------------------------------------------------------------------------------------------------------")
+            Call mAddMsgText("---------------------------------------------------------------------------------------------------------------------------",
+                             "---------------------------------------------------------------------------------------------------------------------------")
+            Call mAddMsgText("---------------------------------------------------------------------------------------------------------------------------",
+                             "---------------------------------------------------------------------------------------------------------------------------")
+            Call mAddMsgText("", "")
+
 
             ''チャンネル情報チェック開始
             Call mAddMsgText("[Check Channel Info]", "[チャンネル設定確認]")
@@ -2686,64 +2874,6 @@ Public Class frmCmpCompier
                     Next
                 End If
             End With
-
-            With gudt2.SetChInfo
-
-                ''設定されているチャンネル番号のみチャンネル番号と配列番号を配列化
-                For i As Integer = 0 To UBound(.udtChannel)
-                    If .udtChannel(i).udtChCommon.shtChno <> 0 Then
-                        aryCheck.Add(.udtChannel(i).udtChCommon.shtChno & "," & i)
-                    End If
-                Next
-
-                ''チャンネル番号が存在する場合
-                If Not aryCheck Is Nothing Then
-
-                    ''チャンネル番号順に並べ替え
-                    Call aryCheck.Sort()
-
-                    '' Ver1.12.0.8 2017.02.22 CH数表示追加
-                    strMsg1 = "***** Channel Count = " + aryCheck.Count.ToString
-                    strMsg2 = "***** チャンネル数 = " + aryCheck.Count.ToString
-                    Call mAddMsgText(strMsg1, strMsg2)
-                    ''//
-
-                    ''上から順に１つ下と番号が同じかチェック
-                    For i As Integer = 0 To aryCheck.Count - 1
-
-                        ''最後の１つはチェックしない
-                        If i = aryCheck.Count - 1 Then Exit For
-
-                        ''チャンネル番号とチャンネル配列番号を分割
-                        strwk1 = aryCheck(i).ToString.Split(",")
-                        strwk2 = aryCheck(i + 1).ToString.Split(",")
-
-                        ''チャンネル番号が同じ場合
-                        If strwk1(0) = strwk2(0) Then
-
-                            ''メッセージ作成
-                            strItem1 = IIf(mblnEnglish, "[Info1]Group=" & .udtChannel(strwk1(1)).udtChCommon.shtGroupNo &
-                                                        " , CH Name=" & gGetString(.udtChannel(strwk1(1)).udtChCommon.strChitem),
-                                                        "[情報１]グループ=" & .udtChannel(strwk1(1)).udtChCommon.shtGroupNo &
-                                                        " , チャンネル名称=" & gGetString(.udtChannel(strwk1(1)).udtChCommon.strChitem))
-                            strItem2 = IIf(mblnEnglish, "[Info2]Group=" & .udtChannel(strwk2(1)).udtChCommon.shtGroupNo &
-                                                        " , CH Name=" & gGetString(.udtChannel(strwk2(1)).udtChCommon.strChitem),
-                                                        "[情報２]グループ=" & .udtChannel(strwk2(1)).udtChCommon.shtGroupNo &
-                                                        " , チャンネル名称=" & gGetString(.udtChannel(strwk2(1)).udtChCommon.strChitem))
-
-                            ''メッセージ追加
-                            ReDim Preserve strErrMsg(intErrCnt)
-                            strErrMsg(intErrCnt) = IIf(mblnEnglish, "CH NO [" & strwk1(0) & "] overlaps. " & strItem1 & " " & strItem2,
-                                                                    "チャンネル番号 " & strwk1(0) & "は重複しています。" & strItem1 & " " & strItem2)
-
-                            intErrCnt += 1
-
-                        End If
-
-                    Next
-                End If
-            End With
-
 
             ''結果表示
             If intErrCnt = 0 Then
@@ -15495,13 +15625,19 @@ Public Class frmCmpCompier
 
                 ''バージョン番号までのパス T.Ueki Tempフォルダに出力先変更
                 strPathBaseEditor = .strFileVersion
+
                 strPathBase = strPathBase & "\Temp"
+
 
                 ''EditorInfo配下のフォルダパス
                 strPathUpdateInfo = System.IO.Path.Combine(System.IO.Path.Combine(strPathBaseEditor, gCstFolderNameEditorInfo), gCstFolderNameUpdateInfo)
 
                 ''Compile までのパス
-                strPathBase = System.IO.Path.Combine(strPathBase, gCstFolderNameCompile)
+                If mintProcFcuNo = 1 Then
+                    strPathBase = System.IO.Path.Combine(strPathBase, gCstFolderNameCompile)
+                Else
+                    strPathBase = System.IO.Path.Combine(strPathBase, gCstFolderNameCompile2)
+                End If
 
                 ''Compile までのパス（コピー用）
                 strPathSaveNow = System.IO.Path.Combine(strPathSaveNow, gCstFolderNameSave)
@@ -15996,7 +16132,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathSystem
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSystem)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileSystem)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16075,7 +16211,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathFuChannel
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileFuChannel)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileFuChannel)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16154,7 +16290,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChDisp
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChDisp)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileChDisp)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16248,7 +16384,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChannel
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChannel)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileChannel)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16342,7 +16478,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathComposite
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileComposite)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileComposite)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16625,7 +16761,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathOutPut
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileOutPut)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileOutPut)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16704,7 +16840,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathOrAnd
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileOrAnd)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileOrAnd)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16783,7 +16919,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChAdd
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChAdd)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileChAdd)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16862,7 +16998,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathExhGus
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileExhGus)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileExhGus)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -16942,7 +17078,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathCtrlUseNouse
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, IIf(blnMachinery, gCstFileCtrlUseNouseM, gCstFileCtrlUseNouseC))
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, IIf(blnMachinery, gCstOutputFileCtrlUseNouseM, gCstOutputFileCtrlUseNouseC))
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17021,7 +17157,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChSio
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSio)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileChSio)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17101,7 +17237,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChSio
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSioChName) & Format(intPortNo, "00") & gCstFileChSioChExt
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSioChName) & Format(intPortNo, "00")
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17267,7 +17403,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathExtAlarm
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileExtAlarm)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileExtAlarm)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17346,7 +17482,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathTimer
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileTimer)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileTimer)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17425,7 +17561,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathTimerName
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileTimerName)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileTimerName)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17504,7 +17640,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathSeqSequenceID
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSeqSequenceID)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileSeqSequenceID)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17583,7 +17719,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathSeqSequenceSet
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSeqSequenceSet)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileSeqSequenceSet)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17662,7 +17798,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathSeqLinear
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSeqLinear)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileSeqLinear)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17741,7 +17877,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathSeqOperationExpression
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSeqOperationExpression)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileSeqOperationExpression)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17820,7 +17956,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChDataSaveTable
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChDataSaveTable)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileChDataSaveTable)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -17899,7 +18035,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChDataForwardTableSet
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChDataForwardTableSet)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileChDataForwardTableSet)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)
@@ -18956,7 +19092,7 @@ Public Class frmCmpCompier
             Dim strPathSave As String
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChConv
-            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChConv)
+            Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstOutputFileChConv)
 
             ''保存パスを作成
             strPathSave = System.IO.Path.Combine(strPathBase, strCurPathName)

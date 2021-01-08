@@ -2,7 +2,7 @@
 
 #Region "定数定義"
 
-    Private Const mCstProgressValueMaxLoad As Integer = 56
+    Private Const mCstProgressValueMaxLoad As Integer = 112
 
 #End Region
 
@@ -31,12 +31,13 @@
     ' 　　　    : ARG1 - (I ) アクセスモード
     ' 機能説明  : 画面表示を行い戻り値を返す
     '--------------------------------------------------------------------
-    Friend Function gShow(ByVal udtFileInfo As gTypCompareFileInfo, _
-                          ByVal blnCFRead As Boolean, _
-                          ByVal blnSaveRead As Boolean, _
-                          ByVal blnCompileRead As Boolean, _
-                          ByVal blnCForgRead As Boolean, _
-                          ByRef udt As clsStructure) As Integer
+    Friend Function gShow(ByVal udtFileInfo As gTypCompareFileInfo,
+                          ByVal blnCFRead As Boolean,
+                          ByVal blnSaveRead As Boolean,
+                          ByVal blnCompileRead As Boolean,
+                          ByVal blnCForgRead As Boolean,
+                          ByRef udt As clsStructure,
+                          ByRef udt2 As clsStructure) As Integer
 
         Try
 
@@ -50,12 +51,13 @@
             mblnCompileRead = blnCompileRead
             mblnCForgRead = blnCForgRead
             mudt = udt
-
+            mudt2 = udt2
             ''画面表示
             Call Me.ShowDialog()
 
             ''戻り値設定
             udt = mudt
+            udt2 = mudt2
             Return mintRtn
 
         Catch ex As Exception
@@ -247,18 +249,33 @@
 
                 ''システム設定データ読み込み
                 intRtn += mLoadSystem(mudt.SetSystem, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''FCU2システム設定データ読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadSystem(mudt2.SetSystem, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''FU チャンネル情報読み込み
                 intRtn += mLoadFuChannel(mudt.SetFu, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''FU チャンネル情報読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadFuChannel(mudt2.SetFu, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''チャンネル情報データ（表示名設定データ）読み込み
                 intRtn += mLoadChDisp(mudt.SetChDisp, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''チャンネル情報データ（表示名設定データ）読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadChDisp(mudt2.SetChDisp, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''チャンネル情報読み込み
                 intRtn += mLoadChannel(mudt.SetChInfo, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''チャンネル情報読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadChannel(mudt2.SetChInfo, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''コンポジット情報読み込み
                 intRtn += mLoadComposite(mudt.SetChComposite, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''コンポジット情報読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadComposite(mudt2.SetChComposite, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''グループ設定読み込み
                 intRtn += mLoadGroup(mudt.SetChGroupSetM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
@@ -269,66 +286,121 @@
 
                 ''出力チャンネル設定読み込み
                 intRtn += mLoadOutPut(mudt.SetChOutput, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''出力チャンネル設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadOutPut(mudt2.SetChOutput, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''論理出力設定読み込み
                 intRtn += mLoadOrAnd(mudt.SetChAndOr, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''論理出力設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadOrAnd(mudt2.SetChAndOr, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''積算データ設定読み込み
                 intRtn += mLoadChRunHour(mudt.SetChRunHour, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''積算データ設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadChRunHour(mudt2.SetChRunHour, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''コントロール使用可／不可設定書き込み
                 intRtn += mLoadCtrlUseNotuse(mudt.SetChCtrlUseM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
                 intRtn += mLoadCtrlUseNotuse(mudt.SetChCtrlUseC, mudtFileInfo, strPathBase, False) : .Value += 1 : Application.DoEvents()
+                ''コントロール使用可／不可設定書き込み
+                FCU2LeadFlg = True
+                intRtn += mLoadCtrlUseNotuse(mudt2.SetChCtrlUseM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
+                intRtn += mLoadCtrlUseNotuse(mudt2.SetChCtrlUseC, mudtFileInfo, strPathBase, False) : .Value += 1 : Application.DoEvents()
 
                 ''SIO設定読み込み
                 intRtn += mLoadChSio(mudt.SetChSio, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''SIO設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadChSio(mudt2.SetChSio, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''SIO設定CH設定読み込み
                 For i As Integer = 0 To UBound(mudt.SetChSioCh)
                     intRtn += mLoadChSioCh(mudt.SetChSioCh(i), mudtFileInfo, strPathBase, i + 1) : .Value += 1 : Application.DoEvents()
                 Next
+                ''SIO設定CH設定読み込み
+                FCU2LeadFlg = True
+                For i As Integer = 0 To UBound(mudt2.SetChSioCh)
+                    intRtn += mLoadChSioCh(mudt2.SetChSioCh(i), mudtFileInfo, strPathBase, i + 1) : .Value += 1 : Application.DoEvents()
+                Next
 
                 ''排ガス処理演算設定読み込み
+                FCU2LeadFlg = False
                 intRtn += mLoadexhGus(mudt.SetChExhGus, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''排ガス処理演算設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadexhGus(mudt2.SetChExhGus, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''延長警報設定読み込み
                 intRtn += mLoadExtAlarm(mudt.SetExtAlarm, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''延長警報設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadExtAlarm(mudt2.SetExtAlarm, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''タイマ設定読み込み
                 intRtn += mLoadTimer(mudt.SetExtTimerSet, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''タイマ設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadTimer(mudt2.SetExtTimerSet, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''タイマ表示名称設定読み込み
                 intRtn += mLoadTimerName(mudt.SetExtTimerName, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''タイマ表示名称設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadTimerName(mudt2.SetExtTimerName, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''シーケンスID読み込み
                 intRtn += mLoadSeqSequenceID(mudt.SetSeqID, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''シーケンスID読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadSeqSequenceID(mudt2.SetSeqID, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''シーケンス設定読み込み
                 intRtn += mLoadSeqSequenceSet(mudt.SetSeqSet, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''シーケンス設定読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadSeqSequenceSet(mudt2.SetSeqSet, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 'リニアライズテーブル読み込み
                 intRtn += mLoadSeqLinear(mudt.SetSeqLinear, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                'リニアライズテーブル読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadSeqLinear(mudt2.SetSeqLinear, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 '演算式テーブル読み込み
                 intRtn += mLoadSeqOperationExpression(mudt.SetSeqOpeExp, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                '演算式テーブル読み込み
+                FCU2LeadFlg = True
+                intRtn += mLoadSeqOperationExpression(mudt2.SetSeqOpeExp, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''データ保存テーブル設定
                 intRtn += mLoadChDataSaveTable(mudt.SetChDataSave, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''データ保存テーブル設定
+                FCU2LeadFlg = True
+                intRtn += mLoadChDataSaveTable(mudt2.SetChDataSave, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''データ転送テーブル設定
                 intRtn += mLoadChDataForwardTableSet(mudt.SetChDataForward, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
+                ''データ転送テーブル設定
+                FCU2LeadFlg = True
+                intRtn += mLoadChDataForwardTableSet(mudt2.SetChDataForward, mudtFileInfo, strPathBase) : .Value += 1 : Application.DoEvents()
 
                 ''OPSスクリーンタイトルデータ読み込み
                 intRtn += mLoadOpsScreenTitle(mudt.SetOpsScreenTitleM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
                 intRtn += mLoadOpsScreenTitle(mudt.SetOpsScreenTitleC, mudtFileInfo, strPathBase, False) : .Value += 1 : Application.DoEvents()
 
+
                 ''プルダウンメニュー
                 intRtn += mLoadManuMain(mudt.SetOpsPulldownMenuM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
                 intRtn += mLoadManuMain(mudt.SetOpsPulldownMenuC, mudtFileInfo, strPathBase, False) : .Value += 1 : Application.DoEvents()
 
+
                 ''セレクションメニュー
                 intRtn += mLoadSelectionMenu(mudt.SetOpsSelectionMenuM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
                 intRtn += mLoadSelectionMenu(mudt.SetOpsSelectionMenuC, mudtFileInfo, strPathBase, False) : .Value += 1 : Application.DoEvents()
+
 
                 ''OPSグラフ設定
                 intRtn += mLoadOpsGraph(mudt.SetOpsGraphM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
@@ -337,6 +409,7 @@
                 ''ログフォーマットCHID
                 intRtn += mLoadOpsLogIdData(mudt.SetOpsLogIdDataM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
                 intRtn += mLoadOpsLogIdData(mudt.SetOpsLogIdDataC, mudtFileInfo, strPathBase, False) : .Value += 1 : Application.DoEvents()
+
 
                 '' Ver1.7.8 2015.11.12 ﾛｸﾞﾌｫｰﾏｯﾄ読み込み
                 intRtn += mLoadOpsLogFormat(mudt.SetOpsLogFormatM, mudtFileInfo, strPathBase, True) : .Value += 1 : Application.DoEvents()
@@ -621,6 +694,12 @@
             Dim strCurPathName As String = gCstPathSystem
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSystem, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathSystem2
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileSystem2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -692,6 +771,11 @@
             Dim strCurPathName As String = gCstPathFuChannel
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileFuChannel, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathFuChannel
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileFuChannel2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -762,6 +846,11 @@
             Dim strCurPathName As String = gCstPathChDisp
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChDisp, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathChDisp
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChDisp2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -831,6 +920,12 @@
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathChannel
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChannel, mblnCFRead, mblnSaveRead, mblnCompileRead)
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathChannel
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChannel2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
@@ -910,6 +1005,12 @@
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathComposite
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileComposite, mblnCFRead, mblnSaveRead, mblnCompileRead)
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathComposite
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileComposite2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
@@ -1056,6 +1157,7 @@
             Dim intListRow As Integer = 0       ''2018.12.13 倉重 カウンタ変数
             Dim intListDetailRow As Integer = 0 ''2018.12.13 倉重 カウンタ変数
 
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -1161,6 +1263,12 @@
             Dim strCurPathName As String = gCstPathOutPut
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileOutPut, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathOutPut
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileOutPut2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -1232,6 +1340,12 @@
             Dim strCurPathName As String = gCstPathOrAnd
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileOrAnd, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathOrAnd
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileOrAnd2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -1302,6 +1416,14 @@
             Dim strCurPathName As String = gCstPathChAdd
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChAdd, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathChAdd
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChAdd2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -1371,6 +1493,13 @@
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathExhGus
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileExhGus, mblnCFRead, mblnSaveRead, mblnCompileRead)
+
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathExhGus
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileExhGus2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
@@ -1443,6 +1572,12 @@
             Dim strCurPathName As String = gCstPathCtrlUseNouse
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, IIf(blnMachinery, gCstFileCtrlUseNouseM, gCstFileCtrlUseNouseC), mblnCFRead, mblnSaveRead, mblnCompileRead)
             Dim bFileFg As Boolean      '' Ver1.9.7 2016.02.17 追加
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathCtrlUseNouse
+                strCurFileName = mGetOutputFileName(udtFileInfo, IIf(blnMachinery, gCstFileCtrlUseNouseM2, gCstFileCtrlUseNouseC2), mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
@@ -1540,6 +1675,12 @@
             Dim strCurPathName As String = gCstPathChSio
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSio, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathChSio
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChSio2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -1611,6 +1752,12 @@
             Dim strCurPathName As String = gCstPathChSioCh
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChSioChName, mblnCFRead, mblnSaveRead, mblnCompileRead) & Format(intPortNo, "00") & gCstFileChSioChExt
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathChSioCh
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChSioChName2, mblnCFRead, mblnSaveRead, mblnCompileRead) & Format(intPortNo, "00") & gCstFileChSioChExt2
+
+            End If
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -1680,6 +1827,12 @@
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathExtAlarm
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileExtAlarm, mblnCFRead, mblnSaveRead, mblnCompileRead)
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathExtAlarm
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileExtAlarm2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
@@ -1751,6 +1904,12 @@
             Dim strCurPathName As String = gCstPathTimer
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileTimer, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathTimer
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileTimer2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -1820,6 +1979,13 @@
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathTimerName
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileTimerName, mblnCFRead, mblnSaveRead, mblnCompileRead)
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathTimerName
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileTimerName2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
@@ -1891,6 +2057,13 @@
             Dim strCurPathName As String = gCstPathSeqSequenceID
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSeqSequenceID, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathSeqSequenceID
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileSeqSequenceID2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -1960,6 +2133,12 @@
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathSeqSequenceSet
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSeqSequenceSet, mblnCFRead, mblnSaveRead, mblnCompileRead)
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathSeqSequenceSet
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileSeqSequenceSet2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
@@ -2031,6 +2210,12 @@
             Dim strCurPathName As String = gCstPathSeqLinear
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSeqLinear, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathSeqLinear
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileSeqLinear2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
+
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -2100,6 +2285,12 @@
             Dim strFullPath As String
             Dim strCurPathName As String = gCstPathSeqOperationExpression
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileSeqOperationExpression, mblnCFRead, mblnSaveRead, mblnCompileRead)
+
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathSeqOperationExpression
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileSeqOperationExpression2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
 
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
@@ -2171,6 +2362,11 @@
             Dim strCurPathName As String = gCstPathChDataSaveTable
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChDataSaveTable, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathChDataSaveTable
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChDataSaveTable2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
@@ -2241,6 +2437,11 @@
             Dim strCurPathName As String = gCstPathChDataForwardTableSet
             Dim strCurFileName As String = mGetOutputFileName(udtFileInfo, gCstFileChDataForwardTableSet, mblnCFRead, mblnSaveRead, mblnCompileRead)
 
+            If FCU2LeadFlg = True Then
+                strCurPathName = gCstPathChDataForwardTableSet
+                strCurFileName = mGetOutputFileName(udtFileInfo, gCstFileChDataForwardTableSet2, mblnCFRead, mblnSaveRead, mblnCompileRead)
+                FCU2LeadFlg = False
+            End If
             ''メッセージ更新
             lblMessage.Text = "Loading " & strCurFileName : Call lblMessage.Refresh()
 
