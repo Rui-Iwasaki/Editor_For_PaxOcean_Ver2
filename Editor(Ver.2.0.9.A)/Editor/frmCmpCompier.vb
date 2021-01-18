@@ -20929,10 +20929,14 @@ Public Class frmCmpCompier
         End With
     End Sub
 
+    Private Sub optNotChkBlank_CheckedChanged(sender As Object, e As EventArgs) Handles optNotChkBlank.CheckedChanged
+
+    End Sub
+
 #End Region
 
 
 #End Region
 
-  
+
 End Class

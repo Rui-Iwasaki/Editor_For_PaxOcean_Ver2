@@ -3210,8 +3210,11 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
-
-            msgSYStemp(0) = "■■■■　SIO VDR INFORMATION SETTING　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 SIO VDR INFORMATION SETTING ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 SIO VDR INFORMATION SETTING ■■■■"
+            End If
 
             ''チャンネル設定数レコード
             For i As Integer = LBound(udt1.shtNum) To UBound(udt1.shtNum)
@@ -3392,8 +3395,11 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
-
-            msgSYStemp(0) = "■■■■　SIO CHANNEL SETTING DATA　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 SIO CHANNEL SETTING DATA ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 SIO CHANNEL SETTING DATA ■■■■"
+            End If
 
             For i As Integer = 0 To UBound(udt1)
 
@@ -3439,8 +3445,12 @@ Public Class frmChkFileCompare
         Try
 
             Dim i As Integer = 1
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 TIMER ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 TIMER ■■■■"
 
-            msgSYStemp(0) = "■■■■　TIMER　■■■■"
+            End If
 
             For ix As Integer = 0 To UBound(udt1.udtTimerInfo)
 
@@ -3512,8 +3522,11 @@ Public Class frmChkFileCompare
         Try
 
             Dim i As Integer = 1
-
-            msgSYStemp(0) = "■■■■　TIMER DISPLAY NAME　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 TIMER DISPLAY NAME ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 TIMER DISPLAY NAME ■■■■"
+            End If
 
             For ix As Integer = 0 To UBound(udt1.udtTimerRec)
 
@@ -3552,7 +3565,12 @@ Public Class frmChkFileCompare
             Dim z As Integer = 0
             Dim ix As Integer = 1
 
-            msgSYStemp(0) = "■■■■　SEQUENCE　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 SEQUENCE ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 SEQUENCE ■■■■"
+
+            End If
 
             ''シーケンスID
             For i As Integer = LBound(udtID1.shtID) To UBound(udtID1.shtID)
@@ -3786,8 +3804,12 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 LINEAR TABLE ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 LINEAR TABLE ■■■■"
 
-            msgSYStemp(0) = "■■■■　LINEAR TABLE　■■■■"
+            End If
 
             For i As Integer = LBound(udt1.udtPoints) To UBound(udt1.udtPoints)
 
@@ -3843,8 +3865,12 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 SEQ OPE EXPRESSION TABLE ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 SEQ OPE EXPRESSION TABLE ■■■■"
 
-            msgSYStemp(0) = "■■■■　SEQ OPE EXPRESSION TABLE　■■■■"
+            End If
 
             ''詳細初期化
             For i As Integer = LBound(udt1.udtTables) To UBound(udt1.udtTables)
@@ -4713,8 +4739,12 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 CH CONVERT TABLE ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 CH CONVERT TABLE ■■■■"
 
-            msgSYStemp(0) = "■■■■　CH CONVERT TABLE 　■■■■"
+            End If
 
             Dim CHIDChange As Integer
 
@@ -11169,8 +11199,11 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
-
-            msgSYStemp(0) = "■■■■　COMPOSITE SETTING　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 COMPOSITE SETTING ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 COMPOSITE SETTING ■■■■"
+            End If
 
             Dim CHIDChange As Integer
 
@@ -12318,11 +12351,20 @@ Public Class frmChkFileCompare
                 Next i
             End With
 
-            msgSYStemp(0) = "■■■■　CH OUTPUT SETTING　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 CH OUTPUT SETTING ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 CH OUTPUT SETTING ■■■■"
+            End If
 
             'Ver2.0.3.1 追加、削除検出はここで行う
             'ADD
-            msgSYStemp(ix) = "■CH OUTPUT ADD"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(ix) = "■ FCU-1 CH OUTPUT ADD"
+            Else
+                msgSYStemp(ix) = "■ FCU-2 CH OUTPUT ADD"
+            End If
+
             ix = ix + 1
             For i As Integer = LBound(udt2.udtCHOutPut) To UBound(udt2.udtCHOutPut)
                 CHViewFlg = True
@@ -12384,7 +12426,14 @@ Public Class frmChkFileCompare
             End If
 
             'DEL
-            msgSYStemp(ix) = "■CH OUTPUT DEL"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(ix) = "■ FCU-1 CH OUTPUT DEL"
+            Else
+                msgSYStemp(ix) = "■ FCU-2 CH OUTPUT DEL"
+            End If
+
+
+
             ix = ix + 1
             ixBKUP = ix
             For i As Integer = LBound(udt1.udtCHOutPut) To UBound(udt1.udtCHOutPut)
@@ -12446,10 +12495,14 @@ Public Class frmChkFileCompare
                 blDelNone = True    'Ver2.0.5.9 変更が1点の場合に変化無しとなってしまう不具合修正
             End If
 
+            If CompareResultTxt = 0 Then
+                msgSYStemp(ix) = "■ FCU-1 CH OUTPUT COMP"
+            Else
+                msgSYStemp(ix) = "■ FCU-2 CH OUTPUT COMP"
+            End If
 
-            msgSYStemp(ix) = "■CH OUTPUT COMP"
             ix = ix + 1
-            Dim iCmp As Integer = ix
+                Dim iCmp As Integer = ix
             For i As Integer = LBound(udt2.udtCHOutPut) To UBound(udt2.udtCHOutPut)
 
                 CHViewFlg = True
@@ -12910,8 +12963,12 @@ Public Class frmChkFileCompare
                 Next i
             End With
 
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 CH AND OR SETTING ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 CH AND OR SETTING ■■■■"
 
-            msgSYStemp(0) = "■■■■　CH AND OR SETTING　■■■■"
+            End If
 
             For i As Integer = LBound(udt1.udtCHOut) To UBound(udt1.udtCHOut)
 
@@ -13299,8 +13356,12 @@ Public Class frmChkFileCompare
         Dim ix As Integer = 1
 
         Try
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 CH RUN HOUR SETTING ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 CH RUN HOUR SETTING ■■■■"
 
-            msgSYStemp(0) = "■■■■　CH RUN HOUR SETTING　■■■■"
+            End If
 
             For i As Integer = LBound(udt1.udtDetail) To UBound(udt1.udtDetail)
 
@@ -13462,11 +13523,10 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
-            If CompareResultTxt = 0 Then
-                msgSYStemp(0) = "■■■■ FCU-1 REPOSE SETTING ■■■■"
-            Else
-                msgSYStemp(0) = "■■■■ FCU-2 REPOSE SETTING ■■■■"
-            End If
+
+            msgSYStemp(0) = "■■■■ REPOSE SETTING ■■■■"
+
+
 
             Dim CHIDChange As Integer
 
@@ -13531,8 +13591,11 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
-
-            msgSYStemp(0) = "■■■■　EXH GAS TABLE SETTING　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 EXH GAS TABLE SETTING ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 EXH GAS TABLE SETTING ■■■■"
+            End If
 
             Dim CHIDChange As Integer
 
@@ -13631,8 +13694,12 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 CONTROL(USE/NOT USE) SETTING（" & mGetMCEng(udtMC) & ") ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 CONTROL(USE/NOT USE) SETTING（" & mGetMCEng(udtMC) & "）■■■■"
 
-            msgSYStemp(0) = "■■■■　CONTROL(USE/NOT USE) SETTING（" & mGetMCEng(udtMC) & "）　■■■■"
+            End If
 
             For i As Integer = LBound(udt1.udtCtrlUseNotuseRec) To UBound(udt1.udtCtrlUseNotuseRec)
 
@@ -13716,7 +13783,12 @@ Public Class frmChkFileCompare
 
             Dim ix As Integer = 1
 
-            msgSYStemp(0) = "■■■■　DATA FORWORD TABLE SETTING　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 DATA FORWORD TABLE SETTING ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 DATA FORWORD TABLE SETTING ■■■■"
+
+            End If
 
             For i As Integer = LBound(udt1.udtDetail) To UBound(udt1.udtDetail)
 
@@ -13782,8 +13854,11 @@ Public Class frmChkFileCompare
         Try
 
             Dim ix As Integer = 1
-
-            msgSYStemp(0) = "■■■■　DATA SAVE TABLE SETTING　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 DATA SAVE TABLE SETTING ■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 DATA SAVE TABLE SETTING ■■■■"
+            End If
 
             For i As Integer = LBound(udt1.udtDetail) To UBound(udt1.udtDetail)
 
@@ -13841,7 +13916,11 @@ Public Class frmChkFileCompare
 
             Dim ix As Integer = 1
 
-            msgSYStemp(0) = "■■■■　EXTENSION ALARM SETTING　■■■■"
+            If CompareResultTxt = 0 Then
+                msgSYStemp(0) = "■■■■ FCU-1 EXTENSION ALARM SETTING　■■■■"
+            Else
+                msgSYStemp(0) = "■■■■ FCU-2 EXTENSION ALARM SETTING　■■■■"
+            End If
 
             ''延長警報盤使用有無
             For i As Integer = LBound(udt1.udtExtAlarmCommon.shtUse) To UBound(udt1.udtExtAlarmCommon.shtUse)

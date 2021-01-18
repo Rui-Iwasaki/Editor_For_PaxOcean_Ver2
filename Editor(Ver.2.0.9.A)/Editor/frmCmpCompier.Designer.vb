@@ -210,9 +210,9 @@ Partial Class frmCmpCompier
         Me.GroupBox2.Controls.Add(Me.Label2)
         Me.GroupBox2.Controls.Add(Me.Label1)
         Me.GroupBox2.Font = New System.Drawing.Font("ＭＳ ゴシック", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(12, 497)
+        Me.GroupBox2.Location = New System.Drawing.Point(12, 523)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(351, 95)
+        Me.GroupBox2.Size = New System.Drawing.Size(351, 69)
         Me.GroupBox2.TabIndex = 16
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Option"
@@ -225,27 +225,28 @@ Partial Class frmCmpCompier
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(156, 21)
         Me.Panel3.TabIndex = 19
+        Me.Panel3.Visible = False
         '
         'optChkBlank
         '
         Me.optChkBlank.AutoSize = True
-        Me.optChkBlank.Checked = True
         Me.optChkBlank.Cursor = System.Windows.Forms.Cursors.Default
         Me.optChkBlank.Location = New System.Drawing.Point(3, 3)
         Me.optChkBlank.Name = "optChkBlank"
         Me.optChkBlank.Size = New System.Drawing.Size(41, 16)
         Me.optChkBlank.TabIndex = 0
-        Me.optChkBlank.TabStop = True
         Me.optChkBlank.Text = "Yes"
         Me.optChkBlank.UseVisualStyleBackColor = True
         '
         'optNotChkBlank
         '
         Me.optNotChkBlank.AutoSize = True
+        Me.optNotChkBlank.Checked = True
         Me.optNotChkBlank.Location = New System.Drawing.Point(76, 3)
         Me.optNotChkBlank.Name = "optNotChkBlank"
         Me.optNotChkBlank.Size = New System.Drawing.Size(35, 16)
         Me.optNotChkBlank.TabIndex = 0
+        Me.optNotChkBlank.TabStop = True
         Me.optNotChkBlank.Text = "No"
         Me.optNotChkBlank.UseVisualStyleBackColor = True
         '
@@ -257,6 +258,7 @@ Partial Class frmCmpCompier
         Me.Label3.Size = New System.Drawing.Size(161, 12)
         Me.Label3.TabIndex = 18
         Me.Label3.Text = "Fill in the blank(CH List)"
+        Me.Label3.Visible = False
         '
         'Panel2
         '
