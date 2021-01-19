@@ -1338,16 +1338,16 @@
                     'mFlagFirst = False
                     'Else
                     'gblnUpdateAll = True
-                    'gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1
-                    'gudt2.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
-                    'gudt2.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
-                    '   gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1
-                    ' gudt2.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
-                    'gudt2.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChannel = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChConvNow = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChConvPrev = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChannel = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChConvNow = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChConvPrev = 1
 
                     '' 端子設定も保存  2014.01.17
-                    'gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
-                    'gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
+                    gudt2.SetEditorUpdateInfo.udtSave.bytChDisp = 1
+                    gudt2.SetEditorUpdateInfo.udtCompile.bytChDisp = 1
                     mFlagChange = False
                         mFlagFirst = False
                     'End If

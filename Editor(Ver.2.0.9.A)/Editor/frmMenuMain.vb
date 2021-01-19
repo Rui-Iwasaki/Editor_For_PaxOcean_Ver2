@@ -338,7 +338,7 @@ Public Class frmMenuMain
                 Call mDispFileInfo(gudtFileInfo)
 
                 ''全体更新フラグ初期化
-                gblnUpdateAll = False
+                gblnUpdateAll = TRUE
 
                 ''Renameボタン使用可
                 cmdFile4.Enabled = True

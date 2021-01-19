@@ -541,7 +541,8 @@
                 gblnUpdateAll = True
                 gudt.SetEditorUpdateInfo.udtSave.bytComposite = 1
                 gudt.SetEditorUpdateInfo.udtCompile.bytComposite = 1
-
+                gudt2.SetEditorUpdateInfo.udtSave.bytComposite = 1
+                gudt2.SetEditorUpdateInfo.udtCompile.bytComposite = 1
             End If
 
         Catch ex As Exception
